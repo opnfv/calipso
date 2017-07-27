@@ -1,0 +1,78 @@
+[
+{ 
+    "operational" : "stopped", 
+    "listen" : true, 
+    "configuration" : [
+        {
+            "name" : "OpenStack", 
+            "admin_token" : "sadgsgsagsa", 
+            "user" : "adminuser", 
+            "port" : 5000, 
+            "pwd" : "saggsgsasg", 
+            "host" : "10.0.0.1"
+        }, 
+        {
+            "name" : "mysql", 
+            "password" : "sgasdggddsgsd", 
+            "port" : 3307, 
+            "user" : "mysqluser", 
+            "host" : "10.0.0.1"
+        }, 
+        {
+            "name" : "CLI", 
+            "user" : "sshuser", 
+            "pwd" : "sagsagsagsa", 
+            "host" : "10.0.0.1"
+        }, 
+        {
+            "name" : "AMQP", 
+            "password" : "sagssdgassgd", 
+            "port" : 5673, 
+            "user" : "rabbitmquser", 
+            "host" : "10.0.0.1"
+        }, 
+        {
+            "rabbitmq_port" : 5671, 
+            "ssh_user" : "root", 
+            "server_name" : "sensu_server", 
+            "env_type" : "production", 
+            "provision" : "None", 
+            "name" : "Monitoring", 
+            "ssh_port" : 20022, 
+            "rabbitmq_pass" : "sagsagss", 
+            "ssh_password" : "calipsoasgsagdg", 
+            "rabbitmq_user" : "sensu", 
+            "config_folder" : "/local_dir/sensu_config", 
+            "type" : "Sensu", 
+            "server_ip" : "10.0.0.1", 
+            "api_port" : 4567
+        }, 
+        {
+            "name" : "ACI", 
+            "user" : "admin", 
+            "pwd" : "Cisco123456", 
+            "host" : "10.1.1.104"
+        }
+    ], 
+    "enable_monitoring" : true, 
+    "name" : "DEMO-ENVIRONMENT-SCHEME", 
+    "distribution" : "Mirantis-8.0", 
+    "last_scanned" : "filled-by-scanning", 
+    "app_path" : "/home/scan/calipso_prod/app", 
+    "scanned" : false, 
+    "type_drivers" : "vxlan", 
+    "mechanism_drivers" : [
+        "OVS"
+    ], 
+    "user" : "wNLeBJxNDyw8G7Ssg", 
+    "auth" : {
+        "edit-env" : [
+            "wNLeBJxNDyw8G7Ssg"
+        ], 
+        "view-env" : [
+            "wNLeBJxNDyw8G7Ssg"
+        ]
+    }, 
+    "type" : "environment"
+}
+]
