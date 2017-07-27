@@ -1,0 +1,59 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="TopNavbarMenu">
+
+    <nav class="os-topnavbarmenu navbar navbar-inverse navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="sm-navbar-header navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <div class="sm-navbar-brand-container navbar-brand navbar-custom">
+                  <img class="cl-item sm-cisco-logo" src="/logo-cisco.svg" >
+                  <img class="cl-item sm-calipso-logo" src="/images/calipso-logo.jpg" >
+                  <p class="cl-item sm-project-label" href="/">Project Calipso </p>
+                </div>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <div class="navbar-form navbar-right">
+                  <div class="search">
+                    <div class="search-input-group">
+                      <span class="fa fa-search"></span>
+                      <input id="search" placeholder="Search ...">
+                    </div>
+                    <div class="search-auto-complete">
+                      {{>SearchAutoCompleteList (argsSearch envId searchTerm) }}  
+                    </div>
+                  </div>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                  <li class="dropdown os-nav-link">
+                    {{> envForm argsEnvForm }}    
+                  </li>
+                  <li><a class="sm-dashboard-link os-nav-link">
+                      <i class="material-icons">home</i>
+                      Dashboard
+                    </a></li>
+                  <li><a class="sm-get-started-link os-nav-link">Get started</a></li>
+                  <li><a class="sm-login-buttons-link os-nav-link" href="#"
+                      >{{> loginButtons}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    {{> alarmIcons}}
+
+</template>

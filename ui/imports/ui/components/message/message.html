@@ -1,0 +1,168 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="Message">
+<div class="os-message cards white">
+  {{#if notificationsExists}}
+  <div class="sm-notification-panel alert alert-danger">
+    {{#each note in notifications }}
+    <div>{{ note }}</div>
+    {{/each }}
+  </div>
+  {{/if}}
+
+  <h3>{{ getState 'pageHeader' }}</h3>
+
+  <div class="sm-form-container">
+    <form role="form" class="sm-item-form form-horizontal">
+
+      <div class="sm-field-group-id cl-field-group">
+        <label class="cl-field-label">Id</label>
+        <input name="id" 
+          disabled="disabled"
+          value="{{ getModelField '_id' }}"     
+          class="sm-input-id cl-input" type="text" placeholder="Id" />
+        <div class="cl-field-id">Id</div>
+      </div>
+
+      <div class="sm-field-group-env cl-field-group">
+        <label class="cl-field-label">Environment</label>
+        <select name="env" class="sm-input-env cl-input" 
+          {{ getAttrDisabled }} >
+          <option value="" selected disabled hidden></option>
+          {{#each env in envsList }}
+          <option value="{{ env.name }}"
+            {{ getAttrSelected env.name (getModelField 'environment') }}
+            >{{ env.name }}</option>
+          {{/each }}
+        </select>
+        <div class="cl-field-desc">Environment</div>
+      </div>
+
+      <div class="sm-field-group-viewed cl-field-group">
+        <label class="cl-field-label">Viewed</label>
+        <input name="viewed" 
+          {{ getAttrDisabled }}
+          value="{{ getModelField 'viewed' }}"     
+          class="sm-input-viewed cl-input" type="text" placeholder="" />
+        <div class="cl-field-desc">Viewed</div>
+      </div>
+
+      <div class="sm-field-group-display-context cl-field-group">
+        <label class="cl-field-label">Display Context</label>
+        <input name="display_context" 
+          {{ getAttrDisabled }}
+          value="{{ getModelField 'display_context' }}"     
+          class="sm-input-viewed cl-input" type="text" placeholder="Display context" />
+        <div class="cl-field-desc">Display context</div>
+      </div>
+
+      <div class="sm-field-group-message cl-field-group">
+        <label class="cl-field-label">Message</label>
+        <textarea name="message" 
+          {{ getAttrDisabled }}
+          class="sm-input-message cl-input"
+          rows="10"
+          >{{ asString (getModelField 'message') }}</textarea>
+        <div class="cl-field-desc">Message</div>
+      </div>
+
+      <div class="sm-field-group-source-system cl-field-group">
+        <label class="cl-field-label">Source System</label>
+        <select name="source-system" class="sm-input-source-system cl-input" 
+          {{ getAttrDisabled }} >
+          <option value="" selected disabled hidden></option>
+          {{#each sourceSystem in sourceSystemsList }}
+          <option value="{{ sourceSystem.value }}"
+            {{ getAttrSelected sourceSystem.label (getModelField 'source_system') }}
+            >{{ sourceSystem.label }}</option>
+          {{/each }}
+        </select>
+        <div class="cl-field-desc">Source system</div>
+      </div>
+
+      <div class="sm-field-group-level cl-field-group">
+        <label class="cl-field-label">Level</label>
+        <input name="level" 
+          {{ getAttrDisabled }}
+          value="{{ getModelField 'level' }}"     
+          class="sm-input-level cl-input" 
+          type="text" 
+          placeholder="Level" />
+        <div class="cl-field-desc">Level</div>
+      </div>
+
+      <div class="sm-field-group-timestamp cl-field-group">
+        <label class="cl-field-label">Timestamp</label>
+        <input name="timestamp" 
+          {{ getAttrDisabled }}
+          value="{{ getModelField 'timestamp' }}"     
+          class="sm-input-level cl-input" 
+          type="text" 
+          placeholder="Timestamp" />
+        <div class="cl-field-desc">Timestamp</div>
+      </div>
+
+      <div class="sm-field-group-related-object-type cl-field-group">
+        <label class="cl-field-label">Related Object Type</label>
+        <input name="related_object_type" 
+          {{ getAttrDisabled }}
+          value="{{ getModelField 'related_object_type' }}"     
+          class="sm-input-related-object-type cl-input" 
+          type="text" 
+          placeholder="Related object type" />
+        <div class="cl-field-desc">Related object type</div>
+      </div>
+
+      <div class="sm-field-group-related-object cl-field-group">
+        <label class="cl-field-label">Related Object</label>
+        <input name="related_object" 
+          {{ getAttrDisabled }}
+          value="{{ getModelField 'related_object' }}"     
+          class="sm-input-related-object cl-input" 
+          type="text" 
+          placeholder="Related object" />
+          {{#if (getModelField 'related_object') }}
+            {{> InventoryPropertiesDisplay (argsInvPropDisplay (getModelField 'environment') (getModelField 'related_object')) }}.   
+          {{/if }}
+        <div class="cl-field-desc">Related object</div>
+      </div>
+
+      <div class="sm-field-group-scanid cl-field-group">
+        <label class="cl-field-label">Scan ID</label>
+        <input name="scanid" 
+          {{ getAttrDisabled }}
+          value="{{ getModelField 'scan_id' }}"     
+          class="sm-input-level cl-input" 
+          type="text" 
+          placeholder="Scan ID" />
+        <div class="cl-field-desc">Scan ID</div>
+      </div>
+
+      {{#if isUpdateableAction }}
+      <button type="submit" 
+        class="js-submit-button mdl-button mdl-js-button mdl-button--raised 
+          mdl-js-ripple-effect mdl-button--colored"
+        >{{ actionLabel }}</button>
+      {{/if }}
+
+    </form>
+
+    {{#if (getState 'isMessage') }}
+    <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
+        {{#if (getState 'isSuccess')}}alert-success{{/if}}" 
+        role="alert">
+      {{ getState 'message' }}
+    </div>
+    {{/if }}
+
+  </div>
+</div>
+</template>

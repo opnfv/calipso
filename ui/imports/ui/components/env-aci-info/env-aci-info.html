@@ -1,0 +1,88 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="EnvAciInfo">
+<div class="form-horizontal">
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >Host</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.host 
+            key="host"
+            type="text"
+            disabled=disabled
+            placeholder="Host")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>Some help info</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >User</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.user 
+            key="user"
+            type="text"
+            disabled=disabled
+            placeholder="User")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>Some help info</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >Password</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.pwd 
+            key="pwd"
+            type="password"
+            disabled=disabled
+            placeholder="Password")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>Some help info</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="button" 
+        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored toast"
+        >Test connection</button>
+    </div>
+
+    <div class="col-sm-offset-2 col-sm-10 btn-mgt-5">
+      <button type="button" 
+        class="sm-next-button mdl-button mdl-js-button 
+          btnNext"
+        >Next</button>
+    </div>
+  </div>
+</div>
+</template>

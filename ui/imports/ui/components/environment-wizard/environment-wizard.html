@@ -1,0 +1,83 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="EnvironmentWizard">
+
+  <div class="sm-environment-wizard-container">
+
+    <div class="flex-box-1 site-sidenav">
+			<div class="menu-header">
+        <p>
+					{{ model.name }}
+        </p>
+        <a href="#"><i class="material-icons">menu</i></a>
+      </div>
+    </div>
+
+    <form class="sm-environment-form">
+
+      <div class="sm-main-layout-no-nav cards white">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          {{#each tab in tabs }}
+            <li role="presentation"
+                class="{{#if tab.defaultTab }}active{{/if}} {{#if tab.disabled }}disabled{{/if}}">
+              <a href="#{{ tab.localLink }}"
+                 aria-controls="{{ tab.localLink }}"
+                 role="tab"
+                 data-toggle="tab"
+                 id="link-{{ tab.localLink }}"
+                 data-is-disabled="{{ tab.disabled }}"
+                 class="sm-tab-link"
+                 >{{tab.label}}</a>
+            </li>
+          {{/each}}
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          {{#each tab in tabs }}
+          <div role="tabpanel" 
+               class="tab-pane fade {{#if tab.defaultTab }}in active{{/if}}" 
+               id="{{ tab.localLink }}">
+            {{> Template.dynamic template=tab.templateName data=tab.templateData }}
+          </div>
+          {{/each }}
+
+        </div>
+
+        <div class="row">
+          <div class="row">
+            <div class="col-sm-offset-2 col-sm-10 btn-mgt-5">
+              <button type="button" 
+                class="sm-submit-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+                {{ markIfDisabled }}
+                >Submit</button>
+            </div>
+          </div>
+
+          {{#if (getState 'isMessage') }}
+          <div class="row">
+            <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
+                {{#if (getState 'isSuccess')}}alert-success{{/if}}" 
+                role="alert"
+                >{{ getState 'message' }}</div>
+          </div>
+          {{/if }}
+
+        </div>
+
+      </div>
+
+    </form>   
+
+  </div>
+
+</template>

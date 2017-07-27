@@ -1,0 +1,103 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="MessagesList">
+<div class="os-messages-list cards white">
+	<div class="sm-table-section">
+		<h3>Messages</h3>
+		<table class="sm-messages-table table">
+			<thead>
+				<tr>
+          <th><a class="sm-table-header" 
+                 data-is-sortable="true" 
+                 data-sort-field="environment"
+                 >Environment<span><i class="{{ fieldSortClass 'environment' }}"></i></span></a></th>
+          <th><a class="sm-table-header" 
+                 data-is-sortable="true" 
+                 data-sort-field="viewed"
+              >Viewed<span><i class="{{ fieldSortClass 'viewed' }}"></i></span></a></th>
+					<th><a class="sm-table-header">Display Context</a></th>
+					<th><a class="sm-table-header">Message</a></th>
+					<th><a class="sm-table-header" 
+            data-is-sortable="true" 
+            data-sort-field="source_system"
+              >Source System<span><i class="{{ fieldSortClass 'source_system' }}"></i></span></a></th>
+					<th><a class="sm-table-header" 
+            data-is-sortable="true" 
+            data-sort-field="level"
+              >Level<span><i class="{{ fieldSortClass 'level' }}"></i></span></a></th>
+					<th><a class="sm-table-header" 
+            data-is-sortable="true" 
+            data-sort-field="timestamp"
+              >Timestamp<span><i class="{{ fieldSortClass 'timestamp' }}"></i></span></a></th>
+					<th><a class="sm-table-header" 
+            data-is-sortable="true" 
+            data-sort-field="related_object_type"
+              >Related Object Type<span><i class="{{ fieldSortClass 'related_object_type' }}"></i></span></a></th>
+					<th><a class="sm-table-header">Related Object</a></th>
+					<th><a class="sm-table-header" 
+            data-is-sortable="true" 
+            data-sort-field="scan_id"
+              >Scan ID<span><i class="{{ fieldSortClass 'scan_id' }}"></i></span></a></th>
+					<th><a class="sm-table-header">Actions</a></th>
+				</tr> </thead>
+			<tbody> 
+				{{#each message in messages }}
+				<tr>
+					<td>{{ message.environment }}</td>
+					<td>{{ message.viewed }}</td>
+					<td>
+						<a class="cl-link sm-display-context-link" 
+							 data-env-name="{{ message.environment }}"
+							 data-item-id="{{ message.display_context }}">Link to node</a>
+					</td>
+					<td>{{ message.message }}</td>
+					<td>{{ message.source_system }}</td>
+					<td>{{ message.level }}</td>
+					<td>{{ message.timestamp }}</td>
+					<td>{{ message.related_object_type }}</td>
+					<td>
+            {{#if message.related_object }}
+              {{> InventoryPropertiesDisplay (argsInvPropDisplay message.environment message.related_object) }}
+            {{/if }}
+          </td>
+					<td>
+            <a class="cl-link sm-scan-id-link"
+               data-scan-id="{{ toIsoFormatStr message.scan_id }}"
+               >{{ message.scan_id }}
+            </a>
+          </td>
+					<td>
+						<div class="sm-action-bar">
+							<a href="{{pathFor route='message' 
+														query=(asHash id=(idToStr message._id) action='view') }}"
+									><i class="cl-action-icon fa fa-eye" area-hidden="true"></i></a>
+
+							<!--a href="{{pathFor route='message' 
+														query=(asHash id=(idToStr message._id) action='update') }}"
+									><i class="cl-action-icon fa fa-pencil" area-hidden="true"></i></a-->
+
+							<!--a href="{{pathFor route='message' 
+														query=(asHash id=(idToStr message._id) action='remove') }}"
+									><i class="cl-action-icon fa fa-trash-o" area-hidden="true"></i></a-->
+						</div>
+					</td>
+				</tr>
+				{{/each }}
+			</tbody>
+		</table>
+	</div>
+
+	<div class="sm-pager-section">
+		{{> Pager (argsPager currentPage amountPerPage totalMessages) }}
+	</div>
+
+</div>
+</template>

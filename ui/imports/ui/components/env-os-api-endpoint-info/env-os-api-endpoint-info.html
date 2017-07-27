@@ -1,0 +1,125 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="EnvOsApiEndpointInfo">
+<div class="form-horizontal">
+  <!-- Host -->
+  <div class="form-group">
+    <label for="apiHost" 
+      class="col-sm-2 control-label">API host</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.host 
+            key="host"
+            type="text"
+            disabled=disabled
+            placeholder="API Host")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>This is API server</p>
+    </div>
+  </div>
+
+  <!-- Port -->
+  <div class="form-group">
+    <label for="dbPort" 
+      class="col-sm-2 control-label"
+      >Port</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.port 
+            key="port"
+            type="text"
+            disabled=disabled
+            placeholder="Port")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>This is API port</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="adminToken" 
+      class="col-sm-2 control-label"
+      >Admin Token</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.admin_token 
+            key="admin_token"
+            type="text"
+            disabled=disabled
+            placeholder="Admin Token")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>This is API admin token</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="Username" 
+      class="col-sm-2 control-label"
+      >Username</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.user 
+            key="user"
+            type="text"
+            disabled=disabled
+            placeholder="Username")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>This is API user name</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="apiPassword" class="col-sm-2 control-label"
+      >Password</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.pwd 
+            key="pwd"
+            type="password"
+            disabled=disabled
+            placeholder="Password")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>This is API password</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-2">
+      <button type="button" 
+        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored toast">Test connection</button>
+    </div>
+
+    <div class="col-sm-offset-2 col-sm-10 btn-mgt-5">
+      <button type="button" class="mdl-button mdl-js-button btnNext sm-next-button">Next</button>
+    </div>
+
+  </div>
+</div>
+</template>

@@ -1,0 +1,60 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="ListInfoBox">
+<div class="os-list-info-box cards-450 white flex-box-1">
+  <div class="flex-box ">
+    <div class="flex-box-1">
+      {{> Icon type=icon.type name=icon.name }}
+    </div>
+    <div class="flex-box-2">
+      <h3>{{ header }}</h3>
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <th>Last Scanning</th>
+          <td>{{ lastScanning }}</td>
+        </tr>
+        <tr>
+          <th>Number of {{ header }}:</th>
+          <td>{{ itemsCount }}</td>
+        </tr>
+        <tr>
+          <th>{{ header }}:</th>
+          <td>
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" 
+                  type="button" 
+                  data-toggle="dropdown" 
+                  aria-haspopup="true" 
+                  aria-expanded="true"
+                  >
+                    Select from dropdown
+                    <span class="caret"></span>
+                </button>
+
+                <ul class="sm-items-dropdown-menu dropdown-menu" 
+                  aria-labelledby="dropdownMenu1">
+                    {{#each option in (options list listItemFormat) }}
+                        <li>
+                          <a data-value="{{ option.value }}" 
+                            class="os-list-item">{{option.label}}</a>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+</template>

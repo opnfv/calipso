@@ -1,0 +1,52 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="CliqueConstraintsList">
+<div class="os-clique-constraints-list cards white">
+  <h3>Clique Constraints</h3>
+  <a class="sm-add-new-link" 
+     href="{{pathFor route='clique-constraint' query=(asHash action='insert') }}">
+    <i class="cl-action-icon fa fa-plus" area-hidden="true"></i> Create new clique constraint
+  </a>
+  <table class="sm-clique-constraints-table table">
+    <thead>
+      <tr>
+        <th>Focal Point Type</th>
+        <th>Constraints</th>
+        <th>Actions</th>
+      </tr> </thead>
+    <tbody> 
+      {{#each cliqueConstraint in cliqueConstraints }}
+      <tr>
+        <td>{{ cliqueConstraint.focal_point_type }}</td>
+        <td>{{ cliqueConstraint.constraints }}</td>
+        <td>
+          <div class="sm-action-bar">
+            <a href="{{pathFor route='clique-constraint' 
+                          query=(asHash id=(idToStr cliqueConstraint._id) action='view') }}"
+                ><i class="cl-action-icon fa fa-eye" area-hidden="true"></i></a>
+
+            {{#if isAuthManageCliqueConstraints }}
+            <a href="{{pathFor route='clique-constraint' 
+                          query=(asHash id=(idToStr cliqueConstraint._id) action='update') }}"
+                ><i class="cl-action-icon fa fa-pencil" area-hidden="true"></i></a>
+
+            <a href="{{pathFor route='clique-constraint' 
+                          query=(asHash id=(idToStr cliqueConstraint._id) action='remove') }}"
+                ><i class="cl-action-icon fa fa-trash-o" area-hidden="true"></i></a>
+            {{/if }}
+          </div>
+        </td>
+      </tr>
+      {{/each }}
+    </tbody>
+  </table>
+</div>
+</template>

@@ -1,0 +1,96 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="CliqueConstraint">
+  <div class="os-clique-constraint cards white">
+    {{#if notificationsExists}}
+    <div class="sm-notification-panel alert alert-danger">
+      {{#each note in notifications }}
+      <div>{{ note }}</div>
+      {{/each }}
+    </div>
+    {{/if}}
+
+    <h3>{{ getState 'pageHeader' }}</h3>
+
+    <div class="sm-form-container">
+      <form role="form" class="sm-item-form form-horizontal">
+
+        <div class="sm-field-group-id cl-field-group">
+          <label class="cl-field-label">Id</label>
+          <input name="id" 
+            disabled="disabled"
+            value="{{ getModelField '_id' }}"     
+            class="sm-input-id cl-input" type="text" placeholder="Id" />
+          <div class="cl-field-id">Id</div>
+        </div>
+
+        <!--div class="sm-field-group-env cl-field-group">
+          <label class="cl-field-label">Environment</label>
+          <select name="env" class="sm-input-env cl-input" 
+            {{ getAttrDisabled }} >
+            {{#each env in envsList }}
+            <option value="{{ env.name }}"
+              {{ getAttrSelected env.name (getModelField 'environment') }}
+              >{{ env.name }}</option>
+            {{/each }}
+          </select>
+          <div class="cl-field-desc">Environment</div>
+        </div-->
+
+        <div class="sm-field-group-focal-point-type cl-field-group">
+          <label class="cl-field-label">Focal Point Type</label>
+          <select name="focalPointType" class="sm-input-focal-point-type cl-input" 
+            {{ getAttrDisabled }} >
+            {{#each objectType in objectTypesList }}
+            <option value="{{ objectType.value }}"
+              {{ getAttrSelected objectType.value (getModelField 'focal_point_type') }}
+              >{{ objectType.label }}</option>
+            {{/each }}
+          </select>
+          <div class="cl-field-desc">Focal Point Type</div>
+        </div>
+
+        <div class="sm-field-group-constraints cl-field-group">
+          <label class="cl-field-label">Constraints</label>
+          <select name="constraints" 
+                  class="sm-input-constraints cl-input" 
+                  multiple
+                  size="3"
+            {{ getAttrDisabled }} >
+            {{#each objectType in objectTypesList }}
+            <option value="{{ constraint.value }}"
+              {{ getAttrSelectedMultiple objectType.value (getModelField 'constraints') }}
+              >{{ objectType.label }}</option>
+            {{/each }}
+          </select>
+          <div class="cl-field-desc">Constraints</div>
+        </div>
+
+        {{#if isUpdateableAction }}
+        <button type="submit" 
+          class="js-submit-button mdl-button mdl-js-button mdl-button--raised 
+            mdl-js-ripple-effect mdl-button--colored"
+          >{{ actionLabel }}</button>
+        {{/if }}
+
+      </form>
+
+      {{#if (getState 'isMessage') }}
+      <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
+          {{#if (getState 'isSuccess')}}alert-success{{/if}}" 
+          role="alert">
+        {{ getState 'message' }}
+      </div>
+      {{/if }}
+
+    </div>
+  </div>
+</template>

@@ -1,0 +1,187 @@
+.main-layout
+  margin 30px 30px 30px 330px 
+
+.main-layout-no-nav
+  margin 0px 
+
+.site-sidenav
+  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
+  //height: 100vh
+  height: initial;
+  align-self: stretch;
+  min-height: 95vh;
+  background brand-blue
+  trans()
+  
+.site-sidenav-collapse
+  width: 30px
+  min-width: 30px
+  max-width: 30px
+  min-height 100vh
+  background brand-blue
+  color white
+  margin-top -40px
+  trans()
+
+.cards
+  color #FFF 
+  padding 20px
+  margin-bottom 30px
+  .material-icons
+    padding-top 20px
+  shadow-level(1)
+  trans()
+  &:hover
+    shadow-level(2)
+  &.not-active
+    shadow-level (0)
+  &.blue
+    background-color spark-blue
+  &.green
+    background-color status-green
+  &.grey
+    background-color dk-gray1
+  &.light-grey
+    background-color light-grey
+  &.dk-blue
+    background-color dk-blue
+  &.orange
+    background-color status-orange
+  &.red
+    background-color status-red
+  &.white
+    background #FFF
+    color #000
+    &.blue-text
+      color spark-blue
+  &.green-text
+    .fa, .material-icons
+      color status-green
+    h5
+      border-bottom 3px solid status-green
+    p.active
+      padding-top 3px
+      font-size 1.2em  
+      color status-green
+  &.orange-text
+    .fa, .material-icons
+      color status-orange
+    h5
+      border-bottom 3px solid status-orange
+    p.active
+      padding-top 3px
+      font-size 1.2em  
+      color status-orange
+  &.red-text
+    .fa, .material-icons
+      color status-red
+    h5
+      border-bottom 3px solid status-red
+    p.active
+      padding-top 3px
+      font-size 1.2em  
+      color status-red 
+  h3
+    color spark-blue
+    font-size 2em
+    border-bottom 3px solid spark-blue
+  p.text
+    color #000
+  .fa, .material-icons
+    font-size 4em
+  &.title
+    h4
+      margin 0
+      text-align center
+      color spark-blue
+
+.cards-w250
+  @extend .cards
+  padding 20px 5px
+  max-height 100px 
+  width: 250px
+  max-width: 250px
+  min-width: 250px
+  text-align center
+  .fa, .material-icons
+    font-size 3em
+  p 
+    margin 0
+  span 
+    font-size 1.3em
+    font-weight bold
+
+.cards-w300
+  @extend .cards
+  max-height 100px 
+  width: 300px
+  max-width: 300px
+  min-width: 300px;
+  p
+    font-size 1.1em
+    span 
+      font-size 1.3em
+      font-weight bold
+      
+.cards-w300-h60
+  @extend .cards-w300
+  font-size 0.9em
+  height 60px
+  .fa, .material-icons
+    font-size 2em
+  &:hover
+    shadow-level(1)
+  
+.cards-flex-col-h120
+  @extend .cards 
+  height: 120px
+  max-height 120px
+  min-height 120px
+  h5
+    padding 0px
+    margin 0px
+  a
+    color spark-blue 
+  p
+    font-size 1em
+    padding 0px
+    margin 0px
+    span 
+      font-size 1.3em
+      font-weight bold
+
+.cards-450
+  @extend .cards
+  width: 520px
+  max-width: 520px
+  min-width: 520px 
+  p
+    font-size 1.1em
+    span 
+      font-size 1.3em
+      font-weight bold
+  .material-icons
+    color spark-blue
+    font-size 5em
+    padding 40px 30px
+      
+.cards-flex-col-h500
+  @extend .cards
+  margin-right 30px
+  height 500px
+  max-height 500px
+  min-height 500px
+  p
+    font-size 1.1em
+    span 
+      font-size 1.3em
+      font-weight bold
+  .material-icons
+    color spark-blue
+    font-size 8em
+    padding 40px
+  
+.margin-top-40
+  margin-top 40px

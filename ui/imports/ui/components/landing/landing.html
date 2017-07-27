@@ -1,0 +1,201 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="landing" class="landing">
+<div class="os-landing">
+
+  <!-- hero section -->
+  <section id="landing-hero-section" 
+    class="sm-landing-hero-section animated slideInUp">
+
+    <div class="sm-section-content">
+
+      <!-- Logo and sign in -->
+      <div class="sm-login-subsection">
+          <img style="margin: 20px 0px" src="/logo-cisco.svg" alt="" height="30">
+          <h4><a class="sign-in" href="#">{{> loginButtons}}</a></h4>
+      </div>
+
+      <!-- Main content -->
+      <div class="sm-main-content">
+        <div class="sm-main-header">
+          <img class="sm-logo" src="/landing/calipso-logo.png"> 
+          <h1 class="text-align-center" style="margin: 50px 0px; font-size: 46px;">Calipso Networking <br> Discovery and Assurance</h1>
+        </div>
+
+        <div class="sm-description">
+          <p>
+          Calipso is enhancing the way Cloud Networking Administrators (CNAs) and Tenant Networking Administrators (TNAs) understands, maintains, monitors and troubleshoots highly distributed Cloud environments based on OpenStack and others.
+          </p>
+          <p>
+          It provides real-time virtual networking assurance.
+          </p>
+        </div>
+
+        <div class="sm-learn-more">
+          <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" data-scroll href="#landing-section-2">Learn more
+          </a>
+        </div>
+
+        <div class="sm-main-showcase">
+          <img src="/landing/first.png" alt="" class=" animated slideInUp" width="940" height="470">
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- section 2  -->
+  <section id="landing-section-2" 
+    class="sm-landing-section-2">
+
+    <div class="sm-section-content">
+
+      <!-- first point -->
+      <div class="sm-desc-point">
+        <div class="sm-desc-point-content">
+          <h3 class="title-border-bottom">Application Intent</h3>
+          <p class="font20">
+          Provide CNAs and TNAs with operation tools for :
+          </p>
+          <ol class="font20">
+            <li>
+              Building detailed virtual networking inventory and inter-connections.
+            </li>
+            <li>
+              Visualizing low level dependencies and creating topologies in real time.
+            </li>
+            <li>
+              Monitoring virtual networking components for health and status.
+            </li>
+            <li>
+              Troubleshooting failures, analyzing faults and assess impact for virtual networking issues.
+            </li>
+          </ol>
+          <a href="#landing-section3" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" data-scroll>Show more</a>
+        </div>
+
+        <div class="sm-desc-point-icon">
+            <img src="/logo_microscope_3.png" alt="" class="img_responsive wow slideInRight " data-wow-delay="0.3s" width="350">
+        </div>
+      </div>
+
+      <!-- second point -->
+      <div class="sm-desc-point">
+        <div class="sm-desc-point-icon">
+          <img src="/landing/openstack.png" alt="" class="img_responsive wow slideInLeft" 
+            data-wow-delay="0.3s" >
+          <img src="/landing/docker.png" alt="" class="img_responsive wow slideInLeft" 
+            data-wow-delay="0.3s" >
+        </div>
+        <div class="sm-desc-point-content">
+          <h3 class="title-border-bottom">Vision</h3>
+          <p class="font20">
+          substantially simplifying OpenStack and/or Docker networking operations and troubleshooting with detailed visibility and availability
+          </p>
+        </div>
+      </div>
+
+      <!-- third point -->
+      <div class="sm-desc-point">
+        <div class="sm-desc-point-content" >
+          <h3 class="title-border-bottom">Strategy</h3>
+          <ul class="font20">
+            <li>
+              Building an operations application that dynamically discover, display, monitor and analyze virtual networking in common cloud infrastructure environments like OpenStack, Docker, VMware and others. 
+            </li>
+            <li>
+              Open community for contributors building a highly customized and open <u>operations API for OpenStack</u> as a baseline for virtual networking assurance and analytics.
+            </li>
+          </ul>
+        </div>
+        <div class="sm-desc-point-icon">
+          <img src="/landing/eye.png" alt="" 
+            class="img_responsive wow slideInRight " 
+            data-wow-delay="0.3">
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- section Cisco partners -->
+  <section id="landing-section3" class="landing background-blue">
+      <div class="mdl-grid">
+
+          <div class="mdl-cell mdl-cell--4-col">
+              <div class="box text-align-center wow slideInUp">
+                  <div>
+                    <i class="material-icons">view_carousel</i>
+                  </div>
+                  <div class="iconbox_content">
+                      <h3>Mirantis</h3>
+                  </div>
+              </div>
+          </div>
+
+          <div class="mdl-cell mdl-cell--4-col">
+              <div class="box text-align-center wow slideInUp" data-wow-delay="0.5s">
+                  <div>
+                      <i class="material-icons">view_carousel</i>
+                  </div>
+                  <div class="iconbox_content">
+                      <h3>Metapod</h3>
+                  </div>
+              </div>
+          </div>
+
+          <div class="mdl-cell mdl-cell--4-col">
+              <div class="box text-align-center wow slideInUp" data-wow-delay="0.8s">
+                  <div>
+                      <i class="material-icons">view_carousel</i>
+                  </div>
+                  <div class="iconbox_content">
+                      <h3>Red Hat</h3>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+  </section>
+
+  <!-- section number 3  -->
+  <section class="landing background-white section-margin-50">
+    <div class="sm-section-content">
+      <div class="sm-desc-point">
+          <!-- third point -->
+          <div class="sm-desc-point-content" >
+              <h3 class="title-border-bottom">
+                Visibility provides Predictability that leads to Stability
+              </h3>
+              <!--Button-->
+              <a href="#landing-hero-section" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" data-scroll>Sign in</a>
+              <!-- //Button-->
+          </div>
+          <div class="sm-desc-point-icon">
+              <img src="/landing/main-screen.png" alt="" 
+                class="sm-big-image-icon wow slideInRight " 
+                data-wow-delay="0.3">
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="background-blue">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <p>Cisco Systems, Inc © Copyright 2017</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+</template>

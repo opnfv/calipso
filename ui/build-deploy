@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+SECONDS=0
+OS_TARGET_PATH=".."
+OS_TARGET_NAME=osdna-meteor-frontend-$(date +%Y-%m-%d-%s).tar.gz
+OS_NAME=${PWD##*/}
+OS_USER_DEV="eyal"
+DEV_HOST="korlev-osdna-be.cisco.com"
+
+meteor build $OS_TARGET_PATH/ --architecture=os.linux.x86_64
+mv $OS_TARGET_PATH/$OS_NAME.tar.gz $OS_TARGET_PATH/$OS_TARGET_NAME
+
+duration=$SECONDS
+echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
+
+echo "deploy to dev"
+SECONDS=0
+echo "target $OS_TARGET_PATH/$OS_TARGET_NAME"
+echo "user $OS_USER_DEV"
+echo "dev $DEV_HOST"
+scp $OS_TARGET_PATH/$OS_TARGET_NAME $OS_USER_DEV@$DEV_HOST\:\~
+echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."

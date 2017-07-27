@@ -1,0 +1,37 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="envForm">
+
+<!-- li class dropdown -->
+<a id="dLabel" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+  {{ selectedEnvName }}
+  <span class="caret"></span>
+</a>
+
+<ul class="os-env-form-dropdown-menu dropdown-menu" 
+  aria-labelledby="dLabel" 
+  style="color: black; padding: 10px;" >
+
+  <li><a href="{{pathFor route='wizard'}}" class="droplist">Add new environment</a></li>
+  <li class="divider"></li>
+  <li style="border-bottom: 3px solid  #2196f3;">Existing environments:</li>
+  {{#each envItem in envList}}
+    <li><a class="sm-env-item envList droplist" 
+           data-env-name="{{ envItem.name }}"
+           data-env-id="{{ idToStr envItem._id }}"
+        >{{envItem.name}}</a></li>
+  {{/each}}
+</ul>
+
+</template>
+
+
+

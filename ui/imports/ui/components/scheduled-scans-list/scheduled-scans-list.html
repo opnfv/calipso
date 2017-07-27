@@ -1,0 +1,66 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="ScheduledScansList">
+<div class="os-scheduled-scans-list cards white">
+	<div class="sm-table-section">
+    <h3>Scheduled Scans</h3>
+    <table class="sm-scheduled-scans-table table">
+      <thead>
+        <tr>
+          <th>Log Level</th>
+          <th>Clear</th>
+          <th>Scan Only Iventory</th>
+          <th>Scan Only Links</th>
+          <th>Scan Only Cliques</th>
+          <th>Environment</th>
+          <th>Inventory</th>
+          <th>Object ID</th>
+          <th>Frequency</th>
+          <th>Submit Timestamp</th>
+          <th>Action</th>
+        </tr> </thead>
+      <tbody> 
+        {{#each scan in scheduledScans }}
+        <tr>
+          <td>{{ scan.log_level }}</td>
+          <td>{{ scan.clear }}</td>
+          <td>{{ scan.scan_only_inventory }}</td>
+          <td>{{ scan.scan_only_links }}</td>
+          <td>{{ scan.scan_only_cliques }}</td>
+          <td>{{ scan.environment }}</td>
+          <td>{{ scan.inventory }}</td>
+          <td>{{ scan.object_id }}</td>
+          <td>{{ scan.frequency }}</td>
+          <td>{{ scan.submit_timestamp }}</td>
+          <td>
+            <a href="{{pathFor route='scheduled-scan' 
+                            query=(asHash _id=(idToStr scan._id) action='view') }}"
+                  ><i class="cl-action-icon fa fa-eye" area-hidden="true"></i></a>
+            <a href="{{pathFor route='scheduled-scan' 
+                          query=(asHash _id=(idToStr scan._id) action='update') }}"
+                ><i class="cl-action-icon fa fa-pencil" area-hidden="true"></i></a>
+
+            <a href="{{pathFor route='scheduled-scan' 
+                          query=(asHash _id=(idToStr scan._id) action='remove') }}"
+                ><i class="cl-action-icon fa fa-trash-o" area-hidden="true"></i></a>
+          </td>
+        </tr>
+        {{/each }}
+      </tbody>
+    </table>
+  </div>
+
+	<div class="sm-pager-section">
+		{{> Pager (argsPager currentPage amountPerPage totalItems) }}
+	</div>
+
+</div>
+</template>

@@ -1,0 +1,35 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="ZoneDashboard">
+  <div class="os-zone-dashboard flex-box justify-content-between">
+    <div class="flex-box-3 main-layout-no-nav">
+      
+      <div class="flex">
+        <div class="flex-box-1 cards white title">
+          <h4>Zone name: {{ zone.name }}</h4>
+        </div>
+      </div>
+
+      <div class="sm-info-boxes">
+        {{#each infoBox in infoBoxes }}
+          {{> DataCubic (argsInfoBox infoBox) }}
+        {{/each }}
+      </div>
+
+      <div class="sm-list-info-boxes">
+        {{#each listInfoBox in listInfoBoxes }}
+          {{> ListInfoBox (argsListInfoBox listInfoBox) }}
+        {{/each }}
+      </div>
+
+    </div>
+  </div>
+</template>

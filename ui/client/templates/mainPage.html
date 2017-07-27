@@ -1,0 +1,207 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="mainPage">
+    <header>
+        <div class="navbar" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    {{#if currentUser}}
+                    <a class="navbar-brand" id="logo" href="{{pathFor route='home'}}">Calipso - Dashboard</a>
+                    {{/if }}
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="mynav">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#clients">Clients</a></li>
+                        <li><a href="#process">Process</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#blogs">Blogs</a></li>
+                        <li><a href="{{pathFor route='landingpage'}}">LandingPage</a></li>
+                        <li><a href="#">{{> loginButtons}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="banner">
+            <h2>Calipso - OpenStack Network Discovery N Assurance</h2>
+            <div class="info">
+                <a href="#process" title="">See our process</a>
+                <a href="#clients" title="">See our clients</a>
+            </div>
+        </div>
+    </header>
+    <section class="about" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2>About</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-4">
+                    <h4>Our history</h4>
+                    <p class="visible-lg">We are going to enhance the way Cloud Network Administrators (CNA) and Tenant Network Administrators (TNA) Understands, Monitors and Troubleshoot highly distributed OpenStack Environments.</p>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <h4>Our vision & Strategy</h4>
+                    <p>Vision: Substantially Simplifying OpenStack networking operations: maintenance, troubleshooting and monitoring, with added-value analytics.</p>
+                    <p>Strategy: Drive the adoption of a commercial, cisco-supported neutron networking assurance application.Create Operations application that dynamically discovers, display, monitors and analyze virtual networks in any OpenStack distribution with any Neutron plugin and dynamically analyze the information for assurance reporting, potentially a commercial offering (with limited open sourced functionality), to be sold to any OpenStack customers, admins and operators.</p>
+                    <p class="visible-lg">Focus on multiple distributions and multiple plugins per distribution at High performance and scale.</p>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <h4>Application Intent</h4>
+                    <p>Provide CNA and TNA with support for: </p>
+                    <p>1. Building virtual Network inventory and visualizing all low level details, inter-connections in real-time. </p>
+                    <p>2. Monitor virtual network objects.</p>
+                    <p class="visible-lg">3. Troubleshoot failures and analyzing the root cause of failures in virtual networks. </p>
+                    <p class="visible-lg">4. Assess impact of failure in virtual networks.</p>
+
+                </div>
+            </div>
+        </div>
+    </section> <!-- end of about section-->
+    <hr>
+    <section class="clients" id="clients">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2>Our Clients</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="clients-info">
+                        <h3>Client1</h3>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="clients-info">
+                        <h3>Client2</h3>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="clients-info">
+                        <h3>Client3</h3>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="clients-info">
+                        <h3>Client4</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> <!-- end of clients section-->
+    <hr>
+    <section class="process" id="process">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2>Our Process</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="method">
+                        <h3>Analyze</h3>
+                        <hr>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <h4>1</h4>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="method">
+                        <h3>Develop</h3>
+                        <hr>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <h4>2</h4>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="method">
+                        <h3>Test</h3>
+                        <hr>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <h4>3</h4>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="method">
+                        <h3>Deploy</h3>
+                        <hr>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <h4>4</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> <!-- end of method section-->
+    <hr>
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2>Our Testimonials</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-4">
+                    <blockquote>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore eligendi a officiis aspernatur nesciunt ducimus, placeat. Eum, ratione maxime fugiat deserunt doloremque laborum hic quisquam in, libero voluptatibus! Assumenda, eligendi.
+                        </p>
+                    </blockquote>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <blockquote>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore eligendi a officiis aspernatur nesciunt ducimus, placeat. Eum, ratione maxime fugiat deserunt doloremque laborum hic quisquam in, libero voluptatibus! Assumenda, eligendi.
+                        </p>
+                    </blockquote>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <blockquote>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore eligendi a officiis aspernatur nesciunt ducimus, placeat. Eum, ratione maxime fugiat deserunt doloremque laborum hic quisquam in, libero voluptatibus! Assumenda, eligendi.
+                        </p>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </section><!-- end of testimonials section-->
+    <hr>
+    <section class="blogs" id="blogs">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2>Latest Blogs</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-lg-8">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pulvinar scelerisque aliquet. Aliquam eu ultrices nisl. Mauris sit amet odio tincidunt, congue magna a, malesuada odio. Maecenas egestas metus leo, nec vulputate odio pulvinar sodales. Aenean a nunc nisi. Donec eleifend sodales mauris, ut egestas tellus ultrices nec. Integer in nisl vitae libero lobortis egestas. Proin nisi lacus, iaculis sit amet nibh vel, fringilla pellentesque est.</p>
+                    <p class="visible-lg">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut delectus ratione aut est, minus eius, dolorem blanditiis culpa ad iusto, accusamus iure alias nihil voluptatem soluta esse velit laudantium eum.</p>
+                    <p class="visible-lg">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+                    <button type="button" class="btn btn-primary">Learn more</button>
+                </div>
+                <div class="visible-lg col-lg-4">
+                    <img class="img-responsive" src="http://placehold.it/450x300" />
+                </div>
+            </div>
+        </div>
+    </section><!-- end of blogs section-->
+    <footer>
+        <p>Made by Ofir Ashery.</p>
+    </footer>
+</template>

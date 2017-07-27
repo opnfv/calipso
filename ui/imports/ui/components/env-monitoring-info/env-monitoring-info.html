@@ -1,0 +1,283 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="EnvMonitoringInfo">
+<div class="form-horizontal">
+
+  {{#if disabled }}
+    {{#if disabledMessage }}
+  <div class="alert alert-danger">
+    {{ disabledMessage }}
+  </div>
+    {{/if }}
+  {{/if }}
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >Environment Type</label>
+
+    <div class="col-sm-3">
+      {{> SelectModel(createSelectArgs
+            values=model.env_type 
+            key="env_type"
+            disabled=disabled
+            options=envTypeOptions
+            )
+      }}
+    </div>
+    <div class="col-sm-4">
+      <p>Enter environment type</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >RabbitMQ Port</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.rabbitmq_port 
+            key="rabbitmq_port"
+            type="text"
+            disabled=disabled
+            placeholder="RAbbitMQ port")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>Port used for RabbitMQ transport</p>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >RabbitMQ User</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.rabbitmq_user 
+            key="rabbitmq_user"
+            type="text"
+            disabled=disabled
+            placeholder="User")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>User used to access RabbitMQ</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >RabbitMQ Password</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.rabbitmq_pass 
+            key="rabbitmq_pass"
+            type="password"
+            disabled=disabled
+            placeholder="RabbitMQ Password")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>Password used to access RabbitMQ</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >Server IP</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.server_ip 
+            key="server_ip"
+            type="text"
+            disabled=disabled
+            placeholder="Server IP")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>Network name or IP address of server on which Sensu will run</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >Server Name</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.server_name 
+            key="server_name"
+            type="text"
+            disabled=disabled
+            placeholder="Server name")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>Name of the server on which Sensu runs. Example: 'devtest-sensu'</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >Type</label>
+
+    <div class="col-sm-3">
+      {{> SelectModel(createSelectArgs
+            values=model.type 
+            key="type"
+            disabled=disabled
+            options=monitoringTypeOptions
+            showNullOption=false)
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>Type of monitoring system used</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >Provision</label>
+
+    <div class="col-sm-3">
+      {{> SelectModel(createSelectArgs
+            values=model.provision 
+            key="provision"
+            disabled=disabled
+            options=provisionOptions
+            showNullOption=false)
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>Provision</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >Config folder</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.config_folder 
+            key="config_folder"
+            type="text"
+            disabled=disabled
+            placeholder="Config folder")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>Config folder</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >SSH Port</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.ssh_port 
+            key="ssh_port"
+            type="text"
+            disabled=disabled
+            placeholder="SSH port")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>SSH Port</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >SSH User</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.ssh_user 
+            key="ssh_user"
+            type="text"
+            disabled=disabled
+            placeholder="SSH User")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>SSH User</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >SSH Password</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.ssh_password 
+            key="ssh_password"
+            type="password"
+            disabled=disabled
+            placeholder="SSH Password")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>SSH Password</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="" 
+      class="col-sm-2 control-label"
+      >API Port</label>
+
+    <div class="col-sm-3">
+      {{> InputModel(createInputArgs
+            value=model.api_port 
+            key="api_port"
+            type="number"
+            disabled=disabled
+            placeholder="API port")
+      }}
+    </div>
+
+    <div class="col-sm-4">
+      <p>Port used for monitoring API</p>
+    </div>
+  </div>
+
+</div>
+</template>

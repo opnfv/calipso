@@ -1,0 +1,53 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="UserList">
+<div class="os-user-list cards white">
+  <h3>User List</h3>
+  <a class="sm-add-new-link" 
+     href="{{pathFor route='user' query=(asHash action='insert') }}">
+    <i class="cl-action-icon fa fa-plus" area-hidden="true"></i> Create new user
+  </a>
+  <table class="sm-user-list-table table">
+    <thead>
+      <tr>
+        <th>User Name</th>
+        <th>Emails</th>
+        <th>Profile</th>
+        <th>Roles</th>
+      </tr> </thead>
+    <tbody> 
+      {{#each user in userList }}
+      <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ toString user.emails }}</td>
+        <td>{{ toString user.profile }}</td>
+        <td>{{ toString user.roles }}</td>
+        <td>
+          <div class="sm-action-bar">
+            <a href="{{pathFor route='user' 
+                          query=(asHash id=(idToStr user._id) action='view') }}"
+                ><i class="cl-action-icon fa fa-eye" area-hidden="true"></i></a>
+
+            <a href="{{pathFor route='user' 
+                          query=(asHash id=(idToStr user._id) action='update') }}"
+                ><i class="cl-action-icon fa fa-pencil" area-hidden="true"></i></a>
+
+            <a href="{{pathFor route='user' 
+                          query=(asHash id=(idToStr user._id) action='remove') }}"
+                ><i class="cl-action-icon fa fa-trash-o" area-hidden="true"></i></a>
+          </div>
+        </td>
+      </tr>
+      {{/each }}
+    </tbody>
+  </table>
+</div>
+</template>

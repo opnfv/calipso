@@ -1,0 +1,88 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="LinkType">
+  <div class="os-link-type cards white">
+    {{#if notificationsExists}}
+    <div class="sm-notification-panel alert alert-danger">
+      {{#each note in notifications }}
+      <div>{{ note }}</div>
+      {{/each }}
+    </div>
+    {{/if}}
+
+    <h3>{{ getState 'pageHeader' }}</h3>
+    <div class="sm-form-container">
+      <form role="form" class="sm-item-form form-horizontal">
+
+        <div class="sm-field-group-id cl-field-group">
+          <label class="cl-field-label">Id</label>
+          <input name="id" 
+            disabled="disabled"
+            value="{{ getModelField '_id' }}"     
+            class="sm-input-id cl-input" type="text" placeholder="Id" />
+          <div class="cl-field-id">Id</div>
+        </div>
+
+        <div class="sm-field-group-desc cl-field-group">
+          <label class="cl-field-label">Description</label>
+          <input name="desc" 
+            {{ getAttrDisabled }}
+            value="{{ getModelField 'description' }}"     
+            class="sm-input-desc cl-input" type="text" placeholder="Description" />
+          <div class="cl-field-desc">Description</div>
+        </div>
+
+        <div class="sm-field-group-endpoint-a cl-field-group">
+          <label class="cl-field-label">Endpoint A - Object Type</label>
+          <select name="endPointA" class="sm-input-endpoint-a cl-input" 
+            {{ getAttrDisabled }} >
+            {{#each objectType in objectTypesList }}
+            <option value="{{ objectType.value }}"
+              {{ getAttrSelected objectType.value (getModelField 'endPointA') }}
+              >{{ objectType.label }}</option>
+            {{/each }}
+          </select>
+          <div class="cl-field-desc">Endpoint A</div>
+        </div>
+
+        <div class="sm-field-group-endpoint-b cl-field-group">
+          <label class="cl-field-label">Endpoint B - Object Type</label>
+          <select name="endPointB" class="sm-input-endpoint-b cl-input"
+            {{ getAttrDisabled }} >
+            {{#each objectType in objectTypesList }}
+            <option value="{{ objectType.value }}"
+              {{ getAttrSelected objectType.value (getModelField 'endPointB') }}
+              >{{ objectType.label }}</option>
+            {{/each }}
+          </select>
+          <div class="cl-field-desc">Endpoint B</div>
+        </div>
+
+        {{#if isUpdateableAction }}
+        <button type="submit" 
+          class="js-submit-button mdl-button mdl-js-button mdl-button--raised 
+            mdl-js-ripple-effect mdl-button--colored"
+          >{{ actionLabel }}</button>
+        {{/if }}
+
+      </form>
+
+      {{#if (getState 'isMessage') }}
+      <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
+          {{#if (getState 'isSuccess')}}alert-success{{/if}}" 
+          role="alert">
+        {{ getState 'message' }}
+      </div>
+      {{/if }}
+
+    </div>
+  </div>
+</template>

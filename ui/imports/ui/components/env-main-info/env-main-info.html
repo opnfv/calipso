@@ -1,0 +1,193 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="EnvMainInfo">
+    <div class="form-horizontal">
+
+      <div class="form-group">
+        <label for="inputEmail" 
+          class="col-sm-2 control-label"
+          >Owner</label>
+
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs
+                value=model.user 
+                key="user"
+                type="email"
+                disabled=true
+                placeholder="Email")
+          }}
+        </div>
+
+        <div class="col-sm-4">
+          <p>Owner of environment</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="inputEnvName" 
+          class="col-sm-2 control-label"
+          >Enviroment name</label>
+
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs
+                value=model.name
+                key='name'
+                type="text"
+                disabled=(isFieldDisabled 'name' disabled)
+                placeholder="Name")
+          }}
+        </div>
+        <div class="col-sm-4">
+          <p>Enter name of your encironment, it could be anything you want</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" 
+          class="col-sm-2 control-label"
+          >Distribution</label>
+
+        <div class="col-sm-3">
+          {{> SelectModel(createSelectArgs
+                values=model.distribution 
+                key="distribution"
+                disabled=(isFieldDisabled 'distribution' disabled)
+                options=distributionOptions
+                showNullOption=false)
+          }}
+        </div>
+        <div class="col-sm-4">
+          <p>Enter type of the distribution</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" 
+          class="col-sm-2 control-label"
+          >Type Drivers</label>
+
+        <div class="col-sm-3">
+          {{> SelectModel(createSelectArgs
+                values=model.type_drivers 
+                key="type_drivers"
+                options=typeDriversOptions
+                disabled=disabled
+                multi=false
+                showNullOption=false)
+          }}
+        </div>
+        <div class="col-sm-4">
+          <p>Enter type driver</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" 
+          class="col-sm-2 control-label"
+          >Mechanism Drivers</label>
+
+        <div class="col-sm-3">
+          {{> SelectModel(createSelectArgs
+                values=model.mechanism_drivers 
+                key="mechanism_drivers"
+                options=mechanismDriversOptions
+                disabled=disabled
+                multi=true)
+          }}
+        </div>
+        <div class="col-sm-4">
+          <p>Enter mechanism drivers</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" 
+          class="col-sm-2 control-label"
+          >Event based scan</label>
+
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs
+                value=model.listen
+                key='listen'
+                type="checkbox"
+                disabled=isListeningDisabled)
+          }}
+        </div>
+        <div class="col-sm-4">
+          <p>Update the inventory in real-time whenever a user makes a change to the OpenStack environment</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" 
+          class="col-sm-2 control-label"
+          >Enable monitoring</label>
+
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs
+                value=model.enable_monitoring
+                key='enable_monitoring'
+                type="checkbox"
+                disabled=isMonitoringDisabled)
+          }}
+        </div>
+        <div class="col-sm-4">
+          <p>Enable monitoring</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" 
+          class="col-sm-2 control-label"
+          >Enable ACI</label>
+
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs
+                value=model.aci
+                key='aci'
+                type="checkbox"
+                disabled=disabled)
+          }}
+        </div>
+        <div class="col-sm-4">
+          <p>Enable ACI</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="inputEnvName" 
+          class="col-sm-2 control-label"
+          >Operational</label>
+
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs
+                value=model.operational
+                key='operational'
+                type="text"
+                disabled=true
+                placeholder="Operational")
+          }}
+        </div>
+        <div class="col-sm-4">
+          <p>Enter name of your encironment, it could be anything you want</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10 btn-mgt-5">
+          <button type="button" 
+            class="sm-next-button mdl-button mdl-js-button 
+              btnNext"
+            >Next</button>
+        </div>
+      </div>
+    </div>
+</template>

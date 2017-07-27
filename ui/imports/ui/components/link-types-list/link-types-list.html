@@ -1,0 +1,56 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="LinkTypesList">
+<div class="os-link-types-list cards white">
+  <h3>Link Types</h3>
+  <a class="sm-add-new-link" 
+    href="{{pathFor route='link-type' query=(asHash action='insert') }}">
+    <i class="cl-action-icon fa fa-plus" area-hidden="true"></i> Create new link type
+  </a>
+  <table class="sm-link-types-table table">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Type</th>
+        <th>Endpoint A</th>
+        <th>Endpoint B</th>
+        <th>Actions</th>
+      </tr> </thead>
+    <tbody> 
+      {{#each linkType in linkTypes }}
+      <tr>
+        <td>{{ linkType.description }}</td>
+        <td>{{ linkType.type }}</td>
+        <td>{{ linkType.endPointA }}</td>
+        <td>{{ linkType.endPointB }}</td>
+        <td>
+          <div class="sm-action-bar">
+            <a href="{{pathFor route='link-type' 
+                          query=(asHash id=(idToStr linkType._id) action='view') }}"
+                ><i class="cl-action-icon fa fa-eye" area-hidden="true"></i></a>
+
+            {{#if isAuthManageLinkTypes }}
+            <a href="{{pathFor route='link-type' 
+                          query=(asHash id=(idToStr linkType._id) action='update') }}"
+                ><i class="cl-action-icon fa fa-pencil" area-hidden="true"></i></a>
+
+            <a href="{{pathFor route='link-type' 
+                          query=(asHash id=(idToStr linkType._id) action='remove') }}"
+                ><i class="cl-action-icon fa fa-trash-o" area-hidden="true"></i></a>
+            {{/if }}
+          </div>
+        </td>
+      </tr>
+      {{/each }}
+    </tbody>
+  </table>
+</div>
+</template>

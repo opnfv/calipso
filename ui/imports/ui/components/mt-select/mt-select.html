@@ -1,0 +1,13 @@
+<template name="MtSelect">
+  <select class="sm-mt-select {{ classStr }}"
+    {{ attrsSelect isDisabled size }}
+    >
+    {{#each option in options }}
+    <option class="cl-mt-select-option"
+          value="{{ option.value  }}"
+      {{ attrOptSelected option.value selectedValue }}
+      >{{ option.label }}
+    </option>
+    {{/each }}
+  </select>
+</template>

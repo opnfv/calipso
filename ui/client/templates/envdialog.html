@@ -1,0 +1,131 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="envdialog">
+    <!-- <button id="show-dialog" type="button" class="mdl-button">Show Dialog</button> -->
+    <!-- Colored FAB button with ripple -->
+    <button id="show-dialog" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+        <i class="material-icons">add</i>
+    </button>
+    <div class="mdl-tooltip" for="show-dialog">
+        Add new environment
+    </div>
+
+    <dialog class="mdl-dialog">
+        <h5 class="mdl-dialog__title">Add new environment</h5>
+
+        <div class="mdl-dialog__content">
+
+            <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                <div class="mdl-tabs__tab-bar">
+                    <a href="#main-info-panel" class="mdl-tabs__tab is-active">Main Info</a>
+                    <a href="#endpoin-panel" class="mdl-tabs__tab">OS API endpoin</a>
+                    <a href="#db-credentials-panel" class="mdl-tabs__tab">OpenStack DB Credentials</a>
+                    <a href="#master-host-panel" class="mdl-tabs__tab">Master Host Credentials</a>
+                    <a href="#nfv-panel" class="mdl-tabs__tab">NFV Credentials</a>
+                </div>
+
+                <div class="mdl-tabs__panel is-active" id="main-info-panel">
+                    <!-- Textfield with Floating Label -->
+                    <form action="#">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--4-col">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="ownerName" value="Koren Lev">
+                                    <label class="mdl-textfield__label" for="ownerName">Owner</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--8-col">
+                                <h6>Admin name, owner of project</h6>
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="initialEnvName">
+                                    <label class="mdl-textfield__label" for="initialEnvName">Enviroment name</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--8-col">
+                                <h6>Enter name of your project</h6>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="mdl-tabs__panel" id="endpoin-panel">
+                    <form action="#">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--4-col">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="apiHost" pattern="-?[0-9]*(\.[0-9]+)?">
+                                    <label class="mdl-textfield__label" for="apiHost">API host</label>
+                                    <span class="mdl-textfield__error">Input is not a number!</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--8-col">
+                                <h6>This is API bla bla...</h6>
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="adminToken">
+                                    <label class="mdl-textfield__label" for="adminToken">Admin token</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--8-col">
+                                <h6>You can find token ..</h6>
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="apiUsername">
+                                    <label class="mdl-textfield__label" for="apiUsername">Username</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--8-col">
+                                <h6>Some info about user name</h6>
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="password" id="apiPassword">
+                                    <label class="mdl-textfield__label" for="apiPassword">Password</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--8-col">
+                                <h6></h6>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="mdl-tabs__panel" id="db-credentials-panel">
+                    <ul>
+                        <li>Viserys</li>
+                    </ul>
+                </div>
+
+                <div class="mdl-tabs__panel" id="master-host-panel">
+                    <ul>
+                        <li>St</li>
+                    </ul>
+                </div>
+
+                <div class="mdl-tabs__panel" id="nfv-panel">
+                    <ul>
+                        <li>Kor</li>
+                    </ul>
+                    <div class="mdl-dialog__actions">
+                        <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Submit</button>
+                        <button type="button" class="mdl-button close">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </dialog>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.3/dialog-polyfill.min.js"></script>
+</template>

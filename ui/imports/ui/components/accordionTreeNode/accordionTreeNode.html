@@ -1,0 +1,54 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="accordionTreeNode" >
+    <li class="os-accordion-tree-node {{#if node.clique }}genGraphClick{{/if}}"
+      id="{{ node.id }}"   
+      title="{{ node.name }}" 
+      type="{{ node.type }}" 
+      clique="{{ node.clique }}" 
+      objId="{{ node._id._str }}"
+      >
+        <a class="js-item-link" href="#">
+          <div class="sm-node-content-part">
+            {{#if hasChildren }}   
+            <i class="material-icons">class</i>
+            {{else }}
+            <i class="material-icons">description</i>
+            {{/if }}
+
+            {{ node.object_name }}
+          </div>
+
+          {{#if showNow }}
+
+            <div class="sm-open-close-indicator">
+            {{#if hasChildren }}   
+
+              {{#if isOpen }}
+              <i class="fa fa-minus" aria-hidden="true"></i>
+              {{else }}
+              <i class="fa fa-plus" aria-hidden="true"></i>
+              {{/if }}
+
+            {{/if }}
+            </div>
+
+          {{/if }}
+				</a>
+
+				{{#if isNotClose }}
+          {{> accordionTreeNodeChildren (createChildrenArgs node selectedNode) }}
+				{{/if }}
+
+    </li>                      
+  {{ reactOnShowOpen(showOpen) }}
+  {{ reactOnNewData(node) }}
+</template> 

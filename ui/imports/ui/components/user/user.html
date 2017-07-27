@@ -1,0 +1,111 @@
+<!-- 
+########################################################################################
+# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others #
+#                                                                                      #
+# All rights reserved. This program and the accompanying materials                     #
+# are made available under the terms of the Apache License, Version 2.0                #
+# which accompanies this distribution, and is available at                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                           #
+########################################################################################
+ -->
+<template name="User">
+  <div class="os-user cards white">
+    {{#if notificationsExists}}
+    <div class="sm-notification-panel alert alert-danger">
+      {{#each note in notifications }}
+      <div>{{ note }}</div>
+      {{/each }}
+    </div>
+    {{/if}}
+
+    <h3>{{ getState 'pageHeader' }}</h3>
+    <div class="sm-form-container">
+      <form role="form" class="sm-item-form form-horizontal">
+
+        <div class="sm-field-group-id cl-field-group">
+          <label class="cl-field-label">Id</label>
+          <input name="id" 
+            disabled="disabled"
+            value="{{ getModelField '_id' }}"     
+            class="sm-input-id cl-input" type="text" placeholder="Id" />
+          <div class="cl-field-id">Id</div>
+        </div>
+
+        <div class="sm-field-group-username cl-field-group">
+          <label class="cl-field-label">User name</label>
+          <input name="username" 
+            {{ getAttrDisabled }}
+            value="{{ getModelField 'username' }}"     
+            class="sm-input-username cl-input" 
+            type="text" 
+            placeholder="User name" 
+            autocomplete="new-user"
+            />
+          <div class="cl-field-desc">User name</div>
+        </div>
+
+        <div class="sm-field-group-password cl-field-group">
+          <label class="cl-field-label">Password</label>
+          <input name="password" 
+            {{ getAttrDisabled }}
+            value="{{ getModelField 'password' }}"     
+            class="sm-input-password cl-input" 
+            type="password" 
+            placeholder="" 
+            autocomplete="new-password"
+            />
+          <div class="cl-field-desc">Password</div>
+        </div>
+
+        <div class="sm-field-group-view-env-roles cl-field-group">
+          <label class="cl-field-label">Allowed environments : viewing</label>
+          <select name="viewEnvs" 
+                  class="sm-input-view-envs cl-input" 
+                  multiple
+                  size="3"
+            {{ getAttrDisabled }} >
+            {{#each env in envs }}
+            <option value="{{ env.name }}"
+              {{ getAttrSelectedMultiple env.name viewEnvs }}
+              >{{ env.name }}</option>
+            {{/each }}
+          </select>
+          <div class="cl-field-desc">View role for environments</div>
+        </div>
+
+        <div class="sm-field-group-edit-env-roles cl-field-group">
+          <label class="cl-field-label">Allowed environments : editing</label>
+          <select name="editEnvs" 
+                  class="sm-input-edit-envs cl-input" 
+                  multiple
+                  size="3"
+            {{ getAttrDisabled }} >
+            {{#each env in envs }}
+            <option value="{{ env.name }}"
+              {{ getAttrSelectedMultiple env.name editEnvs }}
+              >{{ env.name }}</option>
+            {{/each }}
+          </select>
+          <div class="cl-field-desc">Edit/Delete role for environments</div>
+        </div>
+
+        {{#if isUpdateableAction }}
+        <button type="submit" 
+          class="js-submit-button mdl-button mdl-js-button mdl-button--raised 
+            mdl-js-ripple-effect mdl-button--colored"
+          >{{ actionLabel }}</button>
+        {{/if }}
+
+      </form>
+
+      {{#if (getState 'isMessage') }}
+      <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
+          {{#if (getState 'isSuccess')}}alert-success{{/if}}" 
+          role="alert">
+        {{ getState 'message' }}
+      </div>
+      {{/if }}
+
+    </div>
+  </div>
+</template>

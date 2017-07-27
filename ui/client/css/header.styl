@@ -1,0 +1,118 @@
+.os-alarm-icons
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-end; 
+
+  padding-top 50px
+  //background-color dk-gray1
+  background-color: brand-blue
+  border-bottom: solid 1px black;
+
+  .breadcrumb 
+    background-color dk-gray1
+
+  .alarm-icons
+    padding-top 15px
+    padding-right 10px    
+    color #FFF
+    //text-align right
+
+    .material-icons:hover
+      cursor pointer
+      color spark-grey
+      trans()
+
+    .dropdown
+      display inline
+      trans()
+
+    .dropdown-menu-right
+      right 25px
+
+    .dropdown-header
+      font-size 1.4em
+      color dk-gray1
+
+      >a
+        font-size: 20px;
+        color dk-gray1
+        line-height: 1.42857143;
+        padding-left: 4px;
+
+img.navbar-brand.navbar-custom {
+  padding-left: 40px;
+}
+
+p.navbar-brand.navbar-custom{
+  margin: 0px;
+  padding-left: 95px;
+  color: #FFF;
+}
+
+nav.navbar-inverse.navbar-custom 
+  background-color: brand-blue
+  color: #FFF;
+  a
+    color: #FFF;
+    .login-close-text
+      color: #555;
+    #login-name-link:hover 
+      color: rgb(63,81,181);
+    &:hover 
+      color: rgb(63,81,181);
+      trans()
+  a.droplist
+    color: brand-blue 
+    padding: 10px 0px 0px 10px
+  
+  .search
+    position: relative;
+    color: white
+    input 
+      height: 30px;
+      background: brand-blue
+      // text-indent: 25px;
+      padding-left: 20px;
+      border 0px
+      border-bottom 2px solid spark-grey
+      width 175px 
+      &:hover, &:active, &:focus
+        border-bottom 2px solid white
+    ::-webkit-input-placeholder
+       color: white
+    .fa-search 
+      position: absolute;
+      top: 7px;
+
+    .search-auto-complete 
+      position: absolute;
+      right: 0;
+      top: 34px 
+      z-index: 1000;
+
+.navbar-inverse .navbar-nav > .open > a, 
+.navbar-inverse .navbar-nav > .open > a:hover, 
+.navbar-inverse .navbar-nav > .open > a:focus {
+  color: brand-blue
+  background-color: #fff;
+}
+
+/* Login form style */
+.sign-in #login-sign-in-link, #login-name-link, #login-name-link.login-link-text {
+  color: #FFF;
+  text-decoration: none;
+}
+
+.login-button#login-buttons-open-change-password,
+.login-button#login-buttons-password,
+.login-button#login-buttons-logout {
+  background-color: brand-blue
+  border: brand-blue
+}
+
+.login-button#login-buttons-open-change-password:hover,
+.login-button#login-buttons-password:hover,
+.login-button#login-buttons-logout:hover {
+  background-color: rgb(63,81,181);
+  border: rgb(63,81,181);
+}
