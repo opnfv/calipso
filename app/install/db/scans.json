@@ -1,0 +1,24 @@
+[
+{ 
+    "status" : "completed", 
+    "inventory" : "inventory", 
+    "start_timestamp" : "2017-05-17T11:00:17.939+0000", 
+    "scan_only_inventory" : false, 
+    "scan_only_links" : false, 
+    "submit_timestamp" : "2017-05-17T07:53:09.194+0000", 
+    "log_level" : "warning", 
+    "scan_only_cliques" : false, 
+    "clear" : true, 
+    "environment" : "Mirantis-Liberty"
+},
+{ 
+    "status" : "failed", 
+    "scan_only_inventory" : false, 
+    "scan_only_links" : false, 
+    "submit_timestamp" : "2017-06-14T13:42:32.710+0000", 
+    "log_level" : "info", 
+    "scan_only_cliques" : false, 
+    "clear" : true, 
+    "environment" : "staging"
+}
+]

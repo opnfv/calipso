@@ -1,0 +1,89 @@
+[
+{ 
+    "attributes" : [
+        "object_name", 
+        "model", 
+        "mac_address", 
+        "type", 
+        "koren"
+    ], 
+    "type" : "vnic"
+},
+{ 
+    "attributes" : [
+        "object_name", 
+        "connector_type", 
+        "type", 
+        "interfaces"
+    ], 
+    "type" : "vconnector"
+},
+{ 
+    "attributes" : [
+        "object_name", 
+        "host", 
+        "service_type", 
+        "type"
+    ], 
+    "type" : "vservice"
+},
+{ 
+    "attributes" : [
+        "object_name", 
+        "host", 
+        "agent_type", 
+        "binary", 
+        "type"
+    ], 
+    "type" : "vedge"
+},
+{ 
+    "attributes" : [
+        "object_name", 
+        "host", 
+        "mac_address", 
+        "Speed", 
+        "Link detected", 
+        "type"
+    ], 
+    "type" : "pnic"
+},
+{ 
+    "attributes" : [
+        "object_name", 
+        "provider:segmentation_id", 
+        "provider:network_type", 
+        "type"
+    ], 
+    "type" : "network"
+},
+{ 
+    "attributes" : [
+        "object_name", 
+        "host_type", 
+        "parent_id", 
+        "type"
+    ], 
+    "type" : "host"
+},
+{ 
+    "attributes" : [
+        "object_name", 
+        "host", 
+        "project", 
+        "type", 
+        "name_path"
+    ], 
+    "type" : "instance"
+},
+{ 
+    "attributes" : [
+        "object_name", 
+        "overlay_type", 
+        "ip_address", 
+        "type", 
+        "ports"
+    ], 
+    "type" : "otep"
+}
+]
