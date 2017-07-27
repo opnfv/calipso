@@ -1,0 +1,668 @@
+[
+{ 
+    "data" : [
+        {
+            "label" : "network", 
+            "value" : "network"
+        }
+    ], 
+    "name" : "constraints"
+},
+{ 
+    "data" : [
+        {
+            "label" : "Development", 
+            "value" : "development"
+        }, 
+        {
+            "label" : "Testing", 
+            "value" : "testing"
+        }, 
+        {
+            "label" : "Staging", 
+            "value" : "staging"
+        }, 
+        {
+            "label" : "Production", 
+            "value" : "production"
+        }
+    ], 
+    "name" : "env_types"
+},
+{ 
+    "data" : [
+        {
+            "label" : "CRITICAL", 
+            "value" : "critical"
+        }, 
+        {
+            "label" : "ERROR", 
+            "value" : "error"
+        }, 
+        {
+            "label" : "WARNING", 
+            "value" : "warning"
+        }, 
+        {
+            "label" : "INFO", 
+            "value" : "info"
+        }, 
+        {
+            "label" : "DEBUG", 
+            "value" : "debug"
+        }, 
+        {
+            "label" : "NOTSET", 
+            "value" : "notset"
+        }
+    ], 
+    "name" : "log_levels"
+},
+{ 
+    "data" : [
+        {
+            "label" : "OVS", 
+            "value" : "OVS"
+        }, 
+        {
+            "label" : "VPP", 
+            "value" : "VPP"
+        }, 
+        {
+            "label" : "LXB", 
+            "value" : "LXB"
+        }, 
+        {
+            "label" : "Arista", 
+            "value" : "Arista"
+        }, 
+        {
+            "label" : "Nexus", 
+            "value" : "Nexus"
+        }
+    ], 
+    "name" : "mechanism_drivers"
+},
+{ 
+    "data" : [
+        {
+            "label" : "local", 
+            "value" : "local"
+        }, 
+        {
+            "label" : "vlan", 
+            "value" : "vlan"
+        }, 
+        {
+            "label" : "vxlan", 
+            "value" : "vxlan"
+        }, 
+        {
+            "label" : "gre", 
+            "value" : "gre"
+        }, 
+        {
+            "label" : "flat", 
+            "value" : "flat"
+        }
+    ], 
+    "name" : "type_drivers"
+},
+{ 
+    "data" : [
+        {
+            "label" : "Sensu", 
+            "value" : "Sensu"
+        }
+    ], 
+    "name" : "environment_monitoring_types"
+},
+{ 
+    "data" : [
+        {
+            "label" : "up", 
+            "value" : "up"
+        }, 
+        {
+            "label" : "down", 
+            "value" : "down"
+        }
+    ], 
+    "name" : "link_states"
+},
+{ 
+    "name" : "environment_provision_types", 
+    "data" : [
+        {
+            "label" : "None", 
+            "value" : "None"
+        }, 
+        {
+            "label" : "Deploy", 
+            "value" : "Deploy"
+        }, 
+        {
+            "label" : "Files", 
+            "value" : "Files"
+        }, 
+        {
+            "label" : "DB", 
+            "value" : "DB"
+        }
+    ]
+},
+{ 
+    "name" : "environment_operational_status", 
+    "data" : [
+        {
+            "value" : "stopped", 
+            "label" : "stopped"
+        }, 
+        {
+            "value" : "running", 
+            "label" : "running"
+        }, 
+        {
+            "value" : "error", 
+            "label" : "error"
+        }
+    ]
+},
+{ 
+    "name" : "link_types", 
+    "data" : [
+        {
+            "label" : "instance-vnic", 
+            "value" : "instance-vnic"
+        }, 
+        {
+            "label" : "otep-vconnector", 
+            "value" : "otep-vconnector"
+        }, 
+        {
+            "label" : "otep-pnic", 
+            "value" : "otep-pnic"
+        }, 
+        {
+            "label" : "pnic-network", 
+            "value" : "pnic-network"
+        }, 
+        {
+            "label" : "vedge-otep", 
+            "value" : "vedge-otep"
+        }, 
+        {
+            "label" : "vnic-vconnector", 
+            "value" : "vnic-vconnector"
+        }, 
+        {
+            "label" : "vconnector-pnic", 
+            "value" : "vconnector-pnic"
+        }, 
+        {
+            "label" : "vnic-vedge", 
+            "value" : "vnic-vedge"
+        }, 
+        {
+            "label" : "vconnector-vedge", 
+            "value" : "vconnector-vedge"
+        }, 
+        {
+            "label" : "vedge-pnic", 
+            "value" : "vedge-pnic"
+        }, 
+        {
+            "label" : "vservice-vnic", 
+            "value" : "vservice-vnic"
+        }, 
+        {
+            "label" : "pnic-host", 
+            "value" : "pnic-host"
+        }, 
+        {
+            "label" : "host-pnic", 
+            "value" : "host-pnic"
+        }, 
+        {
+            "label" : "host-network", 
+            "value" : "host-network"
+        }, 
+        {
+            "label" : "network-host", 
+            "value" : "network-host"
+        }, 
+        {
+            "label" : "switch_pnic-network", 
+            "value" : "switch_pnic-network"
+        }, 
+        {
+            "label" : "network-switch_pnic", 
+            "value" : "network-switch_pnic"
+        }, 
+        {
+            "label" : "switch_pnic-switch", 
+            "value" : "switch_pnic-switch"
+        }, 
+        {
+            "label" : "switch-switch_pnic", 
+            "value" : "switch-switch_pnic"
+        }
+    ]
+},
+{ 
+    "name" : "monitoring_sides", 
+    "data" : [
+        {
+            "label" : "client", 
+            "value" : "client"
+        }, 
+        {
+            "label" : "server", 
+            "value" : "server"
+        }
+    ]
+},
+{ 
+    "name" : "messages_severity", 
+    "data" : [
+        {
+            "label" : "panic", 
+            "value" : "panic"
+        }, 
+        {
+            "label" : "alert", 
+            "value" : "alert"
+        }, 
+        {
+            "label" : "crit", 
+            "value" : "crit"
+        }, 
+        {
+            "label" : "error", 
+            "value" : "error"
+        }, 
+        {
+            "label" : "warn", 
+            "value" : "warn"
+        }, 
+        {
+            "label" : "notice", 
+            "value" : "notice"
+        }, 
+        {
+            "label" : "info", 
+            "value" : "info"
+        }, 
+        {
+            "label" : "debug", 
+            "value" : "debug"
+        }
+    ]
+},
+{ 
+    "name" : "object_types", 
+    "data" : [
+        {
+            "label" : "vnic", 
+            "value" : "vnic"
+        }, 
+        {
+            "label" : "vconnector", 
+            "value" : "vconnector"
+        }, 
+        {
+            "label" : "vedge", 
+            "value" : "vedge"
+        }, 
+        {
+            "label" : "instance", 
+            "value" : "instance"
+        }, 
+        {
+            "label" : "vservice", 
+            "value" : "vservice"
+        }, 
+        {
+            "label" : "pnic", 
+            "value" : "pnic"
+        }, 
+        {
+            "label" : "network", 
+            "value" : "network"
+        }, 
+        {
+            "label" : "port", 
+            "value" : "port"
+        }, 
+        {
+            "label" : "otep", 
+            "value" : "otep"
+        }, 
+        {
+            "label" : "agent", 
+            "value" : "agent"
+        }, 
+        {
+            "label" : "host", 
+            "value" : "host"
+        }, 
+        {
+            "label" : "switch_pnic", 
+            "value" : "switch_pnic"
+        }, 
+        {
+            "label" : "switch", 
+            "value" : "switch"
+        }
+    ]
+},
+{ 
+    "name" : "scans_statuses", 
+    "data" : [
+        {
+            "value" : "draft", 
+            "label" : "Draft"
+        }, 
+        {
+            "value" : "pending", 
+            "label" : "Pending"
+        }, 
+        {
+            "value" : "running", 
+            "label" : "Running"
+        }, 
+        {
+            "value" : "completed", 
+            "label" : "Completed"
+        }, 
+        {
+            "value" : "failed", 
+            "label" : "Failed"
+        }, 
+        {
+            "value" : "aborted", 
+            "label" : "Aborted"
+        }
+    ]
+},
+{ 
+    "data" : [
+        {
+            "label" : "Mirantis-6.0", 
+            "value" : "Mirantis-6.0"
+        }, 
+        {
+            "label" : "Mirantis-7.0", 
+            "value" : "Mirantis-7.0"
+        }, 
+        {
+            "label" : "Mirantis-8.0", 
+            "value" : "Mirantis-8.0"
+        }, 
+        {
+            "label" : "Mirantis-9.0", 
+            "value" : "Mirantis-9.0"
+        }, 
+        {
+            "label" : "RDO-Mitaka", 
+            "value" : "RDO-Mitaka"
+        }, 
+        {
+            "label" : "RDO-Liberty", 
+            "value" : "RDO-Liberty"
+        }, 
+        {
+            "label" : "RDO-Juno", 
+            "value" : "RDO-Juno"
+        }, 
+        {
+            "label" : "RDO-kilo", 
+            "value" : "RDO-kilo"
+        }, 
+        {
+            "label" : "devstack-liberty", 
+            "value" : "devstack-liberty"
+        }, 
+        {
+            "label" : "Canonical-icehouse", 
+            "value" : "Canonical-icehouse"
+        }, 
+        {
+            "label" : "Canonical-juno", 
+            "value" : "Canonical-juno"
+        }, 
+        {
+            "label" : "Canonical-liberty", 
+            "value" : "Canonical-liberty"
+        }, 
+        {
+            "label" : "Canonical-mitaka", 
+            "value" : "Canonical-mitaka"
+        }, 
+        {
+            "label" : "Apex-Mitaka", 
+            "value" : "Apex-Mitaka"
+        }, 
+        {
+            "label" : "Devstack-Mitaka", 
+            "value" : "Devstack-Mitaka"
+        }, 
+        {
+            "label" : "packstack-7.0.0-0.10.dev1682", 
+            "value" : "packstack-7.0.0-0.10.dev1682"
+        }, 
+        {
+            "label" : "Stratoscale-v2.1.6", 
+            "value" : "Stratoscale-v2.1.6"
+        }, 
+        {
+            "label" : "Mirantis-9.1", 
+            "value" : "Mirantis-9.1"
+        }
+    ], 
+    "name" : "distributions"
+},
+{  
+    "name" : "message_source_systems", 
+    "data" : [
+        {
+            "value" : "OpenStack", 
+            "label" : "OpenStack"
+        }, 
+        {
+            "value" : "Calipso", 
+            "label" : "Calipso"
+        }, 
+        {
+            "value" : "Sensu", 
+            "label" : "Sensu"
+        }
+    ]
+},
+{ 
+    "name" : "object_types_for_links", 
+    "data" : [
+        {
+            "label" : "vnic", 
+            "value" : "vnic"
+        }, 
+        {
+            "label" : "vconnector", 
+            "value" : "vconnector"
+        }, 
+        {
+            "label" : "vedge", 
+            "value" : "vedge"
+        }, 
+        {
+            "label" : "instance", 
+            "value" : "instance"
+        }, 
+        {
+            "label" : "vservice", 
+            "value" : "vservice"
+        }, 
+        {
+            "label" : "pnic", 
+            "value" : "pnic"
+        }, 
+        {
+            "label" : "network", 
+            "value" : "network"
+        }, 
+        {
+            "label" : "port", 
+            "value" : "port"
+        }, 
+        {
+            "label" : "otep", 
+            "value" : "otep"
+        }, 
+        {
+            "label" : "agent", 
+            "value" : "agent"
+        }, 
+        {
+            "label" : "host", 
+            "value" : "host"
+        }, 
+        {
+            "label" : "switch_pnic", 
+            "value" : "switch_pnic"
+        }, 
+        {
+            "label" : "switch", 
+            "value" : "switch"
+        }
+    ]
+},
+{ 
+    "name" : "scan_object_types", 
+    "data" : [
+        {
+            "label" : "vnic", 
+            "value" : "vnic"
+        }, 
+        {
+            "label" : "vconnector", 
+            "value" : "vconnector"
+        }, 
+        {
+            "label" : "vedge", 
+            "value" : "vedge"
+        }, 
+        {
+            "label" : "instance", 
+            "value" : "instance"
+        }, 
+        {
+            "label" : "vservice", 
+            "value" : "vservice"
+        }, 
+        {
+            "label" : "pnic", 
+            "value" : "pnic"
+        }, 
+        {
+            "label" : "network", 
+            "value" : "network"
+        }, 
+        {
+            "label" : "port", 
+            "value" : "port"
+        }, 
+        {
+            "label" : "otep", 
+            "value" : "otep"
+        }, 
+        {
+            "label" : "agent", 
+            "value" : "agent"
+        }, 
+        {
+            "value" : "availability_zone", 
+            "label" : "availability_zone"
+        }, 
+        {
+            "value" : "regions_folder", 
+            "label" : "regions_folder"
+        }, 
+        {
+            "value" : "instances_folder", 
+            "label" : "instances_folder"
+        }, 
+        {
+            "value" : "pnics_folder", 
+            "label" : "pnics_folder"
+        }, 
+        {
+            "value" : "vconnectors_folder", 
+            "label" : "vconnectors_folder"
+        }, 
+        {
+            "value" : "vedges_folder", 
+            "label" : "vedges_folder"
+        }, 
+        {
+            "value" : "ports_folder", 
+            "label" : "ports_folder"
+        }, 
+        {
+            "value" : "aggregates_folder", 
+            "label" : "aggregates_folder"
+        }, 
+        {
+            "value" : "vservices_folder", 
+            "label" : "vservices_folder"
+        }, 
+        {
+            "value" : "vnics_folder", 
+            "label" : "vnics_folder"
+        }, 
+        {
+            "value" : "network_agent", 
+            "label" : "network_agent"
+        }, 
+        {
+            "value" : "project", 
+            "label" : "project"
+        }, 
+        {
+            "value" : "projects_folder", 
+            "label" : "projects_folder"
+        }, 
+        {
+            "value" : "aggregate", 
+            "label" : "aggregate"
+        }, 
+        {
+            "value" : "network_agents_folder", 
+            "label" : "network_agents_folder"
+        }, 
+        {
+            "value" : "host", 
+            "label" : "host"
+        }, 
+        {
+            "value" : "region", 
+            "label" : "region"
+        }, 
+        {
+            "value" : "host_ref", 
+            "label" : "host_ref"
+        }, 
+        {
+            "value" : "network_services_folder", 
+            "label" : "network_services_folder"
+        }, 
+        {
+            "label" : "switch_pnic", 
+            "value" : "switch_pnic"
+        }, 
+        {
+            "label" : "switch", 
+            "value" : "switch"
+        }
+    ]
+}
+]

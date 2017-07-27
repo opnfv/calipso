@@ -1,0 +1,20 @@
+[
+{ 
+    "focal_point_type" : "instance", 
+    "constraints" : [
+        "network"
+    ]
+},
+{ 
+    "focal_point_type" : "vservice", 
+    "constraints" : [
+        "network"
+    ]
+},
+{ 
+    "constraints" : [
+        "network"
+    ], 
+    "focal_point_type" : "network"
+}
+]
