@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1aa4ed85_ea581a58",
+        "filename": "foo",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6867
+      },
+      "writtenOn": "2017-07-27T10:05:32Z",
+      "side": 1,
+      "message": "please add content to \u0027foo\u0027 file!",
+      "revId": "21bb2820f4e196ad6fbabe8fdc647ddcd3557583",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
