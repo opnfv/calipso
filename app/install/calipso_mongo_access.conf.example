@@ -1,0 +1,4 @@
+server korlev-calipso-dev.cisco.com
+user calipso
+password calipso_default
+auth_db calipso

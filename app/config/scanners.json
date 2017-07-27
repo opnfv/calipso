@@ -1,0 +1,370 @@
+{
+  "scanners_package": "discover.fetchers",
+  "scanners": {
+    "ScanAggregate": [
+      {
+        "type": "host_ref",
+        "fetcher": "DbFetchAggregateHosts"
+      }
+    ],
+    "ScanAggregatesRoot": [
+      {
+        "type": "aggregate",
+        "fetcher": "DbFetchAggregates",
+        "children_scanner": "ScanAggregate"
+      }
+    ],
+    "ScanAvailabilityZone": [
+      {
+        "type": "host",
+        "fetcher": "DbFetchAZNetworkHosts",
+        "children_scanner": "ScanHost"
+      }
+    ],
+    "ScanAvailabilityZonesRoot": [
+      {
+        "type": "availability_zone",
+        "fetcher": "DbFetchAvailabilityZones",
+        "children_scanner": "ScanAvailabilityZone"
+      }
+    ],
+    "ScanEnvironment": [
+      {
+        "type": "regions_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "regions",
+          "parent_type": "environment"
+        },
+        "children_scanner": "ScanRegionsRoot"
+      },
+      {
+        "type": "projects_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "projects",
+          "parent_type": "environment"
+        },
+        "children_scanner": "ScanProjectsRoot"
+      }
+    ],
+    "ScanHostNetworkAgentsRoot": [
+      {
+        "type": "network_agent",
+        "fetcher": "DbFetchHostNetworkAgents"
+      }
+    ],
+    "ScanHost": [
+      {
+        "_comment": "creating only top folder for vServices",
+        "type": "vservices_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "vservices",
+          "parent_type": "host",
+          "text": "vServices"
+        },
+        "children_scanner": "ScanInstancesRoot"
+      },
+      {
+        "type": "vservice",
+        "fetcher": "CliFetchHostVservices"
+      },
+      {
+        "_comment": "fetch vService vNICs from host for efficiency",
+        "type": "vnic",
+        "fetcher": "CliFetchVserviceVnics"
+      },
+      {
+        "type": "instances_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "instances",
+          "parent_type": "host"
+        },
+        "children_scanner": "ScanInstancesRoot"
+      },
+      {
+        "type": "pnics_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "pnics",
+          "parent_type": "host",
+          "text": "pNICs"
+        },
+        "environment_condition": {
+          "mechanism_drivers": [
+            "OVS",
+            "LXB"
+          ]
+        },
+        "children_scanner": "ScanPnicsRoot"
+      },
+      {
+        "type": "vconnectors_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "vconnectors",
+          "parent_type": "host",
+          "text": "vConnectors"
+        },
+        "children_scanner": "ScanVconnectorsRoot"
+      },
+      {
+        "type": "vedges_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "vedges",
+          "parent_type": "host",
+          "text": "vEdges"
+        },
+        "children_scanner": "ScanVedgesRoot"
+      },
+      {
+        "type": "network_agents_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "network_agents",
+          "parent_type": "host",
+          "text": "Network agents"
+        },
+        "children_scanner": "ScanHostNetworkAgentsRoot"
+      }
+    ],
+    "ScanInstance": [
+      {
+        "type": "vnics_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "vnics",
+          "parent_type": "instance",
+          "text": "vNICs"
+        },
+        "children_scanner": "ScanVnicsRoot"
+      }
+    ],
+    "ScanInstancesRoot": [
+      {
+        "type": "instance",
+        "fetcher": "ApiFetchHostInstances",
+        "children_scanner": "ScanInstance"
+      }
+    ],
+    "ScanNetworkAgentsRoot": [
+      {
+        "type": "network_agent",
+        "fetcher": "DbFetchHostNetworkAgents"
+      }
+    ],
+    "ScanNetwork": [
+      {
+        "type": "ports_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "ports",
+          "parent_type": "network"
+        }
+      },
+      {
+        "type": "network_services_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "network_services",
+          "parent_type": "network",
+          "text": "Network vServices"
+        }
+      }
+    ],
+    "ScanNetworksRoot": [
+      {
+        "type": "network",
+        "fetcher": "ApiFetchNetworks",
+        "children_scanner": "ScanNetwork"
+      },
+      {
+        "type": "port",
+        "fetcher": "ApiFetchPorts"
+      }
+    ],
+    "ScanOteps": [
+      {
+        "type": "otep",
+        "environment_condition": {
+          "mechanism_drivers": "OVS"
+        },
+        "fetcher": "DbFetchOteps"
+      },
+      {
+        "type": "otep",
+        "environment_condition": {
+          "mechanism_drivers": "VPP"
+        },
+        "fetcher": "DbFetchOteps"
+      },
+      {
+        "type": "otep",
+        "environment_condition": {
+          "mechanism_drivers": "LXB"
+        },
+        "fetcher": "CliFetchOtepsLxb"
+      }
+    ],
+    "ScanPnicsRoot": [
+      {
+        "type": "pnic",
+        "environment_condition": {
+          "mechanism_drivers": [
+            "OVS",
+            "LXB"
+          ]
+        },
+        "fetcher": "CliFetchHostPnics",
+        "children_scanner": "ScanHostPnic"
+      }
+    ],
+    "ScanHostPnic": [
+      {
+        "type": "pnic",
+        "fetcher": "AciFetchSwitchPnic"
+      }
+    ],
+    "ScanProject": [
+      {
+        "type": "availability_zone",
+        "fetcher": "ApiFetchAvailabilityZones"
+      },
+      {
+        "type": "host",
+        "fetcher": "ApiFetchProjectHosts",
+        "children_scanner": "ScanHost"
+      }
+    ],
+    "ScanProjectsRoot": [
+      {
+        "type": "project",
+        "fetcher": "ApiFetchProjects",
+        "object_id_to_use_in_child": "name",
+        "children_scanner": "ScanProject"
+      }
+    ],
+    "ScanRegion": [
+      {
+        "type": "aggregates_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "aggregates",
+          "parent_type": "region"
+        },
+        "children_scanner": "ScanAggregatesRoot"
+      },
+      {
+        "type": "network",
+        "fetcher": "ApiFetchNetworks",
+        "children_scanner": "ScanNetwork"
+      },
+      {
+        "type": "port",
+        "fetcher": "ApiFetchPorts"
+      }
+    ],
+    "ScanRegionsRoot": [
+      {
+        "type": "region",
+        "fetcher": "ApiFetchRegions",
+        "children_scanner": "ScanRegion"
+      }
+    ],
+    "ScanVconnectorsRoot": [
+      {
+        "type": "vconnector",
+        "environment_condition": {
+          "mechanism_drivers": "OVS"
+        },
+        "fetcher": "CliFetchVconnectorsOvs"
+      },
+      {
+        "type": "vconnector",
+        "environment_condition": {
+          "mechanism_drivers": "LXB"
+        },
+        "fetcher": "CliFetchVconnectorsLxb",
+        "children_scanner": "ScanOteps"
+      },
+      {
+        "type": "vconnector",
+        "environment_condition": {
+          "mechanism_drivers": "VPP"
+        },
+        "fetcher": "CliFetchVconnectorsVpp"
+      }
+    ],
+    "ScanVedgePnicsRoot": [
+      {
+        "type": "pnics_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "pnics",
+          "parent_type": "vedge",
+          "text": "pNICs"
+        },
+        "environment_condition": {
+          "mechanism_drivers": "VPP"
+        },
+        "children_scanner": "ScanVppPnicsRoot"
+      }
+    ],
+    "ScanVedgesRoot": [
+      {
+        "type": "vedge",
+        "fetcher": "DbFetchVedgesOvs",
+        "environment_condition": {
+          "mechanism_drivers": "OVS"
+        },
+        "children_scanner": "ScanOteps"
+      },
+      {
+        "type": "vedge",
+        "fetcher": "DbFetchVedgesVpp",
+        "environment_condition": {
+          "mechanism_drivers": "VPP"
+        },
+        "children_scanner": "ScanVedgePnicsRoot"
+      }
+    ],
+    "ScanVnicsRoot": [
+      {
+        "type": "vnic",
+        "environment_condition": {
+          "mechanism_drivers": [
+            "OVS",
+            "LXB"
+          ]
+        },
+        "fetcher": "CliFetchInstanceVnics"
+      },
+      {
+        "type": "vnic",
+        "environment_condition": {
+          "mechanism_drivers": "VPP"
+        },
+        "fetcher": "CliFetchInstanceVnicsVpp"
+      }
+    ],
+    "ScanVppPnicsRoot": [
+      {
+        "type": "pnic",
+        "fetcher": "CliFetchHostPnicsVpp",
+        "environment_condition": {
+          "mechanism_drivers": "VPP"
+        },
+        "children_scanner": "ScanOteps"
+      }
+    ],
+    "ScanVservicesRoot": [
+      {
+        "type": "vservice",
+        "fetcher": "CliFetchHostVservices"
+      }
+    ]
+  }
+}
