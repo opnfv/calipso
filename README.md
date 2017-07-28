@@ -1,8 +1,19 @@
-This work is licensed under a Creative Commons Attribution 4.0
-International License.
-http://creativecommons.org/licenses/by/4.0
+Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems)
+and others
 
-Calipso - OpenStack Network Discovery and Assurance
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+Calipso = OpenStack/VIM Network Discovery and Assurance
 ==================================================
 ### About
 We are going to enhance the way Cloud Network Administrators(CNA) and Tenant Network Administrators(TNA) 
@@ -10,16 +21,6 @@ Understands, Monitors and Troubleshoot highly distributed OpenStack and other vi
 
 We are following Domain-Driven-Design process and procedures:
 ref: http://www.methodsandtools.com/archive/archive.php?id=97
-<br>
-WIKI Central:<br>
-http://wikicentral.cisco.com/display/OSDNA/Home 
-<br>
-JIVE:<br>
-https://cisco.jiveon.com/people/korlev/blog/2015/12/13/os-dna-project
-<br>
-Rally:<br>
-https://rally1.rallydev.com/#/48530212030d/dashboard
-<br>
 
 ### Prototype Intent:
 
@@ -33,18 +34,18 @@ Provide CNA and TNA with support for:
 <br>
 4. Assess impact of failure in virtual networks
 <br>
+5. baseline plugin framework for analytics of this type of data/details
 
-### High Level Functionality Tree:
-<br>
-http://korlev-calipso.cisco.com/ <br>
-Code: https://cto-github.cisco.com/korlev/Calipso
-
-### Proto (mockups, updated Nov 15th)
-korlev-calipso-be.cisco.com:8081 
-
-#### High Level Architecture: <br>
-see under /Architecture (outdated)
+### Proto (mockups, updated Jul 15th)
+calipso.io 
 
 ### Contacts
-* Koren Lev (korlev)
-* Yaron Yogev (yayogev)
+* Koren Lev (korlev@cisco.com)
+* Yaron Yogev (yayogev@cisco.com)
+
+Calipso uses API, DataBase and Command-Line adapters for interfacing with the Cloud infrastructure to logically discover every networking component and it's relationships with others, building a smart topology and inventory.
+Calipso uses Sensu framework for Monitoring. It automatically deploys and configures the necessary config files on all hosts, writes customized checks and handlers to setup monitoring per inventory object.
+After collecting the data, from processes and workers provisioned by the cloud management systems, calipso dynamically checks for health and availability, as a baseline for SLA monitoring.
+Calipso allows networking administrators to operate, plan for maintenance or troubleshooting and provides an easy to use hierarchical representation of all the virtual networking components.
+Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems)
+and others.
