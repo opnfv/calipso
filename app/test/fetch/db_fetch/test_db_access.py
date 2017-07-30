@@ -28,7 +28,7 @@ class TestDbAccess(TestFetch):
         db_connect.return_value = db_conn
 
         self.fetcher.db_connect(DB_CONFIG['host'], DB_CONFIG['port'],
-                                DB_CONFIG['user'], DB_CONFIG['password'],
+                                DB_CONFIG['user'], DB_CONFIG['pwd'],
                                 DB_CONFIG['schema'])
 
         self.assertEqual(True, db_connect.called, "connect method has't been called")

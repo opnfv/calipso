@@ -10,7 +10,7 @@
 DB_CONFIG = {
             "host": "10.56.20.239",
             "name": "mysql",
-            "password": "102QreDdiD5sKcvNf9qbHrmr",
+            "pwd": "102QreDdiD5sKcvNf9qbHrmr",
             "port": 3307.0,
             "user": "root",
             "schema": "nova"

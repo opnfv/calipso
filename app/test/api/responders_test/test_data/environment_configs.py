@@ -164,7 +164,7 @@ ENV_CONFIG = {
         {
             "host": "10.56.20.239",
             "name": "mysql",
-            "password": "G1VKEbcqKZXoPthrtNma2D9Y",
+            "pwd": "G1VKEbcqKZXoPthrtNma2D9Y",
             "port": "3307",
             "user": "root"
         },
@@ -185,7 +185,7 @@ ENV_CONFIG = {
         {
             "host": "10.56.20.239",
             "name": "AMQP",
-            "password": "YVWMiKMshZhlJCGqFu5PdT9d",
+            "pwd": "YVWMiKMshZhlJCGqFu5PdT9d",
             "port": "5673",
             "user": "nova"
         },

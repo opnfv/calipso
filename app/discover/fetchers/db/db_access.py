@@ -66,7 +66,7 @@ class DbAccess(Fetcher):
         cnf = self.conf
         cnf['schema'] = cnf['schema'] if 'schema' in cnf else 'nova'
         self.db_connect(cnf["host"], cnf["port"],
-                        cnf["user"], cnf["password"],
+                        cnf["user"], cnf["pwd"],
                         cnf["schema"])
 
     def get_objects_list_for_id(self, query, object_type, id):

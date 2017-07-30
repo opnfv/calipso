@@ -13,7 +13,7 @@
         }, 
         {
             "name" : "mysql", 
-            "password" : "sgasdggddsgsd", 
+            "pwd" : "sgasdggddsgsd",
             "port" : 3307, 
             "user" : "mysqluser", 
             "host" : "10.0.0.1"
@@ -26,7 +26,7 @@
         }, 
         {
             "name" : "AMQP", 
-            "password" : "sagssdgassgd", 
+            "pwd" : "sagssdgassgd",
             "port" : 5673, 
             "user" : "rabbitmquser", 
             "host" : "10.0.0.1"

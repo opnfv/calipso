@@ -189,6 +189,8 @@ class DefaultListener(ListenerBase, ConsumerMixin):
         inventory_collection = args["inventory"]
 
         MongoAccess.set_config_file(args["mongo_config"])
+        inv = InventoryMgr()
+        inv.set_collections(inventory_collection)
         conf = Configuration(args["environments_collection"])
         conf.use_env(env_name)
 
@@ -207,15 +209,13 @@ class DefaultListener(ListenerBase, ConsumerMixin):
         if args["metadata_file"]:
             import_metadata(event_handler, event_queues, args["metadata_file"])
 
-        inv = InventoryMgr()
-        inv.set_collections(inventory_collection)
         logger = FullLogger()
         logger.set_loglevel(args["loglevel"])
 
         amqp_config = conf.get("AMQP")
         connect_url = 'amqp://{user}:{pwd}@{host}:{port}//' \
             .format(user=amqp_config["user"],
-                    pwd=amqp_config["password"],
+                    pwd=amqp_config["pwd"],
                     host=amqp_config["host"],
                     port=amqp_config["port"])
 
