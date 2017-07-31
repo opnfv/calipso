@@ -160,11 +160,11 @@ def get_extension(file_path: str) -> str:
 
 
 def encode_aci_dn(object_id):
-    return object_id.replace("topology/", "").replace("/", "___").replace("-", "__")
+    return object_id.replace("topology/", "").replace("/", "__")
 
 
 def decode_aci_dn(object_id):
-    return object_id.replace("___", "/").replace("__", "-")
+    return object_id.replace("__", "/")
 
 
 def get_object_path_part(path: str, part_name: str):

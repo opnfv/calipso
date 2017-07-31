@@ -225,7 +225,14 @@
     "ScanHostPnic": [
       {
         "type": "pnic",
-        "fetcher": "AciFetchSwitchPnic"
+        "fetcher": "AciFetchSwitchPnic",
+        "children_scanner": "ScanSpines"
+      }
+    ],
+    "ScanSpines": [
+      {
+        "type": "pnic",
+        "fetcher": "AciFetchLeafToSpinePnics"
       }
     ],
     "ScanProject": [
