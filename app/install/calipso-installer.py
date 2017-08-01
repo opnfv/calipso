@@ -321,7 +321,7 @@ while container not in container_names:
 # starting the containers per arguments:
 if action == "start":
     # building /home/calipso/calipso_mongo_access.conf and /home/calipso/ldap.conf files, per the arguments:
-    calipso_mongo_access_text = "server " + args.hostname + "\nuser " + args.dbuser + "\npassword " + \
+    calipso_mongo_access_text = "server " + args.hostname + "\nuser " + args.dbuser + "\npwd " + \
                                 args.dbpassword + "\nauth_db calipso"
     ldap_text = "user admin" + "\npassword password" + "\nurl ldap://" + args.hostname + ":389" + \
                 "\nuser_id_attribute CN" + "\nuser_pass_attribute userpassword" + \
