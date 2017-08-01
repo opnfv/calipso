@@ -1,0 +1,10 @@
+*~
+*.pyc
+*.swp
+.idea/
+.ropeproject/
+mongo*.conf
+mongo_access.log
+.DS_Store
+
+app/test/event_based_scan/config/test_config.py
