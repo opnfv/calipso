@@ -94,11 +94,13 @@ class MongoAccess(DictNamingConverter):
 
     def prepare_connect_uri(self):
         params = self.connect_params
-        self.log.debug('connecting to MongoDb server: {}'
+        self.log.debug('connecting to MongoDB server: {}'
                        .format(params['server']))
         uri = 'mongodb://'
-        if 'password' in params:
-            uri = uri + params['user'] + ':' + params['password'] + '@'
+        if 'pwd' in params:
+            uri = uri + params['user'] + ':' + params['pwd'] + '@'
+        else:
+            self.log.info('MongoDB credentials missing')
         uri = uri + params['server']
         if 'auth_db' in params:
             uri = uri + '/' + params['auth_db']
