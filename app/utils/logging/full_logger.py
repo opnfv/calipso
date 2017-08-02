@@ -35,13 +35,9 @@ class FullLogger(Logger):
     def set_env(self, env):
         super().set_env(env)
 
-        defined_handler = next(
-            filter(
-                lambda handler: handler.__class__ == MongoLoggingHandler.__class__,
-                self.log.handlers
-            ), None)
-
+        defined_handler = [h for h in self.log.handlers
+                           if isinstance(h, MongoLoggingHandler)]
         if defined_handler:
-            defined_handler.env = env
+            defined_handler[0].env = env
         else:
             self.add_handler(MongoLoggingHandler(env, self.level))
