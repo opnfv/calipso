@@ -211,8 +211,8 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
     def get_ssh(self, host, is_container=False, for_sftp=False):
         ssh = SshConnection.get_ssh(host, for_sftp)
         if not ssh:
-            if is_container:
-                conf = self.env_monitoring_config
+            conf = self.env_monitoring_config
+            if is_container or host == conf['server_ip']:
                 host = conf['server_ip']
                 port = int(conf['ssh_port'])
                 user = conf['ssh_user']

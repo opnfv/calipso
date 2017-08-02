@@ -15,11 +15,7 @@ from utils.binary_converter import BinaryConverter
 
 
 class SshConnection(BinaryConverter):
-    config = None
-    ssh = None
     connections = {}
-    cli_connections = {}
-    sftp_connections = {}
 
     max_call_count_per_con = 100
     timeout = 15  # timeout for exec in seconds
@@ -31,7 +27,7 @@ class SshConnection(BinaryConverter):
                  for_sftp: bool = False):
         super().__init__()
         self.host = _host
-        self.ssh = None
+        self.ssh_client = None
         self.ftp = None
         self.for_sftp = for_sftp
         self.key = _key
@@ -44,10 +40,7 @@ class SshConnection(BinaryConverter):
         self.call_count_limit = 0 if for_sftp \
             else (SshConnection.max_call_count_per_con
                   if _call_count_limit is None else _call_count_limit)
-        if for_sftp:
-            self.sftp_connections[_host] = self
-        else:
-            self.cli_connections[_host] = self
+        self.connections[self.get_connection_key(_host, for_sftp)] = self
 
     def check_definitions(self):
         if not self.host:
@@ -62,28 +55,28 @@ class SshConnection(BinaryConverter):
                              'for CLI access to host {}'.format(self.host))
 
     @staticmethod
-    def get_ssh(host, for_sftp=False):
-        if for_sftp:
-            return SshConnection.cli_connections.get(host)
-        return SshConnection.sftp_connections.get(host)
+    def get_ssh(host, _for_sftp=False):
+        return SshConnection.get_connection(host, for_sftp=_for_sftp)
+
+    @staticmethod
+    def get_connection_key(host, for_sftp=False):
+        key = ('sftp-' if for_sftp else '') + host
+        return key
 
     @staticmethod
     def get_connection(host, for_sftp=False):
-        key = ('sftp-' if for_sftp else '') + host
+        key = SshConnection.get_connection_key(host, for_sftp)
         return SshConnection.connections.get(key)
 
     def disconnect(self):
-        if self.ssh:
-            self.ssh.close()
+        if self.ssh_client:
+            self.ssh_client.close()
 
     @staticmethod
     def disconnect_all():
-        for ssh in SshConnection.cli_connections.values():
+        for ssh in SshConnection.connections.values():
             ssh.disconnect()
-        SshConnection.cli_connections = {}
-        for ssh in SshConnection.sftp_connections.values():
-            ssh.disconnect()
-        SshConnection.sftp_connections = {}
+        SshConnection.connections = {}
 
     def get_host(self):
         return self.host
@@ -96,8 +89,8 @@ class SshConnection(BinaryConverter):
 
     def connect(self, reconnect=False) -> bool:
         connection = self.get_connection(self.host, self.for_sftp)
-        if connection:
-            self.ssh = connection
+        if connection and connection.ssh_client:
+            self.ssh_client = connection.ssh_client
             if reconnect:
                 self.log.info("SshConnection: " +
                               "****** forcing reconnect: %s ******",
@@ -109,31 +102,34 @@ class SshConnection(BinaryConverter):
             else:
                 return True
             connection.close()
-            self.ssh = None
-        self.ssh = paramiko.SSHClient()
-        connection_key = ('sftp-' if self.for_sftp else '') + self.host
-        SshConnection.connections[connection_key] = self.ssh
-        self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            self.ssh_client = None
+        self.ssh_client = paramiko.SSHClient()
+        connection_key = SshConnection.get_connection_key(self.host,
+                                                          self.for_sftp)
+        SshConnection.connections[connection_key] = self
+        self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         if self.key:
             k = paramiko.RSAKey.from_private_key_file(self.key)
-            self.ssh.connect(hostname=self.host, username=self.user, pkey=k,
-                             port=self.port if self.port is not None
-                             else self.DEFAULT_PORT,
-                             password=self.pwd, timeout=30)
+            self.ssh_client.connect(hostname=self.host,
+                                    username=self.user,
+                                    pkey=k,
+                                    port=self.port if self.port is not None
+                                    else self.DEFAULT_PORT,
+                                    password=self.pwd, timeout=30)
         else:
             try:
                 port = self.port if self.port is not None else self.DEFAULT_PORT
-                self.ssh.connect(self.host,
-                                 username=self.user,
-                                 password=self.pwd,
-                                 port=port,
-                                 timeout=30)
+                self.ssh_client.connect(self.host,
+                                        username=self.user,
+                                        password=self.pwd,
+                                        port=port,
+                                        timeout=30)
             except paramiko.ssh_exception.AuthenticationException:
                 self.log.error('Failed SSH connect to host {}, port={}'
                                .format(self.host, port))
-                self.ssh = None
+                self.ssh_client = None
         self.call_count = 0
-        return self.ssh is not None
+        return self.ssh_client is not None
 
     def exec(self, cmd):
         if not self.connect():
@@ -141,7 +137,8 @@ class SshConnection(BinaryConverter):
         self.call_count += 1
         self.log.debug("call count: %s, running call:\n%s\n",
                        str(self.call_count), cmd)
-        stdin, stdout, stderr = self.ssh.exec_command(cmd, timeout=self.timeout)
+        stdin, stdout, stderr = \
+            self.ssh_client.exec_command(cmd, timeout=self.timeout)
         stdin.close()
         err = self.binary2str(stderr.read())
         if err:
@@ -164,7 +161,7 @@ class SshConnection(BinaryConverter):
         if not self.connect():
             return
         if not self.ftp:
-            self.ftp = self.ssh.open_sftp()
+            self.ftp = self.ssh_client.open_sftp()
         try:
             self.ftp.put(local_path, remote_path)
         except IOError as e:
@@ -200,7 +197,7 @@ class SshConnection(BinaryConverter):
         if not self.connect():
             return
         if not self.ftp:
-            self.ftp = self.ssh.open_sftp()
+            self.ftp = self.ssh_client.open_sftp()
         try:
             self.ftp.get(remote_path, local_path)
         except IOError as e:
