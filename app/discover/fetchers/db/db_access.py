@@ -117,19 +117,3 @@ class DbAccess(Fetcher):
         }
         return jsonify(ret)
 
-    def run_query(self, query, table, field, values):
-        try:
-            cursor = DbAccess.conn.cursor(dictionary=True)
-            cursor.execute(query, [table, field, values])
-        except (AttributeError, mysql.connector.errors.OperationalError) as e:
-            self.log.error(e)
-            self.connect_to_db(True)
-            # try again to run the query
-            cursor = DbAccess.conn.cursor(dictionary=True)
-            cursor.execute(query, [table, field, values])
-
-        rows = []
-        for row in cursor:
-            rows.append(row)
-        return rows
-
