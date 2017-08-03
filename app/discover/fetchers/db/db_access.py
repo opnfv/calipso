@@ -37,7 +37,7 @@ class DbAccess(Fetcher):
         except (AttributeError, mysql.connector.errors.ProgrammingError):
             self.neutron_db = "ml2_neutron"
 
-    def db_connect(self, _host, _port, _user, _password, _database):
+    def db_connect(self, _host, _port, _user, _pwd, _database):
         if DbAccess.conn:
             return
         try:
@@ -45,7 +45,7 @@ class DbAccess(Fetcher):
             DbAccess.conn = connector.connect(host=_host, port=_port,
                                               connection_timeout=self.TIMEOUT,
                                               user=_user,
-                                              password=_password,
+                                              password=_pwd,
                                               database=_database,
                                               raise_on_warnings=True)
             DbAccess.conn.ping(True)  # auto-reconnect if necessary
@@ -117,7 +117,7 @@ class DbAccess(Fetcher):
         }
         return jsonify(ret)
 
-    def exec(self, query, table, field, values):
+    def run_query(self, query, table, field, values):
         try:
             cursor = DbAccess.conn.cursor(dictionary=True)
             cursor.execute(query, [table, field, values])
@@ -133,10 +133,3 @@ class DbAccess(Fetcher):
             rows.append(row)
         return rows
 
-    def set(self, table, field, values):
-        query = """INSERT INTO %s %s VALUES %s"""
-        return self.exec(query, table, field, values)
-
-    def delete(self, table, field, values):
-        query = """DELETE FROM %s WHERE %s=%s"""
-        return self.exec(query, table, field, values)
