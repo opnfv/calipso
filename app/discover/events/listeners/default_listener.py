@@ -98,8 +98,6 @@ class DefaultListener(ListenerBase, ConsumerMixin):
         # or it's not intended for env listener to handle,
         # leave the message in the queue unless "consume_all" flag is set
         if processable and event_data["event_type"] in self.handler.handlers:
-            with open("/tmp/listener.log", "a") as f:
-                f.write("{}\n".format(event_data))
             event_result = self.handle_event(event_data["event_type"],
                                              event_data)
             finished_timestamp = stringify_datetime(datetime.datetime.now())
