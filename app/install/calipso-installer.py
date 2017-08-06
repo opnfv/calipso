@@ -17,7 +17,6 @@ import dockerpycreds
 import time
 import json
 
-
 calipso_volume = {'/home/calipso': {'bind': '/local_dir', 'mode': 'rw'}}
 
 
@@ -79,7 +78,6 @@ DockerClient = docker.from_env()
 # DockerClient = \
 # docker.DockerClient(base_url='tcp://korlev-calipso-testing.cisco.com:2375')
 
-
 def copy_file(filename):
     c = MongoComm(args.hostname, args.dbuser, args.dbpassword, args.dbport)
     txt = open('db/'+filename+'.json')
@@ -89,13 +87,11 @@ def copy_file(filename):
     print("Copied", filename, "mongo doc_ids:\n\n", doc_id, "\n\n")
     time.sleep(1)
 
-
 C_MONGO_CONFIG = "/local_dir/calipso_mongo_access.conf"
 H_MONGO_CONFIG = "/home/calipso/calipso_mongo_access.conf"
 PYTHONPATH = "/home/scan/calipso_prod/app"
 C_LDAP_CONFIG = "/local_dir/ldap.conf"
 H_LDAP_CONFIG = "/home/calipso/ldap.conf"
-
 
 def container_started(name: str, print_message=True):
     found = DockerClient.containers.list(all=True, filters={"name": name})
@@ -104,7 +100,6 @@ def container_started(name: str, print_message=True):
               "please deal with it using docker...\n"
               .format(name))
     return bool(found)
-
 
 # functions to check and start calipso containers:
 def start_mongo(dbport):
@@ -121,11 +116,10 @@ def start_mongo(dbport):
               "hold on while downloading first...\n")
         image = DockerClient.images.pull("korenlev/calipso:mongo")
         print("Downloaded", image, "\n\n")
-    mongo_ports = {'27017/tcp': dbport, '28017/tcp': 28017}
     DockerClient.containers.run('korenlev/calipso:mongo',
                                 detach=True,
                                 name=name,
-                                ports=mongo_ports,
+                                ports={'27017/tcp': dbport, '28017/tcp': 28017},
                                 restart_policy={"Name": "always"})
     # wait a bit till mongoDB is up before starting to copy the json files
     # from 'db' folder:
@@ -164,7 +158,6 @@ def start_mongo(dbport):
     # some other docs are filled later by scanning, logging
     # and monitoring
 
-
 def start_listen():
     name = "calipso-listen"
     if container_started(name):
@@ -179,16 +172,14 @@ def start_listen():
               "hold on while downloading first...\n")
         image = DockerClient.images.pull("korenlev/calipso:listen")
         print("Downloaded", image, "\n\n")
-    listen_environment = ["PYTHONPATH=" + PYTHONPATH,
-                          "MONGO_CONFIG=" + C_MONGO_CONFIG],
-    DockerClient.containers.run('korenlev/calipso:listen',
-                                detach=True,
-                                name=name,
-                                ports={'22/tcp': 50022},
-                                restart_policy={"Name": "always"},
-                                environment=listen_environment,
-                                volumes=calipso_volume)
-
+    listencontainer = DockerClient.containers.run('korenlev/calipso:listen',
+                                                  detach=True,
+                                                  name=name,
+                                                  ports={'22/tcp': 50022},
+                                                  restart_policy={"Name": "always"},
+                                                  environment=["PYTHONPATH=" + PYTHONPATH,
+                                                               "MONGO_CONFIG=" + C_MONGO_CONFIG],
+                                                  volumes=calipso_volume)
 
 def start_ldap():
     name = "calipso-ldap"
@@ -204,13 +195,12 @@ def start_ldap():
               "hold on while downloading first...\n")
         image = DockerClient.images.pull("korenlev/calipso:ldap")
         print("Downloaded", image, "\n\n")
-    DockerClient.containers.run('korenlev/calipso:ldap',
-                                detach=True,
-                                name=name,
-                                ports={'389/tcp': 389, '389/udp': 389},
-                                restart_policy={"Name": "always"},
-                                volumes=calipso_volume)
-
+    ldapcontainer = DockerClient.containers.run('korenlev/calipso:ldap',
+                                                detach=True,
+                                                name=name,
+                                                ports={'389/tcp': 389, '389/udp': 389},
+                                                restart_policy={"Name": "always"},
+                                                volumes=calipso_volume)
 
 def start_api():
     name = "calipso-api"
@@ -226,19 +216,16 @@ def start_api():
               " hold on while downloading first...\n")
         image = DockerClient.images.pull("korenlev/calipso:api")
         print("Downloaded", image, "\n\n")
-    api_ports = {'8000/tcp': 8000, '22/tcp': 40022}
-    api_environment = ["PYTHONPATH=" + PYTHONPATH,
-                       "MONGO_CONFIG=" + C_MONGO_CONFIG,
-                       "LDAP_CONFIG=" + C_LDAP_CONFIG,
-                       "LOG_LEVEL=DEBUG"],
-    DockerClient.containers.run('korenlev/calipso:api',
-                                detach=True,
-                                name=name,
-                                ports=api_ports,
-                                restart_policy={"Name": "always"},
-                                environment=api_environment,
-                                volumes=calipso_volume)
-
+    apicontainer = DockerClient.containers.run('korenlev/calipso:api',
+                                               detach=True,
+                                               name=name,
+                                               ports={'8000/tcp': 8000, '22/tcp': 40022},
+                                               restart_policy={"Name": "always"},
+                                               environment=["PYTHONPATH=" + PYTHONPATH,
+                                                            "MONGO_CONFIG=" + C_MONGO_CONFIG,
+                                                            "LDAP_CONFIG=" + C_LDAP_CONFIG,
+                                                            "LOG_LEVEL=DEBUG"],
+                                               volumes=calipso_volume)
 
 def start_scan():
     name = "calipso-scan"
@@ -254,16 +241,14 @@ def start_scan():
               "hold on while downloading first...\n")
         image = DockerClient.images.pull("korenlev/calipso:scan")
         print("Downloaded", image, "\n\n")
-    scan_environment = ["PYTHONPATH=" + PYTHONPATH,
-                        "MONGO_CONFIG=" + C_MONGO_CONFIG],
-    DockerClient.containers.run('korenlev/calipso:scan',
-                                detach=True,
-                                name=name,
-                                ports={'22/tcp': 30022},
-                                restart_policy={"Name": "always"},
-                                environment=scan_environment,
-                                volumes=calipso_volume)
-
+    scancontainer = DockerClient.containers.run('korenlev/calipso:scan',
+                                                detach=True,
+                                                name=name,
+                                                ports={'22/tcp': 30022},
+                                                restart_policy={"Name": "always"},
+                                                environment=["PYTHONPATH=" + PYTHONPATH,
+                                                             "MONGO_CONFIG=" + C_MONGO_CONFIG],
+                                                volumes=calipso_volume)
 
 def start_sensu():
     name = "calipso-sensu"
@@ -279,17 +264,14 @@ def start_sensu():
               " hold on while downloading first...\n")
         image = DockerClient.images.pull("korenlev/calipso:sensu")
         print("Downloaded", image, "\n\n")
-    sensu_ports = {'22/tcp': 20022, '3000/tcp': 3000, '4567/tcp': 4567,
-                   '5671/tcp': 5671, '15672/tcp': 15672},
-    sensu_environment = ["PYTHONPATH=" + PYTHONPATH]
-    DockerClient.containers.run('korenlev/calipso:sensu',
-                                detach=True,
-                                name=name,
-                                ports=sensu_ports,
-                                restart_policy={"Name": "always"},
-                                environment=sensu_environment,
-                                volumes=calipso_volume)
-
+    sensucontainer = DockerClient.containers.run('korenlev/calipso:sensu',
+                                                 detach=True,
+                                                 name=name,
+                                                 ports={'22/tcp': 20022, '3000/tcp': 3000, '4567/tcp': 4567,
+                                                        '5671/tcp': 5671, '15672/tcp': 15672},
+                                                 restart_policy={"Name": "always"},
+                                                 environment=["PYTHONPATH=" + PYTHONPATH],
+                                                 volumes=calipso_volume)
 
 def start_ui(host, dbuser, dbpassword, webport, dbport):
     name = "calipso-ui"
@@ -304,18 +286,15 @@ def start_ui(host, dbuser, dbpassword, webport, dbport):
               "hold on while downloading first...\n")
         image = DockerClient.images.pull("korenlev/calipso:ui")
         print("Downloaded", image, "\n\n")
-    root_url = "ROOT_URL=http://{}:{}".format(host, str(webport))
-    mongo_url = "MONGO_URL=mongodb://{}:{}@{}:{}/calipso"\
-                .format(dbuser, dbpassword, host, str(dbport))
-    ldap_config = "LDAP_CONFIG=" + C_LDAP_CONFIG
-    ui_environment = [root_url, mongo_url, ldap_config]
-    DockerClient.containers.run('korenlev/calipso:ui',
-                                detach=True,
-                                name=name,
-                                ports={'3000/tcp': webport},
-                                restart_policy={"Name": "always"},
-                                environment=ui_environment)
-
+    uicontainer = DockerClient.containers.run('korenlev/calipso:ui',
+                                              detach=True,
+                                              name=name,
+                                              ports={'3000/tcp': webport},
+                                              restart_policy={"Name": "always"},
+                                              environment=["ROOT_URL=http://{}:{}".format(host, str(webport)),
+                                                           "MONGO_URL=mongodb://{}:{}@{}:{}/calipso".format(
+                                                               dbuser, dbpassword, host, str(dbport)),
+                                                           "LDAP_CONFIG=" + C_LDAP_CONFIG])
 
 # check and stop a calipso container by given name
 def container_stop(container_name):
@@ -332,7 +311,6 @@ def container_stop(container_name):
         time.sleep(1)
     print("removing container name", c.name, "...\n")
     c.remove()
-
 
 # parser for getting optional command arguments:
 parser = argparse.ArgumentParser()
@@ -387,26 +365,20 @@ while container != "all" and container not in container_names:
 if action == "start":
     # building /home/calipso/calipso_mongo_access.conf and
     # /home/calipso/ldap.conf files, per the arguments:
-    calipso_mongo_access_text = \
-        "server {}\n" \
-        "user {}\n" \
-        "pwd {}\n" \
-        "auth_db calipso" \
-        .format(args.hostname, args.dbuser, args.dbpassword)
-    LDAP_PWD_ATTRIBUTE = "password password"
-    LDAP_USER_PWD_ATTRIBUTE = "password"
-    ldap_text = \
-        "user admin\n" + \
-        "{}\n" + \
-        "url ldap://{}:389\n" + \
-        "user_id_attribute CN\n" + \
-        "user_pass_attribute {}\n" + \
-        "user_objectclass inetOrgPerson\n" + \
-        "user_tree_dn OU=Users,DC=openstack,DC=org\n" + \
-        "query_scope one\n" + \
-        "tls_req_cert allow\n" + \
-        "group_member_attribute member" \
-        .format(args.hostname, LDAP_PWD_ATTRIBUTE, LDAP_USER_PWD_ATTRIBUTE)
+    calipso_mongo_access_text =\
+        "server " + args.hostname +\
+        "\nuser " + args.dbuser +\
+        "\npwd " + args.dbpassword +\
+        "\nauth_db calipso"
+    ldap_text =\
+        "user admin" +\
+        "\npassword password" +\
+        "\nurl ldap://" + args.hostname + ":389" +\
+        "\nuser_id_attribute CN" + "\nuser_pass_attribute userpassword" +\
+        "\nuser_objectclass inetOrgPerson" +\
+        "\nuser_tree_dn OU=Users,DC=openstack,DC=org" + "\nquery_scope one" +\
+        "\ntls_req_cert allow" +\
+        "\ngroup_member_attribute member"
     print("creating default", H_MONGO_CONFIG, "file...\n")
     calipso_mongo_access_file = open(H_MONGO_CONFIG, "w+")
     time.sleep(1)
