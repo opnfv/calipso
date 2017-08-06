@@ -19,7 +19,7 @@ export const MysqlSchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.IP,
     defaultValue: '10.0.0.1'
   },
-  password: { type: String },
+  pwd: { type: String },
   port: { 
     type: String,
     regEx: portRegEx,

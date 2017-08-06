@@ -1,11 +1,3 @@
-/////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others /
-//                                                                                      /
-// All rights reserved. This program and the accompanying materials                     /
-// are made available under the terms of the Apache License, Version 2.0                /
-// which accompanies this distribution, and is available at                             /
-// http://www.apache.org/licenses/LICENSE-2.0                                           /
-/////////////////////////////////////////////////////////////////////////////////////////
 /*
  * Template Component: NetworkGraph 
  */
@@ -389,18 +381,37 @@ function renderView(force,
   function tickFn() {
     let svgGroups = mainEl.selectAll('.group');
     svgGroups
+      .attr('transform', function (d) {
+        let x = R.path(['bounds', 'x'], d);
+        let y = R.path(['bounds', 'y'], d);
+        return `translate(${x},${y})`;
+      })
+    ;
+    /*
       .attr('x', function (d) { 
         return R.path(['bounds', 'x'], d); 
       })
       .attr('y', function (d) { 
         return R.path(['bounds', 'y'], d);
       })
+      */
+
+    svgGroups.selectAll('.group-shape')
       .attr('width', function (d) { 
         if (d.bounds) { return d.bounds.width(); } 
       })
       .attr('height', function (d) { 
         if (d.bounds) { return d.bounds.height(); } 
       });
+
+    svgGroups.selectAll('.group-name')
+      .attr('x', function(d) { 
+        return (d.bounds.width() / 2);
+      })
+      .attr('y', function(_d) { 
+        return 30;
+      })
+    ;
 
     let svgNodes = mainEl.selectAll('.node');
     svgNodes.attr('transform', function(d) {
@@ -470,20 +481,44 @@ function genSvgGroups(g, groups, drag, onRenderViewReq) {
   let svgGroups = g.selectAll('.group')
       .data(groups, (d) => d._osid);
 
-  //let rects = 
-  svgGroups.enter()
+  let enterGroups = svgGroups.enter();
+
+  let groupsContainers = 
+    enterGroups
+      .append('g')
+        .attr('class', 'group')
+        .attr('data-group-id', (d) => d._osid)
+        .call(drag)
+        .on('click', function (d) {
+          console.log('click', d);
+          d.isExpanded = !d.isExpanded;
+          onRenderViewReq();
+        });
+
+  groupsContainers
     .append('rect')
+      .attr('class', 'group-shape')
       .attr('rx', 8)
       .attr('ry', 8)
-      .attr('class', 'group')
-      .attr('data-group-id', (d) => d._osid)
       .style('fill', function (_d, _i) { return 'lightblue'; })
-      .call(drag)
-      .on('click', function (d) {
-        console.log('click', d);
-        d.isExpanded = !d.isExpanded;
-        onRenderViewReq();
-      });
+  ;
+
+  groupsContainers
+    .append('text')
+    .text(function(d) { 
+      return d.name;
+    })
+    .attr('class', 'group-name')
+    .attr('x', function(d) { 
+      return (d.bounds.width() / 2);
+    })
+    .attr('y', function(_d) { 
+      return 30;
+    })
+    .attr('dy', '.25em')
+    .attr('text-anchor', 'middle')
+    .attr('font-size', 20)
+  ;
 
   svgGroups.exit()
     .remove();
@@ -552,10 +587,10 @@ function calcClosedGroupsNodes(rejectedGroups, prevViewNodes) {
 function calcNodesAndRejectedNodes(originalNodes, originalGroups) {
   let rejectedNodes = [];
   let nodes = R.reject((node) => {
-    let host = R.path(['_osmeta', 'host'], node);
-    if (R.isNil(host)) { return false; }
+    let groupId = R.path(['_osmeta', 'groupId'], node);
+    if (R.isNil(groupId)) { return false; }
 
-    let group = R.find(R.propEq('_osid', host), originalGroups);
+    let group = R.find(R.propEq('_osid', groupId), originalGroups);
     if (R.isNil(group)) { return false; }
 
     if (group.isExpanded) { return false; } 
@@ -596,8 +631,8 @@ function calcLinksAndRejectedLinks(originalLinks, rejectedNodes) {
 
 function calcNewLinksForRejectedSource(rejectedSourceLinks, nodes, prevLinks) {
   let newLinksForRejectedSource = R.reduce((acc, link) => {
-    let host = R.path(['_osmeta', 'host'], link.source);
-    let groupNodeId = `${host}-group-node`;
+    let groupId = R.path(['_osmeta', 'groupId'], link.source);
+    let groupNodeId = `${groupId}-group-node`;
     let newSource = R.find(R.propEq('_osid', groupNodeId), nodes);
     if (R.isNil(newSource)) { 
       throw 'error in new links for rejected source function';
@@ -628,8 +663,8 @@ function calcNewLinksForRejectedSource(rejectedSourceLinks, nodes, prevLinks) {
 
 function calcNewLinksForRejectedTarget(rejectedLinks, nodes, prevLinks) {
   let newLinks = R.reduce((acc, link) => {
-    let host = R.path(['_osmeta', 'host'], link.target);
-    let groupNodeId = `${host}-group-node`;
+    let groupId = R.path(['_osmeta', 'groupId'], link.target);
+    let groupNodeId = `${groupId}-group-node`;
     let newTarget = R.find(R.propEq('_osid', groupNodeId), nodes);
     if (R.isNil(newTarget)) { 
       throw 'error in new links for rejected target function';
@@ -660,8 +695,8 @@ function calcNewLinksForRejectedTarget(rejectedLinks, nodes, prevLinks) {
 
 function calcNewLinksForRejectedBoth(rejectedLinks, nodes, prevLinks) {
   let newLinks = R.reduce((acc, link) => {
-    let targetHost = R.path(['_osmeta', 'host'], link.target);
-    let sourceHost = R.path(['_osmeta', 'host'], link.source);
+    let targetHost = R.path(['_osmeta', 'groupId'], link.target);
+    let sourceHost = R.path(['_osmeta', 'groupId'], link.source);
     let groupSourceNodeId = `${sourceHost}-group-node`;
     let groupTargetNodeId = `${targetHost}-group-node`;
 

@@ -25,5 +25,5 @@ export const AMQPSchema = new SimpleSchema({
     type: String, 
     defaultValue: 'rabbitmquser'
   },
-  password: { type: String },
+  pwd: { type: String },
 });
