@@ -18,7 +18,6 @@ RABBITMQ_CONFIG_ATTR = 'rabbitmq'
 
 RABBITMQ_CERT_FILE_ATTR = 'cert_chain_file'
 RABBITMQ_PK_FILE_ATTR = 'private_key_file'
-TMP_FILES_DIR = '/tmp'
 
 
 class MonitoringHost(MonitoringHandler):
