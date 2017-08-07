@@ -18,6 +18,7 @@ import copy
 import pymongo
 import shutil
 import stat
+import tempfile
 from boltons.iterutils import remap
 
 from discover.configuration import Configuration
@@ -35,7 +36,6 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
     PRODUCTION_CONFIG_DIR = '/etc/sensu/conf.d'
     APP_SCRIPTS_FOLDER = 'monitoring/checks'
     REMOTE_SCRIPTS_FOLDER = '/etc/sensu/plugins'
-    TMP_SSL_FOLDER = '/tmp/monitoring_ssl_files'
 
     provision_levels = {
         'none': 0,
@@ -334,11 +334,11 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
     def deploy_ssl_files(self, hosts: list):
         monitoring_server = self.env_monitoring_config['server_ip']
         gateway_host = SshConn.get_gateway_host(hosts[0])
-        self.make_directory(self.TMP_SSL_FOLDER)
+        temp_dir = tempfile.TemporaryDirectory()
         for file_path in self.fetch_ssl_files:
             # copy SSL files from the monitoring server
             file_name = os.path.basename(file_path)
-            local_path = os.path.join(self.TMP_SSL_FOLDER, file_name)
+            local_path = os.path.join(temp_dir.name, file_name)
             self.get_file(monitoring_server, file_path, local_path)
             #  first copy the files to the gateway
             self.write_to_remote_host(gateway_host, local_path,
@@ -346,12 +346,6 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
         ssl_path = os.path.commonprefix(self.fetch_ssl_files)
         for host in hosts:
             self.copy_from_gateway_to_host(host, ssl_path, ssl_path)
-        # remove files from temporary folder
-        for file_path in self.fetch_ssl_files:
-            tmp_path = os.path.join(self.TMP_SSL_FOLDER,
-                                    os.path.basename(file_path))
-            if os.path.exists(tmp_path):
-                os.remove(tmp_path)  # remove files from temporary folder
 
     def deploy_scripts_to_host(self, host_details):
         host = host_details['host']
