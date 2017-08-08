@@ -90,6 +90,8 @@ class MongoAccess(DictNamingConverter):
         )
         MongoAccess.db = getattr(MongoAccess.client,
                                  config_params.get('auth_db', self.DB_NAME))
+        MongoAccess.db.authenticate(name=self.connect_params['user'],
+                                    password=self.connect_params['pwd'])
         self.log.info('Connected to MongoDB')
 
     def prepare_connect_uri(self):
