@@ -363,7 +363,7 @@ if action == "start":
         "auth_db calipso" \
         .format(args.hostname, args.dbuser, args.dbpassword)
     LDAP_PWD_ATTRIBUTE = "password password"
-    LDAP_USER_PWD_ATTRIBUTE = "password"
+    LDAP_USER_PWD_ATTRIBUTE = "userpassword"
     ldap_text = \
         "user admin\n" + \
         "{}\n" + \
