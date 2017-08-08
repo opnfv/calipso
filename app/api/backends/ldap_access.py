@@ -74,7 +74,7 @@ class LDAPAccess(metaclass=Singleton):
         if not self.server:
             self.server = self.connect_ldap_server()
 
-        user_dn = self.ldap_params['user_id_attribute'] + "=" +
+        user_dn = self.ldap_params['user_id_attribute'] + "=" + \
                   username + "," + self.ldap_params['user_tree_dn']
         connection = Connection(self.server, user=user_dn, password=pwd)
         # validate the user by binding
