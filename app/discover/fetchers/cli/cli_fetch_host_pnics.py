@@ -71,7 +71,8 @@ class CliFetchHostPnics(CliAccess):
                         "host": host_id,
                         "name": id,
                         "local_name": interface_name,
-                        "lines": []
+                        "lines": [],
+                        "pnic_type": "host"
                     }
                     self.handle_line(interface, line_remainder)
                     if '<UP,' in line:

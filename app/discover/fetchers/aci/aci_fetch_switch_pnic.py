@@ -30,10 +30,10 @@ class AciFetchSwitchPnic(AciAccess):
         mac_filter = "eq(epmMacEp.addr,\"{}\")".format(mac_address)
         # We are only interested in Ethernet interfaces
         pnic_filter = "wcard(epmMacEp.ifId, \"eth\")"
-        query_filter = "and({},{})".format(mac_filter, pnic_filter)
+        query_filter = {"query-target-filter":
+                        "and({},{})".format(mac_filter, pnic_filter)}
 
-        pnics = self.fetch_objects_by_class("epmMacEp",
-                                            {"query-target-filter": query_filter})
+        pnics = self.fetch_objects_by_class("epmMacEp", query_filter)
 
         return [pnic["attributes"] for pnic in pnics]
 
@@ -41,7 +41,8 @@ class AciFetchSwitchPnic(AciAccess):
         dn = "/".join((switch_id, "sys"))
         response = self.fetch_mo_data(dn)
         # Unwrap switches
-        switch_data = self.get_objects_by_field_names(response, "topSystem", "attributes")
+        switch_data = self.get_objects_by_field_names(response, "topSystem",
+                                                      "attributes")
         return switch_data[0] if switch_data else None
 
     @aci_config_required(default=[])
@@ -73,7 +74,8 @@ class AciFetchSwitchPnic(AciAccess):
                              .format(leaf_pnic["dn"]))
             return []
 
-        db_leaf_id = "-".join(("switch", encode_aci_dn(aci_leaf_id), leaf_data["role"]))
+        db_leaf_id = "-".join(("switch", encode_aci_dn(aci_leaf_id),
+                               leaf_data["role"]))
         if not self.inv.get_by_id(environment, db_leaf_id):
             leaf_json = {
                 "id": db_leaf_id,
@@ -85,7 +87,8 @@ class AciFetchSwitchPnic(AciAccess):
             # Region name is the same as region id
             region_id = get_object_path_part(pnic["name_path"], "Regions")
             region = self.inv.get_by_id(environment, region_id)
-            self.inv.save_inventory_object(o=leaf_json, parent=region, environment=environment)
+            self.inv.save_inventory_object(o=leaf_json, parent=region,
+                                           environment=environment)
 
         # Prepare pnic json for results list
         db_pnic_id = "-".join((db_leaf_id,
@@ -94,10 +97,12 @@ class AciFetchSwitchPnic(AciAccess):
         pnic_json = {
             "id": db_pnic_id,
             "type": "pnic",
+            "role": "hostlink",
+            "parent_id": db_leaf_id,
             "pnic_type": "switch",
             "mac_address": mac_address,
-            "host": db_leaf_id,
+            "host": pnic["host"],
+            "switch": db_leaf_id,
             "aci_document": leaf_pnic
         }
         return [pnic_json]
-

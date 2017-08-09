@@ -18,10 +18,11 @@ class FindLinksForPnics(FindLinks):
         pnics = self.inv.find_items({
             "environment": self.get_env(),
             "type": "pnic",
-            "pnic_type": {"$ne": "switch"}  # TODO: make a more educated guess
+            "pnic_type": "host"
         })
         for pnic in pnics:
             self.add_pnic_network_links(pnic)
+            self.add_host_pnic_to_switch_pnic_link(pnic)
 
     def add_pnic_network_links(self, pnic):
         self.log.info("adding links of type: pnic-network")
@@ -56,3 +57,31 @@ class FindLinksForPnics(FindLinks):
                              link_type, link_name, state, link_weight,
                              source_label,
                              extra_attributes={"network": target_id})
+
+    def add_host_pnic_to_switch_pnic_link(self, host_pnic):
+        link_type = "host_pnic-switch_pnic"
+        self.log.info("adding links of type: {}".format(link_type))
+        # find ports for that host, and fetch just the network ID
+        switch_pnics = self.inv.find_items({
+            "environment": self.get_env(),
+            "type": "pnic",
+            "pnic_type": "switch",
+            "mac_address": host_pnic["mac_address"]
+        }, {"id": 1})
+        if not switch_pnics:
+            return
+        if len(switch_pnics) > 1:
+            self.log.warn("multiple matching switch pNICs found "
+                          "for host pNIC: mac_address={}"
+                          .format(host_pnic["mac_address"]))
+        switch_pnic = switch_pnics[0]
+        source = host_pnic["_id"]
+        source_id = host_pnic["id"]
+        target = switch_pnic["_id"]
+        target_id = switch_pnic["id"]
+        link_name = "{}-{}".format(target_id, source_id)
+        state = "up" if host_pnic["Link detected"] == "yes" else "down"
+        link_weight = 0  # TBD
+        self.create_link(self.get_env(), host_pnic['host'],
+                         source, source_id, target, target_id,
+                         link_type, link_name, state, link_weight)

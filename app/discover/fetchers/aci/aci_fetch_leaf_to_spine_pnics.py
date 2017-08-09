@@ -28,9 +28,9 @@ class AciFetchLeafToSpinePnics(AciAccess):
         self.inv = InventoryMgr()
 
     def fetch_switches_by_role(self, role_name):
-        query_filter = "eq(fabricNode.role, \"{}\")".format(role_name)
-        switches = self.fetch_objects_by_class("fabricNode",
-                                               {"query-target-filter": query_filter})
+        query_filter = {"query-target-filter":
+                        "eq(fabricNode.role, \"{}\")".format(role_name)}
+        switches = self.fetch_objects_by_class("fabricNode", query_filter)
         return [switch["attributes"] for switch in switches]
 
     def fetch_adjacent_connections(self, device_id):
@@ -61,8 +61,10 @@ class AciFetchLeafToSpinePnics(AciAccess):
             if connection:
                 try:
                     # Extract pnics from adjacency data
-                    uplink_pnic = re.match(".*\[(.+?)\].*", connection["dn"]).group(1)
-                    downlink_pnic = re.match(".*\[(.+?)\].*", connection["portDesc"]).group(1)
+                    uplink_pnic = re.match(".*\[(.+?)\].*",
+                                           connection["dn"]).group(1)
+                    downlink_pnic = re.match(".*\[(.+?)\].*",
+                                             connection["portDesc"]).group(1)
                     spines.append({
                         "device": spine,
                         "downlink_pnic": downlink_pnic,
@@ -76,7 +78,8 @@ class AciFetchLeafToSpinePnics(AciAccess):
     @aci_config_required(default=[])
     def get(self, db_leaf_pnic_id):
         environment = self.get_env()
-        pnic = self.inv.get_by_id(environment=environment, item_id=db_leaf_pnic_id)
+        pnic = self.inv.get_by_id(environment=environment,
+                                  item_id=db_leaf_pnic_id)
 
         # Decode aci leaf switch id from db format
         aci_leaf_pnic_id = decode_aci_dn(db_leaf_pnic_id)
@@ -93,22 +96,23 @@ class AciFetchLeafToSpinePnics(AciAccess):
             # Add spine switch to db if it's not there yet
             spine_id_match = re.match("topology/(.+)", spine["dn"])
             if not spine_id_match:
-                raise ValueError("Failed to fetch spine switch id from switch dn: {}"
-                                 .format(spine["dn"]))
+                raise ValueError("Failed to fetch spine switch id "
+                                 "from switch dn: {}".format(spine["dn"]))
 
             aci_spine_id = spine_id_match.group(1)
-            db_spine_id = "-".join(("switch", encode_aci_dn(aci_spine_id), spine["role"]))
+            db_spine_id = "-".join(("switch", encode_aci_dn(aci_spine_id),
+                                    spine["role"]))
             if not self.inv.get_by_id(environment, db_spine_id):
                 spine_json = {
                     "id": db_spine_id,
                     "type": "switch",
-                    "host": db_spine_id,
                     "aci_document": spine
                 }
                 # Region name is the same as region id
                 region_id = get_object_path_part(pnic["name_path"], "Regions")
                 region = self.inv.get_by_id(environment, region_id)
-                self.inv.save_inventory_object(o=spine_json, parent=region, environment=environment)
+                self.inv.save_inventory_object(o=spine_json, parent=region,
+                                               environment=environment)
 
             # Add downlink and uplink pnics to results list,
             # including their mutual connection data
@@ -121,18 +125,20 @@ class AciFetchLeafToSpinePnics(AciAccess):
             downlink_pnic_json = {
                 "id": db_downlink_pnic_id,
                 "type": "pnic",
+                "role": "downlink",
                 "pnic_type": "switch",
-                "host": db_spine_id,
                 "connected_to": db_uplink_pnic_id,
+                "switch": db_spine_id,
                 "aci_document": {}  # TODO: what can we add here?
             }
 
             uplink_pnic_json = {
                 "id": db_uplink_pnic_id,
                 "type": "pnic",
+                "role": "uplink",
                 "pnic_type": "switch",
-                "host": pnic["host"],
                 "connected_to": db_downlink_pnic_id,
+                "switch": db_spine_id,
                 "aci_document": {}  # TODO: what can we add here?
             }
 
