@@ -101,7 +101,6 @@ class AciFetchSwitchPnic(AciAccess):
             "parent_id": db_leaf_id,
             "pnic_type": "switch",
             "mac_address": mac_address,
-            "host": pnic["host"],
             "switch": db_leaf_id,
             "aci_document": leaf_pnic
         }
