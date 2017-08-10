@@ -16,7 +16,7 @@ export const AciSchema = new SimpleSchema({
   host: { 
     type: String,
     regEx: SimpleSchema.RegEx.IP,
-    defaultValue: '10.56.0.104',
+    defaultValue: '10.0.0.1',
   },
   user: { 
     type: String, 
@@ -24,6 +24,6 @@ export const AciSchema = new SimpleSchema({
   },
   pwd: { 
     type: String,
-    defaultValue: 'C1sco12345'
+    defaultValue: '123456'
   },
 });

@@ -68,7 +68,7 @@ let simpleSchema = new SimpleSchema({
           listen 
         } = extractCalcEnvSupportedRelatedValues(that);
         let dbNode = getDbNode(that);
-        let aci = extractValue('aci', that, dbNode);
+        let aci_enabled = extractValue('aci_enabled', that, dbNode);
 
         if (enable_monitoring && isMonitoringSupportedRes) {
           if (! R.find(R.propEq('name', 'Monitoring'), confGroups)) {
@@ -88,7 +88,7 @@ let simpleSchema = new SimpleSchema({
           confGroups = R.reject(R.propEq('name', 'AMQP'), confGroups);
         }
 
-        if (aci) {
+        if (aci_enabled) {
           if (! R.find(R.propEq('name', 'ACI'), confGroups)) {
             confGroups = R.append(createNewConfGroup('ACI'), confGroups);
           }
@@ -301,7 +301,7 @@ let simpleSchema = new SimpleSchema({
       return newValue;
     },
   },
-  aci: {
+  aci_enabled: {
     type: Boolean,
     defaultValue: false,
   },

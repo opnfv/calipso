@@ -156,7 +156,7 @@ Template.EnvironmentWizard.helpers({
 
     let amqpTabDisabled = !(environmentModel.listen && isListeningSupportedRes);
     let monitoringTabDisabled = !(environmentModel.enable_monitoring && isMonSupportedRes);
-    let isAciTabDisabled = !(environmentModel.aci);
+    let isAciTabDisabled = !(environmentModel.aci_enabled);
 
     return [{
       label: 'Main Info',
@@ -427,7 +427,7 @@ function doSubmit(instance) {
       mechanism_drivers: environment.mechanism_drivers,
       listen: environment.listen,
       enable_monitoring: environment.enable_monitoring,
-      aci: environment.aci,
+      aci_enabled: environment.aci_enabled,
     }, processActionResult.bind(null, instance));
     break;
 
@@ -441,7 +441,7 @@ function doSubmit(instance) {
       mechanism_drivers: environment.mechanism_drivers,
       listen: environment.listen,
       enable_monitoring: environment.enable_monitoring,
-      aci: environment.aci,
+      aci_enabled: environment.aci_enabled,
     }, processActionResult.bind(null, instance));
     break;
 

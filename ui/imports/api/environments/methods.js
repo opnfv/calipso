@@ -34,7 +34,7 @@ export const insert = new ValidatedMethod({
       'mechanism_drivers.$',
       'listen',
       'enable_monitoring', 
-      'aci',
+      'aci_enabled',
     ]).validator({ clean: true, filter: false }), 
   //validate: null, 
   run({
@@ -45,7 +45,7 @@ export const insert = new ValidatedMethod({
     mechanism_drivers,
     listen,
     enable_monitoring,
-    aci,
+    aci_enabled,
   }) {
     // todo: create clean object instance.
     let environment = Environments.schema.clean({
@@ -70,7 +70,7 @@ export const insert = new ValidatedMethod({
       listen,
       enable_monitoring,
       auth,
-      aci,
+      aci_enabled,
     });
 
     Environments.insert(environment);
@@ -90,7 +90,7 @@ export const update = new ValidatedMethod({
     'mechanism_drivers.$',
     'listen',
     'enable_monitoring',
-    'aci',
+    'aci_enabled',
   ]).validator({ clean: true, filter: false }),
   run({
     _id,
@@ -101,7 +101,7 @@ export const update = new ValidatedMethod({
     mechanism_drivers,
     listen,
     enable_monitoring,
-    aci,
+    aci_enabled,
   }) {
     let env = Environments.findOne({ _id: _id });
 
@@ -120,7 +120,7 @@ export const update = new ValidatedMethod({
         mechanism_drivers,
         listen,
         enable_monitoring,
-        aci,
+        aci_enabled,
       },
     });
   }
