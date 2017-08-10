@@ -167,7 +167,7 @@ class DbFetchVedgesOvs(DbAccess, CliAccess, metaclass=Singleton):
         # add port ID to pNIC
         pnic = self.inv.find_items({
             "environment": self.get_env(),
-            "type": "pnic",
+            "type": "switch_pnic",
             "host": doc["host"],
             "name": interface
         }, get_single=True)

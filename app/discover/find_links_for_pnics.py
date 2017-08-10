@@ -10,6 +10,7 @@
 import re
 
 from discover.find_links import FindLinks
+from utils.util import decode_aci_dn
 
 
 class FindLinksForPnics(FindLinks):
@@ -19,20 +20,19 @@ class FindLinksForPnics(FindLinks):
     def add_links(self):
         pnics = self.inv.find_items({
             "environment": self.get_env(),
-            "type": "pnic",
-            "pnic_type": "host"
+            "type": "host_pnic"
         })
-        self.log.info("adding links of type: pnic-network, host-switch")
+        self.log.info("adding links of type: host_pnic-network, "
+                      "host_pnic-switch_pnic")
         for pnic in pnics:
             self.add_pnic_network_links(pnic)
             self.add_host_pnic_to_switch_pnic_link(pnic)
         pnics = self.inv.find_items({
             "environment": self.get_env(),
-            "type": "pnic",
-            "pnic_type": "switch",
+            "type": "switch_pnic",
             "role": "uplink"
         })
-        self.log.info("adding links of type: switch-switch")
+        self.log.info("adding links of type: switch_pnic-switch_pnic")
         for pnic in pnics:
             self.add_switch_to_switch_link(pnic)
 
@@ -55,13 +55,13 @@ class FindLinksForPnics(FindLinks):
             source_id = pnic["id"]
             target = network["_id"]
             target_id = network["id"]
-            link_type = "pnic-network"
+            link_type = "host_pnic-network"
             link_name = "Segment-" + str(network["provider:segmentation_id"]) \
                 if "provider:segmentation_id" in network \
                 else "Segment-None"
             state = "up" if pnic["Link detected"] == "yes" else "down"
             link_weight = 0  # TBD
-            attributes={"network": target_id}
+            attributes = {"network": target_id}
             if "port_id" in pnic:
                 attributes['source_label'] = "port-" + pnic["port_id"]
             self.create_link(self.get_env(),
@@ -73,8 +73,7 @@ class FindLinksForPnics(FindLinks):
     def add_host_pnic_to_switch_pnic_link(self, host_pnic):
         switch_pnic = self.inv.find_items({
             "environment": self.get_env(),
-            "type": "pnic",
-            "pnic_type": "switch",
+            "type": "switch_pnic",
             "mac_address": host_pnic["mac_address"]},
             get_single=True)
         if not switch_pnic:
@@ -83,7 +82,7 @@ class FindLinksForPnics(FindLinks):
         source_id = host_pnic["id"]
         target = switch_pnic["_id"]
         target_id = switch_pnic["id"]
-        link_type = "host-switch"
+        link_type = "host_pnic-switch_pnic"
         link_name = "{}-{}".format(host_pnic['host'],
                                    switch_pnic['parent_id'])
         state = "up" if host_pnic["Link detected"] == "yes" else "down"
@@ -102,9 +101,9 @@ class FindLinksForPnics(FindLinks):
         source_id = leaf_pnic["id"]
         target = spine_pnic["_id"]
         target_id = spine_pnic["id"]
-        link_type = "switch-switch"
+        link_type = "switch_pnic-switch_pnic"
         if_id_matches = re.search("(eth.*)$", source_id)
-        link_name = if_id_matches.group(1).replace("__", "/")
+        link_name = decode_aci_dn(if_id_matches.group(1))
         state = "up"  # TBD
         link_weight = 0  # TBD
         self.create_link(self.get_env(),

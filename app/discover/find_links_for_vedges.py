@@ -16,7 +16,7 @@ class FindLinksForVedges(FindLinks):
 
     def add_links(self):
         self.log.info("adding link types: " +
-                      "vnic-vedge, vconnector-vedge, vedge-pnic")
+                      "vnic-vedge, vconnector-vedge, vedge-host_pnic")
         vedges = self.inv.find_items({
             "environment": self.get_env(),
             "type": "vedge"
@@ -108,7 +108,7 @@ class FindLinksForVedges(FindLinks):
             pass
         pnic = self.inv.find_items({
             "environment": self.get_env(),
-            "type": "pnic",
+            "type": "host_pnic",
             "host": vedge["host"],
             "name": pname
         }, get_single=True)
@@ -118,7 +118,7 @@ class FindLinksForVedges(FindLinks):
         source_id = vedge["id"]
         target = pnic["_id"]
         target_id = pnic["id"]
-        link_type = "vedge-pnic"
+        link_type = "vedge-host_pnic"
         link_name = "Port-" + port["id"]
         state = "up" if pnic["Link detected"] == "yes" else "down"
         link_weight = 0  # TBD

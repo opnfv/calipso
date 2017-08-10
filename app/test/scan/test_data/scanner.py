@@ -19,14 +19,14 @@ METADATA = {
 }
 
 TYPE_TO_FETCH = {
-    "type": "pnic",
+    "type": "host_pnic",
     "fetcher": "CliFetchHostPnicsVpp",
     "environment_condition": {"mechanism_drivers": "OVS"},
     "children_scanner": "ScanOteps"
 }
 
 TYPE_TO_FETCH_WITH_WRONG_ENVIRONMENT_CONDITION = {
-    "type": "pnic",
+    "type": "host_pnic",
     "fetcher": "CliFetchHostPnicsVpp",
     "environment_condition": {"mechanism_drivers": "VPP"},
     "children_scanner": "ScanOteps"
@@ -39,7 +39,7 @@ TYPE_TO_FETCH_WITH_ERROR_VALUE = {
 }
 
 TYPE_TO_FETCH_WITHOUT_ENV_CON = {
-    "type": "pnic",
+    "type": "host_pnic",
     "fetcher": "CliFetchHostPnicsVpp",
     "children_scanner": "ScanOteps"
 }
@@ -131,14 +131,14 @@ CONFIGURATIONS = {
 }
 
 TYPES_TO_FETCHES_FOR_PNIC = {
-    "type": "pnic",
+    "type": "host_pnic",
     "fetcher": "CliFetchHostPnicsVpp",
     "environment_condition": {"mechanism_drivers": "VPP"},
     "children_scanner": "ScanOteps"
 }
 
 TYPES_TO_FETCHES_FOR_PNIC_WITHOUT_ENV_CON = {
-    "type": "pnic",
+    "type": "host_pnic",
     "fetcher": "CliFetchHostPnicsVpp",
     "children_scanner": "ScanOteps"
 }

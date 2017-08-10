@@ -211,7 +211,7 @@
     ],
     "ScanPnicsRoot": [
       {
-        "type": "pnic",
+        "type": "host_pnic",
         "environment_condition": {
           "mechanism_drivers": [
             "OVS",
@@ -224,14 +224,14 @@
     ],
     "ScanHostPnic": [
       {
-        "type": "pnic",
+        "type": "switch_pnic",
         "fetcher": "AciFetchSwitchPnic",
         "children_scanner": "ScanSpines"
       }
     ],
     "ScanSpines": [
       {
-        "type": "pnic",
+        "type": "switch_pnic",
         "fetcher": "AciFetchLeafToSpinePnics"
       }
     ],
@@ -359,7 +359,7 @@
     ],
     "ScanVppPnicsRoot": [
       {
-        "type": "pnic",
+        "type": "host_pnic",
         "fetcher": "CliFetchHostPnicsVpp",
         "environment_condition": {
           "mechanism_drivers": "VPP"

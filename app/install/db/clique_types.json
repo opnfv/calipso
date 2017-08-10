@@ -8,16 +8,16 @@
         "vconnector-vedge", 
         "vedge-otep", 
         "otep-vconnector", 
-        "vconnector-pnic", 
-        "pnic-network"
+        "vconnector-host_pnic", 
+        "host_pnic-network"
     ], 
     "name" : "instance"
 },
 {  
     "environment" : "ANY", 
-    "focal_point_type" : "pnic", 
+    "focal_point_type" : "host_pnic",
     "link_types" : [
-        "pnic-host", 
+        "host_pnic-host", 
         "host-network", 
         "network-switch_pnic", 
         "switch_pnic-switch"
@@ -32,8 +32,8 @@
         "vnic-vedge", 
         "vedge-otep", 
         "otep-vconnector", 
-        "vconnector-pnic", 
-        "pnic-network"
+        "vconnector-host_pnic", 
+        "host_pnic-network"
     ], 
     "name" : "vservice"
 },
@@ -41,8 +41,8 @@
     "environment" : "ANY", 
     "focal_point_type" : "network", 
     "link_types" : [
-        "network-pnic", 
-        "pnic-vconnector", 
+        "network-host_pnic", 
+        "host_pnic-vconnector", 
         "vconnector-otep", 
         "otep-vedge", 
         "vedge-vconnector", 

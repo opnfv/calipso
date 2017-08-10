@@ -69,7 +69,7 @@ LINKS_WITH_SPECIFIC_ID = [
     {
         "id": LINK_ID,
         "host": "node-1.cisco.com",
-        "link_type": "pnic-network",
+        "link_type": "host_pnic-network",
         "link_name": "Segment-103",
         "environment": "Mirantis-Liberty-API"
     }
@@ -79,7 +79,7 @@ LINKS = [
     {
         "id": "58ca73ae3a8a836d10ff3b45",
         "host": "node-1.cisco.com",
-        "link_type": "pnic-network",
+        "link_type": "host_pnic-network",
         "link_name": "Segment-103",
         "environment": "Mirantis-Liberty-API"
     }

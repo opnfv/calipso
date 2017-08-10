@@ -37,7 +37,7 @@ class CliFetchHostPnicsVpp(Fetcher):
                 pnic = pnic_ports[pnic_name]
                 pnic['host'] = host_id
                 pnic['id'] = host_id + "-pnic-" + pnic_name
-                pnic['type'] = 'pnic'
+                pnic['type'] = 'host_pnic'
                 pnic['object_name'] = pnic_name
                 pnic['Link detected'] = 'yes' if pnic['state'] == 'up' else 'no'
                 ret.append(pnic)

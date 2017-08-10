@@ -30,7 +30,7 @@ class MonitoringSetupManager(MonitoringHandler):
             "host": MonitoringHost(env),
             "otep": MonitoringOtep(env),
             "vedge": MonitoringVedge(env),
-            "pnic": MonitoringPnic(env),
+            "host_pnic": MonitoringPnic(env),
             "vnic": MonitoringVnic(env),
             "vservice": MonitoringVservice(env),
             "vnic-vconnector": MonitoringLinkVnicVconnector(env)}

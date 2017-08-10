@@ -20,13 +20,13 @@ WRONG_FOCAL_POINT_TYPE = base.WRONG_OBJECT_TYPE
 CORRECT_FOCAL_POINT_POINT_TYPE = base.CORRECT_OBJECT_TYPE
 
 WRONG_LINK_TYPE = base.WRONG_LINK_TYPE
-NONEXISTENT_LINK_TYPE = "otep-pnic"
+NONEXISTENT_LINK_TYPE = "otep-host_pnic"
 CORRECT_LINK_TYPE = base.CORRECT_LINK_TYPE
 
 CLIQUE_TYPES_WITH_SPECIFIC_ID = [
     {
        "environment": "Mirantis-Liberty-API",
-       "focal_point_type": "pnic",
+       "focal_point_type": "host_pnic",
        "id": CORRECT_ID
     }
 ]

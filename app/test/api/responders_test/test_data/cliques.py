@@ -94,7 +94,7 @@ CLIQUES_WITH_SPECIFIC_LINK_TYPE = [
             }
         ],
         "environment": "Mirantis-Liberty-API",
-        "focal_point_type": "pnic",
+        "focal_point_type": "host_pnic",
         "id": "576c119a3f4173144c7a75c7"
     }
 ]
@@ -124,7 +124,7 @@ CLIQUES_WITH_SPECIFIC_LINK_ID = [
             }
         ],
         "environment": "Mirantis-Liberty-API",
-        "focal_point_type": "pnic",
+        "focal_point_type": "host_pnic",
         "id": "576c119a3f4173144c7a75c7"
     }
 ]
@@ -161,7 +161,7 @@ CLIQUES = [{
         }
     ],
     "environment": "Miratis-Liberty-API",
-    "focal_point_type": "pnic",
+    "focal_point_type": "host_pnic",
     "id": "576c119a3f4173144c7a75c6"
     }
 ]

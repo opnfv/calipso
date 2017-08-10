@@ -19,7 +19,8 @@ class FindLinksForVconnectors(FindLinks):
             "environment": self.get_env(),
             "type": "vconnector"
         })
-        self.log.info("adding links of type: vnic-vconnector, vconnector-pnic")
+        self.log.info("adding links of type: vnic-vconnector, "
+                      "vconnector-host_pnic")
         for vconnector in vconnectors:
             for interface in vconnector["interfaces_names"]:
                 self.add_vnic_vconnector_link(vconnector, interface)
@@ -69,7 +70,7 @@ class FindLinksForVconnectors(FindLinks):
         host = vconnector["host"]
         pnic = self.inv.find_items({
             "environment": self.get_env(),
-            "type": "pnic",
+            "type": "host_pnic",
             "host": vconnector["host"],
             "name": ifname
         }, get_single=True)
@@ -79,7 +80,7 @@ class FindLinksForVconnectors(FindLinks):
         source_id = vconnector["id"]
         target = pnic["_id"]
         target_id = pnic["id"]
-        link_type = "vconnector-pnic"
+        link_type = "vconnector-host_pnic"
         link_name = pnic["name"]
         state = "up"  # TBD
         link_weight = 0  # TBD

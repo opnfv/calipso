@@ -96,11 +96,10 @@ class AciFetchSwitchPnic(AciAccess):
                                mac_address))
         pnic_json = {
             "id": db_pnic_id,
-            "type": "pnic",
+            "type": "switch_pnic",
             "role": "hostlink",
             "parent_id": db_leaf_id,
             "parent_type": "switch",
-            "pnic_type": "switch",
             "mac_address": mac_address,
             "switch": db_leaf_id,
             "aci_document": leaf_pnic

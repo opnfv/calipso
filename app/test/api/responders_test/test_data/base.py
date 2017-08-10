@@ -70,14 +70,14 @@ CONSTANTS_BY_NAMES = {
     "link_types": [
         "instance-vnic",
         "otep-vconnector",
-        "otep-pnic",
-        "pnic-network",
+        "otep-host_pnic",
+        "host_pnic-network",
         "vedge-otep",
         "vnic-vconnector",
-        "vconnector-pnic",
+        "vconnector-host_pnic",
         "vconnector-vedge",
         "vnic-vedge",
-        "vedge-pnic",
+        "vedge-host_pnic",
         "vservice-vnic"
     ],
     "link_states": [
@@ -134,11 +134,13 @@ CONSTANTS_BY_NAMES = {
         "vedge",
         "instance",
         "vservice",
-        "pnic",
+        "host_pnic",
         "network",
         "port",
         "otep",
-        "agent"
+        "agent",
+        "switch_pnic",
+        "switch"
     ],
     "env_types": [
         "development",

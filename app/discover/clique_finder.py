@@ -100,11 +100,15 @@ class CliqueFinder(Fetcher):
             link_type_parts = link_type.split('-')
             link_type_parts.reverse()
             link_type_reversed = '-'.join(link_type_parts)
-            matches = self.links.find_one({
-                "environment": self.env,
-                "link_type": link_type_reversed
-            })
-            reversed = True if matches else False
+            self_linked = link_type == link_type_reversed
+            if self_linked:
+                reversed = False
+            else:
+                matches = self.links.find_one({
+                    "environment": self.env,
+                    "link_type": link_type_reversed
+                })
+                reversed = True if matches else False
             if reversed:
                 link_type = link_type_reversed
             from_type = link_type[:link_type.index("-")]
@@ -115,6 +119,7 @@ class CliqueFinder(Fetcher):
             if match_type not in nodes_of_type.keys():
                 continue
             other_side_type = to_type if not reversed else from_type
+            nodes_to_add = {}
             for match_point in nodes_of_type[match_type].keys():
                 matches = self.links.find({
                     "environment": self.env,
@@ -130,9 +135,10 @@ class CliqueFinder(Fetcher):
                     clique["links"].append(id)
                     clique["links_detailed"].append(link)
                     other_side_point = str(link[other_side])
-                    if other_side_type not in nodes_of_type:
-                        nodes_of_type[other_side_type] = {}
-                    nodes_of_type[other_side_type][other_side_point] = 1
+                    nodes_to_add[other_side_point] = 1
+            if other_side_type not in nodes_of_type:
+                nodes_of_type[other_side_type] = {}
+            nodes_of_type[other_side_type].update(nodes_to_add)
 
         # after adding the links to the clique, create/update the clique
         if not clique["links"]:

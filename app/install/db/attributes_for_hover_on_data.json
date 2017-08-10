@@ -46,7 +46,7 @@
         "Link detected", 
         "type"
     ], 
-    "type" : "pnic"
+    "type" : "host_pnic"
 },
 { 
     "attributes" : [
