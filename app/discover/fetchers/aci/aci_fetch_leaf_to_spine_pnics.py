@@ -78,8 +78,9 @@ class AciFetchLeafToSpinePnics(AciAccess):
     @aci_config_required(default=[])
     def get(self, db_leaf_pnic_id):
         environment = self.get_env()
-        pnic = self.inv.get_by_id(environment=environment,
-                                  item_id=db_leaf_pnic_id)
+        leaf_pnic = self.inv.get_by_id(environment=environment,
+                                       item_id=db_leaf_pnic_id)
+        leaf_switch_id = leaf_pnic['switch']
 
         # Decode aci leaf switch id from db format
         aci_leaf_pnic_id = decode_aci_dn(db_leaf_pnic_id)
@@ -109,7 +110,8 @@ class AciFetchLeafToSpinePnics(AciAccess):
                     "aci_document": spine
                 }
                 # Region name is the same as region id
-                region_id = get_object_path_part(pnic["name_path"], "Regions")
+                region_id = get_object_path_part(leaf_pnic["name_path"],
+                                                 "Regions")
                 region = self.inv.get_by_id(environment, region_id)
                 self.inv.save_inventory_object(o=spine_json, parent=region,
                                                environment=environment)
@@ -119,7 +121,7 @@ class AciFetchLeafToSpinePnics(AciAccess):
             # (see "connected_to" field).
             db_downlink_pnic_id = "-".join((db_spine_id,
                                             encode_aci_dn(downlink_pnic_id)))
-            db_uplink_pnic_id = "-".join((pnic["host"],  # host == switch
+            db_uplink_pnic_id = "-".join((leaf_pnic["switch"],
                                           encode_aci_dn(uplink_pnic_id)))
 
             downlink_pnic_json = {
@@ -129,6 +131,7 @@ class AciFetchLeafToSpinePnics(AciAccess):
                 "pnic_type": "switch",
                 "connected_to": db_uplink_pnic_id,
                 "switch": db_spine_id,
+                "parent_id": db_spine_id,
                 "aci_document": {}  # TODO: what can we add here?
             }
 
@@ -138,7 +141,8 @@ class AciFetchLeafToSpinePnics(AciAccess):
                 "role": "uplink",
                 "pnic_type": "switch",
                 "connected_to": db_downlink_pnic_id,
-                "switch": db_spine_id,
+                "switch": leaf_switch_id,
+                "parent_id": leaf_switch_id,
                 "aci_document": {}  # TODO: what can we add here?
             }
 
