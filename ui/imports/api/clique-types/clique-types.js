@@ -46,6 +46,7 @@ let schema = {
   link_types: {
     type: [String],
     minCount: 1,
+    defaultValue: [],
     custom: function () {
       let that = this;
       let findResult = R.all(function (pLinkType) {

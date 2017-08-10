@@ -61,7 +61,7 @@
 
         <div class="sm-field-group-link-types cl-field-group">
           <label class="cl-field-label">Link Types</label>
-          {{#if (getModelField 'link_types') }}
+          {{#if (exists (getModelField 'link_types')) }}
           {{>SelectableOrderedInput (argsLinkTypesInput linkTypesList (getModelField 'link_types')) }}
           {{/if }}
           <div class="cl-field-desc">Link Types</div>

@@ -213,6 +213,10 @@ Template.CliqueType.helpers({
       },
     };
   },
+
+  exists: function (val) {
+    return ! R.isNil(val);
+  }
 }); // end: helpers
 
 function initInsertView(instance, query) {
