@@ -508,7 +508,7 @@
     ]
 },
 { 
-    "name" : "object_types_for_links", 
+    "name" : "object_types_for_links",
     "data" : [
         {
             "label" : "vnic", 
@@ -535,6 +535,18 @@
             "value" : "pnic"
         }, 
         {
+            "label" : "switch_pnic", 
+            "value" : "switch_pnic"
+        }, 
+        {
+            "label" : "host_pnic", 
+            "value" : "host_pnic"
+        }, 
+        {
+            "label" : "switch", 
+            "value" : "switch"
+        }, 
+        {
             "label" : "network", 
             "value" : "network"
         }, 
@@ -553,16 +565,8 @@
         {
             "label" : "host", 
             "value" : "host"
-        }, 
-        {
-            "label" : "switch_pnic", 
-            "value" : "switch_pnic"
-        }, 
-        {
-            "label" : "switch", 
-            "value" : "switch"
         }
-    ]
+    ] 
 },
 { 
     "name" : "scan_object_types", 
