@@ -99,6 +99,7 @@ class AciFetchSwitchPnic(AciAccess):
             "type": "pnic",
             "role": "hostlink",
             "parent_id": db_leaf_id,
+            "parent_type": "switch",
             "pnic_type": "switch",
             "mac_address": mac_address,
             "switch": db_leaf_id,

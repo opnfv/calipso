@@ -132,6 +132,7 @@ class AciFetchLeafToSpinePnics(AciAccess):
                 "connected_to": db_uplink_pnic_id,
                 "switch": db_spine_id,
                 "parent_id": db_spine_id,
+                "parent_type": "switch",
                 "aci_document": {}  # TODO: what can we add here?
             }
 
@@ -143,6 +144,7 @@ class AciFetchLeafToSpinePnics(AciAccess):
                 "connected_to": db_downlink_pnic_id,
                 "switch": leaf_switch_id,
                 "parent_id": leaf_switch_id,
+                "parent_type": "switch",
                 "aci_document": {}  # TODO: what can we add here?
             }
 
