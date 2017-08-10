@@ -36,9 +36,10 @@ class FindLinksForOteps(FindLinks):
         link_name = vedge["name"] + "-otep"
         state = "up"  # TBD
         link_weight = 0  # TBD
-        self.create_link(self.get_env(), vedge["host"],
+        self.create_link(self.get_env(),
                          source, source_id, target, target_id,
-                         link_type, link_name, state, link_weight)
+                         link_type, link_name, state, link_weight,
+                         host=vedge["host"])
 
     def add_otep_vconnector_link(self, otep):
         if "vconnector" not in otep:
@@ -59,9 +60,10 @@ class FindLinksForOteps(FindLinks):
         link_name = otep["name"] + "-" + otep["vconnector"]
         state = "up"  # TBD
         link_weight = 0  # TBD
-        self.create_link(self.get_env(), otep["host"],
+        self.create_link(self.get_env(),
                          source, source_id, target, target_id,
-                         link_type, link_name, state, link_weight)
+                         link_type, link_name, state, link_weight,
+                         host=otep["host"])
 
     def add_otep_pnic_link(self, otep):
         pnic = self.inv.find_items({
@@ -80,6 +82,7 @@ class FindLinksForOteps(FindLinks):
         link_name = otep["host"] + "pnic" + pnic["name"]
         state = "up"  # TBD
         link_weight = 0  # TBD
-        self.create_link(self.get_env(), otep["host"],
+        self.create_link(self.get_env(),
                          source, source_id, target, target_id,
-                         link_type, link_name, state, link_weight)
+                         link_type, link_name, state, link_weight,
+                         host=otep["host"])

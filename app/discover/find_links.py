@@ -16,15 +16,20 @@ class FindLinks(Fetcher):
         super().__init__()
         self.inv = InventoryMgr()
 
-    def create_link(self, env, host, source, source_id, target, target_id,
+    def create_link(self, env, source, source_id, target, target_id,
                     link_type, link_name, state, link_weight,
-                    source_label="", target_label="",
+                    host=None, switch=None,
                     extra_attributes=None):
         if extra_attributes is None:
             extra_attributes = {}
-        link = self.inv.create_link(env, host,
+        source_label = extra_attributes.get('source_label', '')
+        target_label = extra_attributes.get('target_label', '')
+        link = self.inv.create_link(env,
                                     source, source_id, target, target_id,
                                     link_type, link_name, state, link_weight,
+                                    source_label=source_label,
+                                    target_label=target_label,
+                                    host=host, switch=switch,
                                     extra_attributes=extra_attributes)
         if self.inv.monitoring_setup_manager:
             self.inv.monitoring_setup_manager.create_setup(link)

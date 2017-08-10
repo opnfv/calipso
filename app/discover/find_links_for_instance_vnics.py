@@ -53,7 +53,8 @@ class FindLinksForInstanceVnics(FindLinks):
         state = "up"  # TBD
         link_weight = 0  # TBD
         attributes = {} if not network_id else {'network': network_id}
-        self.create_link(self.get_env(), host["name"],
+        self.create_link(self.get_env(),
                          source, source_id, target, target_id,
                          link_type, network_name, state, link_weight,
+                         host=host["name"],
                          extra_attributes=attributes)

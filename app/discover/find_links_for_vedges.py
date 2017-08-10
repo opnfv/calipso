@@ -45,10 +45,12 @@ class FindLinksForVedges(FindLinks):
         link_weight = 0  # TBD
         source_label = vnic["mac_address"]
         target_label = port["id"]
-        self.create_link(self.get_env(), vedge["host"],
+        self.create_link(self.get_env(),
                          source, source_id, target, target_id,
                          link_type, link_name, state, link_weight,
-                         source_label, target_label)
+                         host=vedge["host"],
+                         extra_attributes={"source_label": source_label,
+                                           "target_label": target_label})
 
     def find_matching_vconnector(self, vedge, port):
         if self.configuration.has_network_plugin('VPP'):
@@ -79,7 +81,8 @@ class FindLinksForVedges(FindLinks):
         source_label = vconnector_interface_name
         target_label = port["name"]
         mac_address = "Unknown"
-        attributes = {'mac_address': mac_address}
+        attributes = {'mac_address': mac_address, 'source_label': source_label,
+                      'target_label': target_label}
         for interface in vconnector['interfaces'].values():
             if vconnector_interface_name != interface['name']:
                 continue
@@ -90,11 +93,11 @@ class FindLinksForVedges(FindLinks):
             break
         if 'network' in vconnector:
             attributes['network'] = vconnector['network']
-        self.create_link(self.get_env(), vedge["host"],
+        self.create_link(self.get_env(),
                          source, source_id, target, target_id,
                          link_type, link_name, state, link_weight,
-                         source_label, target_label,
-                         attributes)
+                         host=vedge["host"],
+                         extra_attributes=attributes)
 
     def find_matching_pnic(self, vedge, port):
         pname = port["name"]
@@ -119,6 +122,7 @@ class FindLinksForVedges(FindLinks):
         link_name = "Port-" + port["id"]
         state = "up" if pnic["Link detected"] == "yes" else "down"
         link_weight = 0  # TBD
-        self.create_link(self.get_env(), vedge["host"],
+        self.create_link(self.get_env(),
                          source, source_id, target, target_id,
-                         link_type, link_name, state, link_weight)
+                         link_type, link_name, state, link_weight,
+                         host=vedge["host"])
