@@ -49,8 +49,9 @@ class FindLinksForVserviceVnics(FindLinks):
         link_name = network["name"]
         state = "up"  # TBD
         link_weight = 0  # TBD
-        self.create_link(self.get_env(), v["host"],
+        self.create_link(self.get_env(),
                          source, source_id,
                          target, target_id,
                          link_type, link_name, state, link_weight,
+                         host=v["host"],
                          extra_attributes={'network': v['network']})

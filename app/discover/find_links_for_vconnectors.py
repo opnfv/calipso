@@ -56,9 +56,10 @@ class FindLinksForVconnectors(FindLinks):
             attributes = {'network': vnic['network']}
             vconnector['network'] = vnic['network']
             self.inv.set(vconnector)
-        self.create_link(self.get_env(), host,
+        self.create_link(self.get_env(),
                          source, source_id, target, target_id,
                          link_type, link_name, state, link_weight,
+                         host=host,
                          extra_attributes=attributes)
 
     def add_vconnector_pnic_link(self, vconnector, interface):
@@ -82,7 +83,8 @@ class FindLinksForVconnectors(FindLinks):
         link_name = pnic["name"]
         state = "up"  # TBD
         link_weight = 0  # TBD
-        self.create_link(self.get_env(), host,
+        self.create_link(self.get_env(),
                          source, source_id,
                          target, target_id,
-                         link_type, link_name, state, link_weight)
+                         link_type, link_name, state, link_weight,
+                         host=host)

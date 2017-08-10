@@ -259,15 +259,15 @@ class InventoryMgr(MongoAccess, metaclass=Singleton):
     # state: up/down
     # link_weight: integer, position/priority for graph placement
     # source_label, target_label: labels for the ends of the link (optional)
-    def create_link(self, env, host, src, source_id, target, target_id,
+    def create_link(self, env, src, source_id, target, target_id,
                     link_type, link_name, state, link_weight,
                     source_label="", target_label="",
+                    host=None, switch=None,
                     extra_attributes=None):
         s = bson.ObjectId(src)
         t = bson.ObjectId(target)
         link = {
             "environment": env,
-            "host": host,
             "source": s,
             "source_id": source_id,
             "target": t,
@@ -280,6 +280,10 @@ class InventoryMgr(MongoAccess, metaclass=Singleton):
             "target_label": target_label,
             "attributes": extra_attributes if extra_attributes else {}
         }
+        if host:
+            link['host'] = host
+        if switch:
+            link['switch'] = switch
         return self.write_link(link)
 
     def write_link(self, link):
@@ -359,7 +363,8 @@ class InventoryMgr(MongoAccess, metaclass=Singleton):
         return features_in_env.get(feature.value) is True
 
     def save_inventory_object(self, o: dict, parent: dict,
-                              environment: str, type_to_fetch: dict = None) -> bool:
+                              environment: str, type_to_fetch: dict = None) \
+            -> bool:
         if not type_to_fetch:
             type_to_fetch = {}
 
