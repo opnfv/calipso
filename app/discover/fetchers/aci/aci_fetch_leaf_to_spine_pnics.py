@@ -126,6 +126,7 @@ class AciFetchLeafToSpinePnics(AciAccess):
 
             downlink_pnic_json = {
                 "id": db_downlink_pnic_id,
+                "object_name": downlink_pnic_id,
                 "type": "switch_pnic",
                 "role": "downlink",
                 "connected_to": db_uplink_pnic_id,
@@ -137,6 +138,7 @@ class AciFetchLeafToSpinePnics(AciAccess):
 
             uplink_pnic_json = {
                 "id": db_uplink_pnic_id,
+                "object_name": uplink_pnic_id,
                 "type": "switch_pnic",
                 "role": "uplink",
                 "connected_to": db_downlink_pnic_id,

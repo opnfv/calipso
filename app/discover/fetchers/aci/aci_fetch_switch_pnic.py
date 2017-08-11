@@ -11,7 +11,7 @@ import re
 
 from discover.fetchers.aci.aci_access import AciAccess, aci_config_required
 from utils.inventory_mgr import InventoryMgr
-from utils.util import encode_aci_dn, get_object_path_part
+from utils.util import decode_aci_dn, encode_aci_dn, get_object_path_part
 
 
 # Fetches and adds to database:
@@ -91,11 +91,11 @@ class AciFetchSwitchPnic(AciAccess):
                                            environment=environment)
 
         # Prepare pnic json for results list
-        db_pnic_id = "-".join((db_leaf_id,
-                               encode_aci_dn(leaf_pnic["ifId"]),
-                               mac_address))
+        if_id = decode_aci_dn(leaf_pnic["ifId"])
+        db_pnic_id = "-".join([db_leaf_id, if_id, mac_address])
         pnic_json = {
             "id": db_pnic_id,
+            "object_name": if_id,
             "type": "switch_pnic",
             "role": "hostlink",
             "parent_id": db_leaf_id,
