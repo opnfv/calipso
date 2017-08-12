@@ -18,23 +18,27 @@ class FindLinksForPnics(FindLinks):
         super().__init__()
 
     def add_links(self):
+        self.log.info("adding links of type: pnic-network, "
+                      "host_pnic-switch_pnic, switch-host_pnic")
         pnics = self.inv.find_items({
             "environment": self.get_env(),
             "type": "host_pnic"
         })
-        self.log.info("adding links of type: host_pnic-network, "
-                      "host_pnic-switch_pnic")
         for pnic in pnics:
             self.add_pnic_network_links(pnic)
             self.add_host_pnic_to_switch_pnic_link(pnic)
+            self.add_switch_to_pnic_link(pnic)
+
+        self.log.info("adding links of type: switch_pnic-switch_pnic, "
+                      "switch-switch_pnic")
         pnics = self.inv.find_items({
             "environment": self.get_env(),
             "type": "switch_pnic",
             "role": "uplink"
         })
-        self.log.info("adding links of type: switch_pnic-switch_pnic")
         for pnic in pnics:
-            self.add_switch_to_switch_link(pnic)
+            self.add_switch_pnic_to_switch_pnic_link(pnic)
+            self.add_switch_to_pnic_link(pnic)
 
     def add_pnic_network_links(self, pnic):
         host = pnic["host"]
@@ -92,7 +96,7 @@ class FindLinksForPnics(FindLinks):
                          link_type, link_name, state, link_weight,
                          host=host_pnic['host'])
 
-    def add_switch_to_switch_link(self, leaf_pnic):
+    def add_switch_pnic_to_switch_pnic_link(self, leaf_pnic):
         spine_pnic = self.inv.get_by_id(self.get_env(),
                                         leaf_pnic['connected_to'])
         if not spine_pnic:
@@ -110,3 +114,20 @@ class FindLinksForPnics(FindLinks):
                          source, source_id, target, target_id,
                          link_type, link_name, state, link_weight,
                          switch=leaf_pnic['switch'])
+
+    def add_switch_to_pnic_link(self, pnic):
+        switch = self.inv.get_by_id(self.get_env(), pnic['id'])
+        if not switch:
+            return
+        source = switch["_id"]
+        source_id = switch["id"]
+        target = pnic["_id"]
+        target_id = pnic["id"]
+        link_type = "switch-{}".format(pnic['type'])
+        link_name = "{}={}".format(switch["object_name"], pnic["object_name"])
+        state = "up"  # TBD
+        link_weight = 0  # TBD
+        self.create_link(self.get_env(),
+                         source, source_id, target, target_id,
+                         link_type, link_name, state, link_weight,
+                         switch=switch['id'])
