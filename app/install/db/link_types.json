@@ -173,5 +173,19 @@
     "user_id" : "WS7j8oTbWPf3LbNne", 
     "endPointA" : "host_pnic", 
     "description" : "host_pnic-switch_pnic"
+},
+{
+    "endPointB" : "switch_pnic",
+    "type" : "switch-switch_pnic",
+    "user_id" : "WS7j8oTbWPf3LbNne",
+    "endPointA" : "switch",
+    "description" : "switch-switch_pnic"
+},
+{
+    "endPointB" : "switch",
+    "type" : "switch_pnic-switch",
+    "user_id" : "WS7j8oTbWPf3LbNne",
+    "endPointA" : "switch_pnic",
+    "description" : "switch_pnic-switch"
 }
 ]

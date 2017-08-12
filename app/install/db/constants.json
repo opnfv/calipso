@@ -270,6 +270,14 @@
         {
             "label" : "switch_pnic-switch_pnic", 
             "value" : "switch_pnic-switch_pnic"
+        },
+        {
+            "value" : "switch_pnic-switch", 
+            "label" : "switch_pnic-switch"
+        }, 
+        {
+            "value" : "switch-switch_pnic", 
+            "label" : "switch-switch_pnic"
         }
     ]
 },
