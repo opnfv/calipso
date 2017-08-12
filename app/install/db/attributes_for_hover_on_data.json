@@ -85,5 +85,13 @@
         "ports"
     ], 
     "type" : "otep"
+},
+{ 
+    "type" : "switch_pnic", 
+    "attributes" : [
+        "aci_document", 
+        "parent_id", 
+        "role"
+    ]
 }
 ]
