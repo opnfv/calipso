@@ -1,184 +1,177 @@
 [
 { 
+    "endPointB" : "vnic", 
+    "type" : "instance-vnic", 
     "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "instance-vnic", 
     "endPointA" : "instance", 
-    "endPointB" : "vnic", 
-    "type" : "instance-vnic"
+    "description" : "instance-vnic"
 },
 { 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "vnic-vconnector", 
-    "endPointA" : "vnic", 
-    "endPointB" : "vconnector", 
-    "type" : "vnic-vconnector"
-},
-{ 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "vconnector-vedge", 
-    "endPointA" : "vconnector", 
-    "endPointB" : "vedge", 
-    "type" : "vconnector-vedge"
-},
-{ 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "vedge-otep", 
-    "endPointA" : "vedge", 
-    "endPointB" : "otep", 
-    "type" : "vedge-otep"
-},
-{ 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "vconnector-host_pnic", 
-    "endPointA" : "vconnector", 
-    "endPointB" : "host_pnic", 
-    "type" : "vconnector-host_pnic"
-},
-{ 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "host_pnic-network", 
-    "endPointA" : "host_pnic", 
-    "endPointB" : "network", 
-    "type" : "host_pnic-network"
-},
-{ 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "otep-vconnector", 
-    "endPointA" : "otep", 
-    "endPointB" : "vconnector", 
-    "type" : "otep-vconnector"
-},
-{ 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "vnic-vedge", 
-    "endPointA" : "vnic", 
-    "endPointB" : "vedge", 
-    "type" : "vnic-vedge"
-},
-{ 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "network-host_pnic", 
-    "endPointA" : "network", 
-    "endPointB" : "host_pnic", 
-    "type" : "network-host_pnic"
-},
-{ 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "vedge-vconnector", 
-    "endPointA" : "vedge", 
-    "endPointB" : "vconnector", 
-    "type" : "vedge-vconnector"
-},
-{ 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "vconnector-vnic", 
-    "endPointA" : "vconnector", 
-    "endPointB" : "vnic", 
-    "type" : "vconnector-vnic"
-},
-{ 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "vnic-instance", 
-    "endPointA" : "vnic", 
     "endPointB" : "instance", 
-    "type" : "vnic-instance"
-},
-{ 
+    "type" : "vnic-instance", 
     "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "vnic-vservice", 
     "endPointA" : "vnic", 
-    "endPointB" : "vservice", 
-    "type" : "vnic-vservice"
+    "description" : "vnic-instance"
 },
 { 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "vservice-vnic", 
-    "endPointA" : "vservice", 
     "endPointB" : "vnic", 
-    "type" : "vservice-vnic"
-},
-{ 
+    "type" : "vconnector-vnic", 
     "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "host_pnic-vconnector", 
-    "endPointA" : "host_pnic", 
-    "endPointB" : "vconnector", 
-    "type" : "host_pnic-vconnector"
-},
-{ 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "vconnector-otep", 
     "endPointA" : "vconnector", 
-    "endPointB" : "otep", 
-    "type" : "vconnector-otep"
+    "description" : "vconnector-vnic"
 },
 { 
+    "endPointB" : "vconnector", 
+    "type" : "vnic-vconnector", 
     "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "otep-vedge", 
-    "endPointA" : "otep", 
+    "endPointA" : "vnic", 
+    "description" : "vnic-vconnector"
+},
+{ 
     "endPointB" : "vedge", 
-    "type" : "otep-vedge"
+    "type" : "vconnector-vedge", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "vconnector", 
+    "description" : "vconnector-vedge"
 },
 { 
+    "endPointB" : "vconnector", 
+    "type" : "vedge-vconnector", 
     "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "vedge-vnic", 
     "endPointA" : "vedge", 
+    "description" : "vedge-vconnector"
+},
+{ 
+    "endPointB" : "otep", 
+    "type" : "vedge-otep", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "vedge", 
+    "description" : "vedge-otep"
+},
+{ 
+    "endPointB" : "vedge", 
+    "type" : "otep-vedge", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "otep", 
+    "description" : "otep-vedge"
+},
+{ 
+    "endPointB" : "vconnector", 
+    "type" : "otep-vconnector", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "otep", 
+    "description" : "otep-vconnector"
+},
+{ 
+    "endPointB" : "otep", 
+    "type" : "vconnector-otep", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "vconnector", 
+    "description" : "vconnector-otep"
+},
+{ 
+    "endPointB" : "vedge", 
+    "type" : "vnic-vedge", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "vnic", 
+    "description" : "vnic-vedge"
+},
+{ 
     "endPointB" : "vnic", 
-    "type" : "vedge-vnic"
+    "type" : "vedge-vnic", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "vedge", 
+    "description" : "vedge-vnic"
 },
 { 
+    "endPointB" : "vservice", 
+    "type" : "vnic-vservice", 
     "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "host_pnic-host", 
-    "endPointA" : "host_pnic", 
-    "endPointB" : "host", 
-    "type" : "host_pnic-host"
+    "endPointA" : "vnic", 
+    "description" : "vnic-vservice"
 },
 { 
+    "endPointB" : "vnic", 
+    "type" : "vservice-vnic", 
     "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "host-host_pnic", 
-    "endPointA" : "host", 
+    "endPointA" : "vservice", 
+    "description" : "vservice-vnic"
+},
+{ 
     "endPointB" : "host_pnic", 
-    "type" : "host-host_pnic"
+    "type" : "vconnector-host_pnic", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "vconnector", 
+    "description" : "vconnector-host_pnic"
 },
 { 
+    "endPointB" : "vconnector", 
+    "type" : "host_pnic-vconnector", 
     "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "host-network", 
-    "endPointA" : "host", 
+    "endPointA" : "host_pnic", 
+    "description" : "host_pnic-vconnector"
+},
+{ 
     "endPointB" : "network", 
-    "type" : "host-network"
+    "type" : "host_pnic-network", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "host_pnic", 
+    "description" : "host_pnic-network"
 },
 { 
+    "endPointB" : "host_pnic", 
+    "type" : "network-host_pnic", 
     "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "network-host", 
     "endPointA" : "network", 
-    "endPointB" : "host", 
-    "type" : "network-host"
+    "description" : "network-host_pnic"
 },
 { 
+    "endPointB" : "vedge", 
+    "type" : "host_pnic-vedge", 
     "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "network-switch_pnic", 
-    "endPointA" : "network", 
+    "endPointA" : "host_pnic", 
+    "description" : "host_pnic-vedge"
+},
+{ 
+    "endPointB" : "host_pnic", 
+    "type" : "vedge-host_pnic", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "vedge", 
+    "description" : "vedge-host_pnic"
+},
+{ 
+    "endPointB" : "otep", 
+    "type" : "host_pnic-otep", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "host_pnic", 
+    "description" : "host_pnic-otep"
+},
+{ 
+    "endPointB" : "host_pnic", 
+    "type" : "otep-host_pnic", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "otep", 
+    "description" : "otep-host_pnic"
+},
+{ 
     "endPointB" : "switch_pnic", 
-    "type" : "network-switch_pnic"
-},
-{ 
+    "type" : "switch_pnic-switch_pnic", 
     "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "switch_pnic-network", 
     "endPointA" : "switch_pnic", 
-    "endPointB" : "network", 
-    "type" : "switch_pnic-network"
+    "description" : "switch_pnic-switch_pnic"
 },
 { 
+    "endPointB" : "host_pnic", 
+    "type" : "switch_pnic-host_pnic", 
     "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "switch_pnic-switch", 
     "endPointA" : "switch_pnic", 
-    "endPointB" : "switch", 
-    "type" : "switch_pnic-switch"
+    "description" : "switch_pnic-host_pnic"
 },
 { 
-    "user_id" : "WS7j8oTbWPf3LbNne", 
-    "description" : "switch-switch_pnic", 
-    "endPointA" : "switch", 
     "endPointB" : "switch_pnic", 
-    "type" : "switch-switch_pnic"
+    "type" : "host_pnic-switch_pnic", 
+    "user_id" : "WS7j8oTbWPf3LbNne", 
+    "endPointA" : "host_pnic", 
+    "description" : "host_pnic-switch_pnic"
 }
 ]

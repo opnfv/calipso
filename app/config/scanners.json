@@ -88,9 +88,9 @@
         "type": "pnics_folder",
         "fetcher": {
           "folder": true,
-          "types_name": "pnics",
+          "types_name": "host_pnics",
           "parent_type": "host",
-          "text": "pNICs"
+          "text": "host_pNICs"
         },
         "environment_condition": {
           "mechanism_drivers": [
@@ -310,9 +310,9 @@
         "type": "pnics_folder",
         "fetcher": {
           "folder": true,
-          "types_name": "pnics",
+          "types_name": "host_pnics",
           "parent_type": "vedge",
-          "text": "pNICs"
+          "text": "host_pNICs"
         },
         "environment_condition": {
           "mechanism_drivers": "VPP"

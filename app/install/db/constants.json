@@ -176,76 +176,100 @@
             "value" : "instance-vnic"
         }, 
         {
-            "label" : "otep-vconnector", 
-            "value" : "otep-vconnector"
-        }, 
-        {
-            "label" : "otep-host_pnic", 
-            "value" : "otep-host_pnic"
-        }, 
-        {
-            "label" : "host_pnic-network", 
-            "value" : "host_pnic-network"
-        }, 
-        {
-            "label" : "vedge-otep", 
-            "value" : "vedge-otep"
+            "label" : "vnic-instance", 
+            "value" : "vnic-instance"
         }, 
         {
             "label" : "vnic-vconnector", 
             "value" : "vnic-vconnector"
         }, 
         {
-            "label" : "vconnector-host_pnic", 
-            "value" : "vconnector-host_pnic"
-        }, 
-        {
-            "label" : "vnic-vedge", 
-            "value" : "vnic-vedge"
+            "label" : "vconnector-vnic", 
+            "value" : "vconnector-vnic"
         }, 
         {
             "label" : "vconnector-vedge", 
             "value" : "vconnector-vedge"
         }, 
         {
+            "label" : "vedge-vconnector", 
+            "value" : "vedge-vconnector"
+        }, 
+        {
             "label" : "vedge-host_pnic", 
             "value" : "vedge-host_pnic"
+        }, 
+        {
+            "label" : "host_pnic-vedge", 
+            "value" : "host_pnic-vedge"
+        }, 
+        {
+            "label" : "host_pnic-network", 
+            "value" : "host_pnic-network"
+        }, 
+        {
+            "label" : "network-host_pnic", 
+            "value" : "network-host_pnic"
+        }, 
+        {
+            "label" : "vedge-otep", 
+            "value" : "vedge-otep"
+        }, 
+        {
+            "label" : "otep-vedge", 
+            "value" : "otep-vedge"
+        }, 
+        {
+            "label" : "otep-vconnector", 
+            "value" : "otep-vconnector"
+        }, 
+        {
+            "label" : "vconnector-otep", 
+            "value" : "vconnector-otep"
+        }, 
+        {
+            "label" : "otep-host_pnic", 
+            "value" : "otep-host_pnic"
+        }, 
+        {
+            "label" : "host_pnic-otep", 
+            "value" : "host_pnic-otep"
+        }, 
+        {
+            "label" : "vconnector-host_pnic", 
+            "value" : "vconnector-host_pnic"
+        }, 
+        {
+            "label" : "host_pnic-vconnector", 
+            "value" : "host_pnic-vconnector"
+        }, 
+        {
+            "label" : "vnic-vedge", 
+            "value" : "vnic-vedge"
+        }, 
+        {
+            "label" : "vedge-vnic", 
+            "value" : "vedge-vnic"
         }, 
         {
             "label" : "vservice-vnic", 
             "value" : "vservice-vnic"
         }, 
         {
-            "label" : "host_pnic-host", 
-            "value" : "host_pnic-host"
+            "label" : "vnic-vservice", 
+            "value" : "vnic-vservice"
         }, 
         {
-            "label" : "host-host_pnic", 
-            "value" : "host-host_pnic"
+            "label" : "switch_pnic-host_pnic", 
+            "value" : "switch_pnic-host_pnic"
         }, 
         {
-            "label" : "host-network", 
-            "value" : "host-network"
+            "label" : "host_pnic-switch_pnic", 
+            "value" : "host_pnic-switch_pnic"
         }, 
         {
-            "label" : "network-host", 
-            "value" : "network-host"
-        }, 
-        {
-            "label" : "switch_pnic-network", 
-            "value" : "switch_pnic-network"
-        }, 
-        {
-            "label" : "network-switch_pnic", 
-            "value" : "network-switch_pnic"
-        }, 
-        {
-            "label" : "switch_pnic-switch", 
-            "value" : "switch_pnic-switch"
-        }, 
-        {
-            "label" : "switch-switch_pnic", 
-            "value" : "switch-switch_pnic"
+            "label" : "switch_pnic-switch_pnic", 
+            "value" : "switch_pnic-switch_pnic"
         }
     ]
 },
@@ -327,8 +351,16 @@
             "value" : "host_pnic"
         },
         {
+            "label" : "switch_pnic",
+            "value" : "switch_pnic"
+        },
+        {
             "label" : "network", 
             "value" : "network"
+        },
+        {
+            "label" : "switch",
+            "value" : "switch"
         }, 
         {
             "label" : "port", 
@@ -345,15 +377,7 @@
         {
             "label" : "host", 
             "value" : "host"
-        }, 
-        {
-            "label" : "switch_pnic", 
-            "value" : "switch_pnic"
-        }, 
-        {
-            "label" : "switch", 
-            "value" : "switch"
-        }
+        } 
     ]
 },
 { 
@@ -503,28 +527,16 @@
             "value" : "vservice"
         }, 
         {
-            "label" : "switch_pnic",
-            "value" : "switch_pnic"
+            "label" : "host_pnic",
+            "value" : "host_pnic"
         },
         {
             "label" : "network", 
             "value" : "network"
         }, 
         {
-            "label" : "port", 
-            "value" : "port"
-        }, 
-        {
             "label" : "otep", 
             "value" : "otep"
-        }, 
-        {
-            "label" : "agent", 
-            "value" : "agent"
-        }, 
-        {
-            "label" : "host", 
-            "value" : "host"
         }, 
         {
             "label" : "switch_pnic", 

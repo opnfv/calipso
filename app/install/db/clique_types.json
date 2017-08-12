@@ -13,17 +13,6 @@
     ], 
     "name" : "instance"
 },
-{  
-    "environment" : "ANY", 
-    "focal_point_type" : "host_pnic",
-    "link_types" : [
-        "host_pnic-host", 
-        "host-network", 
-        "network-switch_pnic", 
-        "switch_pnic-switch"
-    ], 
-    "name" : "pnic_clique"
-},
 { 
     "environment" : "ANY", 
     "focal_point_type" : "vservice", 
@@ -52,5 +41,22 @@
         "vnic-vservice"
     ], 
     "name" : "network"
+},
+{   
+    "focal_point_type" : "switch_pnic", 
+    "environment" : "ANY", 
+    "link_types" : [
+        "switch_pnic-switch-pnic", 
+        "switch_pnic-host_pnic", 
+        "host_pnic-vconnector", 
+        "vconnector-otep", 
+        "otep-vedge", 
+        "vedge-vconnector", 
+        "vedge-vnic", 
+        "vconnector-vnic", 
+        "vnic-instance", 
+        "vnic-vservice"
+    ], 
+    "name" : "switch_pnic clique"
 }
 ]
