@@ -45,6 +45,26 @@ class AciFetchSwitchPnic(AciAccess):
                                                       "attributes")
         return switch_data[0] if switch_data else None
 
+    def fetch_client_endpoints(self, mac_address):
+        mac_filter = "eq(fvCEp.mac,\"{}\")".format(mac_address)
+        query_params = {
+            "rsp-subtree": "children",
+            "query-target-filter": mac_filter
+        }
+
+        endpoints = self.fetch_objects_by_class("fvCEp", query_params)
+
+        results = []
+        for endpoint in endpoints:
+            result = endpoint["attributes"]
+            result["fvRsCEpToPathEp"] = []
+            for path in filter(lambda child: "fvRsCEpToPathEp" in child,
+                               endpoint.get("children", [])):
+                result["fvRsCEpToPathEp"].append(path["fvRsCEpToPathEp"]["attributes"])
+            results.append(result)
+
+        return results
+
     @aci_config_required(default=[])
     def get(self, pnic_id):
         environment = self.get_env()
@@ -91,17 +111,22 @@ class AciFetchSwitchPnic(AciAccess):
                                            environment=environment)
 
         # Prepare pnic json for results list
-        if_id = decode_aci_dn(leaf_pnic["ifId"])
-        db_pnic_id = "-".join([db_leaf_id, if_id, mac_address])
+        fvCEp = self.fetch_client_endpoints(mac_address)
+
+        db_pnic_id = "-".join([db_leaf_id,
+                               encode_aci_dn(leaf_pnic["ifId"]),
+                               mac_address])
+
         pnic_json = {
             "id": db_pnic_id,
-            "object_name": if_id,
+            "object_name": leaf_pnic["ifId"],
             "type": "switch_pnic",
             "role": "hostlink",
             "parent_id": db_leaf_id,
             "parent_type": "switch",
             "mac_address": mac_address,
             "switch": db_leaf_id,
-            "aci_document": leaf_pnic
+            "aci_document": leaf_pnic,
+            "fvCEp": fvCEp
         }
         return [pnic_json]
