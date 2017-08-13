@@ -101,7 +101,7 @@ class AciFetchSwitchPnic(AciAccess):
                 "id": db_leaf_id,
                 "ip_address": leaf_data["address"],
                 "type": "switch",
-                "host": db_leaf_id,
+                "switch": db_leaf_id,
                 "aci_document": leaf_data
             }
             # Region name is the same as region id

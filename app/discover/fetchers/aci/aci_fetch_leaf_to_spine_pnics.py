@@ -107,6 +107,7 @@ class AciFetchLeafToSpinePnics(AciAccess):
                 spine_json = {
                     "id": db_spine_id,
                     "type": "switch",
+                    "switch": db_spine_id,
                     "aci_document": spine
                 }
                 # Region name is the same as region id
