@@ -33,11 +33,11 @@ class FindLinksForPnics(FindLinks):
         pnics = self.inv.find_items({
             "environment": self.get_env(),
             "type": "switch_pnic",
-            "role": "uplink"
         })
         for pnic in pnics:
-            self.add_switch_pnic_to_switch_pnic_link(pnic)
             self.add_switch_to_pnic_link(pnic)
+            if "role" == "uplink":
+                self.add_switch_pnic_to_switch_pnic_link(pnic)
 
     def add_pnic_network_links(self, pnic):
         host = pnic["host"]
