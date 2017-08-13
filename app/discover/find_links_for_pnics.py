@@ -27,7 +27,6 @@ class FindLinksForPnics(FindLinks):
         for pnic in pnics:
             self.add_pnic_network_links(pnic)
             self.add_host_pnic_to_switch_pnic_link(pnic)
-            self.add_switch_to_pnic_link(pnic)
 
         self.log.info("adding links of type: switch_pnic-switch_pnic, "
                       "switch-switch_pnic")
@@ -116,7 +115,7 @@ class FindLinksForPnics(FindLinks):
                          switch=leaf_pnic['switch'])
 
     def add_switch_to_pnic_link(self, pnic):
-        switch = self.inv.get_by_id(self.get_env(), pnic['id'])
+        switch = self.inv.get_by_id(self.get_env(), pnic['parent_id'])
         if not switch:
             return
         source = switch["_id"]
