@@ -15,13 +15,15 @@ class ApiFetchRegions(ApiAccess):
         super(ApiFetchRegions, self).__init__()
         self.endpoint = ApiAccess.base_url
 
-    def get(self, project_id):
+    def get(self, regions_folder_id):
         token = self.v2_auth_pwd(self.admin_project)
         if not token:
             return []
         # the returned authentication response contains the list of end points
         # and regions
-        service_catalog = ApiAccess.auth_response.get('access', {}).get('serviceCatalog')
+        project_id = regions_folder_id.replace('-regions', '')
+        response = ApiAccess.get_auth_response(project_id)
+        service_catalog = response.get('access', {}).get('serviceCatalog')
         if not service_catalog:
             return []
         env = self.get_env()

@@ -30,7 +30,7 @@ class ApiAccess(Fetcher):
     tokens = {}
     admin_endpoint = ""
     admin_project = None
-    auth_response = None
+    auth_response = {}
 
     alternative_services = {
         "neutron": ["quantum"]
@@ -98,14 +98,15 @@ class ApiAccess(Fetcher):
             return subject_token
         req_url = ApiAccess.base_url + "/v2.0/tokens"
         response = requests.post(req_url, json=post_body, headers=headers)
-        ApiAccess.auth_response = response.json()
-        if 'error' in self.auth_response:
-            e = self.auth_response['error']
+        response = response.json()
+        ApiAccess.auth_response[project_id] = response
+        if 'error' in response:
+            e = response['error']
             self.log.error(str(e['code']) + ' ' + e['title'] + ': ' +
                            e['message'] + ", URL: " + req_url)
             return None
         try:
-            token_details = ApiAccess.auth_response["access"]["token"]
+            token_details = response["access"]["token"]
         except KeyError:
             # assume authentication failed
             return None
@@ -139,6 +140,13 @@ class ApiAccess(Fetcher):
             'Content-Type': 'application/json; charset=UTF-8'
         }
         return self.v2_auth(project_id, headers, post_body)
+
+    @staticmethod
+    def get_auth_response(project_id):
+        auth_response = ApiAccess.auth_response.get(project_id)
+        if not auth_response:
+            auth_response = ApiAccess.auth_response.get('admin', {})
+        return auth_response
 
     def get_rel_url(self, relative_url, headers):
         req_url = ApiAccess.base_url + relative_url
@@ -192,4 +200,3 @@ class ApiAccess(Fetcher):
             if sname in endpoints:
                 return endpoints[sname]
         return None
-

@@ -11,6 +11,7 @@ REGION = "RegionOne"
 ENV = "Mirantis-Liberty"
 
 AUTH_RESPONSE = {
+    "admin": {
     "access": {
         "serviceCatalog": [
             {
@@ -28,6 +29,7 @@ AUTH_RESPONSE = {
                 "type": "compute"
             }
         ]
+    }
     }
 }
 
