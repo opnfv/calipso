@@ -11,8 +11,17 @@
 <template name="ScheduledScan">
   <div class="os-scheduled-scan cards white">
 
+    {{#if (getState 'isMessage') }}
+    <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
+        {{#if (getState 'isSuccess')}}alert-success{{/if}}" 
+        role="alert">
+      {{ getState 'message' }}
+    </div>
+    {{/if }}
+
     <h3>{{ getState 'pageHeader' }}</h3>
     <div class="sm-form-container">
+
       <form role="form" class="sm-item-form form-horizontal">
 
         <div class="sm-field-group-id cl-field-group">
@@ -102,14 +111,6 @@
         {{/if }}
 
       </form>
-
-      {{#if (getState 'isMessage') }}
-      <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
-          {{#if (getState 'isSuccess')}}alert-success{{/if}}" 
-          role="alert">
-        {{ getState 'message' }}
-      </div>
-      {{/if }}
 
     </div>
   </div>

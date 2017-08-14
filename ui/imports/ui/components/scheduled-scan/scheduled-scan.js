@@ -41,10 +41,13 @@ Template.ScheduledScan.onCreated(function() {
     envsAsOptions: [],
     logLevelsAsOptions: [],
     pageHeader: 'Schedule a Scan',
+    reload: null,
   });
 
   instance.autorun(function () {
     let data = Template.currentData();
+    instance.state.get('reload');
+
     new SimpleSchema({
       _id: { 
         type: { _str: { type: String, regEx: SimpleSchema.RegEx.Id } }, 
@@ -55,6 +58,12 @@ Template.ScheduledScan.onCreated(function() {
     }).validate(data);
 
     instance.state.set('action', data.action);
+    instance.state.set('isError', false);
+    instance.state.set('isSuccess', false);
+    instance.state.set('isMessage', false);
+    instance.state.set('message', null);
+    instance.state.set('disabled', false);
+
     R.when(R.pipe(R.isNil, R.not), x => instance.state.set('_id', x))(data._id);
     R.when(R.pipe(R.isNil, R.not), x => instance.state.set('env', x))(data.env);
   });
@@ -500,4 +509,7 @@ function processActionResult(instance, error) {
   }
 
   //Router.go('/link-types-list');
+  setTimeout(() => {
+    instance.state.set('reload', Date.now());
+  }, 7000);
 }

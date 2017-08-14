@@ -52,11 +52,13 @@ Template.ScanningRequest.onCreated(function() {
     disabled: false,
     notifications: {},
     model: {},
-    beforeInsert: true
+    beforeInsert: true,
+    reload: null,
   });
 
   instance.autorun(function () {
     let data = Template.currentData();
+    instance.state.get('reload');
 
     new SimpleSchema({
       action: { type: String, allowedValues: ['insert', 'view', 'update'] },
@@ -66,6 +68,12 @@ Template.ScanningRequest.onCreated(function() {
         optional: true 
       },
     }).validate(data);
+
+    instance.state.set('isError', false);
+    instance.state.set('isSuccess', false);
+    instance.state.set('isMessage', false);
+    instance.state.set('message', null);
+    instance.state.set('disabled', false);
 
     switch (data.action) {
     case 'insert':
@@ -318,6 +326,10 @@ function processActionResult(instance, error) {
     } else if (action === 'update') {
       instance.state.set('message', 'Record had been updated successfully');
     }
+
+    setTimeout(() => {
+      instance.state.set('reload', Date.now());
+    }, 7000);
   }
 }
 

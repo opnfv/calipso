@@ -22,6 +22,15 @@
 
     <h3>{{ pageHeader }}</h3>
     <div class="sm-form-container">
+
+      {{#if (getState 'isMessage') }}
+      <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
+          {{#if (getState 'isSuccess')}}alert-success{{/if}}" 
+          role="alert">
+        {{ getState 'message' }}
+      </div>
+      {{/if }}
+
       <form role="form" class="form-horizontal">
 
         {{#each commandOption in commandOptions }}
@@ -60,14 +69,6 @@
         {{/if }}
 
       </form>
-
-      {{#if (getState 'isMessage') }}
-      <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
-          {{#if (getState 'isSuccess')}}alert-success{{/if}}" 
-          role="alert">
-        {{ getState 'message' }}
-      </div>
-      {{/if }}
 
     </div>
   </div>
