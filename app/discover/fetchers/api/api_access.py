@@ -161,7 +161,7 @@ class ApiAccess(Fetcher):
             else:
                 msg = ", response: {}".format(response.text)
             self.log.error("req_url: {} {}".format(req_url, msg))
-            return response
+            return None
         ret = response.json()
         return ret
 
