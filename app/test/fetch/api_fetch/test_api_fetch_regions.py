@@ -25,7 +25,7 @@ class TestApiFetchRegions(TestFetch):
         fetcher = ApiFetchRegions()
         fetcher.set_env(ENV)
 
-        ApiAccess.auth_response["admin"] = AUTH_RESPONSE
+        ApiAccess.auth_response = AUTH_RESPONSE
         ret = fetcher.get("test_id")
         self.assertEqual(ret, REGIONS_RESULT,
                          "Can't get correct regions information")
