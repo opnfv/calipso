@@ -37,7 +37,7 @@ Template.ScansList.onCreated(function() {
     env: null,
     page: 1,
     amountPerPage: 10,
-    sortField: 'start_timestamp',
+    sortField: 'submit_timestamp',
     sortDirection: -1,
   });
 

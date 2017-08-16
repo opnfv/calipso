@@ -29,7 +29,7 @@ Template.ScheduledScansList.onCreated(function() {
     env: null,
     page: 1,
     amountPerPage: 10,
-    sortField: null,
+    sortField: 'submit_timestamp',
     sortDirection: -1,
   });
 
@@ -61,6 +61,37 @@ Template.ScheduledScansList.rendered = function() {
  */
 
 Template.ScheduledScansList.events({
+  'click .sm-table-header': function (event, instance) {
+    event.preventDefault();
+    let isSortable = event.target.dataset.isSortable;
+    if (! isSortable ) { return; }
+
+    let sortField = event.target.dataset.sortField;
+    let currentSortField = instance.state.get('sortField');
+    let currentSortDirection = instance.state.get('sortDirection');
+
+    if (sortField === currentSortField) {
+      let sortDirection = null;
+      if (currentSortDirection === null) {
+        sortDirection = -1; 
+      } else if (currentSortDirection === -1) {
+        sortDirection = 1; 
+      } else if (currentSortDirection === 1) {
+        sortField = null;
+        sortDirection = null;
+      } else {
+        sortField = null;
+        sortDirection = null;
+      }
+
+      instance.state.set('sortField', sortField);
+      instance.state.set('sortDirection', sortDirection);
+
+    } else {
+      instance.state.set('sortField', sortField);
+      instance.state.set('sortDirection', -1);
+    }
+  },
 });
    
 /*  
@@ -146,6 +177,21 @@ Template.ScheduledScansList.helpers({
         instance.state.set('page', page);
       },
     };
+  },
+
+  fieldSortClass: function (fieldName) {
+    let instance = Template.instance();
+    let classes = 'fa fa-sort';
+    if (fieldName === instance.state.get('sortField')) {
+      let sortDirection = instance.state.get('sortDirection');
+      if (sortDirection === -1) {
+        classes = 'fa fa-sort-desc';
+      } else if (sortDirection === 1) {
+        classes = 'fa fa-sort-asc';
+      }
+    }
+
+    return classes; 
   },
 }); // end: helpers
 

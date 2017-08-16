@@ -10,12 +10,21 @@
  -->
 <template name="accordionNavMenu">
   <nav class="os-accordion-nav-menu">
+    {{#if showCollapsed }}
+    <div class="sm-collapsed-menu">
+      <a class="sm-menu-toggle-btn">
+        <i class="material-icons">menu</i>
+      </a>
+    </div>
+    {{else }}
     <div id="left-nav-menu" class="left-nav-menu">
       <div class="menu-header">
         <p>
             {{ envName }}
         </p>
-        <a href="#"><i class="material-icons">menu</i></a>
+        <a class="sm-menu-toggle-btn">
+          <i class="material-icons">menu</i>
+        </a>
       </div>
       <ul class="sm-menu-items-list">
         <li>
@@ -39,5 +48,6 @@
       </ul>
       <div class="menu-footer"> Cisco Systems inc. All rights reserved.</div>
     </div>
+    {{/if }}
   </nav>
 </template>

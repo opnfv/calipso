@@ -37,8 +37,8 @@ Template.MessagesList.onCreated(function() {
     env: null,
     page: 1,
     amountPerPage: 10,
-    sortField: null,
-    sortDirection: null,
+    sortField: 'timestamp',
+    sortDirection: -1,
     messsages: [],
   });
 

@@ -25,6 +25,7 @@ import { store } from '/imports/ui/store/store';
 import { setMainAppSelectedEnvironment } from '/imports/ui/actions/main-app.actions';
 
 import '/imports/ui/components/messages-info-box/messages-info-box';
+import '/imports/ui/components/environment-box/environment-box';
 
 import './dashboard.html';     
 
@@ -219,4 +220,29 @@ Template.Dashboard.helpers({
       }
     };
   },
+
+  argsEnvBox: function (
+    environmentName,
+    regionsCount, 
+    regions, 
+    projectsCount, 
+    projects, 
+    instancesCount,
+    vservicesCount,
+    vconnectorsCount,
+    hostsCount
+  ) {
+
+    return {
+      environmentName: environmentName,
+      regionsCount: regionsCount,
+      regions: regions,
+      projectsCount,
+      projects: projects,
+      instancesCount: instancesCount,
+      vservicesCount: vservicesCount,
+      vconnectorsCount: vconnectorsCount,
+      hostsCount: hostsCount,
+    };
+  }
 }); // end: helpers

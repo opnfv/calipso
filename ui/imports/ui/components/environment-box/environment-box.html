@@ -1,0 +1,112 @@
+<template name="EnvironmentBox">
+<div class="os-environment-box white">
+  <div class="flex-box justify-content-between">
+    <div class="flex-box-1 sm-desc-column">
+      <i class="material-icons sm-main-icon">view_carousel</i>
+    </div>
+    <div class="flex-box-3">
+      <h3>Enviroment name: {{ environmentName }}</h3>
+      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <th>Distribution</th>
+            <td> {{ envItem.distribution }} </td>
+          </tr>
+          <tr>
+            <th>Number of regions: {{ regionsCount }}</th>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Select region from dropdown
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        {{#each regionItem in regions }}
+                          <li>
+                            <a href="{{pathFor route='environment' 
+                                data=(asHash _id=(idToStr envItem._id))
+                                query=(asHash 
+                                  selectedNodeId=(idToStr regionItem._id ) ) }}"
+                                  >{{ regionItem.object_name }}</a>
+                          </li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Number of projects: {{ projectsCount }}</th>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Select project from dropdown
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      {{#each projectItem in projects }}
+                      <li>
+                        <a href="{{pathFor route='environment' 
+                             data=(asHash _id=(idToStr envItem._id)) 
+                             query=(asHash selectedNodeId=(idToStr projectItem._id)) }}"
+                           >{{ projectItem.object_name }}</a>
+                      </li>
+                      {{/each}}
+                    </ul>
+                </div>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h5>Enviroment summary:</h5>
+      <div class="sm-env-summary">
+
+        <div class="cards-w300-h60 white blue-text flex-box-1">
+          <div class="flex-box ">
+            <div class="flex-box-1">
+              <i class="fa fa-desktop"></i>
+            </div>
+            <div class="flex-box-3">
+            <p>Number of instances {{ instancesCount }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards-w300-h60 white blue-text flex-box-1">
+          <div class="flex-box ">
+            <div class="flex-box-1">
+              <i class="fa fa-object-group"></i>
+            </div>
+            <div class="flex-box-3">
+            <p>Number of vServices {{ vservicesCount }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards-w300-h60 white blue-text flex-box-1">
+          <div class="flex-box ">
+            <div class="flex-box-1">
+              <i class="fa fa-compress"></i>
+            </div>
+            <div class="flex-box-3">
+            <p>Number of vConnectors {{ vconnectorsCount }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards-w300-h60 white blue-text flex-box-1">
+          <div class="flex-box ">
+            <div class="flex-box-1">
+              <i class="fa fa-server" aria-hidden="true"></i>
+            </div>
+            <div class="flex-box-3">
+            <p>Number of hosts {{ hostsCount }}</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</template>

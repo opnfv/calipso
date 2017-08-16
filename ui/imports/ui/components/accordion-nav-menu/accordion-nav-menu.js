@@ -61,6 +61,8 @@ Template.accordionNavMenu.onCreated(function () {
       onScrollToNodePerformed: { type: Function },
       onOpenLinkReq: { type: Function },
       onResetNeedChildDetection: { type: Function },
+      onToggleMenu: { type: Function },
+      showCollapsed: { type: Boolean },
     }).validate(data);
   });
 
@@ -86,6 +88,10 @@ Template.accordionNavMenu.events({
   'click .sm-toggle-graph-button': function (_event, _instance) {
     let data = Template.currentData();
     data.onToggleGraphReq();
+  },
+
+  'click .sm-menu-toggle-btn': function (_event, instance) {
+    instance.data.onToggleMenu();
   }
 });
 

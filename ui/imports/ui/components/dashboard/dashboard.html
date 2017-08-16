@@ -10,140 +10,45 @@
  -->
 <template name="Dashboard">
 
-  <div class="flex-box">
+  <div class="os-dashboard">
     
-    <div class="flex-box-1 site-sidenav-collapse">
+    <div class="site-sidenav-collapse">
       <i class="material-icons">menu</i>
     </div>
 
-    <div class="flex-box-3 main-layout-no-nav">
+    <div class="sm-main-layout-no-nav">
       
       <!-- this flex box separate environment cards from alerts -->
-      <div class="flex-box ">
+      <div class="sm-main-row">
         
         <!-- this flex box for environment cards -->
-        <div class="flex-box-3 flex-box flex-col">
+        <div class="sm-environments">
           {{#each envItem in envList}}
-            <div class="cards-flex-col-h500 white flex-box-1 ">
-              <div class="flex-box justify-content-between">
-                <div class="flex-box-1">
-                  <i class="material-icons">view_carousel</i>
-                </div>
-                <div class="flex-box-3">
-                  <h3>Enviroment name: {{ envItem.name }}</h3>
-                  <table class="table table-striped">
-                    <tbody>
-                      <tr>
-                        <th>Distribution</th>
-                        <td> {{ envItem.distribution }} </td>
-                      </tr>
-                      <tr>
-                        <th>Number of regions: {{ regoinsCount (envItem.name) }}</th>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Select region from dropdown
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    {{#each regionItem in regoins (envItem.name) }}
-                                      <li>
-                                        <a href="{{pathFor route='environment' 
-                                            data=(asHash _id=(idToStr envItem._id))
-                                            query=(asHash 
-                                              selectedNodeId=(idToStr regionItem._id ) ) }}"
-                                              >{{ regionItem.object_name }}</a>
-                                      </li>
-                                    {{/each}}
-                                </ul>
-                            </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>Number of projects: {{ projectsCount (envItem.name) }}</th>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Select project from dropdown
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                  {{#each projectItem in projects (envItem.name) }}
-                                  <li>
-                                    <a href="{{pathFor route='environment' 
-                                         data=(asHash _id=(idToStr envItem._id)) 
-                                         query=(asHash selectedNodeId=(idToStr projectItem._id)) }}"
-                                       >{{ projectItem.object_name }}</a>
-                                  </li>
-                                  {{/each}}
-                                </ul>
-                            </div>
-
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <h5>Enviroment summary:</h5>
-                  <div class="flex-box justify-content-around">
-                    <div class="cards-w300-h60 white blue-text flex-box-1">
-                      <div class="flex-box ">
-                        <div class="flex-box-1">
-                          <i class="fa fa-desktop"></i>
-                        </div>
-                        <div class="flex-box-3">
-                        <p>Number of instances {{ instancesCount (envItem.name)}}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="cards-w300-h60 white blue-text flex-box-1">
-                      <div class="flex-box ">
-                        <div class="flex-box-1">
-                          <i class="fa fa-object-group"></i>
-                        </div>
-                        <div class="flex-box-3">
-                        <p>Number of vServices {{ vservicesCount (envItem.name) }}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex-box justify-content-around">
-                    <div class="cards-w300-h60 white blue-text flex-box-1">
-                      <div class="flex-box ">
-                        <div class="flex-box-1">
-                          <i class="fa fa-compress"></i>
-                        </div>
-                        <div class="flex-box-3">
-                        <p>Number of vConnectors {{ vconnectorsCount (envItem.name) }}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="cards-w300-h60 white blue-text flex-box-1">
-                      <div class="flex-box ">
-                        <div class="flex-box-1">
-                          <i class="fa fa-server" aria-hidden="true"></i>
-                        </div>
-                        <div class="flex-box-3">
-                        <p>Number of hosts {{ hostsCount (envItem.name) }}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="item">
+              {{> EnvironmentBox (argsEnvBox 
+                    envItem.name
+                    (regoinsCount envItem.name) 
+                    (regoins envItem.name)
+                    (projectsCount envItem.name)
+                    (projects envItem.name)
+                    (instancesCount envItem.name)
+                    (vservicesCount envItem.name)
+                    (vconnectorsCount envItem.name)
+                  ) }}
             </div>
         {{/each}} <!-- envItem in envList -->
 
         </div> <!-- flex box for environment cards -->
         
         <!-- this flex box for alerts cards -->
-        <div class="flex-box-1 flex-box flex-col ">
+        <div class="sm-side-container">
 
           <div class="sm-messages-section">
             {{#each messagesInfoBox in (getListMessagesInfoBox) }}
-          <div class="sm-message-box">
-              {{> MessagesInfoBox (argsMessagesInfoBox messagesInfoBox 
-                    (messageCount messagesInfoBox.level)) }}
-          </div>
+            <div class="sm-message-box">
+                {{> MessagesInfoBox (argsMessagesInfoBox messagesInfoBox 
+                      (messageCount messagesInfoBox.level)) }}
+            </div>
             {{/each }}
           </div>
 

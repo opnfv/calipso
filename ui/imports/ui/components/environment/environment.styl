@@ -1,5 +1,14 @@
 .sm-environment-container 
 
+  .sm-site-sidenav
+    transition: 0.5s width;
+    min-width: initial;
+    max-width: initial;
+
+    &.collapsed
+      width: 30px;
+      overflow: hidden;
+
   .sm-node-no-graph-data-msg
     display: flex;
     flex-flow: column nowrap;

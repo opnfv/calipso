@@ -87,13 +87,17 @@ var nodeTypesForSelection = [
 Template.Environment.onCreated(function () {
   var instance = this;
 
+  instance.collapsedSideMenu = false;
+
   // reactive state
   instance.state = new ReactiveDict();
   instance.state.setDefault({
     graphTooltipWindow: { label: '', title: '', left: 0, top: 0, show: false },
     vedgeInfoWindow: { node: null, left: 0, top: 0, show: false },
     dashboardName: 'environment',
+    collapsedSideMenu: instance.collapsedSideMenu,
   });
+
   instance.currentData = new ReactiveVar(null, EJSON.equals);
   instance.onNodeOpeningDone = _.debounce(() => {
     scrollTreeToLastOpenedChild(instance);
@@ -306,6 +310,12 @@ Template.Environment.helpers({
       onScrollToNodePerformed: instance._fns.onScrollToNodePerformed,
       onOpenLinkReq: instance._fns.onOpenLinkReq,
       onResetNeedChildDetection: instance._fns.onResetNeedChildDetection,
+      onToggleMenu: function () {
+        instance.collapsedSideMenu = !instance.collapsedSideMenu;
+        instance.state.set('collapsedSideMenu', 
+          instance.collapsedSideMenu);
+      },
+      showCollapsed: instance.state.get('collapsedSideMenu'),
     };
   },
 
