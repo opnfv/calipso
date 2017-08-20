@@ -84,5 +84,6 @@ if __name__ == '__main__':
     image_checker = DockerImageCheck()
     ret = True
     for image in ["calipso-{}".format(i) for i in IMAGES_TO_SEARCH]:
-        ret = ret and image_checker.verify_image_is_up(image)
+        if not image_checker.verify_image_is_up(image):
+            ret = False
     sys.exit(0 if ret else 1)
