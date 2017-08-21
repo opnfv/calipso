@@ -57,7 +57,7 @@ class CliqueFinder(Fetcher):
             # clique type definition with environment=ANY
             for clique_type in default_clique_types:
                 focal_point_type = clique_type['focal_point_type']
-                if focal_point_type not in clique_types:
+                if focal_point_type not in self.clique_types_by_type:
                     self.clique_types_by_type[focal_point_type] = clique_type
             return self.clique_types_by_type
 
