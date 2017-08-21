@@ -1,6 +1,18 @@
 [
 { 
     "environment" : {
+        "distribution" : "Mirantis-10.0", 
+        "type_drivers" : "vlan", 
+        "mechanism_drivers" : "OVS"
+    }, 
+    "features" : {
+        "scanning" : true, 
+        "monitoring" : true, 
+        "listening" : true
+    }
+},
+{ 
+    "environment" : {
         "distribution" : "Stratoscale-v2.1.6", 
         "mechanism_drivers" : "OVS", 
         "type_drivers" : "vlan"
