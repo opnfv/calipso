@@ -490,6 +490,10 @@
         {
             "label" : "Mirantis-9.1", 
             "value" : "Mirantis-9.1"
+        },
+        {
+            "value" : "Mirantis-10.0", 
+            "label" : "Mirantis-10.0"
         }
     ], 
     "name" : "distributions"
