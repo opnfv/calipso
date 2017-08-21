@@ -38,7 +38,7 @@ class SshConn(SshConnection):
         self.user = None
         self.pwd = None
         self.check_definitions()
-        super().__init__(self.host, self.user, _pwd=self.pwd, _key=self.key,
+        super().__init__(host_name, self.user, _pwd=self.pwd, _key=self.key,
                          _port=self.port, for_sftp=for_sftp)
         self.inv = InventoryMgr()
         if host_name in self.connections and not self.ssh:
