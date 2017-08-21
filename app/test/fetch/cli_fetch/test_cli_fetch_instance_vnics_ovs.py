@@ -7,7 +7,8 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from discover.cli_fetch_instance_vnics_ovs import CliFetchInstanceVnicsOvs
+from discover.fetchers.cli.cli_fetch_instance_vnics \
+    import CliFetchInstanceVnics
 from test.fetch.test_fetch import TestFetch
 from test.fetch.cli_fetch.test_data.cli_fetch_instance_vnics import *
 from unittest.mock import MagicMock
@@ -17,7 +18,7 @@ class TestCliFetchInstanceVnicsOvs(TestFetch):
 
     def setUp(self):
         self.configure_environment()
-        self.fetcher = CliFetchInstanceVnicsOvs()
+        self.fetcher = CliFetchInstanceVnics()
         self.fetcher.set_env(self.env)
 
     def test_set_vnic_properties(self):
@@ -29,7 +30,8 @@ class TestCliFetchInstanceVnicsOvs(TestFetch):
         # reset method
         self.fetcher.inv.set = original_set
 
-        self.assertIn("source_bridge", VNIC, "Can't set source_bridge for ovs vnic")
+        self.assertIn("source_bridge", VNIC,
+                      "Can't set source_bridge for ovs vnic")
 
     def test_get_vnic_name(self):
         name = self.fetcher.get_vnic_name(VNIC, INSATNCE)

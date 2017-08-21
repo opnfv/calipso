@@ -19,12 +19,18 @@ class CliFetchHostPnics(CliAccess):
         self.inv = InventoryMgr()
         self.ethtool_attr = re.compile('^\s+([^:]+):\s(.*)$')
         self.regexps = [
-            {'name': 'mac_address', 're': '^.*\sHWaddr\s(\S+)(\s.*)?$'},
-            {'name': 'mac_address', 're': '^.*\sether\s(\S+)(\s.*)?$'},
-            {'name': 'IP Address', 're': '^\s*inet addr:?(\S+)\s.*$'},
-            {'name': 'IP Address', 're': '^\s*inet ([0-9.]+)\s.*$'},
-            {'name': 'IPv6 Address', 're': '^\s*inet6 addr:\s*(\S+)(\s.*)?$'},
-            {'name': 'IPv6 Address', 're': '^\s*inet6 \s*(\S+)(\s.*)?$'}
+            {'name': 'mac_address', 're': '^.*\sHWaddr\s(\S+)(\s.*)?$',
+             'description': 'MAC address with HWaddr'},
+            {'name': 'mac_address', 're': '^.*\sether\s(\S+)(\s.*)?$',
+             'description': 'MAC address with ether'},
+            {'name': 'IP Address', 're': '^\s*inet addr:?(\S+)\s.*$',
+             'description': 'IP Address with "inet addr"'},
+            {'name': 'IP Address', 're': '^\s*inet ([0-9.]+)\s.*$',
+             'description': 'IP Address with "inet"'},
+            {'name': 'IPv6 Address', 're': '^\s*inet6 addr:\s*(\S+)(\s.*)?$',
+             'description': 'IPv6 Address with "inet6 addr"'},
+            {'name': 'IPv6 Address', 're': '^\s*inet6 \s*(\S+)(\s.*)?$',
+             'description': 'IPv6 Address with "inet6"'}
         ]
 
     def get(self, id):

@@ -21,10 +21,10 @@ class CliFetchVserviceVnics(CliAccess):
         self.regexps = [
             {'name': 'mac_address', 're': '^.*\sHWaddr\s(\S+)(\s.*)?$'},
             {'name': 'mac_address', 're': '^.*\sether\s(\S+)(\s.*)?$'},
-            {'name': 'netmask', 're': '^.*\sMask:\s?([0-9.]+)(\s.*)?$'},
-            {'name': 'netmask', 're': '^.*\snetmask\s([0-9.]+)(\s.*)?$'},
             {'name': 'IP Address', 're': '^\s*inet addr:(\S+)\s.*$'},
             {'name': 'IP Address', 're': '^\s*inet ([0-9.]+)\s.*$'},
+            {'name': 'netmask', 're': '^.*\sMask:\s?([0-9.]+)(\s.*)?$'},
+            {'name': 'netmask', 're': '^.*\snetmask\s([0-9.]+)(\s.*)?$'},
             {'name': 'IPv6 Address',
              're': '^\s*inet6 addr: ?\s*([0-9a-f:/]+)(\s.*)?$'},
             {'name': 'IPv6 Address',

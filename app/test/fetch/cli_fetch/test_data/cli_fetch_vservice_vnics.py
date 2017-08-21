@@ -198,7 +198,7 @@ RAW_VNIC = {
     "vnic_type": "vservice_vnic"
 }
 
-NETWORK = [{
+NETWORK = {
     "admin_state_up": True,
     "cidrs": [
         "172.16.13.0/24"
@@ -252,7 +252,7 @@ NETWORK = [{
     },
     "tenant_id": "75c0eb79ff4a42b0ae4973c8375ddf40",
     "type": "network"
-}]
+}
 
 VSERVICE = {
     "children_url": "/osdna_dev/discover.py?type=tree&id=qdhcp-8673c48a-f137-4497-b25d-08b7b218fd17",

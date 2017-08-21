@@ -204,3 +204,4 @@ class CliAccess(BinaryConverter, Fetcher):
             matches = regex.search(line)
             if matches:
                 o[name] = matches.group(1)
+                break

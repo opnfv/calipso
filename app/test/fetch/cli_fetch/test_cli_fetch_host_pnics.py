@@ -118,7 +118,7 @@ class TestCliFetchHostPnics(TestFetch):
     def test_handle_ipv6_address_line(self):
         self.fetcher.handle_line(RAW_INTERFACE, IPV6_ADDRESS_LINE)
         self.assertEqual(RAW_INTERFACE['IPv6 Address'], IPV6_ADDRESS,
-                         "Can' get the correct ipv6 address")
+                         "Can't get the correct ipv6 address")
 
     def test_handle_ipv4_address_line(self):
         self.fetcher.handle_line(RAW_INTERFACE, IPV4_ADDRESS_LINE)

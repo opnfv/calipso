@@ -7,7 +7,8 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from discover.cli_fetch_instance_vnics_vpp import CliFetchInstanceVnicsVpp
+from discover.fetchers.cli.cli_fetch_instance_vnics_vpp \
+    import CliFetchInstanceVnicsVpp
 from test.fetch.cli_fetch.test_data.cli_fetch_instance_vnics import *
 from test.fetch.test_fetch import TestFetch
 
