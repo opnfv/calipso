@@ -18,7 +18,7 @@ from utils.ssh_conn import SshConn
 
 class CliAccess(BinaryConverter, Fetcher):
     connections = {}
-    ssh_cmd = "ssh -o StrictHostKeyChecking=no "
+    ssh_cmd = "ssh -q -o StrictHostKeyChecking=no "
     call_count_per_con = {}
     max_call_count_per_con = 100
     cache_lifetime = 60  # no. of seconds to cache results
