@@ -97,7 +97,7 @@ DockerClient = docker.from_env()
 
 def copy_file(filename):
     c = MongoComm(args.hostname, args.dbuser, args.dbpassword, args.dbport)
-    txt = open('db/'+filename+'.json')
+    txt = open( 'db/' + filename +'.json')
     data = json.load(txt)
     c.remove_coll(filename)
     doc_id = c.insert(filename, data)
@@ -129,7 +129,7 @@ def download_image(image_name):
 
 
 # functions to check and start calipso containers:
-def start_mongo(dbport):
+def start_mongo(dbport, copy):
     name = "calipso-mongo"
     if container_started(name):
         return
@@ -145,9 +145,12 @@ def start_mongo(dbport):
     # wait a bit till mongoDB is up before starting to copy the json files
     # from 'db' folder:
     time.sleep(5)
-    enable_copy = input("create initial calipso DB ? "
-                        "(copy json files from 'db' folder to mongoDB - "
-                        "'c' to copy, 'q' to skip):")
+    if copy is not None:
+        enable_copy = copy
+    else:
+        enable_copy = input("create initial calipso DB ? "
+                            "(copy json files from 'db' folder to mongoDB - "
+                            "'c' to copy, 'q' to skip):")
     if enable_copy != "c":
         return
     print("\nstarting to copy json files to mongoDB...\n\n")
@@ -275,8 +278,8 @@ def start_ui(host, dbuser, dbpassword, webport, dbport):
     image_name = "korenlev/calipso:ui"
     download_image(image_name)
     root_url = "ROOT_URL=http://{}:{}".format(host, str(webport))
-    mongo_url = "MONGO_URL=mongodb://{}:{}@{}:{}/calipso"\
-                .format(dbuser, dbpassword, host, str(dbport))
+    mongo_url = "MONGO_URL=mongodb://{}:{}@{}:{}/calipso" \
+        .format(dbuser, dbpassword, host, str(dbport))
     ports = {'3000/tcp': webport}
     DockerClient.containers.run(image_name,
                                 detach=True,
@@ -318,7 +321,7 @@ parser.add_argument("--webport",
                     default="80",
                     required=False)
 parser.add_argument("--dbport",
-                    help="Port for the Calipso MongoDB"
+                    help="Port for the Calipso MongoDB "
                          "(default=27017)",
                     type=int,
                     default="27017",
@@ -335,10 +338,30 @@ parser.add_argument("--dbpassword",
                     type=str,
                     default="calipso_default",
                     required=False)
+parser.add_argument("--command",
+                    help="'start-all' or 'stop-all' the calipso containers "
+                         "(default=None)",
+                    type=str,
+                    default=None,
+                    required=False)
+parser.add_argument("--copy",
+                    help="'c' to copy json files from 'db' folder to mongoDB, 'q' to skip copy of files "
+                         "(default=q)",
+                    type=str,
+                    default=None,
+                    required=False)
 args = parser.parse_args()
 
-container = ""
-action = ""
+if args.command == "start-all":
+    container = "all"
+    action = "start"
+elif args.command == "stop-all":
+    container = "all"
+    action = "stop"
+else:
+    container = ""
+    action = ""
+
 container_names = ["calipso-mongo", "calipso-scan", "calipso-listen",
                    "calipso-ldap", "calipso-api", "calipso-sensu", "calipso-ui"]
 container_actions = ["stop", "start"]
@@ -361,7 +384,7 @@ if action == "start":
         "user {}\n" \
         "pwd {}\n" \
         "auth_db calipso" \
-        .format(args.hostname, args.dbuser, args.dbpassword)
+            .format(args.hostname, args.dbuser, args.dbpassword)
     LDAP_PWD_ATTRIBUTE = "password password"
     LDAP_USER_PWD_ATTRIBUTE = "userpassword"
     ldap_text = \
@@ -389,7 +412,7 @@ if action == "start":
     ldap_file.close()
 
     if container == "calipso-mongo" or container == "all":
-        start_mongo(args.dbport)
+        start_mongo(args.dbport, args.copy)
         time.sleep(1)
     if container == "calipso-listen" or container == "all":
         start_listen()
