@@ -23,12 +23,10 @@ class TestCliAccess(TestFetch):
         self.configure_environment()
         self.cli_access = CliAccess()
 
-    @patch("utils.ssh_conn.SshConn.exec")
     def check_run_result(self, is_gateway_host,
                          enable_cache,
                          cached_command_result, exec_result,
-                         expected_result, err_msg,
-                         ssh_con_exec):
+                         expected_result, err_msg):
         # mock cached commands
         if not is_gateway_host:
             self.cli_access.cached_commands = {
@@ -38,17 +36,15 @@ class TestCliAccess(TestFetch):
             self.cli_access.cached_commands = {
                 GATEWAY_CACHED_COMMAND: cached_command_result
             }
-        original_is_gateway_host = SshConn.is_gateway_host
-        SshConn.is_gateway_host = MagicMock(return_value=is_gateway_host)
-        ssh_con_exec.return_value = exec_result
+            
+        self.ssh_conn.exec.return_value = exec_result
+        self.ssh_conn.is_gateway_host.return_value = is_gateway_host
         result = self.cli_access.run(COMMAND, COMPUTE_HOST_ID,
                                      on_gateway=False, enable_cache=enable_cache)
         self.assertEqual(result, expected_result, err_msg)
 
         # reset the cached commands after testing
         self.cli_access.cached_commands = {}
-        # reset method
-        SshConn.is_gateway_host = original_is_gateway_host
 
     def test_run(self):
         curr_time = time.time()
