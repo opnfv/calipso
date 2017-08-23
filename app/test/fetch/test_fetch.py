@@ -40,6 +40,9 @@ class TestFetch(unittest.TestCase):
         self.response.status_code = self.requests.codes.ok
         self.requests.get.return_value = self.response
         self.requests.post.return_value = self.response
+        
+        self.ssh_patcher = patch("discover.fetchers.cli.cli_access.SshConn")
+        self.ssh_conn = self.ssh_patcher.start().return_value
 
     def configure_environment(self):
         self.env = ENV_CONFIG
@@ -75,3 +78,4 @@ class TestFetch(unittest.TestCase):
         SshConnection.check_definitions = self._ssh_conn_check_defs
         SshConn.check_definitions = self._ssh_check_defs
         self.req_patcher.stop()
+        self.ssh_patcher.stop()

@@ -9,7 +9,7 @@
 ###############################################################################
 COMPUTE_HOST_ID = "node-5.cisco.com"
 COMMAND = "virsh list"
-NON_GATEWAY_CACHED_COMMAND = COMPUTE_HOST_ID + "," + "ssh -o StrictHostKeyChecking=no " + \
+NON_GATEWAY_CACHED_COMMAND = COMPUTE_HOST_ID + "," + "ssh -q -o StrictHostKeyChecking=no " + \
                              COMPUTE_HOST_ID + " sudo " + COMMAND
 GATEWAY_CACHED_COMMAND = COMPUTE_HOST_ID + "," + "sudo " + COMMAND
 CACHED_COMMAND_RESULT = " Id  Name  State\n---\n 2 instance-00000003 running"
