@@ -16,6 +16,7 @@ from test.fetch.test_fetch import TestFetch
 class TestCliFetchInstanceVnicsVpp(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
         self.fetcher = CliFetchInstanceVnicsVpp()
 

@@ -16,6 +16,7 @@ from test.fetch.cli_fetch.test_data.cli_fetch_host_pnics_vpp import *
 class TestCliFetchHostPnicsVpp(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
         self.fetcher = CliFetchHostPnicsVpp()
         self.fetcher.set_env(self.env)

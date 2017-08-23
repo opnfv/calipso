@@ -16,6 +16,7 @@ from unittest.mock import MagicMock
 class TestDbFetchAggregates(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
         self.fetcher = DbFetchAggregates()
 

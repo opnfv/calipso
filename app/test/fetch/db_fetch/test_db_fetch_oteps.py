@@ -18,6 +18,7 @@ from unittest.mock import MagicMock
 class TestDbFetchOteps(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
         self.fetcher = DbFetchOteps()
         self.fetcher.set_env(self.env)

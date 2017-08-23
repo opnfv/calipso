@@ -19,6 +19,7 @@ from utils.ssh_conn import SshConn
 class TestCliAccess(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
         self.cli_access = CliAccess()
 

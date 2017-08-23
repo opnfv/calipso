@@ -17,6 +17,7 @@ from unittest.mock import MagicMock
 class TestCliFetchInstanceVnicsOvs(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
         self.fetcher = CliFetchInstanceVnics()
         self.fetcher.set_env(self.env)

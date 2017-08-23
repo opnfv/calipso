@@ -17,6 +17,7 @@ from test.fetch.db_fetch.mock_cursor import MockCursor
 class TestDbAccess(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
         self.fetcher = DbAccess()
 

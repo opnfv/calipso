@@ -16,6 +16,7 @@ from test.fetch.cli_fetch.test_data.cli_fetch_vconnectors_vpp import *
 class TestCliFetchVconnectorsVpp(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
         self.fetcher = CliFetchVconnectorsVpp()
         self.fetcher.set_env(self.env)

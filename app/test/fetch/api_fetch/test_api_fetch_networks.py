@@ -17,8 +17,12 @@ from test.fetch.api_fetch.test_data.token import TOKEN
 class TestApiFetchNetworks(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
+
+        self._v2_auth_pwd = ApiFetchNetworks.v2_auth_pwd
         ApiFetchNetworks.v2_auth_pwd = MagicMock(return_value=TOKEN)
+
         self.fetcher = ApiFetchNetworks()
         self.set_regions_for_fetcher(self.fetcher)
 
@@ -63,3 +67,8 @@ class TestApiFetchNetworks(TestFetch):
         self.fetcher.v2_auth_pwd = MagicMock(return_value=TOKEN)
         self.assertEqual(result, [], "Can't get [] when the " +
                                      "token is invalid")
+
+    def tearDown(self):
+        super().tearDown()
+        ApiFetchNetworks.v2_auth_pwd = self._v2_auth_pwd
+        self.reset_regions_for_fetcher(self.fetcher)

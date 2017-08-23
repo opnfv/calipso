@@ -16,6 +16,7 @@ from test.fetch.db_fetch.test_data.db_fetch_instances import *
 class TestDbFetchInstances(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
         self.fetcher = DbFetchInstances()
 

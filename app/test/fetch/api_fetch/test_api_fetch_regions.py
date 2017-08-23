@@ -18,7 +18,11 @@ from unittest.mock import MagicMock
 class TestApiFetchRegions(TestFetch):
 
     def setUp(self):
+        super().setUp()
+
+        self._v2_auth_pwd = ApiFetchRegions.v2_auth_pwd
         ApiFetchRegions.v2_auth_pwd = MagicMock(return_value=TOKEN)
+
         self.configure_environment()
 
     def test_get(self):
@@ -39,3 +43,7 @@ class TestApiFetchRegions(TestFetch):
 
         ApiFetchRegions.v2_auth_pwd = MagicMock(return_value=TOKEN)
         self.assertEqual(ret, [], "Can't get [] when the token is invalid")
+
+    def tearDown(self):
+        super().tearDown()
+        ApiFetchRegions.v2_auth_pwd = self._v2_auth_pwd

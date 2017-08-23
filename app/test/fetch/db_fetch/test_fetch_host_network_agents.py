@@ -18,6 +18,7 @@ from unittest.mock import MagicMock
 class TestFetchHostNetworkAgents(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
         self.fetcher = DbFetchHostNetworkAgents()
 
