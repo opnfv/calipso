@@ -17,8 +17,12 @@ from test.fetch.api_fetch.test_data.token import TOKEN
 class TestApiFetchAvailabilityZones(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
+
+        self._v2_auth_pwd = ApiFetchAvailabilityZones.v2_auth_pwd
         ApiFetchAvailabilityZones.v2_auth_pwd = MagicMock(return_value=TOKEN)
+
         self.fetcher = ApiFetchAvailabilityZones()
         self.set_regions_for_fetcher(self.fetcher)
 
@@ -70,3 +74,8 @@ class TestApiFetchAvailabilityZones(TestFetch):
         result = self.fetcher.get(PROJECT)
         self.fetcher.v2_auth_pwd = MagicMock(return_value=TOKEN)
         self.assertEqual(result, [], "Can't get [] when the token is invalid")
+
+    def tearDown(self):
+        super().tearDown()
+        ApiFetchAvailabilityZones.v2_auth_pwd = self._v2_auth_pwd
+        self.reset_regions_for_fetcher(self.fetcher)

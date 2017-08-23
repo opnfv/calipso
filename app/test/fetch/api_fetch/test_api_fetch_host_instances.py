@@ -17,8 +17,12 @@ from unittest.mock import MagicMock
 class TestApiFetchHostInstances(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
+
+        self._v2_auth_pwd = ApiFetchHostInstances.v2_auth_pwd
         ApiFetchHostInstances.v2_auth_pwd = MagicMock(return_value=TOKEN)
+
         self.fetcher = ApiFetchHostInstances()
         self.set_regions_for_fetcher(self.fetcher)
 
@@ -81,3 +85,8 @@ class TestApiFetchHostInstances(TestFetch):
         result = self.fetcher.get(INSTANCE_FOLDER_ID)
         self.assertEqual(result, [], "Can't get [] when the host is " +
                                      "not compute node")
+
+    def tearDown(self):
+        super().tearDown()
+        ApiFetchHostInstances.v2_auth_pwd = self._v2_auth_pwd
+        self.reset_regions_for_fetcher(self.fetcher)

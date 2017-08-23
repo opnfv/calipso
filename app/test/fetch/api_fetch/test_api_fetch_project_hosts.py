@@ -18,8 +18,12 @@ from test.fetch.api_fetch.test_data.regions import REGIONS
 class TestApiFetchProjectHosts(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
+
+        self._v2_auth_pwd = ApiFetchProjectHosts.v2_auth_pwd
         ApiFetchProjectHosts.v2_auth_pwd = MagicMock(return_value=TOKEN)
+
         self.fetcher = ApiFetchProjectHosts()
         self.set_regions_for_fetcher(self.fetcher)
         self.region = REGIONS[REGION_NAME]
@@ -135,3 +139,8 @@ class TestApiFetchProjectHosts(TestFetch):
         self.fetcher.v2_auth_pwd = MagicMock(return_value=[])
         result = self.fetcher.get(PROJECT_NAME)
         self.assertEqual(result, [], "Can't get [] when the token is invalid")
+
+    def tearDown(self):
+        super().tearDown()
+        ApiFetchProjectHosts.v2_auth_pwd = self._v2_auth_pwd
+        self.reset_regions_for_fetcher(self.fetcher)

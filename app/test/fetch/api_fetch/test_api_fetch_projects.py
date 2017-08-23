@@ -18,12 +18,19 @@ from test.fetch.api_fetch.test_data.token import TOKEN
 class TestApiFetchProjects(TestFetch):
 
     def setUp(self):
+        super().setUp()
         self.configure_environment()
+
+        self._v2_auth_pwd = ApiFetchProjects.v2_auth_pwd
         ApiFetchProjects.v2_auth_pwd = MagicMock(return_value=TOKEN)
+
         self.fetcher = ApiFetchProjects()
         self.set_regions_for_fetcher(self.fetcher)
         self.region = REGIONS[REGION_NAME]
-        self.fetcher.get_region_url_nover = MagicMock(return_value=REGION_URL_NOVER)
+
+        self._get_region_url_nover = self.fetcher.get_region_url_nover
+        self.fetcher.get_region_url_nover = \
+            MagicMock(return_value=REGION_URL_NOVER)
 
     def test_get_for_region(self):
         # mock request endpoint
@@ -118,3 +125,9 @@ class TestApiFetchProjects(TestFetch):
                                   test_case["token"],
                                   test_case["expected_result"],
                                   test_case["err_msg"])
+
+    def tearDown(self):
+        super().tearDown()
+        ApiFetchProjects.v2_auth_pwd = self._v2_auth_pwd
+        self.reset_regions_for_fetcher(self.fetcher)
+        self.fetcher.get_region_url_nover = self._get_region_url_nover
