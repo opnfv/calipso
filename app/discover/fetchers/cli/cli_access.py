@@ -202,6 +202,6 @@ class CliAccess(BinaryConverter, Fetcher):
             regex = regexp_tuple['re']
             regex = re.compile(regex)
             matches = regex.search(line)
-            if matches:
+            if matches and name not in o:
                 o[name] = matches.group(1)
                 break
