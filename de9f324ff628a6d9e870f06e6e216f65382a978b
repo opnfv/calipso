@@ -1,0 +1,7 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+2: Yaron Yogev <yaronyogev@gmail.com>
+Submitted-by: Yaron Yogev <yaronyogev@gmail.com>
+Submitted-at: Thu, 24 Aug 2017 13:15:45 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/40095
+Project: calipso
+Branch: refs/heads/master
