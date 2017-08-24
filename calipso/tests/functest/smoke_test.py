@@ -86,4 +86,6 @@ if __name__ == '__main__':
     for image in ["calipso-{}".format(i) for i in IMAGES_TO_SEARCH]:
         if not image_checker.verify_image_is_up(image):
             ret = False
+    if ret:
+        print("All containers are running")
     sys.exit(0 if ret else 1)
