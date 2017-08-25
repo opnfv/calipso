@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 EVENT_PAYLOAD_INTERFACE_ADD = {
     '_context_timestamp': '2016-10-26 21:52:18.893134', '_context_project_name': 'calipso-project',

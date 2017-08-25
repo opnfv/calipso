@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 EVENT_PAYLOAD_ROUTER_DELETE = {
     '_context_request_id': 'req-8b2dd9ba-5faa-4471-94c3-fb41781eef8d', '_unique_id': 'c7417f771ee74bb19036b06e685c93dc',
@@ -33,6 +33,7 @@ ROUTER_DOCUMENT = {
     "environment": ENV_CONFIG,
     "gw_port_id": None,
     "host": "node-6.cisco.com",
+    "_id": "593fc4c6797ffad322bc5329",
     "id": "node-6.cisco.com-qrouter-bde87a5a-7968-4f3b-952c-e87681a96078",
     "id_path": "/" + ENV_CONFIG + "/" + ENV_CONFIG + "-regions/RegionOne/RegionOne-availability_zones/internal" +
                "/node-6.cisco.com/node-6.cisco.com-vservices/node-6.cisco.com-vservices-routers/qrouter-bde87a5a" +

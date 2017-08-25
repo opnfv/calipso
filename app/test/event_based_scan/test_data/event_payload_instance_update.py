@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 
 EVENT_PAYLOAD_INSTANCE_UPDATE = {
@@ -97,3 +97,10 @@ INSTANCE_DOCUMENT = {
     'id_path': '/'+ENV_CONFIG+'/'+ENV_CONFIG+'-regions/RegionOne/RegionOne-availability_zones/calipso-zone' +
                '/node-223.cisco.com/node-223.cisco.com-instances/27a87908-bc1b-45cc-9238-09ad1ae686a7',
     'show_in_tree': True}
+
+
+UPDATED_INSTANCE_FIELDS = {
+    'name': 'test8',
+    'object_name': 'test8',
+    'name_path': '/'+ENV_CONFIG+'/Regions/RegionOne/Availability Zones' +
+                 '/calipso-zone/node-223.cisco.com/Instances/test8'}

@@ -17,7 +17,7 @@ class TestRouterDelete(TestEventDeleteBase):
     def setUp(self):
         super().setUp()
         self.values = EVENT_PAYLOAD_ROUTER_DELETE
-        self.set_item_for_deletion(object_type="router", document=ROUTER_DOCUMENT)
 
     def test_handle_router_delete(self):
-        self.handle_delete(handler=EventRouterDelete())
+        self.handle_delete(handler=EventRouterDelete(),
+                           db_object=ROUTER_DOCUMENT)

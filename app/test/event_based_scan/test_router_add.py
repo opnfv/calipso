@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from discover.events.event_port_add import EventPortAdd
 from discover.events.event_router_add import EventRouterAdd
@@ -20,60 +20,60 @@ from utils.util import encode_router_id
 
 
 class TestRouterAdd(TestEvent):
-    def test_handle_router_add(self):
+
+    def get_by_id(self, env, object_id):
+        if object_id == self.host_id:
+            return HOST_DOC
+        elif object_id == self.network_id:
+            return NETWORK_DOC
+        else:
+            return None
+
+    @patch("discover.events.event_router_add.EventPortAdd")
+    @patch("discover.events.event_router_add.EventSubnetAdd")
+    @patch("discover.events.event_router_add.Scanner")
+    @patch("discover.events.event_router_add.FindLinksForVserviceVnics")
+    @patch("discover.events.event_router_add.CliFetchHostVservice")
+    def test_handle_router_add(self,
+                               cli_fetch_vservice_class_mock,
+                               find_links_class_mock,
+                               scanner_class_mock,
+                               subnet_add_class_mock,
+                               port_add_class_mock):
         self.values = EVENT_PAYLOAD_ROUTER_ADD
         self.payload = self.values['payload']
         self.router = self.payload['router']
+        self.network_id = self.router['external_gateway_info']['network_id']
         self.host_id = self.values["publisher_id"].replace("network.", "", 1)
         self.router_id = encode_router_id(self.host_id, self.router['id'])
 
-        self.set_item(HOST_DOC)
-        self.host_id = HOST_DOC['id']
-        gateway_info = self.router['external_gateway_info']
-        if gateway_info:
-            self.network_id = self.router['external_gateway_info']['network_id']
-            self.inv.set(NETWORK_DOC)
+        self.inv.get_by_id.side_effect = self.get_by_id
 
-        original_get_vservice = CliFetchHostVservice.get_vservice
-        CliFetchHostVservice.get_vservice = MagicMock(return_value=ROUTER_DOCUMENT)
-        self.gw_port_id = ROUTER_DOCUMENT['gw_port_id']
+        cli_fetch_vservice_mock = cli_fetch_vservice_class_mock.return_value
+        cli_fetch_vservice_mock.get_vservice.return_value = ROUTER_DOCUMENT
 
-        original_add_port = EventSubnetAdd.add_port_document
-        EventSubnetAdd.add_port_document = MagicMock()
+        find_links_mock = find_links_class_mock.return_value
+        scanner_mock = scanner_class_mock.return_value
+        subnet_add_mock = subnet_add_class_mock.return_value
+        subnet_add_mock.add_port_document.return_value = True
+        port_add_mock = port_add_class_mock.return_value
+        port_add_mock.add_vnic_document.return_value = True
+        port_add_mock.add_vnic_folder.return_value = True
 
-        original_add_vnic = EventPortAdd.add_vnic_document
-        EventPortAdd.add_vnic_document = MagicMock()
+        res = EventRouterAdd().handle(self.env, self.values)
 
-        handler = EventRouterAdd()
-        handler.update_links_and_cliques = MagicMock()
+        self.assertTrue(res.result)
 
-        handler.handle(self.env, self.values)
+        # Assert that router has been added to db
+        router_insertions = [call_args for call_args
+                             in self.inv.set.call_args_list
+                             if call_args[0][0]['type'] == 'vservice']
+        self.assertTrue(router_insertions)
+        self.assertTrue(subnet_add_mock.add_ports_folder.called)
+        self.assertTrue(subnet_add_mock.add_port_document.called)
+        self.assertTrue(port_add_mock.add_vnics_folder.called)
+        self.assertTrue(port_add_mock.add_vnic_document.called)
+        find_links_mock.add_links\
+            .assert_called_with(search={"parent_id": self.router_id})
+        self.assertTrue(scanner_mock.scan_cliques.called)
 
-        # reset the methods back
-        CliFetchHostVservice.get_vservice = original_get_vservice
-        EventSubnetAdd.add_port_document = original_add_port
-        EventPortAdd.add_vnic_document = original_add_vnic
-
-        # assert router document
-        router_doc = self.inv.get_by_id(self.env, self.router_id)
-        self.assertIsNotNone(router_doc, msg="router_doc not found.")
-        self.assertEqual(ROUTER_DOCUMENT['name'], router_doc['name'])
-        self.assertEqual(ROUTER_DOCUMENT['gw_port_id'], router_doc['gw_port_id'])
-
-        # assert children documents
-        vnics_id = '-'.join(['qrouter', self.router['id'], 'vnics'])
-        vnics_folder = self.inv.get_by_id(self.env, vnics_id)
-        self.assertIsNotNone(vnics_folder, msg="Vnics folder not found.")
-
-    def tearDown(self):
-        self.item_ids = [self.network_id, self.host_id, self.network_id+"-ports", self.gw_port_id,
-                         self.router_id+'-vnics', self.router_id]
-        for item_id in self.item_ids:
-            self.inv.delete('inventory', {'id': item_id})
-            item = self.inv.get_by_id(self.env, item_id)
-            self.assertIsNone(item)
-
-        # delete vnics document
-        self.inv.delete('inventory', {'parent_id': self.router_id+'-vnics'})
-        item = self.inv.get_by_field(self.env, 'vnic', 'parent_id', self.router_id+'-vnics', get_single=True)
-        self.assertIsNone(item)

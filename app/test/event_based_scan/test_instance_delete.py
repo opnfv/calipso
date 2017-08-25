@@ -18,7 +18,7 @@ class TestInstanceDelete(TestEventDeleteBase):
     def setUp(self):
         super().setUp()
         self.values = EVENT_PAYLOAD_INSTANCE_DELETE
-        self.set_item_for_deletion(object_type="instance", document=INSTANCE_DOCUMENT)
 
     def test_handle_instance_delete(self):
-        self.handle_delete(handler=EventInstanceDelete())
+        self.handle_delete(handler=EventInstanceDelete(),
+                           db_object=INSTANCE_DOCUMENT)

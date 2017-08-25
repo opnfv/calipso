@@ -16,6 +16,25 @@ class TestPortUpdate(TestEvent):
 
     def test_handle_port_update(self):
         self.values = EVENT_PAYLOAD_PORT_UPDATE
+        self.port = self.values['payload']['port']
+
+        self.inv.get_by_id.return_value = PORT_DOCUMENT
+
+        res = EventPortUpdate().handle(self.env, self.values)
+
+        self.assertTrue(res.result)
+        self.assertTrue(self.inv.set.called)
+
+        updated_port = self.inv.set.call_args[0][0]
+        self.assertEqual(updated_port["name"],
+                         self.port['name'])
+        self.assertEqual(updated_port['admin_state_up'],
+                         self.port['admin_state_up'])
+        self.assertEqual(updated_port['binding:vnic_type'],
+                         self.port['binding:vnic_type'])
+
+    def _test_handle_port_update(self):
+        self.values = EVENT_PAYLOAD_PORT_UPDATE
         self.payload = self.values['payload']
         self.port = self.payload['port']
         self.port_id = self.port['id']

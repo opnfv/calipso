@@ -37,7 +37,9 @@ class EventInterfaceAdd(EventBase):
         router_doc['gw_port_id'] = router['gw_port_id']
 
         # add gateway port documents.
-        port_doc = EventSubnetAdd().add_port_document(env, router_doc['gw_port_id'], project_name=project)
+        port_doc = EventSubnetAdd().add_port_document(env,
+                                                      router_doc['gw_port_id'],
+                                                      project_name=project)
 
         mac_address = port_doc['mac_address'] if port_doc else None
 
@@ -87,7 +89,8 @@ class EventInterfaceAdd(EventBase):
         subnet_id = interface['subnet_id']
         router_id = encode_router_id(host_id, interface['id'])
 
-        network_document = self.inv.get_by_field(env, "network", "subnet_ids", subnet_id, get_single=True)
+        network_document = self.inv.get_by_field(env, "network", "subnet_ids",
+                                                 subnet_id, get_single=True)
         if not network_document:
             self.log.info("network document not found, aborting interface adding")
             return EventResult(result=False, retry=True)
@@ -99,7 +102,8 @@ class EventInterfaceAdd(EventBase):
             fetcher = ApiFetchRegions()
             fetcher.set_env(env)
             fetcher.get(None)
-        port_doc = EventSubnetAdd().add_port_document(env, port_id, network_name=network_name)
+        port_doc = EventSubnetAdd().add_port_document(env, port_id,
+                                                      network_name=network_name)
 
         mac_address = port_doc['mac_address'] if port_doc else None
 

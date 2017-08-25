@@ -7,48 +7,49 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
+from discover.events.event_base import EventResult
+from discover.events.event_delete_base import EventDeleteBase
 from discover.events.event_subnet_delete import EventSubnetDelete
 from test.event_based_scan.test_event import TestEvent
-from test.event_based_scan.test_data.event_payload_subnet_delete import EVENT_PAYLOAD_SUBNET_DELETE, \
-    EVENT_PAYLOAD_NETWORK
-
+from test.event_based_scan.test_data.event_payload_subnet_delete import \
+    EVENT_PAYLOAD_SUBNET_DELETE, \
+    NETWORK_DOC, VNIC_DOC
+from unittest.mock import patch
 
 class TestSubnetDelete(TestEvent):
 
-    def test_handle_subnet_delete(self):
+    def get_by_field(self, environment, item_type, field_name, field_value,
+                     get_single=False):
+        if item_type == "network":
+            return NETWORK_DOC
+        elif item_type == "vnic":
+            return VNIC_DOC
+        else:
+            return None
+
+    @patch.object(EventDeleteBase, "delete_handler",
+                  return_value=EventResult(result=True))
+    def test_handle_subnet_delete(self,
+                                  delete_handler_mock):
         self.values = EVENT_PAYLOAD_SUBNET_DELETE
         self.subnet_id = self.values['payload']['subnet_id']
-        self.network_doc = EVENT_PAYLOAD_NETWORK
+        self.network_doc = NETWORK_DOC
         self.network_id = self.network_doc['id']
-        self.item_ids.append(self.network_id)
+        self.vnic_id = VNIC_DOC['id']
+        self.vnic_folder_id = 'qdhcp-{}'.format(self.network_id)
 
-        self.subnet_name = None
-        self.cidr = None
+        self.inv.get_by_field.side_effect = self.get_by_field
 
-        for subnet in self.network_doc['subnets'].values():
-            if subnet['id'] == self.subnet_id:
-                self.subnet_name = subnet['name']
-                self.cidr = subnet['cidr']
-                break
+        res = EventSubnetDelete().handle(self.env, self.values)
 
-        # add document for subnet deleting test.
-        self.set_item(self.network_doc)
-        network_document = self.inv.get_by_id(self.env, self.network_id)
-        self.assertIsNotNone(network_document, "add network document failed")
+        self.assertTrue(res.result)
+        delete_handler_mock.assert_called_with(self.env,
+                                               self.vnic_folder_id, "vservice")
 
-        # delete subnet
-        EventSubnetDelete().handle(self.env, self.values)
+        updated_network = [call[0][0] for call in self.inv.set.call_args_list
+                           if call[0][0]['type'] == 'network']
+        self.assertTrue(updated_network)
+        self.assertTrue(self.subnet_id
+                        not in updated_network[0].get('subnet_ids'))
+        self.assertTrue(self.inv.delete.called)
 
-        network_document = self.inv.get_by_id(self.env, self.network_id)
-        self.assertNotIn(self.subnet_id, network_document['subnet_ids'])
-        self.assertNotIn(self.cidr, network_document['cidrs'])
-        self.assertNotIn(self.subnet_name, network_document['subnets'])
-
-        # assert children documents
-        vservice_dhcp_id = 'qdhcp-' + network_document['id']
-        dhcp_doc = self.inv.get_by_id(self.env, vservice_dhcp_id)
-        self.assertIsNone(dhcp_doc)
-
-        vnic_parent_id = vservice_dhcp_id + '-vnics'
-        vnic = self.inv.get_by_field(self.env, 'vnic', 'parent_id', vnic_parent_id, get_single=True)
-        self.assertIsNone(vnic)

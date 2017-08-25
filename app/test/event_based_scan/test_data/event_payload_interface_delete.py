@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 EVENT_PAYLOAD_INTERFACE_DELETE = {
     'message_id': 'da190e5f-127d-4e85-a813-bbdbbb35a2d0', '_context_tenant': '75c0eb79ff4a42b0ae4973c8375ddf40',
