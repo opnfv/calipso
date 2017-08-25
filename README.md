@@ -36,7 +36,7 @@ Provide CNA and TNA with support for:
 <br>
 5. baseline plugin framework for analytics of this type of data/details
 
-### Proto (mockups, updated Jul 15th)
+### Proto (pre-release, updated Aug 15th)
 calipso.io 
 
 ### Contacts
