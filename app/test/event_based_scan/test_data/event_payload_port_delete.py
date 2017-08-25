@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 EVENT_PAYLOAD_PORT_DELETE = {
     '_context_tenant': '75c0eb79ff4a42b0ae4973c8375ddf40', '_context_tenant_name': 'calipso-project',
@@ -88,7 +88,7 @@ PORT_DOC = {
     "type": "port"
 }
 
-VNIC_DOCS = [{
+VNIC_DOC = {
     "IP Address": "172.16.10.2",
     "IPv6 Address": "fe80::f816:3eff:fe96:5066/64",
     "cidr": "172.16.10.0/25",
@@ -100,6 +100,7 @@ VNIC_DOCS = [{
     "environment": ENV_CONFIG,
     "host": "node-251.cisco.com",
     "id": "tapca33c645-5b",
+    '_id': '5970b9aa797ffad322bc9b84',
     "id_path": "/" + ENV_CONFIG + "/" + ENV_CONFIG + "-regions/RegionOne/RegionOne-availability_zones/internal" +
                "/node-251.cisco.com/node-251.cisco.com-vservices/node-251.cisco.com-vservices-dhcps/qdhcp-911fe57e-" +
                "1ddd-4151-9dc7-6b578ab357b1/qdhcp-911fe57e-1ddd-4151-9dc7-6b578ab357b1-vnics/tapca33c645-5b",
@@ -117,11 +118,10 @@ VNIC_DOCS = [{
     "show_in_tree": True,
     "type": "vnic",
     "vnic_type": "vservice_vnic"
-}]
+}
 
 INSTANCE_DOC = {
     "environment": ENV_CONFIG,
-    "id": "b2bda4bf-1259-4d60-99ab-85ab4d5014a8",
     "type": "instance",
     "uuid": "b2bda4bf-1259-4d60-99ab-85ab4d5014a8",
     "network": [

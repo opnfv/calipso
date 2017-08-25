@@ -9,7 +9,7 @@
 ###############################################################################
 import datetime
 
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 NETWORK_DOC = {'port_security_enabled': True, 'status': 'ACTIVE', 'subnet_ids': [], 'parent_type': 'networks_folder',
                'parent_id': '75c0eb79ff4a42b0ae4973c8375ddf40-networks', 'parent_text': 'Networks', 'subnets': {},
@@ -122,3 +122,72 @@ EVENT_PAYLOAD_REGION = {
         'show_in_tree': True,
         'id_path': '/' + ENV_CONFIG + '/' + ENV_CONFIG + '-regions/RegionOne',
         'type': 'region'}}
+
+
+HOST_DOC = {
+    "environment": ENV_CONFIG,
+    "host": "node-6.cisco.com",
+    "host_type": [
+        "Controller",
+        "Network"
+    ],
+    "id": "node-6.cisco.com",
+    "id_path": "/" + ENV_CONFIG + "/" + ENV_CONFIG + "-regions/RegionOne/RegionOne-availability_zones" +
+               "/internal/node-6.cisco.com",
+    "name": "node-6.cisco.com",
+    "name_path": "/" + ENV_CONFIG + "/Regions/RegionOne/Availability Zones/internal/node-6.cisco.com",
+    "object_name": "node-6.cisco.com",
+    "parent_id": "internal",
+    "parent_type": "availability_zone",
+    "show_in_tree": True,
+    "type": "host",
+    "zone": "internal"
+}
+
+PORT_DOC = {
+    "admin_state_up": True,
+    "device_id": "c57216ca-c1c4-430d-a045-32851ca879e3",
+    "device_owner": "compute:nova",
+    "dns_assignment": [
+        {
+            "hostname": "host-172-16-10-1",
+            "ip_address": "172.16.10.1",
+            "fqdn": "host-172-16-10-1.openstacklocal."
+        }
+    ],
+    "dns_name": "",
+    "environment": ENV_CONFIG,
+    "extra_dhcp_opts": [
+
+    ],
+    "fixed_ips": [
+        {
+            "ip_address": "172.16.10.1",
+            "subnet_id": "6f6ef3b5-76c9-4f70-81e5-f3cc196db025"
+        }
+    ],
+    "id": "2233445-55b6-4c05-9480-4bc648845c6f",
+    "id_path": ENV_CONFIG + "/" + ENV_CONFIG + "-projects/75c0eb79ff4a42b0ae4973c8375ddf40/75c0eb79ff4a42b0ae4973c837" +
+               "5ddf40-networks/1bb0ba6c-6863-4121-ac89-93f81a9da2b0/1bb0ba6c-6863-4121-ac89-93f81a9da2b0-ports" +
+               "/2233445-55b6-4c05-9480-4bc648845c6f",
+    "last_scanned": 0,
+    "mac_address": "fa:16:3e:13:b2:aa",
+    "master_parent_id": "1bb0ba6c-6863-4121-ac89-93f81a9da2b0",
+    "master_parent_type": "network",
+    "name": "fa:16:3e:13:b2:aa",
+    "name_path": "/" + ENV_CONFIG + "/Projects/calipso-project/Networks/test_interface/Ports/" +
+                 "2233445-55b6-4c05-9480-4bc648845c6f",
+    "network_id": "1bb0ba6c-6863-4121-ac89-93f81a9da2b0",
+    "object_name": "2233445-55b6-4c05-9480-4bc648845c6f",
+    "parent_id": "1bb0ba6c-6863-4121-ac89-93f81a9da2b0-ports",
+    "parent_text": "Ports",
+    "parent_type": "ports_folder",
+    "port_security_enabled": False,
+    "project": "calipso-project",
+    "security_groups": [
+
+    ],
+    "status": "DOWN",
+    "tenant_id": "75c0eb79ff4a42b0ae4973c8375ddf40",
+    "type": "port"
+}

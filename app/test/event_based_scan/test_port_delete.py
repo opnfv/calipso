@@ -7,41 +7,46 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from unittest.mock import MagicMock
+from unittest.mock import patch
 
 from discover.events.event_port_delete import EventPortDelete
-from discover.fetchers.api.api_fetch_host_instances import ApiFetchHostInstances
-from test.event_based_scan.test_data.event_payload_port_delete import EVENT_PAYLOAD_PORT_DELETE, PORT_DOC, VNIC_DOCS, \
-    INSTANCE_DOC, INSTANCE_DOCS
-from test.event_based_scan.test_event import TestEvent
+from test.event_based_scan.test_data.event_payload_port_delete import \
+    EVENT_PAYLOAD_PORT_DELETE, PORT_DOC, VNIC_DOC, INSTANCE_DOC, INSTANCE_DOCS
+from test.event_based_scan.test_event_delete_base import TestEventDeleteBase
 
 
-class TestPortDelete(TestEvent):
-    def test_handle_port_delete(self):
+class TestPortDelete(TestEventDeleteBase):
+
+    def get_by_id(self, env, object_id):
+        if object_id == PORT_DOC['id']:
+            return PORT_DOC
+        elif object_id == VNIC_DOC['id']:
+            return VNIC_DOC
+        else:
+            return None
+
+    def get_by_field(self, environment, item_type, field_name, field_value,
+                     get_single=False):
+        if item_type == "vnic":
+            return VNIC_DOC
+        elif item_type == "instance":
+            return INSTANCE_DOC
+        else:
+            return None
+
+    @patch("discover.events.event_port_delete.ApiFetchHostInstances")
+    def test_handle_port_delete(self,
+                                api_fetch_instances_class_mock):
         self.values = EVENT_PAYLOAD_PORT_DELETE
-        self.payload = self.values['payload']
-        self.port_id = self.payload['port_id']
-        self.item_ids.append(self.port_id)
 
-        # set port data firstly.
-        self.set_item(PORT_DOC)
-        self.set_item(VNIC_DOCS[0])
-        self.set_item(INSTANCE_DOC)
+        self.inv.get_by_id.side_effect = self.get_by_id
+        self.inv.get_by_field.side_effect = self.get_by_field
 
-        # mock methods
-        original_get_instance = ApiFetchHostInstances.get
-        ApiFetchHostInstances.get = MagicMock(return_value=INSTANCE_DOCS)
-        self.item_ids.append(INSTANCE_DOCS[0]['id'])
+        api_fetch_instances_mock = api_fetch_instances_class_mock.return_value
+        api_fetch_instances_mock.get.return_value = INSTANCE_DOCS
 
-        # delete port
-        EventPortDelete().handle(self.env, self.values)
+        res = EventPortDelete().handle(self.env, self.values)
 
-        # assert data
-        self.assert_empty_by_id(self.port_id)
-        self.assert_empty_by_id(VNIC_DOCS[0]['id'])
-        instance = self.inv.get_by_id(self.env, INSTANCE_DOC['id'])
-        self.assertEqual(instance['mac_address'], None)
-        self.assertEqual(instance['network'], [])
-        self.assertEqual(instance['network_info'], [])
-
-        ApiFetchHostInstances.get = original_get_instance
+        self.assertTrue(res.result)
+        self.check_inv_calls(VNIC_DOC)
+        self.inv.delete.assert_any_call('inventory', {'id': PORT_DOC['id']})

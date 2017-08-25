@@ -93,10 +93,14 @@ class EventSubnetUpdate(EventBase):
             if subnet['name'] == subnets[key]['name']:
                 subnets[key] = subnet
             else:
-                # TODO: #AskCheng shouldn't we remove the old one?
+                del subnets[key]
                 subnets[subnet['name']] = subnet
 
             self.inv.set(network_document)
             return EventResult(result=True,
                                related_object=subnet['id'],
                                display_context=network_id)
+        else:
+            self.log.info(
+                'subnet not in network, aborting subnet update')
+            return EventResult(result=False, retry=False)

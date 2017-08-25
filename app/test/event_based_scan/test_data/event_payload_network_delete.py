@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 
 EVENT_PAYLOAD_NETWORK_DELETE = {
@@ -29,12 +29,13 @@ EVENT_PAYLOAD_NETWORK_DELETE = {
     '_context_user': '13baa553aae44adca6615e711fd2f6d9', 'publisher_id': 'network.node-6.cisco.com'}
 
 
-EVENT_PAYLOAD_NETWORK = {
+NETWORK_DOCUMENT = {
     "admin_state_up" : True,
     "cidrs" : [
         "172.16.9.0/24"
     ],
     "environment" : ENV_CONFIG,
+    "_id": '583c0c69c5f6980fec665422',
     "id" : '0bb0ba6c-6863-4121-ac89-93f81a9da2b0',
     "id_path" : '/%s/%s-projects/' % (ENV_CONFIG, ENV_CONFIG) +'75c0eb79ff4a42b0ae4973c8375ddf40/75c0eb79ff4a42b' +
                 '0ae4973c8375ddf40-networks/0bb0ba6c-6863-4121-ac89-93f81a9da2b0' ,

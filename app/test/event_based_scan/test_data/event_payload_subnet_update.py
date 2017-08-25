@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 NETWORK_DOC = {
     'port_security_enabled': True, 'status': 'ACTIVE',
@@ -74,3 +74,24 @@ EVENT_PAYLOAD_SUBNET_UPDATE_1 = {
     '_context_auth_token': 'gAAAAABYDp0ZacwkUNIRvtiS-3qjLQFZKbkOtTmvuoKX9yM8yCIvl-eZmMC_SPjwPAMJcd8qckE77lLpQSx0l'+
                            'WB67mT5jQA-tmp8bcz26kXXr8KlGCicxxjkYTYkJQhC9w8BbGc36CpbRBzIKlOrPtPXUYZrUmPgInQqCNA-eD'+
                            'eMyJ-AiA1zmNSZK3R43YIJtnDYieLQvX2P'}
+
+
+HOST_DOC = {
+    "environment": ENV_CONFIG,
+    "host": "node-6.cisco.com",
+    "host_type": [
+        "Controller",
+        "Network"
+    ],
+    "id": "node-6.cisco.com",
+    "id_path": "/" + ENV_CONFIG + "/" + ENV_CONFIG + "-regions/RegionOne/RegionOne-availability_zones" +
+               "/internal/node-6.cisco.com",
+    "name": "node-6.cisco.com",
+    "name_path": "/" + ENV_CONFIG + "/Regions/RegionOne/Availability Zones/internal/node-6.cisco.com",
+    "object_name": "node-6.cisco.com",
+    "parent_id": "internal",
+    "parent_type": "availability_zone",
+    "show_in_tree": True,
+    "type": "host",
+    "zone": "internal"
+}

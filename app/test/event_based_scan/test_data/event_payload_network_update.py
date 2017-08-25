@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 EVENT_PAYLOAD_NETWORK_UPDATE = {
     '_context_user_id': '13baa553aae44adca6615e711fd2f6d9', '_context_user': '13baa553aae44adca6615e711fd2f6d9',
@@ -63,3 +63,7 @@ NETWORK_DOCUMENT = {
     "tenant_id" : "75c0eb79ff4a42b0ae4973c8375ddf40",
     "type" : "network"
 }
+
+UPDATED_NETWORK_FIELDS = {'name': '24',
+                          'name_path': '/{}/Projects/calipso-project/Networks/24'.format(ENV_CONFIG),
+                          'object_name': '24'}
