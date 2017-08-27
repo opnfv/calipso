@@ -11,6 +11,18 @@
         "listening" : true
     }
 },
+{
+    "environment" : {
+        "distribution" : "Apex-Euphrates",
+        "type_drivers" : "vxlan",
+        "mechanism_drivers" : "OVS"
+    },
+    "features" : {
+        "scanning" : true,
+        "monitoring" : true,
+        "listening" : true
+    }
+},
 { 
     "environment" : {
         "distribution" : "Stratoscale-v2.1.6", 

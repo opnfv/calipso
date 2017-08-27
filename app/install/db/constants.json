@@ -494,6 +494,10 @@
         {
             "value" : "Mirantis-10.0", 
             "label" : "Mirantis-10.0"
+        },
+        {
+            "value" : "Apex-Euphrates",
+            "label" : "Apex-Euphrates"
         }
     ], 
     "name" : "distributions"
