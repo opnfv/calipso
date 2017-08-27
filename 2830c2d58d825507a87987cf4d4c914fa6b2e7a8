@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da33351e_389bb873",
+        "filename": "app/install/db/constants.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 6867
+      },
+      "writtenOn": "2017-08-27T12:59:38Z",
+      "side": 1,
+      "message": "Koren, it looks like your Git EOL setting is incorrect.\nSee this:\nhttps://help.github.com/articles/dealing-with-line-endings/",
+      "range": {
+        "startLine": 495,
+        "startChar": 37,
+        "endLine": 495,
+        "endChar": 39
+      },
+      "revId": "2830c2d58d825507a87987cf4d4c914fa6b2e7a8",
+      "serverId": "bbac25d2-bf60-4904-9ba8-a72fc000d6c5",
+      "unresolved": false
+    }
+  ]
+}
