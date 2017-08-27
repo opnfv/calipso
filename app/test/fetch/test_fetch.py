@@ -59,6 +59,8 @@ class TestFetch(unittest.TestCase):
         self.inv = InventoryMgr()
         self.inv.set_collections(self.inventory_collection)
         DbAccess.conn = MagicMock()
+        DbAccess.get_neutron_db_name = MagicMock()
+        DbAccess.get_neutron_db_name.return_value = "neutron"
         SshConnection.connect = MagicMock()
         SshConnection.check_definitions = MagicMock()
         SshConn.check_definitions = MagicMock()
