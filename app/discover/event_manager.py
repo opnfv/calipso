@@ -45,6 +45,7 @@ class EventManager(Manager):
         'Mirantis-8.0': DefaultListener,
         'RDO-Mitaka': DefaultListener,
         'RDO-Liberty': DefaultListener,
+        'Apex-Euphrates': DefaultListener,
     }
 
     def __init__(self):
