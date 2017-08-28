@@ -58,5 +58,45 @@
         "vnic-vservice"
     ], 
     "name" : "switch_pnic clique"
+},
+{ 
+    "environment" : "Apex-Euphrates", 
+    "link_types" : [
+        "instance-vnic", 
+        "vnic-vconnector", 
+        "vconnector-vedge", 
+        "vedge-otep", 
+        "otep-host_pnic", 
+        "host_pnic-network"
+    ], 
+    "name" : "instance", 
+    "focal_point_type" : "instance"
+},
+{ 
+    "environment" : "Apex-Euphrates", 
+    "link_types" : [
+        "vservice-vnic", 
+        "vnic-vedge", 
+        "vedge-otep", 
+        "otep-host_pnic", 
+        "host_pnic-network"
+    ], 
+    "name" : "vservice", 
+    "focal_point_type" : "vservice"
+},
+{ 
+    "environment" : "Apex-Euphrates", 
+    "link_types" : [
+        "network-host_pnic", 
+        "host_pnic-otep", 
+        "otep-vedge", 
+        "vedge-vconnector", 
+        "vedge-vnic", 
+        "vconnector-vnic", 
+        "vnic-instance", 
+        "vnic-vservice"
+    ], 
+    "name" : "network", 
+    "focal_point_type" : "network"
 }
 ]
