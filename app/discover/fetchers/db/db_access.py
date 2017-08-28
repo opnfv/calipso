@@ -52,10 +52,8 @@ class DbAccess(Fetcher):
         # check if DB schema 'neutron' exists
         cursor = DbAccess.conn.cursor(dictionary=True)
         cursor.execute('SHOW DATABASES')
-        matches = []
-        for row in cursor:
-            if 'neutron' in row.get('Database', ''):
-                matches.append(row)
+        matches = [row.get('Database', '') for row in cursor
+                   if 'neutron' in row.get('Database', '')]
         if not matches:
             raise ScanError('Unable to find Neutron schema in OpenStack DB')
         if len(matches) > 1:
