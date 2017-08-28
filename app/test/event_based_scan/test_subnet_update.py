@@ -11,11 +11,20 @@ from discover.events.event_subnet_update import EventSubnetUpdate
 from discover.fetchers.api.api_access import ApiAccess
 from test.event_based_scan.test_data.event_payload_subnet_add import  \
     EVENT_PAYLOAD_REGION
-from test.event_based_scan.test_data.event_payload_subnet_update import EVENT_PAYLOAD_SUBNET_UPDATE, NETWORK_DOC
+from test.event_based_scan.test_data.event_payload_subnet_update import \
+    EVENT_PAYLOAD_SUBNET_UPDATE, NETWORK_DOC, HOST_DOC
 from test.event_based_scan.test_event import TestEvent
 
 
 class TestSubnetUpdate(TestEvent):
+
+    def get_by_id(self, env, object_id):
+        if object_id == self.network_id:
+            return NETWORK_DOC
+        elif object_id == self.host_id:
+            return HOST_DOC
+        else:
+            return None
 
     def test_handle_subnet_add(self):
         self.values = EVENT_PAYLOAD_SUBNET_UPDATE
@@ -23,23 +32,25 @@ class TestSubnetUpdate(TestEvent):
         self.subnet = self.payload['subnet']
         self.subnet_id = self.subnet['id']
         self.network_id = self.subnet['network_id']
-        self.item_ids.append(self.network_id)
+        self.host_id = self.values["publisher_id"].replace("network.", "", 1)
+        old_subnet_name = list(NETWORK_DOC['subnets'].keys())[0]
+        new_subnet_name = self.subnet['name']
 
-        #add network document for subnet.
-        self.set_item(NETWORK_DOC)
+        self.inv.get_by_id.side_effect = self.get_by_id
 
-        # check network document
-        network_document = self.inv.get_by_id(self.env, self.network_id)
-        self.assertIsNotNone(network_document)
-
-        # check region data.
         if not ApiAccess.regions:
             ApiAccess.regions = EVENT_PAYLOAD_REGION
 
-        handler = EventSubnetUpdate()
-        handler.handle(self.env, self.values)
+        res = EventSubnetUpdate().handle(self.env, self.values)
 
-        # check network document
-        network_document = self.inv.get_by_id(self.env, self.network_id)
-        self.assertIn(self.subnet['name'], network_document['subnets'])
-        self.assertEqual(self.subnet['gateway_ip'], network_document['subnets'][self.subnet['name']]['gateway_ip'])
+        self.assertTrue(res.result)
+        updated_network = [call[0][0] for call in self.inv.set.call_args_list
+                           if call[0][0]['type'] == 'network']
+        self.assertTrue(updated_network)
+        self.assertFalse(updated_network[0]['subnets'].get(old_subnet_name))
+        self.assertTrue(updated_network[0]['subnets'].get(new_subnet_name))
+
+        if ApiAccess.regions == EVENT_PAYLOAD_REGION:
+            ApiAccess.regions = None
+
+    # TODO: write tests for "enable_dhcp" change handling

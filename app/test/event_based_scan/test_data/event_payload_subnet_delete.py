@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 EVENT_PAYLOAD_SUBNET_DELETE = {
     'payload': {'subnet_id': '88442b4a-e62d-4d72-9d18-b8d6973eb3da'},
@@ -33,7 +33,7 @@ EVENT_PAYLOAD_SUBNET_DELETE = {
     '_context_project_id': '75c0eb79ff4a42b0ae4973c8375ddf40'}
 
 
-EVENT_PAYLOAD_NETWORK = {
+NETWORK_DOC = {
     "admin_state_up": True,
     "cidrs": [
         "172.16.10.0/25"
@@ -92,4 +92,35 @@ EVENT_PAYLOAD_NETWORK = {
     ],
     "tenant_id": "75c0eb79ff4a42b0ae4973c8375ddf40",
     "type": "network"
+}
+
+VNIC_DOC = {
+    "IP Address": "172.16.10.2",
+    "IPv6 Address": "fe80::f816:3eff:fe96:5066/64",
+    "cidr": "172.16.10.0/25",
+    "data": "Link encap:Ethernet  HWaddr fa:16:3e:96:50:66\ninet addr:172.16.10.2  Bcast:172.16.10.127  " +
+            "Mask:255.255.255.128\ninet6 addr: fe80::f816:3eff:fe96:5066/64 Scope:Link\nUP BROADCAST RUNNING " +
+            "MULTICAST  MTU:1450  Metric:1\nRX packets:17 errors:0 dropped:2 overruns:0 frame:0\nTX packets:8 " +
+            "errors:0 dropped:0 overruns:0 carrier:0\ncollisions:0 txqueuelen:0\nRX bytes:1593 " +
+            "(1.5 KB)  TX bytes:648 (648.0 B)\n",
+    "environment": ENV_CONFIG,
+    "host": "node-6.cisco.com",
+    "id": "tapca33c645-5b",
+    '_id': '5970b9aa797ffad322bc9b84',
+    "id_path": "/" + ENV_CONFIG + "/" + ENV_CONFIG + "-regions/RegionOne/RegionOne-availability_zones/internal" +
+               "/node-6.cisco.com/node-6.cisco.com-vservices/node-6.cisco.com-vservices-dhcps/qdhcp-121c727b-6376-4a86-a5a8-793dfe7a8ef4/qdhcp-121c727b-6376-4a86-a5a8-793dfe7a8ef4-vnics/tapca33c645-5b",
+    "last_scanned": 0,
+    "mac_address": "fa:16:3e:13:b2:aa",
+    "name": "tapca33c645-5b",
+    "name_path": "/"+ENV_CONFIG+"/Regions/RegionOne/Availability Zones/internal/node-6.cisco.com/" +
+                 "Vservices/DHCP servers/dhcp-test_interface/vNICs/tapca33c645-5b",
+    "netmask": "255.255.255.128",
+    "network": "121c727b-6376-4a86-a5a8-793dfe7a8ef4",
+    "object_name": "tapca33c645-5b",
+    "parent_id": "qdhcp-121c727b-6376-4a86-a5a8-793dfe7a8ef4-vnics",
+    "parent_text": "vNICs",
+    "parent_type": "vnics_folder",
+    "show_in_tree": True,
+    "type": "vnic",
+    "vnic_type": "vservice_vnic"
 }

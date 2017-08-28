@@ -130,7 +130,6 @@ class EventSubnetAdd(EventBase):
         # Check DHCP enable, if true, scan network.
         if subnet['enable_dhcp'] is True:
             # update network
-            # TODO: #AskCheng - why is this necessary?
             if len(ApiAccess.regions) == 0:
                 fetcher = ApiFetchRegions()
                 fetcher.set_env(env)

@@ -7,9 +7,11 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
+from unittest.mock import patch, call
+
+import re
 from bson import ObjectId
 
-from discover.clique_finder import CliqueFinder
 from discover.events.event_base import EventBase
 from test.event_based_scan.test_event import TestEvent
 
@@ -20,45 +22,37 @@ class TestEventDeleteBase(TestEvent):
         super().setUp()
         self.values = {}
 
-    def set_item_for_deletion(self, object_type, document):
+        self.cf = patch("discover.events.event_delete_base.CliqueFinder")
+        self.clique_finder = self.cf.start().return_value
+        self.clique_finder.find_links_by_source.return_value = []
+        self.clique_finder.find_links_by_target.return_value = []
 
-        payload = self.values['payload']
-        self.item_id = payload['{}_id'.format(object_type)]
-        if object_type == 'router':
-            host_id = self.values['publisher_id'].replace("network.", "", 1)
-            self.item_id = "-".join([host_id, "qrouter", self.item_id])
+    def handle_delete(self, handler: EventBase, db_object: dict):
+        with patch("discover.events.event_delete_base.CliqueFinder") as cf:
+            self.inv.get_by_id.return_value = db_object
 
-        self.assertEqual(document['id'], self.item_id, msg="Document id and payload id are different")
+            event_result = handler.handle(self.env, self.values)
+            self.assertTrue(event_result.result)
 
-        item = self.inv.get_by_id(self.env, self.item_id)
-        if not item:
-            self.log.info('{} document is not found, add document for deleting.'.format(object_type))
+            self.check_inv_calls(db_object)
 
-            # add network document for deleting.
-            self.set_item(document)
-            item = self.inv.get_by_id(self.env, self.item_id)
-            self.assertIsNotNone(item)
+    def check_inv_calls(self, db_object):
+        db_id = ObjectId(db_object['_id'])
+        id_path_regex = re.compile('^{}/'.format(db_object['id_path']))
 
-    def handle_delete(self, handler: EventBase):
+        delete_clique = call('cliques', {'focal_point': db_id})
+        delete_source_links = call('links', {'source': db_id})
+        delete_target_links = call('links', {'target': db_id})
+        delete_object = call('inventory', {'_id': db_id})
+        delete_id_path = call('inventory', {'id_path':
+                                                {'$regex': id_path_regex}})
 
-        item = self.inv.get_by_id(self.env, self.item_id)
-        db_id = ObjectId(item['_id'])
-        clique_finder = CliqueFinder()
+        self.inv.delete.assert_has_calls([delete_clique,
+                                          delete_source_links,
+                                          delete_target_links,
+                                          delete_object,
+                                          delete_id_path])
 
-        # delete item
-        event_result = handler.handle(self.env, self.values)
-        self.assertTrue(event_result.result)
-
-        # check instance delete result.
-        item = self.inv.get_by_id(self.env, self.item_id)
-        self.assertIsNone(item)
-
-        # check links
-        matched_links_source = clique_finder.find_links_by_source(db_id)
-        matched_links_target = clique_finder.find_links_by_target(db_id)
-        self.assertEqual(matched_links_source.count(), 0)
-        self.assertEqual(matched_links_target.count(), 0)
-
-        # check children
-        matched_children = self.inv.get_children(self.env, None, self.item_id)
-        self.assertEqual(len(matched_children), 0)
+    def tearDown(self):
+        super().tearDown()
+        self.cf.stop()

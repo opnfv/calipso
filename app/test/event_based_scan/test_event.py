@@ -7,49 +7,28 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-import re
 import unittest
+from unittest.mock import patch, Mock
 
-from discover.configuration import Configuration
-from test.event_based_scan.config.test_config \
-    import MONGODB_CONFIG, ENV_CONFIG, COLLECTION_CONFIG
-from utils.inventory_mgr import InventoryMgr
+from test.event_based_scan.test_data.test_config \
+    import ENV_CONFIG, COLLECTION_CONFIG
 from utils.logging.console_logger import ConsoleLogger
-from utils.mongo_access import MongoAccess
 
 
 class TestEvent(unittest.TestCase):
     def setUp(self):
         self.log = ConsoleLogger()
-        self.mongo_config = MONGODB_CONFIG
         self.env = ENV_CONFIG
         self.collection = COLLECTION_CONFIG
-
-        MongoAccess.set_config_file(self.mongo_config)
-        self.conf = Configuration()
-        self.conf.use_env(self.env)
-
-        self.inv = InventoryMgr()
-        self.inv.set_collections(self.collection)
         self.item_ids = []
 
-    def set_item(self, document):
-        self.inv.set(document)
-        self.item_ids.append(document['id'])
+        self.inv_patcher = patch('discover.events.event_base.InventoryMgr')
+        self.inv_class = self.inv_patcher.start()
+        self.inv = self.inv_class.return_value
 
-    def assert_empty_by_id(self, object_id):
-        doc = self.inv.get_by_id(self.env, object_id)
-        self.assertIsNone(doc)
+        self.log_patcher = patch('discover.fetcher.FullLogger')
+        self.log_patcher.start()
 
     def tearDown(self):
-        for item_id in self.item_ids:
-            item = self.inv.get_by_id(self.env, item_id)
-            # delete children
-            if item:
-                regexp = re.compile('^{}/'.format(item['id_path']))
-                self.inv.delete('inventory', {'id_path': {'$regex': regexp}})
-
-            # delete target item
-            self.inv.delete('inventory', {'id': item_id})
-            item = self.inv.get_by_id(self.env, item_id)
-            self.assertIsNone(item)
+        self.inv_patcher.stop()
+        self.log_patcher.stop()

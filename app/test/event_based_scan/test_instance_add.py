@@ -7,55 +7,44 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from unittest.mock import patch
+from unittest.mock import patch, ANY, call
 
 from discover.events.event_instance_add import EventInstanceAdd
 from test.event_based_scan.test_data.event_payload_instance_add \
-    import EVENT_PAYLOAD_INSTANCE_ADD, INSTANCES_ROOT, HOST, INSTANCE_DOCUMENT
+    import EVENT_PAYLOAD_INSTANCE_ADD, INSTANCES_ROOT, HOST
 from test.event_based_scan.test_event import TestEvent
 
 
 class TestInstanceAdd(TestEvent):
 
-    def insert_instance(self):
-        self.set_item(INSTANCE_DOCUMENT)
+    def get_by_id(self, env, object_id):
+        instance_root_id = '-'.join((self.payload['host'], 'instances'))
+        if object_id == instance_root_id:
+            return INSTANCES_ROOT
+        elif object_id:
+            return HOST
+        else:
+            return None
 
     # Patch ScanHost entirely to negate its side effects and supply our own
-    @patch("discover.events.event_instance_add.ScanHost")
-    def test_handle_instance_add(self, scan_host_mock):
+    @patch("discover.events.event_instance_add.Scanner")
+    def test_handle_instance_add(self, scanner_mock):
         self.values = EVENT_PAYLOAD_INSTANCE_ADD
-        payload = self.values['payload']
-        self.instance_id = payload['instance_id']
-        host_id = payload['host']
+        self.payload = self.values['payload']
+        instance_id = self.payload['instance_id']
 
-        # prepare instances root, in case it's not there
-        self.set_item(INSTANCES_ROOT)
+        self.inv.get_by_id.side_effect = self.get_by_id
 
-        # prepare host, in case it's not existed.
-        self.set_item(HOST)
-
-        # check instance document
-        instance = self.inv.get_by_id(self.env, self.instance_id)
-        if instance:
-            self.log.info('instance document exists, delete it first.')
-            self.inv.delete('inventory', {'id': self.instance_id})
-
-            instance = self.inv.get_by_id(self.env, self.instance_id)
-            self.assertIsNone(instance)
-
-        # simulate instance insertion after host scan
-        scan_host_mock.return_value.scan_links.side_effect = self.insert_instance
-
-        # check the return of instance handler.
         handler = EventInstanceAdd()
         ret = handler.handle(self.env, self.values)
 
         self.assertEqual(ret.result, True)
 
-        # check host document
-        host = self.inv.get_by_id(self.env, host_id)
-        self.assertIsNotNone(host)
+        root_call = call(ANY, INSTANCES_ROOT,
+                         limit_to_child_id=instance_id,
+                         limit_to_child_type='instance')
+        host_call = call(ANY, HOST,
+                         limit_to_child_type=ANY)
 
-        # check instance document
-        instance_document = self.inv.get_by_id(self.env, self.instance_id)
-        self.assertIsNotNone(instance_document)
+        scanner = scanner_mock.return_value
+        scanner.scan.assert_has_calls([root_call, host_call])

@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 EVENT_PAYLOAD_PORT_INSTANCE_ADD = {
     '_context_user_id': '73638a2687534f9794cd8057ba860637', 'payload': {
@@ -312,3 +312,16 @@ VNIC_DOCS = [{
     "show_in_tree": True,
     "vnic_type": "instance_vnic"
 }]
+
+PORTS_FOLDER = {'parent_id': '55550a69-24eb-47f5-a458-3aa086cc71c2',
+                'create_object': True,
+                'text': 'Ports',
+                'show_in_tree': True,
+                'id_path': 'test-env/test-env-projects/a83c8b0d2df24170a7c54f09f824230e/a83c8b0d2df24170a7c54f09f824230e-networks/55550a69-24eb-47f5-a458-3aa086cc71c2/55550a69-24eb-47f5-a458-3aa086cc71c2-ports/',
+                'name_path': '/test-env/Projects/a83c8b0d2df24170a7c54f09f824230e/Networks/please_connect/Ports',
+                'environment': ENV_CONFIG,
+                'id': '55550a69-24eb-47f5-a458-3aa086cc71c2-ports',
+                'name': 'Ports', 'parent_type': 'network',
+                'type': 'ports_folder', 'object_name': 'Ports'}
+
+PORT_DOC = {'id': '1233445-75b6-4c05-9480-4bc648845c6f'}

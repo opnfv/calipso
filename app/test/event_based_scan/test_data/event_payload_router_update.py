@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 EVENT_PAYLOAD_ROUTER_UPDATE = {
     '_context_request_id': 'req-da45908c-0765-4f8a-9fac-79246901de41', '_unique_id': '80723cc09a4748c6b13214dcb867719e',
@@ -122,7 +122,7 @@ EVENT_PAYLOAD_ROUTER_DEL_GATEWAY = {
                    'tenant_id': '75c0eb79ff4a42b0ae4973c8375ddf40', 'status': 'ACTIVE'}},
     '_context_request_id': 'req-d7e73189-4709-4234-8b4c-fb6b4dc2017b'}
 
-PORTS = {
+PORT = {
     "admin_state_up": True,
     "allowed_address_pairs": [
 

@@ -9,7 +9,7 @@
 ###############################################################################
 import datetime
 
-from test.event_based_scan.config.test_config import ENV_CONFIG
+from test.event_based_scan.test_data.test_config import ENV_CONFIG
 
 EVENT_PAYLOAD_ROUTER_ADD = {
     '_context_show_deleted': False, '_context_domain': None,
