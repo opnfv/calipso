@@ -17,9 +17,9 @@ class DbFetchAZNetworkHosts(DbAccess):
   def get(self, id):
     query = """
       SELECT DISTINCT host, host AS id, configurations
-      FROM neutron.agents
+      FROM {}.agents
       WHERE agent_type = 'Metadata agent'
-    """
+    """.format(self.neutron_db)
     results = self.get_objects_list(query, "host")
     for r in results:
       self.set_host_details(r)

@@ -69,7 +69,8 @@ class CliFetchOtepsLxb(CliAccess, DbAccess):
         return otep
 
     def get_udp_port(self, otep):
-        table_name = "neutron.ml2_" + otep['overlay_type'] + "_endpoints"
+        table_name = "{}.ml2_{}_endpoints".format(self.neutron_db,
+                                                  otep['overlay_type'])
         results = None
         try:
             results = self.get_objects_list_for_id(

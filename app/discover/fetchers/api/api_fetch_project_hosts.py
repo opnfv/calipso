@@ -109,7 +109,7 @@ class ApiFetchProjectHosts(ApiAccess, DbAccess):
                 self.add_host_type(doc, "Compute", az['zoneName'])
         return doc
 
-    # fetch more details of network nodes from neutron.agents table
+    # fetch more details of network nodes from neutron DB agents table
     def fetch_network_node_details(self, docs):
         hosts = {}
         for doc in docs:
