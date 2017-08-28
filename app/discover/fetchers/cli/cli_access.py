@@ -204,4 +204,3 @@ class CliAccess(BinaryConverter, Fetcher):
             matches = regex.search(line)
             if matches and name not in o:
                 o[name] = matches.group(1)
-                break
