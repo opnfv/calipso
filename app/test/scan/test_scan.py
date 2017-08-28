@@ -11,6 +11,7 @@ import unittest
 from unittest.mock import MagicMock
 
 from discover.configuration import Configuration
+from discover.fetchers.db.db_access import DbAccess
 from monitoring.setup.monitoring_setup_manager import MonitoringSetupManager
 from test.scan.config.test_config \
     import MONGODB_CONFIG, ENV_CONFIG, COLLECTION_CONFIG
@@ -41,6 +42,9 @@ class TestScan(unittest.TestCase):
         self.inv.set_collections(self.inventory_collection)
 
         MonitoringSetupManager.server_setup = MagicMock()
+
+        DbAccess.get_neutron_db_name = MagicMock()
+        DbAccess.get_neutron_db_name.return_value = "neutron"
 
     def setUp(self):
         self.configure_environment()
