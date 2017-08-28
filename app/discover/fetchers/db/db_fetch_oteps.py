@@ -32,7 +32,7 @@ class DbFetchOteps(DbAccess, CliAccess, metaclass=Singleton):
             return []
         tunnel_type = vedge["configurations"]["tunnel_types"][0]
         host_id = vedge["host"]
-        table_name = "neutron.ml2_" + tunnel_type + "_endpoints"
+        table_name = "{}.ml2_{}_endpoints".format(self.neutron_db, tunnel_type)
         env_config = self.config.get_env_config()
         distribution = env_config["distribution"]
         if distribution == "Canonical-icehouse":

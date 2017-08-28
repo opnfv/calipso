@@ -29,6 +29,7 @@ class DbFetchPort(DbAccess):
         return result[0]['id'] if result != [] else None
 
     def get_id_by_field(self, id, search=''):
-        query = """SELECT id FROM neutron.ports where network_id = %s AND """ + search
+        query = """SELECT id FROM {}.ports where network_id = %s AND {}"""\
+                .format(self.neutron_db, search)
         result = self.get_objects_list_for_id(query, "port", id)
         return result[0]['id'] if result != [] else None
