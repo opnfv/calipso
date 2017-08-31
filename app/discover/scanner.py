@@ -25,9 +25,8 @@ from discover.find_links_for_vedges import FindLinksForVedges
 from discover.find_links_for_vservice_vnics import FindLinksForVserviceVnics
 from discover.scan_error import ScanError
 from discover.scan_metadata_parser import ScanMetadataParser
-from utils.constants import EnvironmentFeatures
 from utils.inventory_mgr import InventoryMgr
-from utils.util import ClassResolver
+from utils.ssh_connection import SshError
 
 
 class Scanner(Fetcher):
@@ -37,6 +36,9 @@ class Scanner(Fetcher):
     root_patern = None
     scan_queue = queue.Queue()
     scan_queue_track = {}
+
+    # keep errors indication per environment
+    found_errors = {}
 
     def __init__(self):
         """
@@ -71,6 +73,9 @@ class Scanner(Fetcher):
                                       "children": children})
         except ValueError:
             return False
+        except SshError:
+            # mark the error
+            self.found_errors[self.get_env()] = True
         if limit_to_child_id and len(types_children) > 0:
             t = types_children[0]
             children = t["children"]
@@ -135,6 +140,9 @@ class Scanner(Fetcher):
         # It depends on the Fetcher's config.
         try:
             db_results = fetcher.get(escaped_id)
+        except SshError:
+            self.found_errors[self.get_env()] = True
+            return []
         except Exception as e:
             self.log.error("Error while scanning : " +
                            "fetcher=%s, " +
@@ -233,7 +241,9 @@ class Scanner(Fetcher):
         clique_scanner.find_cliques()
 
     def deploy_monitoring_setup(self):
-        self.inv.monitoring_setup_manager.handle_pending_setup_changes()
+        ret = self.inv.monitoring_setup_manager.handle_pending_setup_changes()
+        if not ret:
+            self.found_errors[self.get_env()] = True
 
     def load_metadata(self):
         parser = ScanMetadataParser(self.inv)

@@ -29,7 +29,7 @@ from utils.inventory_mgr import InventoryMgr
 from utils.logging.full_logger import FullLogger
 from utils.mongo_access import MongoAccess
 from utils.ssh_conn import SshConn
-from utils.ssh_connection import SshConnection
+from utils.ssh_connection import SshConnection, SshError
 
 
 class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
@@ -55,6 +55,7 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
         self.mechanism_drivers = \
             self.configuration.environment['mechanism_drivers']
         self.env = env
+        self.had_errors = False
         self.monitoring_config = self.db.monitoring_config_templates
         try:
             self.env_monitoring_config = self.configuration.get('Monitoring')
@@ -246,7 +247,7 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
         if self.provision < self.provision_levels['files']:
             if self.provision == self.provision_levels['db']:
                 self.log.info('Monitoring config applied only in DB')
-            return
+            return True
         self.log.info('applying monitoring setup')
         hosts = {}
         scripts_to_hosts = {}
@@ -254,14 +255,16 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
             self.handle_pending_host_setup_changes(host_changes, hosts,
                                                    scripts_to_hosts)
         if self.provision < self.provision_levels['deploy']:
-            return
+            return True
         if self.fetch_ssl_files:
             self.deploy_ssl_files(list(scripts_to_hosts.keys()))
         for host in scripts_to_hosts.values():
             self.deploy_scripts_to_host(host)
         for host in hosts.values():
             self.deploy_config_to_target(host)
-        self.log.info('done applying monitoring setup')
+        had_errors = ', with some error(s)' if self.had_errors else ''
+        self.log.info('done applying monitoring setup{}'.format(had_errors))
+        return not self.had_errors
 
     def handle_pending_host_setup_changes(self, host_changes, hosts,
                                           scripts_to_hosts):
@@ -291,9 +294,12 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
                 remote_path = self.PRODUCTION_CONFIG_DIR
                 if os.path.isfile(local_dir):
                     remote_path += os.path.sep + os.path.basename(local_dir)
-                self.write_to_server(local_dir,
-                                     remote_path=remote_path,
-                                     is_container=is_container)
+                try:
+                    self.write_to_server(local_dir,
+                                         remote_path=remote_path,
+                                         is_container=is_container)
+                except SshError:
+                    self.had_errors = True
             elif is_local_host:
                     # write to production configuration directory on local host
                     self.make_directory(self.PRODUCTION_CONFIG_DIR)
@@ -302,7 +308,10 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
                 # write to remote host prepare dir - use sftp
                 if self.provision < self.provision_levels['deploy']:
                     continue
-                self.write_to_remote_host(host, changes['local_path'])
+                try:
+                    self.write_to_remote_host(host, changes['local_path'])
+                except SshError:
+                    self.had_errors = True
 
     def prepare_scripts(self, host, is_server):
         if self.scripts_prepared_for_host.get(host, False):
@@ -332,30 +341,36 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
         self.scripts_prepared_for_host[host] = True
 
     def deploy_ssl_files(self, hosts: list):
-        monitoring_server = self.env_monitoring_config['server_ip']
-        gateway_host = SshConn.get_gateway_host(hosts[0])
-        temp_dir = tempfile.TemporaryDirectory()
-        for file_path in self.fetch_ssl_files:
-            # copy SSL files from the monitoring server
-            file_name = os.path.basename(file_path)
-            local_path = os.path.join(temp_dir.name, file_name)
-            self.get_file(monitoring_server, file_path, local_path)
-            #  first copy the files to the gateway
-            self.write_to_remote_host(gateway_host, local_path,
-                                      remote_path=file_path)
-        ssl_path = os.path.commonprefix(self.fetch_ssl_files)
-        for host in hosts:
-            self.copy_from_gateway_to_host(host, ssl_path, ssl_path)
+        try:
+            monitoring_server = self.env_monitoring_config['server_ip']
+            gateway_host = SshConn.get_gateway_host(hosts[0])
+            temp_dir = tempfile.TemporaryDirectory()
+            for file_path in self.fetch_ssl_files:
+                # copy SSL files from the monitoring server
+                file_name = os.path.basename(file_path)
+                local_path = os.path.join(temp_dir.name, file_name)
+                self.get_file(monitoring_server, file_path, local_path)
+                #  first copy the files to the gateway
+                self.write_to_remote_host(gateway_host, local_path,
+                                          remote_path=file_path)
+            ssl_path = os.path.commonprefix(self.fetch_ssl_files)
+            for host in hosts:
+                self.copy_from_gateway_to_host(host, ssl_path, ssl_path)
+        except SshError:
+            self.had_errors = True
 
     def deploy_scripts_to_host(self, host_details):
-        host = host_details['host']
-        is_server = host_details['is_server']
-        self.prepare_scripts(host, is_server)
-        remote_path = self.REMOTE_SCRIPTS_FOLDER
-        local_path = remote_path + os.path.sep + '*.py'
-        if is_server:
-            return  # this was done earlier
-        self.copy_from_gateway_to_host(host, local_path, remote_path)
+        try:
+            host = host_details['host']
+            is_server = host_details['is_server']
+            self.prepare_scripts(host, is_server)
+            remote_path = self.REMOTE_SCRIPTS_FOLDER
+            local_path = remote_path + os.path.sep + '*.py'
+            if is_server:
+                return  # this was done earlier
+            self.copy_from_gateway_to_host(host, local_path, remote_path)
+        except SshError:
+            self.had_errors = True
 
     def restart_service(self, host: str = None,
                         service: str = 'sensu-client',
@@ -365,24 +380,30 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
         cmd = 'sudo /etc/init.d/{} restart'.format(service)
         log_msg = msg if msg else 'deploying config to host {}'.format(host)
         self.log.info(log_msg)
-        if is_server:
-            ssh.exec(cmd)
-        else:
-            self.run(cmd, ssh_to_host=host, ssh=ssh)
+        try:
+            if is_server:
+                ssh.exec(cmd)
+            else:
+                self.run(cmd, ssh_to_host=host, ssh=ssh)
+        except SshError:
+            self.had_errors = True
 
     def deploy_config_to_target(self, host_details):
-        host = host_details['host']
-        is_local_host = host_details['is_local_host']
-        is_container = host_details['is_container']
-        is_server = host_details['is_server']
-        local_dir = host_details['local_dir']
-        if is_container or is_server or not is_local_host:
-            local_dir = os.path.dirname(local_dir)
-            if not is_server:
-                self.move_setup_files_to_remote_host(host, local_dir)
-            # restart the Sensu client on the remote host,
-            # so it takes the new setup
-            self.restart_service(host)
+        try:
+            host = host_details['host']
+            is_local_host = host_details['is_local_host']
+            is_container = host_details['is_container']
+            is_server = host_details['is_server']
+            local_dir = host_details['local_dir']
+            if is_container or is_server or not is_local_host:
+                local_dir = os.path.dirname(local_dir)
+                if not is_server:
+                    self.move_setup_files_to_remote_host(host, local_dir)
+                # restart the Sensu client on the remote host,
+                # so it takes the new setup
+                self.restart_service(host)
+        except SshError:
+            self.had_errors = True
 
     def run_cmd_locally(self, cmd):
         try:

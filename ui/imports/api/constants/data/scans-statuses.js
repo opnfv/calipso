@@ -18,6 +18,9 @@ export const Statuses = [{
 }, {
   value: 'completed',
   label: 'Completed',
+}, {
+  value: 'completed_with_errors',
+  label: 'Completed with errors',
 }, { 
   value: 'failed',
   label: 'Failed',

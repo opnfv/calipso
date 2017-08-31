@@ -41,6 +41,8 @@ class ScanManager(Manager):
                          mongo_config_file=self.args.mongo_config)
         self.db_client = None
         self.environments_collection = None
+        self.scans_collection = None
+        self.scheduled_scans_collection = None
 
     @staticmethod
     def get_args():
@@ -138,8 +140,10 @@ class ScanManager(Manager):
     def _fail_scan(self, scan_request: dict):
         self._finalize_scan(scan_request, ScanStatus.FAILED, False)
 
-    def _complete_scan(self, scan_request: dict):
-        self._finalize_scan(scan_request, ScanStatus.COMPLETED, True)
+    def _complete_scan(self, scan_request: dict, result_message: str):
+        status = ScanStatus.COMPLETED if result_message == 'ok' \
+            else ScanStatus.COMPLETED_WITH_ERRORS
+        self._finalize_scan(scan_request, status, True)
 
     # PyCharm type checker can't reliably check types of document
     # noinspection PyTypeChecker
@@ -184,6 +188,7 @@ class ScanManager(Manager):
             'scan_only_links': scheduled_scan['scan_only_links'],
             'scan_only_cliques': scheduled_scan['scan_only_cliques'],
             'submit_timestamp': ts,
+            'interval': interval,
             'environment': scheduled_scan['environment'],
             'inventory': 'inventory'
         }
@@ -240,8 +245,9 @@ class ScanManager(Manager):
                     time.sleep(self.interval)
                 else:
                     scan_request = results[0]
-                    if not self.inv.is_feature_supported(scan_request.get('environment'),
-                                                         EnvironmentFeatures.SCANNING):
+                    env = scan_request.get('environment')
+                    scan_feature = EnvironmentFeatures.SCANNING
+                    if not self.inv.is_feature_supported(env, scan_feature):
                         self.log.error("Scanning is not supported for env '{}'"
                                        .format(scan_request.get('environment')))
                         self._fail_scan(scan_request)
@@ -281,11 +287,11 @@ class ScanManager(Manager):
                             continue
 
                         # update the status and timestamps.
-                        self.log.info("Request '{}' has been scanned."
-                                      .format(scan_request['_id']))
+                        self.log.info("Request '{}' has been scanned. ({})"
+                                      .format(scan_request['_id'], message))
                         end_time = datetime.datetime.utcnow()
                         scan_request['end_timestamp'] = end_time
-                        self._complete_scan(scan_request)
+                        self._complete_scan(scan_request, message)
         finally:
             self._clean_up()
 

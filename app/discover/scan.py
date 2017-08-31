@@ -274,6 +274,7 @@ class ScanController(Fetcher):
         # generate ScanObject Class and instance.
         scanner = Scanner()
         scanner.set_env(env_name)
+        scanner.found_errors[env_name] = False
 
         # decide what scanning operations to do
         inventory_only = scan_plan.inventory_only
@@ -313,7 +314,10 @@ class ScanController(Fetcher):
         except ScanError as e:
             return False, "scan error: " + str(e)
         SshConnection.disconnect_all()
-        return True, 'ok'
+        status = 'ok' if not scanner.found_errors.get(env_name, False) \
+            else 'errors detected'
+        self.log.info('Scan completed, status: {}'.format(status))
+        return True, status
 
 
 if __name__ == '__main__':

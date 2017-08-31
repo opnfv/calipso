@@ -89,6 +89,7 @@ CONSTANTS_BY_NAMES = {
         "pending",
         "running",
         "completed",
+        "completed_with_errors",
         "failed",
         "aborted"
     ],

@@ -12,7 +12,10 @@ import os
 import paramiko
 
 from utils.binary_converter import BinaryConverter
+from discover.scan_error import ScanError
 
+class SshError(Exception):
+    pass
 
 class SshConnection(BinaryConverter):
     connections = {}
@@ -117,6 +120,7 @@ class SshConnection(BinaryConverter):
                                     else self.DEFAULT_PORT,
                                     password=self.pwd, timeout=30)
         else:
+            port = None
             try:
                 port = self.port if self.port is not None else self.DEFAULT_PORT
                 self.ssh_client.connect(self.host,
@@ -146,12 +150,12 @@ class SshConnection(BinaryConverter):
             err_lines = [l for l in err.splitlines()
                          if 'Loaded plugin: ' not in l]
             if err_lines:
-                self.log.error("CLI access: \n" +
-                               "Host: {}\nCommand: {}\nError: {}\n".
-                               format(self.host, cmd, err))
+                msg = "CLI access: \nHost: {}\nCommand: {}\nError: {}\n"
+                msg = msg.format(self.host, cmd, err)
+                self.log.error(msg)
                 stderr.close()
                 stdout.close()
-                return ""
+                raise SshError(msg)
         ret = self.binary2str(stdout.read())
         stderr.close()
         stdout.close()
@@ -165,11 +169,11 @@ class SshConnection(BinaryConverter):
         try:
             self.ftp.put(local_path, remote_path)
         except IOError as e:
-            self.log.error('SFTP copy_file failed to copy file: ' +
-                           'local: ' + local_path +
-                           ', remote host: ' + self.host +
-                           ', error: ' + str(e))
-            return str(e)
+            msg = 'SFTP copy_file failed to copy file: ' \
+                  'local: {}, remote host: {}, error: {}' \
+                .format(local_path, self.host, str(e))
+            self.log.error(msg)
+            raise SshError(msg)
         try:
             remote_file = self.ftp.file(remote_path, 'a+')
         except IOError as e:
@@ -201,11 +205,11 @@ class SshConnection(BinaryConverter):
         try:
             self.ftp.get(remote_path, local_path)
         except IOError as e:
-            self.log.error('SFTP copy_file_from_remote failed to copy file: '
-                           'remote host: {}, '
-                           'remote_path: {}, local: {}, error: {}'
-                           .format(self.host, remote_path, local_path, str(e)))
-            return str(e)
+            msg = 'SFTP copy_file_from_remote failed to copy file: ' \
+                  'remote host: {}, remote_path: {}, local: {}, error: {}'
+            msg = msg.format(self.host, remote_path, local_path, str(e))
+            self.log.error(msg)
+            raise SshError(msg)
         self.log.info('SFTP copy_file_from_remote success: host={},{} -> {}'.
                       format(self.host, remote_path, local_path))
         return ''
