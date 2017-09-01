@@ -140,20 +140,23 @@ class TestScanController(TestScan):
                                      deploy_monitoring_setup_count)
 
     def prepare_scan_mocks(self):
-        self.load_metadata = Scanner.load_metadata
+        self.load_link_finders_metadata = Scanner.load_scanners_metadata
+        self.load_scanners_metadata = Scanner.load_scanners_metadata
         self.scan = Scanner.scan
         self.scan_links = Scanner.scan_links
         self.scan_cliques = Scanner.scan_cliques
         self.deploy_monitoring_setup = Scanner.deploy_monitoring_setup
 
-        Scanner.load_metadata = MagicMock()
+        Scanner.load_link_finders_metadata = MagicMock()
+        Scanner.load_scanners_metadata = MagicMock()
         Scanner.scan = MagicMock()
         Scanner.scan_links = MagicMock()
         Scanner.scan_cliques = MagicMock()
         Scanner.deploy_monitoring_setup = MagicMock()
 
     def reset_methods(self):
-        Scanner.load_metadata = self.load_metadata
+        Scanner.load_link_finders_metadata = self.load_link_finders_metadata
+        Scanner.load_scanners_metadata = self.load_scanners_metadata
         Scanner.scan = self.scan
         Scanner.scan_links = self.scan_links
         Scanner.scan_cliques = self.scan_cliques

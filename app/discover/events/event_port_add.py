@@ -12,10 +12,12 @@ import datetime
 from discover.events.event_base import EventBase, EventResult
 from discover.fetchers.api.api_fetch_host_instances import ApiFetchHostInstances
 from discover.fetchers.cli.cli_fetch_instance_vnics import CliFetchInstanceVnics
-from discover.fetchers.cli.cli_fetch_instance_vnics_vpp import CliFetchInstanceVnicsVpp
+from discover.fetchers.cli.cli_fetch_instance_vnics_vpp import \
+    CliFetchInstanceVnicsVpp
 from discover.fetchers.cli.cli_fetch_vservice_vnics import CliFetchVserviceVnics
-from discover.find_links_for_instance_vnics import FindLinksForInstanceVnics
-from discover.find_links_for_vedges import FindLinksForVedges
+from discover.link_finders.find_links_for_instance_vnics import \
+    FindLinksForInstanceVnics
+from discover.link_finders.find_links_for_vedges import FindLinksForVedges
 from discover.scanner import Scanner
 
 

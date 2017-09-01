@@ -15,8 +15,9 @@ from discover.fetchers.api.api_access import ApiAccess
 from discover.fetchers.api.api_fetch_port import ApiFetchPort
 from discover.fetchers.api.api_fetch_regions import ApiFetchRegions
 from discover.fetchers.db.db_fetch_port import DbFetchPort
-from discover.find_links_for_pnics import FindLinksForPnics
-from discover.find_links_for_vservice_vnics import FindLinksForVserviceVnics
+from discover.link_finders.find_links_for_pnics import FindLinksForPnics
+from discover.link_finders.find_links_for_vservice_vnics import \
+    FindLinksForVserviceVnics
 from discover.scanner import Scanner
 
 

@@ -1,0 +1,12 @@
+{
+  "finders_package": "discover.link_finders",
+  "base_finder": "FindLinks",
+  "link_finders": [
+    "FindLinksForInstanceVnics",
+    "FindLinksForOteps",
+    "FindLinksForPnics",
+    "FindLinksForVconnectors",
+    "FindLinksForVedges",
+    "FindLinksForVserviceVnics"
+  ]
+}

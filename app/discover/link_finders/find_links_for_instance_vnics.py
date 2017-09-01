@@ -7,7 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from discover.find_links import FindLinks
+from discover.link_finders.find_links import FindLinks
 
 
 class FindLinksForInstanceVnics(FindLinks):

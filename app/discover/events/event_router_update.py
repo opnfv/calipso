@@ -11,7 +11,7 @@ from discover.events.event_base import EventBase, EventResult
 from discover.events.event_port_delete import EventPortDelete
 from discover.events.event_router_add import EventRouterAdd
 from discover.fetchers.cli.cli_fetch_host_vservice import CliFetchHostVservice
-from discover.find_links_for_vservice_vnics import FindLinksForVserviceVnics
+from discover.link_finders.find_links_for_vservice_vnics import FindLinksForVserviceVnics
 from discover.scanner import Scanner
 from utils.util import encode_router_id
 

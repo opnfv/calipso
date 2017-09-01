@@ -7,14 +7,9 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from discover.events.event_port_add import EventPortAdd
-from discover.fetchers.api.api_fetch_host_instances import ApiFetchHostInstances
-from discover.fetchers.cli.cli_fetch_instance_vnics import CliFetchInstanceVnics
-from discover.find_links_for_instance_vnics import FindLinksForInstanceVnics
-from discover.find_links_for_vedges import FindLinksForVedges
-from discover.scanner import Scanner
 from test.event_based_scan.test_data.event_payload_port_add import \
     EVENT_PAYLOAD_PORT_INSTANCE_ADD, NETWORK_DOC, \
     INSTANCE_DOC, INSTANCES_ROOT, VNIC_DOCS, INSTANCE_DOCS, PORTS_FOLDER, \

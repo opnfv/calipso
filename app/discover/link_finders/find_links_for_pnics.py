@@ -9,7 +9,7 @@
 ###############################################################################
 import re
 
-from discover.find_links import FindLinks
+from discover.link_finders.find_links import FindLinks
 from utils.util import decode_aci_dn
 
 
