@@ -377,7 +377,7 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
                         is_server: bool = False,
                         msg: str =None):
         ssh = self.get_ssh(host)
-        cmd = 'sudo /etc/init.d/{} restart'.format(service)
+        cmd = 'sudo service {} restart'.format(service)
         log_msg = msg if msg else 'deploying config to host {}'.format(host)
         self.log.info(log_msg)
         try:
