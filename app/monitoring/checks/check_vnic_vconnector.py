@@ -28,8 +28,10 @@ mac_address = str(sys.argv[2])
 
 rc = 0
 
+cmd = None
 try:
-    out = subprocess.check_output(["brctl showmacs " + bridge_name],
+    cmd = "brctl showmacs " + bridge_name
+    out = subprocess.check_output([cmd],
                                   stderr=subprocess.STDOUT,
                                   shell=True)
     out = binary2str(out)
@@ -45,8 +47,8 @@ try:
         line_number += 1
     state_match = re.match('^\W+([A-Z]+)', line)
     if not found:
-        rc = 2
-        print('Error: failed to find MAC {}:\n{}\n'
+        rc = 1
+        print('Warning: failed to find MAC {}:\n{}\n'
               .format(mac_address, out))
     else:
         # grab "is local?" and "ageing timer" values
@@ -65,8 +67,8 @@ try:
                                 ageing_timer, mac_address, bridge_name, out)
         print(msg)
 except subprocess.CalledProcessError as e:
-    print("Error finding MAC {}: {}\n"
-          .format(mac_address, binary2str(e.output)))
+    print("Error running CLI command {}: {}\n"
+          .format(cmd, binary2str(e.output)))
     rc = 2
 
 exit(rc)
