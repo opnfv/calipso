@@ -385,8 +385,9 @@ class MonitoringHandler(MongoAccess, CliAccess, BinaryConverter):
                 ssh.exec(cmd)
             else:
                 self.run(cmd, ssh_to_host=host, ssh=ssh)
-        except SshError:
-            self.had_errors = True
+        except SshError as e:
+            if 'Error: Redirecting to /bin/systemctl restart' not in str(e):
+                self.had_errors = True
 
     def deploy_config_to_target(self, host_details):
         try:
