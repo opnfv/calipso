@@ -200,7 +200,7 @@
     "type" : "handlers.json"
 },
 { 
-    "type" : "client_check_vedge.json", 
+    "type" : "client_check_vedge_vpp.json",
     "side" : "client", 
     "condition" : {
         "mechanism_drivers" : [
@@ -277,7 +277,7 @@
             }
         }
     }, 
-    "type" : "client_check_vedge.json", 
+    "type" : "client_check_vedge_ovs.json",
     "condition" : {
         "mechanism_drivers" : [
             "OVS"
