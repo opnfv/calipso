@@ -11,7 +11,8 @@ import * as R from 'ramda';
 import { Inventory } from '../inventories';
 import { Environments } from '/imports/api/environments/environments';
 import { regexEscape } from '/imports/lib/regex-utils';
-import { NodeHoverAttr } from '/imports/api/attributes_for_hover_on_data/attributes_for_hover_on_data';
+import { NodeHoverAttr, calcAttrsForItem } from '/imports/api/attributes_for_hover_on_data/attributes_for_hover_on_data';
+
 const AUTO_COMPLETE_RESULTS_LIMIT = 15;
 
 Meteor.methods({
@@ -125,7 +126,7 @@ Meteor.methods({
     let query = { _id: nodeId };
     let node = Inventory.findOne(query);
     let attrsDefs = NodeHoverAttr.findOne({ 'type': node.type });
-    let attributes = calcAttrsForNode(node, attrsDefs);
+    let attributes = calcAttrsForItem(node, attrsDefs);
 
     return {
       node: node,
@@ -134,26 +135,3 @@ Meteor.methods({
     };
   },
 });
-
-function calcAttrsForNode(node, attrsDefsRec) {
-  if (R.isNil(attrsDefsRec)) {
-    return [];
-  }
-
-  let attrsDefs = attrsDefsRec.attributes;
-
-  return R.reduce((acc, attrDef) => {
-    if (R.is(Array, attrDef)) {
-      let value = R.path(attrDef, node);
-      if (R.isNil(value)) { return acc; }
-      let name = R.join('.', attrDef);
-      return R.append(R.assoc(name, value, {}), acc);
-
-    } else {
-      return R.ifElse(R.isNil, 
-        R.always(acc), 
-        (attrVal) => R.append(R.assoc(attrDef, attrVal, {}), acc)
-      )(R.prop(attrDef, node));
-    }
-  }, [], attrsDefs);
-}

@@ -130,7 +130,7 @@ Template.CliqueType.helpers({
 
   objectTypesList: function () {
     return R.ifElse(R.isNil, R.always([]), R.prop('data')
-      )(Constants.findOne({ name: 'object_types_for_links' }));
+    )(Constants.findOne({ name: 'object_types_for_links' }));
   },
 
   linkTypesList: function () {
@@ -280,7 +280,7 @@ function submitItem(
   focal_point_type, 
   link_types, 
   name 
- ) {
+) {
 
   let action = instance.state.get('action');
 
@@ -316,7 +316,7 @@ function submitItem(
     break;
 
   default:
-      // todo
+    // todo
     break;
   }
 }

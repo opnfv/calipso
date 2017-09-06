@@ -13,8 +13,8 @@
 //import * as R from 'ramda';
 import * as _ from 'lodash';
 import { Environments } from '/imports/api/environments/environments';
-import { //Messages, 
-  calcIconForMessageLevel, lastMessageTimestamp, calcColorClassForMessagesInfoBox 
+import { //Messages,
+  calcIconForMessageLevel, lastMessageTimestamp, calcColorClassForMessagesInfoBox
 } from '/imports/api/messages/messages';
 import { Template } from 'meteor/templating';
 import { Inventory } from '/imports/api/inventories/inventories';
@@ -27,7 +27,7 @@ import { setMainAppSelectedEnvironment } from '/imports/ui/actions/main-app.acti
 import '/imports/ui/components/messages-info-box/messages-info-box';
 import '/imports/ui/components/environment-box/environment-box';
 
-import './dashboard.html';     
+import './dashboard.html';
 
 /*
  * Lifecycle methods
@@ -212,10 +212,10 @@ Template.Dashboard.helpers({
       icon: calcIconForMessageLevel(boxDef.level),
       colorClass: calcColorClassForMessagesInfoBox(boxDef.level),
       onMoreDetailsReq: function () {
-        $('#messagesModalGlobal').modal('show', { 
+        $('#messagesModalGlobal').modal('show', {
           dataset: {
             messageLevel: boxDef.level,
-          } 
+          }
         });
       }
     };
@@ -223,10 +223,10 @@ Template.Dashboard.helpers({
 
   argsEnvBox: function (
     environmentName,
-    regionsCount, 
-    regions, 
-    projectsCount, 
-    projects, 
+    regionsCount,
+    regions,
+    projectsCount,
+    projects,
     instancesCount,
     vservicesCount,
     vconnectorsCount,

@@ -1,0 +1,31 @@
+<template name="Configuration">
+<div class="os-configuration cards white">
+  <h3>Configurations</h3>
+  <form>
+    <div class="cl-field-group">
+      <label class="cl-field-label">Message view backward delta</label>
+      <input name="msgsViewBackDelta" 
+        value="{{ getModelField 'messages_view_backward_delta' }}"     
+        class="cl-msgs-view-back-delta cl-input" 
+        type="number" 
+        placeholder="" />
+      <div class="cl-field-desc">Backward duration of {{ durationHumanize (getModelField 'messages_view_backward_delta') }} from current date (miliseconds)</div>
+    </div>
+
+    <button type="button" 
+      class="js-submit-button mdl-button mdl-js-button mdl-button--raised 
+        mdl-js-ripple-effect mdl-button--colored"
+      >Save</button>
+  </form>
+
+  {{#if (getState 'message') }}
+  <div class="js-message-panel alert 
+      {{#if isActionError}}alert-danger{{/if}}
+      {{#if isActionSuccess}}alert-success{{/if}}" 
+      role="alert">
+    {{ getState 'message' }}
+  </div>
+  {{/if }}
+
+</div>
+</template>

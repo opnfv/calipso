@@ -32,7 +32,7 @@ export const requiredConfGroups = [
 ];
 
 export const optionalConfGroups = [
- // 'NFV_provider',
+  // 'NFV_provider',
   'AMQP',
   'Monitoring',
   'ACI',
@@ -335,8 +335,8 @@ function getSchemaForGroupName(groupName) {
     return CLISchema;
   case 'AMQP':
     return AMQPSchema;
-//  case 'NFV_provider':
-//    return NfvProviderSchema;
+  //  case 'NFV_provider':
+  //    return NfvProviderSchema;
   case 'ACI':
     return AciSchema;
   case 'Monitoring':

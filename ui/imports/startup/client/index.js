@@ -36,3 +36,4 @@ import '/imports/ui/components/messages-list/messages-list';
 import '/imports/ui/components/message/message';
 import '/imports/ui/components/dashboard/dashboard';
 import '/imports/ui/components/new-scanning/new-scanning';
+import '/imports/ui/components/configuration/configuration';

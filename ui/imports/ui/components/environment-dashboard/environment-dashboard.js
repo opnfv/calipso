@@ -26,6 +26,7 @@ import { calcIconForMessageLevel, lastMessageTimestamp, calcColorClassForMessage
 import { Counts } from 'meteor/tmeasday:publish-counts';
 import { Roles } from 'meteor/alanning:roles';
 //import { idToStr } from '/imports/lib/utilities';
+import { Counter } from 'meteor/natestrauser:publish-performant-counts';
         
 import '/imports/ui/components/data-cubic/data-cubic';
 import '/imports/ui/components/icon/icon';
@@ -123,9 +124,10 @@ Template.EnvironmentDashboard.onCreated(function() {
       instance.subscribe('inventory?env+type', env.name, 'vconnector');
       instance.subscribe('inventory?env+type', env.name, 'project');
       instance.subscribe('inventory?env+type', env.name, 'region');
-      instance.subscribe('messages?env+level', env.name, 'info');
-      instance.subscribe('messages?env+level', env.name, 'warning');
-      instance.subscribe('messages?env+level', env.name, 'error');
+
+      instance.subscribe('messages/count?level&env', 'info', env.name);
+      instance.subscribe('messages/count?level&env', 'warning', env.name);
+      instance.subscribe('messages/count?level&env', 'error', env.name);
 
       let vConnectorCounterName = 'inventory?env+type!counter?env=' +
         env.name + '&type=' + 'vconnector';
@@ -316,8 +318,11 @@ Template.EnvironmentDashboard.helpers({
       };
     }
 
-    let count =  Counts.get('messages?env+level!counter?env=' +
-       envName + '&level=' + boxDef.level);
+    let counterName = `messages/count?level=${boxDef.level}&env=${envName}`;
+    let count = Counter.get(counterName);
+
+    //let count =  Counts.get('messages?env+level!counter?env=' +
+    //   envName + '&level=' + boxDef.level);
 
     let title = _.capitalize(boxDef.level);
 

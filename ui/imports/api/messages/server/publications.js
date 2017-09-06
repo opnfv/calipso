@@ -88,11 +88,28 @@ Meteor.publish('messages/count?level', function (level) {
   return new Counter(counterName, Messages.find({ level: level }));
 });
 
+Meteor.publish('messages/count?backDelta&level', function (backDelta, level) {
+  const counterName = `messages/count?backDelta=${backDelta}&level=${level}`; 
+  console.log(`subscribe - counter: ${counterName}`);
+
+  let begining = moment().subtract(backDelta);
+  let query = { 
+    level: level,
+    timestamp: { $gte: begining.toDate() } 
+  };
+
+  console.log(`query: ${R.toString(query)}`);
+
+  return new Counter(counterName, Messages.find(query));
+});
+
 Meteor.publish('messages/count?level&env', function (level, env) {
   const counterName = `messages/count?level=${level}&env=${env}`; 
   console.log(`subscribe - counter: ${counterName}`);
 
   let query = { level: level };
   query = R.ifElse(R.isNil, R.always(query), R.assoc('environment', R.__, query))(env);
+  console.log(`query: ${R.toString(query)}`);
 
-  return new Counter(counterName, Messages.find(query)); });
+  return new Counter(counterName, Messages.find(query)); 
+});

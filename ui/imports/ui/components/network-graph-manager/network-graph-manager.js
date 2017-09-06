@@ -37,7 +37,8 @@ Template.NetworkGraphManager.onCreated(function() {
       links: [],
       nodes: [],
       groups: [],
-    }
+    },
+    itemOfInterest: null
   };
 
   instance.autorun(function () {
@@ -95,6 +96,13 @@ Template.NetworkGraphManager.helpers({
           return;
         }
 
+        if (instance.simpleState.itemOfInterest === nodeId) {
+          instance.simpleState.itemOfInterest = null;
+          return;
+        }
+
+        instance.simpleState.itemOfInterest = nodeId;
+
         Meteor.apply('inventoryFindNode?DataAndAttrs', [ nodeId ], 
           { wait: false }, function (err, res) {
             if (err) {
@@ -103,11 +111,11 @@ Template.NetworkGraphManager.helpers({
             }
 
             store.dispatch(
-              activateGraphTooltipWindow(res.nodeName, res.attributes, x, y));
+              activateGraphTooltipWindow(res.nodeName, res.attributes, x - 30, y - 10));
           });
       },
       onNodeOut: function (_nodeId) {
-        store.dispatch(closeGraphTooltipWindow());
+        //store.dispatch(closeGraphTooltipWindow());
       },
       onNodeClick: function (_nodeId) {
       },
@@ -117,6 +125,33 @@ Template.NetworkGraphManager.helpers({
       },
       onDragEnd: function () {
         isDragging = false;
+      },
+      onGroupOver: function () {
+        instance.simpleState.itemOfInterest = null;
+        store.dispatch(closeGraphTooltipWindow());
+      },
+      onLinkOver: function (linkId, x, y) {
+        if (isDragging) {
+          return;
+        }
+
+        if (instance.simpleState.itemOfInterest === linkId) {
+          instance.simpleState.itemOfInterest = null;
+          return;
+        }
+
+        instance.simpleState.itemOfInterest = linkId;
+
+        Meteor.apply('linksFind?DataAndAttrs', [ linkId ], 
+          { wait: false }, function (err, res) {
+            if (err) {
+              console.error(`error fetching attrs for link for showing: ${R.toString(err)}`);
+              return;
+            }
+
+            store.dispatch(
+              activateGraphTooltipWindow(res.linkName, res.attributes, x - 30, y - 10));
+          });
       },
     };
   },
@@ -180,7 +215,11 @@ function addLinkToGraph(link, graphData) {
     sourceId: link.source, 
     targetId: link.target, 
     label: link.link_name,
-    _osid: link._id
+    _osid: link._id,
+    _osmeta: {
+      status: link.status,
+      linkId: link._id
+    }
   };
 
   let links = R.unionWith(R.eqBy(R.prop('_osid')), graphData.links, [newLink]);
@@ -215,6 +254,7 @@ function addNodeToGraph(node, graphData) {
     _osmeta: {
       type: node.type,
       nodeId: node._id,
+      status: node.status,
     },
     width: 60,
     height: 40,
