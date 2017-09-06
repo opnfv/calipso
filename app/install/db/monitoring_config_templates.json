@@ -88,8 +88,7 @@
                     "base"
                 ], 
                 "handlers" : [
-                    "default", 
-                    "file", 
+                    "file",
                     "osdna-monitor"
                 ]
             }
@@ -150,7 +149,6 @@
         }, 
         "keepalive" : {
             "handlers" : [
-                "default", 
                 "file"
             ]
         }
@@ -218,8 +216,7 @@
                     "base"
                 ], 
                 "handlers" : [
-                    "default", 
-                    "file", 
+                    "file",
                     "osdna-monitor"
                 ]
             }
@@ -247,8 +244,7 @@
                     "base"
                 ], 
                 "handlers" : [
-                    "default", 
-                    "file", 
+                    "file",
                     "osdna-monitor"
                 ]
             }
@@ -270,8 +266,7 @@
                     "base"
                 ], 
                 "handlers" : [
-                    "default", 
-                    "file", 
+                    "file",
                     "osdna-monitor"
                 ]
             }
@@ -306,8 +301,7 @@
                     "base"
                 ], 
                 "handlers" : [
-                    "default", 
-                    "file", 
+                    "file",
                     "osdna-monitor"
                 ]
             }
@@ -316,34 +310,61 @@
     "monitoring_system" : "sensu", 
     "type" : "client_check_link_vnic-vconnector.json"
 },
-{ 
+{
     "side" : "client", 
     "order" : "1", 
     "condition" : {
         "mechanism_drivers" : [
-            "VPP"
+            "OVS"
         ]
     }, 
     "config" : {
         "checks" : {
             "{objtype}_{objid}" : {
                 "interval" : 15, 
-                "command" : "check_pnic_vpp.py", 
+                "command" : "check_pnic_ovs.py {local_name}",
                 "standalone" : true,
                 "type": "metric",
                 "subscribers" : [
                     "base"
                 ], 
                 "handlers" : [
-                    "default", 
-                    "file", 
+                    "file",
                     "osdna-monitor"
                 ]
             }
         }
     }, 
     "monitoring_system" : "sensu", 
-    "type" : "client_check_pnic.json"
+    "type" : "client_check_host_pnic_ovs.json"
+},
+{
+    "side" : "client",
+    "order" : "1",
+    "condition" : {
+        "mechanism_drivers" : [
+            "VPP"
+        ]
+    },
+    "config" : {
+        "checks" : {
+            "{objtype}_{objid}" : {
+                "interval" : 15,
+                "command" : "check_pnic_vpp.py",
+                "standalone" : true,
+                "type": "metric",
+                "subscribers" : [
+                    "base"
+                ],
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ]
+            }
+        }
+    },
+    "monitoring_system" : "sensu",
+    "type" : "client_check_host_pnic_vpp.json"
 },
 { 
     "side" : "client", 
@@ -365,8 +386,7 @@
                     "base"
                 ], 
                 "handlers" : [
-                    "default", 
-                    "file", 
+                    "file",
                     "osdna-monitor"
                 ]
             }
