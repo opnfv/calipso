@@ -78,16 +78,20 @@ class MonitoringCheckHandler(SpecialCharConverter):
         self.keep_message(doc, check_result)
 
     def keep_message(self, doc, check_result, error_level=None):
+        is_link = 'link_type' in doc
         msg_id = check_result['id']
-        obj_id = doc['id']
-        display_context = doc['network_id'] if doc['type'] == 'port'\
+        obj_id = 'link_{}_{}'.format(doc['source_id'], doc['target_id']) \
+            if is_link \
             else doc['id']
+        obj_type = 'link_{}'.format(doc['link_type']) if is_link else doc['type']
+        display_context = obj_id if is_link \
+            else doc['network_id'] if doc['type'] == 'port' else doc['id']
         level = error_level if error_level\
             else ERROR_LEVEL[check_result['status']]
         dt = datetime.datetime.utcfromtimestamp(check_result['executed'])
         ts = stringify_datetime(dt)
         message = Message(msg_id=msg_id, env=self.env, source=SOURCE_SYSTEM,
-                          object_id=obj_id, object_type=doc['type'],
+                          object_id=obj_id, object_type=obj_type,
                           display_context=display_context, level=level,
                           msg=check_result, ts=ts)
         collection = self.inv.collections['messages']
