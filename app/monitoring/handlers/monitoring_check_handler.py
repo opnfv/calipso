@@ -27,7 +27,7 @@ ERROR_LEVEL = ['info', 'warn', 'error']
 
 
 class MonitoringCheckHandler(SpecialCharConverter):
-    STATUS_LABEL = ['OK', 'Warning', 'Critical']
+    STATUS_LABEL = ['OK', 'Warning', 'Error']
 
     def __init__(self, args):
         super().__init__()
