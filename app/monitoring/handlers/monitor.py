@@ -60,18 +60,19 @@ class Monitor:
         args = parser.parse_args()
         return args
 
-    def get_object_types(self) -> list:
-        if not self.object_types:
-            docs = self.inv.find_items({'name': 'object_types'},
-                                       collection='constants')
+    def get_attr_type_list(self, attr) -> list:
+        if not getattr(self, attr):
+            docs = self.inv.find_items({'name': attr}, collection='constants')
             for types_list in docs:
-                self.object_types = [t['value'] for t in types_list['data']]
-        if not self.object_types:
-            raise ValueError('Unable to fetch object types')
-        return self.object_types
+                setattr(self, attr, [t['value'] for t in types_list['data']])
+        types_list = getattr(self, attr)
+        if not types_list:
+            raise ValueError('Unable to fetch {}'
+                             .format(attr.replace('_', ' ')))
+        return types_list
 
     def match_object_types(self, check_name: str) -> list:
-        object_types = self.get_object_types()
+        object_types = self.get_attr_type_list('object_types')
         matches = [t for t in object_types if check_name.startswith(t + '_')]
         return matches
 
@@ -80,14 +81,22 @@ class Monitor:
         # of these. For example, if matches are ['host', 'host_pnic'],
         # then take 'host_pnic'.
         # To facilitate this, we sort the matches by reverse order.
-        matching_object_types = sorted(self.match_object_types(check_name),
-                                       reverse=True)
-        if not matching_object_types:
-            raise ValueError('Unable to match check name "{}" with object type'
-                             .format(check_name))
-        obj_type = matching_object_types[0]
-        obj_id = check_name[len(obj_type)+1:]
-        return obj_type, obj_id
+        is_link_check = check_name.startswith('link_')
+        check_type = 'link' if is_link_check else 'object'
+        if is_link_check:
+            obj_type = check_name[len('link_'):]
+            obj_type = obj_type[:obj_type.index('_')]
+        else:
+            matching_types = sorted(self.match_object_types(check_name),
+                                    reverse=True)
+            if not matching_types:
+                raise ValueError('Unable to match check name "{}" with {} type'
+                                 .format(check_name, check_type))
+                obj_type = matching_types[0]
+        postfix_len = len('link_') if is_link_check else 0
+        obj_id = (obj_type + '_' if is_link_check else '') + \
+            check_name[len(obj_type)+1+postfix_len:]
+        return check_type, obj_type, obj_id
 
     def read_input(self):
         if self.args.inputfile:
@@ -102,18 +111,19 @@ class Monitor:
             if not self.input_text:
                 raise ValueError("No input provided on stdin")
 
-    def get_handler_by_type(self, obj_type):
-        module_name = 'handle_' + obj_type
+    def get_handler_by_type(self, check_type, obj_type):
+        module_name = 'handle_link' if check_type == 'link' \
+                else 'handle_' + obj_type
         package = 'monitoring.handlers'
         handler = ClassResolver.get_instance_single_arg(self.args,
                                                         module_name=module_name,
                                                         package_name=package)
         return handler
 
-    def get_handler(self, obj_type):
+    def get_handler(self, check_type, obj_type):
         basic_handling_types = ['vedge', 'vservice']
         if obj_type not in basic_handling_types:
-            return self.get_handler_by_type(obj_type)
+            return self.get_handler_by_type(check_type, obj_type)
         from monitoring.handlers.basic_check_handler \
             import BasicCheckHandler
         return BasicCheckHandler(self.args)
@@ -124,11 +134,12 @@ class Monitor:
         check_result = check_result_full['check']
         check_result['id'] = check_result_full['id']
         name = check_result['name']
-        object_type, object_id = monitor.find_object_type_and_id(name)
+        check_type, object_type, object_id = \
+            monitor.find_object_type_and_id(name)
         if 'environment' in check_client:
             self.args.env = check_client['environment']
 
-        check_handler = self.get_handler(object_type)
+        check_handler = self.get_handler(check_type, object_type)
         if check_handler:
             check_handler.handle(object_id, check_result)
 
