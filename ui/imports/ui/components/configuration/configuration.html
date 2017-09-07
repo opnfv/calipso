@@ -4,14 +4,18 @@
   <form>
     <div class="cl-field-group">
       <label class="cl-field-label">Message view backward delta</label>
-      <input name="msgsViewBackDelta" 
-        value="{{ getModelField 'messages_view_backward_delta' }}"     
-        class="cl-msgs-view-back-delta cl-input" 
-        type="number" 
-        placeholder="" />
-      <div class="cl-field-desc">Backward duration of {{ durationHumanize (getModelField 'messages_view_backward_delta') }} from current date (miliseconds)</div>
+      <div class="input-box">
+        <input name="msgsViewBackDelta" 
+          value="{{ getModelField 'messages_view_backward_delta' }}"     
+          class="sm-msgs-view-back-delta cl-input" 
+          type="number" 
+          placeholder="" />
+        <div class="input-hint">
+          {{ durationAsText (getModelField 'messages_view_backward_delta') }}
+        </div>
+      </div>
+      <div class="cl-field-desc">Change the start duration of message display (miliseconds)</div>    
     </div>
-
     <button type="button" 
       class="js-submit-button mdl-button mdl-js-button mdl-button--raised 
         mdl-js-ripple-effect mdl-button--colored"

@@ -26,6 +26,7 @@ import { calcIconForMessageLevel, lastMessageTimestamp, calcColorClassForMessage
 import { Counts } from 'meteor/tmeasday:publish-counts';
 import { Roles } from 'meteor/alanning:roles';
 //import { idToStr } from '/imports/lib/utilities';
+import { Configurations } from '/imports/api/configurations/configurations';
 import { Counter } from 'meteor/natestrauser:publish-performant-counts';
         
 import '/imports/ui/components/data-cubic/data-cubic';
@@ -87,6 +88,7 @@ Template.EnvironmentDashboard.onCreated(function() {
     _id: null,
     envName: null,
     allowEdit: false,
+    msgsViewBackDelta: 1,
   });
 
   instance.autorun(function () {
@@ -125,9 +127,11 @@ Template.EnvironmentDashboard.onCreated(function() {
       instance.subscribe('inventory?env+type', env.name, 'project');
       instance.subscribe('inventory?env+type', env.name, 'region');
 
+      /*
       instance.subscribe('messages/count?level&env', 'info', env.name);
       instance.subscribe('messages/count?level&env', 'warning', env.name);
       instance.subscribe('messages/count?level&env', 'error', env.name);
+      */
 
       let vConnectorCounterName = 'inventory?env+type!counter?env=' +
         env.name + '&type=' + 'vconnector';
@@ -160,6 +164,22 @@ Template.EnvironmentDashboard.onCreated(function() {
       instance.state.set('regionsCount', regionsCount);
     });
 
+  });
+
+  instance.autorun(function () {
+    instance.subscribe('configurations?user');
+    Configurations.find({user_id: Meteor.userId()}).forEach((conf) => {
+      instance.state.set('msgsViewBackDelta', conf.messages_view_backward_delta); 
+    });
+  });
+
+  instance.autorun(function () {
+    let msgsViewBackDelta = instance.state.get('msgsViewBackDelta');
+    let env = instance.state.get('envName');
+
+    instance.subscribe('messages/count?backDelta&level&env', msgsViewBackDelta, 'info', env);
+    instance.subscribe('messages/count?backDelta&level&env', msgsViewBackDelta, 'warning', env);
+    instance.subscribe('messages/count?backDelta&level&env', msgsViewBackDelta, 'error', env);
   });
 });  
 
@@ -312,13 +332,16 @@ Template.EnvironmentDashboard.helpers({
   argsMessagesInfoBox: function(boxDef, env) {
     let instance = Template.instance();
     let envName = instance.state.get('envName');
+    let msgsViewBackDelta = instance.state.get('msgsViewBackDelta');
+
     if (R.isNil(envName)) { 
       return { 
         title: '', count: 0, lastScanTimestamp: '', onMoreDetailsReq: function () {} 
       };
     }
 
-    let counterName = `messages/count?level=${boxDef.level}&env=${envName}`;
+    //let counterName = `messages/count?level=${boxDef.level}&env=${envName}`;
+    let counterName = `messages/count?backDelta=${msgsViewBackDelta}&level=${boxDef.level}&env=${envName}`;
     let count = Counter.get(counterName);
 
     //let count =  Counts.get('messages?env+level!counter?env=' +

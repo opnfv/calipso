@@ -55,9 +55,16 @@ Template.Configuration.rendered = function() {
 Template.Configuration.events({
   'click .js-submit-button': function (event, instance) {
     event.preventDefault(); 
-    let msgsViewBackDelta = instance.$('.cl-msgs-view-back-delta')[0].value;
+    let msgsViewBackDelta = Number.parseInt(instance.$('.sm-msgs-view-back-delta')[0].value);
     saveForm(instance, msgsViewBackDelta);
-  }
+  },
+
+  'input .sm-msgs-view-back-delta': function (_e, instance) {
+    let msgsViewBackDelta = Number.parseInt(instance.$('.sm-msgs-view-back-delta')[0].value);
+    let model = instance.state.get('model');
+    model = R.assoc('messages_view_backward_delta', msgsViewBackDelta, model);
+    instance.state.set('model', model);
+  },
 });
    
 /*  
@@ -85,9 +92,11 @@ Template.Configuration.helpers({
     return instance.state.get('actionResult') === 'success';
   },
 
-  durationHumanize: function (duration) {
-    return moment.duration(duration).humanize();
-  }
+  durationAsText: function (delta) {
+    let duration = moment.duration(delta);
+    let text = `${duration.years()} years, ${duration.months()} months, ${duration.days()} days, ${duration.hours()} hours and ${duration.minutes()} minutes from current time.`;
+    return text;
+  },
 }); // end: helpers
 
 function saveForm(instance, msgsViewBackDelta) {

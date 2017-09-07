@@ -20,7 +20,7 @@ let schema = {
   messages_view_backward_delta: {
     type: Number,
     minCount: 1,
-    defaultValue: '1209600000', // 2 weeks
+    defaultValue: '1209600000', // 14 days
   }
 };
 

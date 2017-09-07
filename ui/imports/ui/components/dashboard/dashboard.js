@@ -19,10 +19,11 @@ import { //Messages,
 import { Template } from 'meteor/templating';
 import { Inventory } from '/imports/api/inventories/inventories';
 import { Counts } from 'meteor/tmeasday:publish-counts';
-import { Counter } from 'meteor/natestrauser:publish-performant-counts';
+//import { Counter } from 'meteor/natestrauser:publish-performant-counts';
 //import { Messages } from '/imports/api/messages/messages';
 import { store } from '/imports/ui/store/store';
 import { setMainAppSelectedEnvironment } from '/imports/ui/actions/main-app.actions';
+import { Configurations } from '/imports/api/configurations/configurations';
 
 import '/imports/ui/components/messages-info-box/messages-info-box';
 import '/imports/ui/components/environment-box/environment-box';
@@ -35,6 +36,11 @@ import './dashboard.html';
 
 Template.Dashboard.onCreated(function () {
   var instance = this;
+
+  instance.state = new ReactiveDict();
+  instance.state.setDefault({
+    msgsViewBackDelta: 1
+  });
 
   instance.autorun(function () {
     instance.subscribe('environments_config');
@@ -53,6 +59,21 @@ Template.Dashboard.onCreated(function () {
     });
 
     store.dispatch(setMainAppSelectedEnvironment(null));
+  });
+
+  instance.autorun(function () {
+    instance.subscribe('configurations?user');
+    Configurations.find({user_id: Meteor.userId()}).forEach((conf) => {
+      instance.state.set('msgsViewBackDelta', conf.messages_view_backward_delta); 
+    });
+  });
+
+  instance.autorun(function () {
+    let msgsViewBackDelta = instance.state.get('msgsViewBackDelta');
+
+    instance.subscribe('messages/count?backDelta&level', msgsViewBackDelta, 'info');
+    instance.subscribe('messages/count?backDelta&level', msgsViewBackDelta, 'warning');
+    instance.subscribe('messages/count?backDelta&level', msgsViewBackDelta, 'error');
   });
 });
 
@@ -170,7 +191,7 @@ Template.Dashboard.helpers({
     return Counts.get('messages?level!counter?' +
       'level=' + 'error');
   },
-/*
+  /*
   notificationsTimestamp: function(){
     var msgTimestamp = Messages.findOne({state:'added'},{fields: {'timestamp': 1} });
     return msgTimestamp.timestamp;
@@ -197,8 +218,12 @@ Template.Dashboard.helpers({
     ];
   },
 
-  messageCount: function (level) {
-    return Counter.get(`messages/count?level=${level}`);
+  msgCounterName: function (level) {
+    let instance = Template.instance();
+    let msgsViewBackDelta = instance.state.get('msgsViewBackDelta');
+    let counterName = `messages/count?backDelta=${msgsViewBackDelta}&level=${level}`;
+
+    return counterName;
   },
 
   argsMessagesInfoBox: function(boxDef, messageCount) {
