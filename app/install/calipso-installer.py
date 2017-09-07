@@ -362,8 +362,8 @@ else:
     container = ""
     action = ""
 
-container_names = ["calipso-mongo", "calipso-scan", "calipso-listen",
-                   "calipso-ldap", "calipso-api", "calipso-sensu", "calipso-ui"]
+container_names = ["calipso-ui", "calipso-scan", "calipso-listen",
+                   "calipso-ldap", "calipso-api", "calipso-sensu", "calipso-mongo"]
 container_actions = ["stop", "start"]
 while action not in container_actions:
     action = input("Action? (stop, start, or 'q' to quit):\n")
