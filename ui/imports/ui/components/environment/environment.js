@@ -157,6 +157,7 @@ Template.Environment.onCreated(function () {
     new SimpleSchema({
       _id: _idFieldDef, 
       selectedNodeId: R.assoc('optional', true, _idFieldDef),
+      refresh: { type: String, optional: true }, 
     }).validate(data);
 
     store.dispatch(setEnvEnvId(data._id));

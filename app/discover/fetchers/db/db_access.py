@@ -68,6 +68,8 @@ class DbAccess(Fetcher):
             self.log.info("DbAccess: ****** forcing reconnect, " +
                           "query count: %s ******",
                           DbAccess.query_count_per_con)
+            DbAccess.conn.commit()
+            DbAccess.conn.close()
             DbAccess.conn = None
         self.conf = self.config.get("mysql")
         cnf = self.conf
@@ -76,7 +78,7 @@ class DbAccess(Fetcher):
                         cnf["user"], cnf["pwd"],
                         cnf["schema"])
 
-    def get_objects_list_for_id(self, query, object_type, id):
+    def get_objects_list_for_id(self, query, object_type, object_id):
         self.connect_to_db(DbAccess.query_count_per_con >= 25)
         DbAccess.query_count_per_con += 1
         self.log.debug("query count: %s, running query:\n%s\n",
@@ -84,8 +86,8 @@ class DbAccess(Fetcher):
 
         cursor = DbAccess.conn.cursor(dictionary=True)
         try:
-            if id:
-                cursor.execute(query, [str(id)])
+            if object_id:
+                cursor.execute(query, [str(object_id)])
             else:
                 cursor.execute(query)
         except (AttributeError, mysql.connector.errors.OperationalError) as e:
@@ -93,14 +95,16 @@ class DbAccess(Fetcher):
             self.connect_to_db(True)
             # try again to run the query
             cursor = DbAccess.conn.cursor(dictionary=True)
-            if id:
-                cursor.execute(query, [str(id)])
+            if object_id:
+                cursor.execute(query, [str(object_id)])
             else:
                 cursor.execute(query)
 
         rows = []
-        for row in cursor:
+        for row in cursor.fetchall():
             rows.append(row)
+        DbAccess.conn.commit()
+        cursor.close()
         return rows
 
     def get_objects_list(self, query, object_type):

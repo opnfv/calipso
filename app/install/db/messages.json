@@ -8,7 +8,7 @@
     "display_context" : null, 
     "viewed" : false, 
     "id" : "17350.33407.563988", 
-    "source_system" : "CALIPSO", 
+    "source_system" : "Calipso",
     "related_object_type" : null, 
     "timestamp" : "2017-07-03T09:16:47.563988", 
     "environment" : null
@@ -19,7 +19,7 @@
     "environment" : null, 
     "received_timestamp" : null, 
     "related_object" : null, 
-    "source_system" : "CALIPSO", 
+    "source_system" : "Calipso",
     "message" : "2017-07-04 13:38:41,431 INFO: Started EventManager with following configuration:\nMongo config file path: /local_dir/calipso_mongo_access.conf\nCollection: environments_config\nPolling interval: 5 second(s)", 
     "timestamp" : "2017-07-04T13:38:41.431470", 
     "id" : "17351.49121.431470", 
@@ -39,6 +39,6 @@
     "related_object" : null, 
     "received_timestamp" : null, 
     "related_object_type" : null, 
-    "source_system" : "CALIPSO"
+    "source_system" : "Calipso"
 }
 ]

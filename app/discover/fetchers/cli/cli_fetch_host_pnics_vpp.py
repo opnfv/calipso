@@ -9,12 +9,13 @@
 ###############################################################################
 import re
 
-from discover.fetcher import Fetcher
+from discover.fetchers.cli.cli_access import CliAccess
 from utils.inventory_mgr import InventoryMgr
 
 NAME_RE = '^[a-zA-Z]*GigabitEthernet'
+MAC_FIELD_RE = '^.*\sEthernet address\s(\S+)(\s.*)?$'
 
-class CliFetchHostPnicsVpp(Fetcher):
+class CliFetchHostPnicsVpp(CliAccess):
     def __init__(self):
         super().__init__()
         self.inv = InventoryMgr()
@@ -39,6 +40,17 @@ class CliFetchHostPnicsVpp(Fetcher):
                 pnic['id'] = host_id + "-pnic-" + pnic_name
                 pnic['type'] = 'host_pnic'
                 pnic['object_name'] = pnic_name
+                self.get_pnic_mac_address(pnic)
                 pnic['Link detected'] = 'yes' if pnic['state'] == 'up' else 'no'
                 ret.append(pnic)
         return ret
+
+    def get_pnic_mac_address(self, pnic):
+        cmd = 'vppctl show hardware-interfaces {}'.format(pnic['object_name'])
+        output_lines = self.run_fetch_lines(cmd, ssh_to_host=pnic['host'])
+        if output_lines:
+            regexps = [{'name': 'mac_address', 're': MAC_FIELD_RE}]
+            for line in output_lines:
+                self.find_matching_regexps(pnic, line, regexps)
+                if 'mac_address' in pnic:
+                    break

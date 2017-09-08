@@ -87,7 +87,7 @@ Router.route('/', {
     if (this.ready())
       this.layout('landing');
     else
-        this.render('loading');
+      this.render('loading');
   }
 });
 
@@ -115,8 +115,8 @@ Router.route('home', {
                   }
       */
 
-  // if the sub handle returned from waitOn ready() method returns
-  // true then we're ready to go ahead and render the page.
+      // if the sub handle returned from waitOn ready() method returns
+      // true then we're ready to go ahead and render the page.
       this.render('home');
 
     }
@@ -184,6 +184,10 @@ Router.route('/clique-constraint', function () {
 
 Router.route('/messages-list', function () {
   this.render('MessagesList');
+}, { });
+
+Router.route('/configuration', function () {
+  this.render('Configuration');
 }, { });
 
 Router.route('/message', function () {
@@ -315,6 +319,11 @@ Router.route('environment', {
 
     if (! R.isNil(selectedNodeId)) {
       data = R.assoc('selectedNodeId', selectedNodeId, data);
+    }
+
+    let refresh = that.params.query.r;
+    if (! R.isNil(refresh)) {
+      data = R.assoc('refresh', refresh, data);
     }
 
     return data;

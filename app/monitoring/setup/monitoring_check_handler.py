@@ -25,7 +25,8 @@ class MonitoringCheckHandler(MonitoringHandler, SpecialCharConverter):
             host = self.inv.get_by_id(self.env, o['host'])
             if host and 'ip_address' in host:
                 self.replacements['client_ip'] = host['ip_address']
-        type_str = o['type'] if 'type' in o else 'link_' + o['link_type']
+        type_str = values['check_type'] if 'check_type' in values else \
+            (o['type'] if 'type' in o else 'link_' + o['link_type'])
         file_type = 'client_check_' + type_str + '.json'
         host = o['host']
         sub_dir = '/host/' + host

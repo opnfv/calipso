@@ -36,7 +36,7 @@
                     (vconnectorsCount envItem.name)
                   ) }}
             </div>
-        {{/each}} <!-- envItem in envList -->
+          {{/each}} <!-- envItem in envList -->
 
         </div> <!-- flex box for environment cards -->
         
@@ -47,7 +47,7 @@
             {{#each messagesInfoBox in (getListMessagesInfoBox) }}
             <div class="sm-message-box">
                 {{> MessagesInfoBox (argsMessagesInfoBox messagesInfoBox 
-                      (messageCount messagesInfoBox.level)) }}
+                      (countOf (msgCounterName messagesInfoBox.level))) }}
             </div>
             {{/each }}
           </div>

@@ -31,6 +31,7 @@ import '../../api/cliques/methods.js';
 
 import '../../api/links/server/publications';
 import '../../api/links/methods.js';
+import '../../api/links/server/methods';
 
 import '../../api/statistics/server/publications';
 import '../../api/statistics/methods.js';
@@ -52,5 +53,8 @@ import '../../api/accounts/methods';
 
 import '../../api/supported_environments/server/publications';
 import '../../api/supported_environments/methods';
+
+import '../../api/configurations/server/publications';
+import '../../api/configurations/methods';
 
 import '../../api/migrations/migrations';

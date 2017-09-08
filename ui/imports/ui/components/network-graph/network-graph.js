@@ -9,6 +9,7 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import * as R from 'ramda';
 import * as cola from 'webcola';
 import { imagesForNodeType, defaultNodeTypeImage } from '/imports/lib/images-for-node-type';
+import * as _ from 'lodash';
         
 import './network-graph.html';     
     
@@ -37,6 +38,8 @@ Template.NetworkGraph.onCreated(function() {
       onNodeClick: { type: Function, optional: true },
       onDragStart: { type: Function, optional: true },
       onDragEnd: { type: Function, optional: true },
+      onGroupOver: { type: Function, optional: true },
+      onLinkOver: { type: Function, optional: true },
     }).validate(data);
 
     instance.simpleState.graphData = data.graphData;
@@ -46,6 +49,8 @@ Template.NetworkGraph.onCreated(function() {
     instance.onNodeClick = R.defaultTo(() => {}, data.onNodeClick);
     instance.onDragStart = R.defaultTo(() => {}, data.onDragStart);
     instance.onDragEnd = R.defaultTo(() => {}, data.onDragEnd);
+    instance.onGroupOver = R.defaultTo(() => {}, data.onGroupOver);
+    instance.onLinkOver = R.defaultTo(() => {}, data.onLinkOver);
   });
 });  
 
@@ -66,7 +71,9 @@ Template.NetworkGraph.rendered = function() {
       instance.onNodeOut, 
       instance.onNodeClick,
       instance.onDragStart,
-      instance.onDragEnd
+      instance.onDragEnd,
+      instance.onGroupOver,
+      instance.onLinkOver
     );
   });
 };  
@@ -129,7 +136,9 @@ function renderGraph(
   onNodeOut, 
   onNodeClick,
   onDragStart,
-  onDragEnd
+  onDragEnd,
+  onGroupOver,
+  onLinkOver
 ) {
 
   let force = genForceCola(cola, d3, w, h);
@@ -167,10 +176,15 @@ function renderGraph(
   nodesEl,
   linksEl,
   drag, zoom, config, 
-  onNodeOver, onNodeOut, onNodeClick);
+  onNodeOver, 
+  onNodeOut, 
+  onNodeClick,
+  onGroupOver,
+  onLinkOver
+  );
 }
 
- // d3.select(window).on('resize', resize);
+// d3.select(window).on('resize', resize);
 
 function genSvg(d3, mainElement) {
   let svg = d3.select(mainElement).append('svg');
@@ -183,17 +197,24 @@ function genSvg(d3, mainElement) {
   return svg;
 }
 
-function genSvgLinks(g, links, nominal_stroke, default_link_color, initialLinkLabelsFontSize) {
+function genSvgLinks(
+  g, 
+  links, 
+  nominal_stroke, 
+  default_link_color, 
+  initialLinkLabelsFontSize,
+  onLinkOver
+) {
   let svgLinks = g.selectAll('.link-group')
     .data(links, (d) => d._osid);
 
   let svgLinksEnter = svgLinks
     .enter()
-      .append('g')
-        .attr('class', 'link-group')
-        .attr('data-link-id', function (d) {
-          return d._osid;
-        })
+    .append('g')
+    .attr('class', 'link-group')
+    .attr('data-link-id', function (d) {
+      return d._osid;
+    })
   ;
 
   //let svgLinksExit = 
@@ -205,9 +226,24 @@ function genSvgLinks(g, links, nominal_stroke, default_link_color, initialLinkLa
     .attr('class', 'link-line')
     .style('stroke-width', nominal_stroke)
     .style('stroke', 
-    function(_d) { 
-      return default_link_color;
-    });
+      function(d) { 
+        let status = R.defaultTo('', R.path(['_osmeta', 'status'], d));
+        status = _.toLower(status);
+        switch(status) {
+        case 'ok': 
+          return 'green';
+        case 'warning':
+          return 'orange';
+        case 'error':
+          return 'red';
+        default:
+          return default_link_color;
+        }
+      })
+    .on('mouseover', function (d) {
+      onLinkOver(d._osmeta.linkId, d3.event.pageX, d3.event.pageY);
+    })
+  ;
 
   let svgLinkLabels = svgLinksEnter
     .append('text')
@@ -232,9 +268,9 @@ function genSvgNodes(g, nodes, drag, onNodeOver, onNodeOut, onNodeClick, onGroup
   let svgNodesEnter = svgNodes
     .enter()
     .append('g')
-      .attr('class', 'node')
-      .attr('data-node-id', (d) => d._osid)
-      .call(drag);
+    .attr('class', 'node')
+    .attr('data-node-id', (d) => d._osid)
+    .call(drag);
 
   //let svgNodesExit = 
   svgNodes
@@ -244,7 +280,9 @@ function genSvgNodes(g, nodes, drag, onNodeOver, onNodeOut, onNodeClick, onGroup
   let svgImages = svgNodesEnter.append('image')
     .attr('class', 'node-image')
     .attr('xlink:href', function(d) {
-      return `/${calcImageForNodeType(d._osmeta.type)}`;
+      let status = R.defaultTo('', R.path(['_osmeta', 'status'], d));
+      status = _.toLower(status);
+      return `/${calcImageForNodeType(d._osmeta.type, status)}`;
     })
     .attr('x', -(Math.floor(imageLength / 2)))
     .attr('y', -(Math.floor(imageLength / 2)))
@@ -268,8 +306,13 @@ function genSvgNodes(g, nodes, drag, onNodeOver, onNodeOut, onNodeClick, onGroup
   //return [svgNodes];
 }
 
-function calcImageForNodeType(nodeType) {
-  return R.defaultTo(defaultNodeTypeImage, R.prop(nodeType, imagesForNodeType));
+function calcImageForNodeType(nodeType, status) {
+  let image = R.defaultTo(defaultNodeTypeImage, R.prop(nodeType, imagesForNodeType));
+  if (typeof image === 'object') {
+    image = R.defaultTo(image.default, image[status]);
+  }
+
+  return image;
 }
 
 function genZoomBehavior(d3, config) {
@@ -292,7 +335,7 @@ function genForceD3(d3, w, h) {
 function genForceCola(cola, d3, w, h) {
   let force = cola.d3adaptor(d3)
     .convergenceThreshold(0.1)
-  //  .convergenceThreshold(1e-9)
+    //.convergenceThreshold(1e-9)
     .linkDistance(120)
     .size([w,h]);
 
@@ -308,7 +351,7 @@ function activateForce(force, nodes, links, groups) {
     .handleDisconnected(true)
     .avoidOverlaps(true)
     .start(50, 100, 200);
-    //.start();
+  //.start();
 }
 
 /*
@@ -340,7 +383,10 @@ function renderView(force,
   config, 
   onNodeOver, 
   onNodeOut, 
-  onNodeClick) {
+  onNodeClick,
+  onGroupOver,
+  onLinkOver
+) {
 
   state.viewGraph = calcViewGraph(state.graph, state.viewGraph);
 
@@ -348,13 +394,14 @@ function renderView(force,
 
   zoom.on('zoom', zoomFn);
 
-  genSvgGroups(groupsEl, state.viewGraph.groups, drag, onRenderViewReq);
+  genSvgGroups(groupsEl, state.viewGraph.groups, drag, onRenderViewReq, onGroupOver);
 
   genSvgLinks(
     linksEl, state.viewGraph.links, 
     config.nominal_stroke, 
     config.default_link_color,
-    config.initialLinkLabelsFontSize
+    config.initialLinkLabelsFontSize,
+    onLinkOver
   );
 
   genSvgNodes(
@@ -366,7 +413,7 @@ function renderView(force,
       state.viewGraph = renderView(force, state, 
         mainEl, groupsEl, nodesEl, linksEl,
         drag, zoom, config, 
-        onNodeOver, onNodeOut, onNodeClick);
+        onNodeOver, onNodeOut, onNodeClick, onGroupOver, onLinkOver);
     }); 
 
   force.on('tick', tickFn);
@@ -375,7 +422,7 @@ function renderView(force,
     state.viewGraph = renderView(force, state, 
       mainEl, groupsEl, nodesEl, linksEl,
       drag, zoom, config, 
-      onNodeOver, onNodeOut, onNodeClick);
+      onNodeOver, onNodeOut, onNodeClick, onGroupOver, onLinkOver);
   }
 
   function tickFn() {
@@ -477,30 +524,33 @@ function renderView(force,
   return state.viewGraph;
 }
 
-function genSvgGroups(g, groups, drag, onRenderViewReq) {
+function genSvgGroups(g, groups, drag, onRenderViewReq, onGroupOver) {
   let svgGroups = g.selectAll('.group')
-      .data(groups, (d) => d._osid);
+    .data(groups, (d) => d._osid);
 
   let enterGroups = svgGroups.enter();
 
   let groupsContainers = 
     enterGroups
       .append('g')
-        .attr('class', 'group')
-        .attr('data-group-id', (d) => d._osid)
-        .call(drag)
-        .on('click', function (d) {
-          console.log('click', d);
-          d.isExpanded = !d.isExpanded;
-          onRenderViewReq();
-        });
+      .attr('class', 'group')
+      .attr('data-group-id', (d) => d._osid)
+      .call(drag)
+      .on('mouseover', function (_d) {
+        onGroupOver();
+      })
+      .on('click', function (d) {
+        console.log('click', d);
+        d.isExpanded = !d.isExpanded;
+        onRenderViewReq();
+      });
 
   groupsContainers
     .append('rect')
-      .attr('class', 'group-shape')
-      .attr('rx', 8)
-      .attr('ry', 8)
-      .style('fill', function (_d, _i) { return 'lightblue'; })
+    .attr('class', 'group-shape')
+    .attr('rx', 8)
+    .attr('ry', 8)
+    .style('fill', function (_d, _i) { return 'lightblue'; })
   ;
 
   groupsContainers

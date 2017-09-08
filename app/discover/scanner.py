@@ -235,10 +235,16 @@ class Scanner(Fetcher):
         if not ret:
             self.found_errors[self.get_env()] = True
 
+    def get_run_app_path(self):
+        conf = self.config.get_env_config()
+        run_app_path = conf.get('run_app_path', '')
+        if not run_app_path:
+            run_app_path = conf.get('app_path', '/etc/calipso')
+            return run_app_path
+
     def load_scanners_metadata(self):
         parser = ScanMetadataParser(self.inv)
-        conf = self.config.get_env_config()
-        scanners_file = os.path.join(conf.get('app_path', '/etc/calipso'),
+        scanners_file = os.path.join(self.get_run_app_path(),
                                      'config',
                                      ScanMetadataParser.SCANNERS_FILE)
 
@@ -249,7 +255,7 @@ class Scanner(Fetcher):
     def load_link_finders_metadata(self):
         parser = FindLinksMetadataParser()
         conf = self.config.get_env_config()
-        finders_file = os.path.join(conf.get('app_path', '/etc/calipso'),
+        finders_file = os.path.join(self.get_run_app_path(),
                                     'config',
                                     FindLinksMetadataParser.FINDERS_FILE)
         metadata = parser.parse_metadata_file(finders_file)

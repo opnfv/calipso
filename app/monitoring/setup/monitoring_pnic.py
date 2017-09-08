@@ -17,4 +17,11 @@ class MonitoringPnic(MonitoringSimpleObject):
 
     # add monitoring setup for remote host
     def create_setup(self, o):
-        self.setup('host_pnic', o)
+        type = 'host_pnic'
+        env_config = self.configuration.get_env_config()
+        vpp_or_ovs = 'vpp' if 'VPP' in env_config['mechanism_drivers'] \
+            else 'ovs'
+        type_str = '{}_{}'.format(type, vpp_or_ovs)
+        self.setup(type, o, values={'check_type': type_str,
+                                    'local_name': o['local_name']})
+
