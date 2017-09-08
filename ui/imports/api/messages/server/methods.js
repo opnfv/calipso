@@ -11,7 +11,7 @@ import { Messages } from '/imports/api/messages/messages';
 
 Meteor.methods({
   'messages/get?level&env&page&amountPerPage&sortField&sortDirection': function (
-      level, env, page, amountPerPage, sortField, sortDirection) {
+    level, env, page, amountPerPage, sortField, sortDirection) {
 
     logMethodCall('messages/get?level&env&page&amountPerPage&sortField&sortDirection', 
       {level, env, page, amountPerPage});
@@ -27,7 +27,7 @@ Meteor.methods({
     query = R.ifElse(R.isNil, R.always(query),R.assoc('level', R.__, query))(level);
 
     sortParams = R.ifElse(R.isNil, R.always(sortParams), 
-        R.assoc(R.__, sortDirection, sortParams))(sortField);
+      R.assoc(R.__, sortDirection, sortParams))(sortField);
 
     console.log('sort params:', sortParams);
 

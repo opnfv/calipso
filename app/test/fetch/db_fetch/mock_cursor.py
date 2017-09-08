@@ -7,6 +7,8 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
+
+
 class MockCursor:
 
     def __init__(self, result):
@@ -23,3 +25,9 @@ class MockCursor:
 
     def __iter__(self):
         return self
+
+    def fetchall(self):
+        return self.result
+
+    def close(self):
+        return

@@ -96,12 +96,12 @@ export const update = new ValidatedMethod({
       'focal_point_type',
       'link_types',
       'name', ], 
-      cliqueType), {
-        environment,
-        focal_point_type,
-        link_types,
-        name,
-      });
+    cliqueType), {
+      environment,
+      focal_point_type,
+      link_types,
+      name,
+    });
 
     CliqueTypes.update({ _id: _id }, { $set: cliqueType });
   }

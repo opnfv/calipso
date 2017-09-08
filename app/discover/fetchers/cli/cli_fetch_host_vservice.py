@@ -31,14 +31,14 @@ class CliFetchHostVservice(CliAccess, DbAccess):
     def set_details(self, host_id, r):
         # keep the index without prefix
         id_full = r["local_service_id"].strip()
-        prefix = id_full[1:id_full.index('-')]
-        id_clean = id_full[id_full.index('-') + 1:]
+        prefix, id_clean = re.match("([A-Za-z]+)-([0-9A-Za-z\-]+)",
+                                    id_full).groups()
         r["service_type"] = prefix
-        name = self.get_router_name(r, id_clean) if prefix == "router" \
+        name = self.get_router_name(r, id_clean) if prefix[1:] == "router" \
             else self.get_network_name(id_clean)
         r["name"] = prefix + "-" + name
         r["host"] = host_id
-        r["id"] = host_id + "-" + id_full
+        r["id"] = id_full
         self.set_agent_type(r)
 
     def get_network_name(self, id):

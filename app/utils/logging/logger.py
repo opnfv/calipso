@@ -18,7 +18,7 @@ class Logger(ABC):
     ERROR = 'ERROR'
     CRITICAL = 'CRITICAL'
 
-    PROJECT_NAME = 'CALIPSO'
+    PROJECT_NAME = 'Calipso'
 
     levels = [DEBUG, INFO, WARNING, ERROR, CRITICAL]
     log_format = '%(asctime)s %(levelname)s: %(message)s'

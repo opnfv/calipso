@@ -121,7 +121,7 @@ Template.TopNavbarMenu.helpers({
     return {
       selectedEnvironment: selectedEnvironment,
       onEnvSelected: function (env) {
-        Router.go('environment', { _id: idToStr(env._id) }, { });
+        Router.go('environment', { _id: idToStr(env._id) }, { query: `r=${Date.now()}` });
       }
     };
   }

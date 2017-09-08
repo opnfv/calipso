@@ -10,20 +10,22 @@
 # handle monitoring event for pNIC objects
 
 from monitoring.handlers.monitoring_check_handler import MonitoringCheckHandler
+from utils.special_char_converter import SpecialCharConverter
 
-class HandlePnic(MonitoringCheckHandler):
 
-  def __init__(self, args):
-    super().__init__(args)
+class HandleHostPnic(MonitoringCheckHandler):
 
-  def handle(self, id, check_result):
-    object_id = id[:id.index('-')]
-    mac = id[id.index('-')+1:]
-    mac_address = '%s:%s:%s:%s:%s:%s' % \
-      (mac[0:2], mac[2:4], mac[4:6], mac[6:8], mac[8:10], mac[10:12])
-    object_id += '-' + mac_address
-    doc = self.doc_by_id(object_id)
-    if not doc:
-      return 1
-    self.keep_result(doc, check_result)
-    return check_result['status']
+    def __init__(self, args):
+        super().__init__(args)
+
+    def handle(self, obj_id, check_result):
+        object_id = obj_id[:obj_id.index('-')]
+        mac = obj_id[obj_id.index('-')+1:]
+        converter = SpecialCharConverter()
+        mac_address = converter.decode_special_characters(mac)
+        object_id += '-' + mac_address
+        doc = self.doc_by_id(object_id)
+        if not doc:
+            return 1
+        self.keep_result(doc, check_result)
+        return check_result['status']

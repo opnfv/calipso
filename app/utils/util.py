@@ -148,7 +148,7 @@ def setup_args(args: dict,
 
 
 def encode_router_id(host_id: str, uuid: str):
-    return '-'.join([host_id, 'qrouter', uuid])
+    return '-'.join(['qrouter', uuid])
 
 
 def decode_router_id(router_id: str):

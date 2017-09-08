@@ -7,10 +7,10 @@
 // http://www.apache.org/licenses/LICENSE-2.0                                           /
 /////////////////////////////////////////////////////////////////////////////////////////
 /*
- * Template Component: MessagesModal 
+ * Template Component: MessagesModal
  */
-    
-//import { Meteor } from 'meteor/meteor'; 
+
+//import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { Counter } from 'meteor/natestrauser:publish-performant-counts';
@@ -18,15 +18,15 @@ import * as R from 'ramda';
 //import { Messages } from '/imports/api/messages/messages';
 import { Environments } from '/imports/api/environments/environments';
 import { idToStr } from '/imports/lib/utilities';
-        
+
 import '/imports/ui/components/pager/pager';
 
-import './messages-modal.html';     
-    
-/*  
+import './messages-modal.html';
+
+/*
  * Lifecycles
- */   
-  
+ */
+
 Template.MessagesModal.onCreated(function() {
   let instance = this;
   instance.state = new ReactiveDict();
@@ -41,7 +41,7 @@ Template.MessagesModal.onCreated(function() {
   });
 
   instance.autorun(function () {
- 
+
     //let amountPerPage = instance.state.get('amountPerPage');
     //let page = instance.state.get('page');
     let envName = instance.state.get('envName');
@@ -77,11 +77,11 @@ Template.MessagesModal.onCreated(function() {
       instance.state.set('messages', res);
     });
   });
-});  
+});
 
 /*
 Template.MessagesModal.rendered = function() {
-};  
+};
 */
 
 /*
@@ -107,9 +107,9 @@ Template.MessagesModal.events({
     ], {
       wait: false
     }, function (err, resp) {
-      if (err) { 
+      if (err) {
         console.error(R.toString(err));
-        return; 
+        return;
       }
 
       if (R.isNil(resp.node)) {
@@ -117,12 +117,12 @@ Template.MessagesModal.events({
         return;
       }
 
-      Router.go('environment', { 
-        _id: idToStr(environment._id) 
-      }, { 
+      Router.go('environment', {
+        _id: idToStr(environment._id)
+      }, {
         query: {
           selectedNodeId: idToStr(resp.node._id)
-        } 
+        }
       });
 
       instance.$('#messagesModalGlobal').modal('hide');
@@ -131,12 +131,12 @@ Template.MessagesModal.events({
 
   }
 });
-   
-/*  
+
+/*
  * Helpers
  */
 
-Template.MessagesModal.helpers({    
+Template.MessagesModal.helpers({
   iconType: function () {
     let instance = Template.instance();
     return instance.state.get('iconType');
@@ -186,17 +186,17 @@ Template.MessagesModal.helpers({
     return {
       disableNext: currentPage * amountPerPage > totalMessages,
       disablePrev: currentPage == 1,
-      totalPages: totalPages,      
+      totalPages: totalPages,
       currentPage: currentPage,
       onReqNext: function () {
         console.log('next');
         let page = (currentPage * amountPerPage > totalMessages) ? currentPage : currentPage + 1;
-        instance.state.set('page', page); 
+        instance.state.set('page', page);
       },
       onReqPrev: function () {
         console.log('prev');
         let page = (currentPage == 1) ? currentPage : currentPage - 1;
-        instance.state.set('page', page); 
+        instance.state.set('page', page);
       },
       onReqFirst: function () {
         console.log('req first');
@@ -209,9 +209,9 @@ Template.MessagesModal.helpers({
       onReqPage: function (pageNumber) {
         console.log('req page');
         let page;
-        if (pageNumber <= 1) { 
-          page = 1; 
-        } else if (pageNumber > Math.ceil(totalMessages / amountPerPage)) { 
+        if (pageNumber <= 1) {
+          page = 1;
+        } else if (pageNumber > Math.ceil(totalMessages / amountPerPage)) {
           page = totalPages;
         } else {
           page = pageNumber;

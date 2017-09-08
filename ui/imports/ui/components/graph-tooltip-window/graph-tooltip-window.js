@@ -14,6 +14,8 @@
 import { Template } from 'meteor/templating';
 //import { ReactiveDict } from 'meteor/reactive-dict';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import { store } from '/imports/ui/store/store';
+import { closeGraphTooltipWindow } from '/imports/ui/actions/graph-tooltip-window.actions';
         
 import './graph-tooltip-window.html';     
     
@@ -45,6 +47,23 @@ Template.GraphTooltipWindow.rendered = function() {
  */
 
 Template.GraphTooltipWindow.events({
+  'mouseout .os-graph-tooltip-window': function(_e, _instance) {
+    /*
+    if (!instance.data.show) { return; }
+
+    e.preventDefault();
+    e.stopPropagation();
+    store.dispatch(closeGraphTooltipWindow());
+    */
+  },
+
+  'click .os-graph-tooltip-window': function(e, instance) {
+    if (!instance.data.show) { return; }
+
+    e.preventDefault();
+    e.stopPropagation();
+    store.dispatch(closeGraphTooltipWindow());
+  },
 });
    
 /*  
