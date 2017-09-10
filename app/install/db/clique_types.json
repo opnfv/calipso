@@ -98,5 +98,42 @@
     ], 
     "name" : "network", 
     "focal_point_type" : "network"
+},
+{  
+    "environment" : "Mercury", 
+    "focal_point_type" : "instance", 
+    "link_types" : [
+        "instance-vnic", 
+        "vnic-vconnector", 
+        "vconnector-vedge", 
+        "vedge-host_pnic", 
+        "host_pnic-network"
+    ], 
+    "name" : "instance_vconnector_clique"
+},
+{ 
+    "environment" : "Mercury", 
+    "link_types" : [
+        "vservice-vnic",
+        "vnic-vedge", 
+        "vedge-pnic", 
+        "pnic-network"
+    ], 
+    "focal_point_type" : "vservice", 
+    "name" : "vservice_vedge_clique"
+},
+{ 
+    "environment" : "Mercury", 
+    "focal_point_type" : "network", 
+    "link_types" : [
+        "network-host_pnic", 
+        "host_pnic-vedge", 
+        "vedge-vconnector", 
+        "vedge-vnic", 
+        "vconnector-vnic", 
+        "vnic-instance", 
+        "vnic-vservice"
+    ], 
+    "name" : "network"
 }
 ]

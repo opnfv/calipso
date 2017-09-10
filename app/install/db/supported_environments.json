@@ -11,6 +11,18 @@
         "listening" : true
     }
 },
+{  
+    "environment" : {
+        "type_drivers" : "vlan", 
+        "mechanism_drivers" : "OVS", 
+        "distribution" : "Mercury_10239"
+    }, 
+    "features" : {
+        "monitoring" : false, 
+        "scanning" : true, 
+        "listening" : true
+    }
+},
 {
     "environment" : {
         "distribution" : "Apex-Euphrates",
