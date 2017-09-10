@@ -116,8 +116,8 @@
     "link_types" : [
         "vservice-vnic",
         "vnic-vedge", 
-        "vedge-pnic", 
-        "pnic-network"
+        "vedge-host_pnic", 
+        "host_pnic-network"
     ], 
     "focal_point_type" : "vservice", 
     "name" : "vservice_vedge_clique"
