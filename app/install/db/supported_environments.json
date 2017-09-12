@@ -1,266 +1,288 @@
 [
 { 
     "environment" : {
-        "distribution" : "Mirantis-10.0", 
-        "type_drivers" : "vlan", 
-        "mechanism_drivers" : "OVS"
+        "distribution" : "Mirantis", 
+        "distribution_version" : "10.0", 
+        "mechanism_drivers" : "OVS", 
+        "type_drivers" : "vlan"
     }, 
     "features" : {
+        "listening" : true, 
         "scanning" : true, 
-        "monitoring" : true, 
-        "listening" : true
+        "monitoring" : true
     }
 },
 {  
     "environment" : {
-        "type_drivers" : "vlan", 
+        "distribution" : "Mercury", 
+        "distribution_version" : "10239", 
         "mechanism_drivers" : "OVS", 
-        "distribution" : "Mercury_10239"
+        "type_drivers" : "vlan"
     }, 
     "features" : {
-        "monitoring" : false, 
+        "listening" : true, 
         "scanning" : true, 
-        "listening" : true
+        "monitoring" : false
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "Apex-Euphrates",
-        "type_drivers" : "vxlan",
-        "mechanism_drivers" : "OVS"
-    },
+        "distribution" : "Apex", 
+        "distribution_version" : "Euphrates", 
+        "mechanism_drivers" : "OVS", 
+        "type_drivers" : "vxlan"
+    }, 
     "features" : {
-        "scanning" : true,
-        "monitoring" : true,
-        "listening" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{ 
+{  
     "environment" : {
-        "distribution" : "Stratoscale-v2.1.6", 
+        "distribution" : "Stratoscale", 
+        "distribution_version" : "2.1.6", 
         "mechanism_drivers" : "OVS", 
         "type_drivers" : "vlan"
     }, 
     "features" : {
-        "monitoring" : true, 
         "listening" : false, 
-        "scanning" : true
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{ 
+{  
     "environment" : {
-        "distribution" : "Mirantis-6.0", 
+        "distribution" : "Mirantis", 
+        "distribution_version" : "6.0", 
         "mechanism_drivers" : "OVS", 
         "type_drivers" : "vxlan"
     }, 
     "features" : {
-        "monitoring" : true, 
         "listening" : true, 
-        "scanning" : true
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{ 
+{  
     "environment" : {
-        "distribution" : "Mirantis-7.0", 
+        "distribution" : "Mirantis", 
+        "distribution_version" : "7.0", 
         "mechanism_drivers" : "OVS", 
         "type_drivers" : "vxlan"
     }, 
     "features" : {
-        "monitoring" : true, 
         "listening" : true, 
-        "scanning" : true
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{ 
+{  
     "environment" : {
-        "distribution" : "Mirantis-8.0", 
+        "distribution" : "Mirantis", 
+        "distribution_version" : "8.0", 
         "mechanism_drivers" : "OVS", 
         "type_drivers" : "vxlan"
     }, 
     "features" : {
-        "monitoring" : true, 
         "listening" : true, 
-        "scanning" : true
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{ 
+{  
     "environment" : {
-        "distribution" : "Mirantis-9.1", 
+        "distribution" : "Mirantis", 
+        "distribution_version" : "9.1", 
         "mechanism_drivers" : "OVS", 
         "type_drivers" : "vxlan"
     }, 
     "features" : {
-        "monitoring" : true, 
         "listening" : false, 
-        "scanning" : true
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{ 
+{  
     "environment" : {
-        "distribution" : "RDO-Mitaka", 
+        "distribution" : "RDO", 
+        "distribution_version" : "Mitaka", 
         "mechanism_drivers" : "OVS", 
         "type_drivers" : "vxlan"
     }, 
     "features" : {
-        "monitoring" : true, 
         "listening" : true, 
-        "scanning" : true
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{ 
+{  
     "environment" : {
-        "distribution" : "RDO-Liberty", 
+        "distribution" : "RDO", 
+        "distribution_version" : "Liberty", 
         "mechanism_drivers" : "OVS", 
         "type_drivers" : "vxlan"
     }, 
     "features" : {
-        "monitoring" : true, 
         "listening" : true, 
-        "scanning" : true
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "Mirantis-9.0",
-        "mechanism_drivers" : "OVS",
+        "distribution" : "Mirantis", 
+        "distribution_version" : "9.0", 
+        "mechanism_drivers" : "OVS", 
         "type_drivers" : "vxlan"
-    },
+    }, 
     "features" : {
-        "monitoring" : true,
-        "listening" : true,
-        "scanning" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "Mirantis-9.0",
-        "mechanism_drivers" : "OVS",
+        "distribution" : "Mirantis", 
+        "distribution_version" : "9.0", 
+        "mechanism_drivers" : "OVS", 
         "type_drivers" : "vlan"
-    },
+    }, 
     "features" : {
-        "monitoring" : true,
-        "listening" : true,
-        "scanning" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "Mirantis-8.0",
-        "mechanism_drivers" : "OVS",
+        "distribution" : "Mirantis", 
+        "distribution_version" : "8.0", 
+        "mechanism_drivers" : "OVS", 
         "type_drivers" : "vlan"
-    },
+    }, 
     "features" : {
-        "monitoring" : true,
-        "listening" : true,
-        "scanning" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "Mirantis-6.0",
-        "mechanism_drivers" : "OVS",
+        "distribution" : "Mirantis", 
+        "distribution_version" : "6.0", 
+        "mechanism_drivers" : "OVS", 
         "type_drivers" : "vlan"
-    },
+    }, 
     "features" : {
-        "monitoring" : true,
-        "listening" : true,
-        "scanning" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "Mirantis-7.0",
-        "mechanism_drivers" : "OVS",
+        "distribution" : "Mirantis", 
+        "distribution_version" : "7.0", 
+        "mechanism_drivers" : "OVS", 
         "type_drivers" : "vlan"
-    },
+    }, 
     "features" : {
-        "monitoring" : true,
-        "listening" : true,
-        "scanning" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "Mirantis-9.1",
-        "mechanism_drivers" : "OVS",
+        "distribution" : "Mirantis", 
+        "distribution_version" : "9.1", 
+        "mechanism_drivers" : "OVS", 
         "type_drivers" : "vlan"
-    },
+    }, 
     "features" : {
-        "monitoring" : true,
-        "listening" : true,
-        "scanning" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "RDO-Mitaka",
-        "mechanism_drivers" : "VPP",
+        "distribution" : "RDO", 
+        "distribution_version" : "Mitaka", 
+        "mechanism_drivers" : "VPP", 
         "type_drivers" : "vxlan"
-    },
+    }, 
     "features" : {
-        "monitoring" : true,
-        "listening" : true,
-        "scanning" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "RDO-Mitaka",
-        "mechanism_drivers" : "VPP",
+        "distribution" : "RDO", 
+        "distribution_version" : "Mitaka", 
+        "mechanism_drivers" : "VPP", 
         "type_drivers" : "vlan"
-    },
+    }, 
     "features" : {
-        "monitoring" : true,
-        "listening" : true,
-        "scanning" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "Devstack-Mitaka",
-        "mechanism_drivers" : "VPP",
+        "distribution" : "Devstack", 
+        "distribution_version" : "Mitaka", 
+        "mechanism_drivers" : "VPP", 
         "type_drivers" : "vlan"
-    },
+    }, 
     "features" : {
-        "monitoring" : true,
-        "listening" : true,
-        "scanning" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "Devstack-Mitaka",
-        "mechanism_drivers" : "VPP",
+        "distribution" : "Devstack", 
+        "distribution_version" : "Mitaka", 
+        "mechanism_drivers" : "VPP", 
         "type_drivers" : "vxlan"
-    },
+    }, 
     "features" : {
-        "monitoring" : true,
-        "listening" : true,
-        "scanning" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "RDO-Mitaka",
-        "mechanism_drivers" : "OVS",
+        "distribution" : "RDO", 
+        "distribution_version" : "Mitaka", 
+        "mechanism_drivers" : "OVS", 
         "type_drivers" : "vlan"
-    },
+    }, 
     "features" : {
-        "monitoring" : true,
-        "listening" : true,
-        "scanning" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 },
-{
+{  
     "environment" : {
-        "distribution" : "RDO-Liberty",
-        "mechanism_drivers" : "OVS",
+        "distribution" : "RDO", 
+        "distribution_version" : "Liberty", 
+        "mechanism_drivers" : "OVS", 
         "type_drivers" : "vlan"
-    },
+    }, 
     "features" : {
-        "monitoring" : true,
-        "listening" : true,
-        "scanning" : true
+        "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
     }
 }
 ]

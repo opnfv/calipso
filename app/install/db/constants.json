@@ -421,94 +421,115 @@
         }
     ]
 },
-{ 
+{  
+    "name" : "distributions", 
     "data" : [
         {
-            "label" : "Mirantis-6.0", 
-            "value" : "Mirantis-6.0"
+            "value" : "Mirantis", 
+            "label" : "Mirantis"
         }, 
         {
-            "label" : "Mirantis-7.0", 
-            "value" : "Mirantis-7.0"
+            "value" : "RDO", 
+            "label" : "RDO"
         }, 
         {
-            "label" : "Mirantis-8.0", 
-            "value" : "Mirantis-8.0"
+            "value" : "Devstack", 
+            "label" : "Devstack"
         }, 
         {
-            "label" : "Mirantis-9.0", 
-            "value" : "Mirantis-9.0"
+            "value" : "Canonical", 
+            "label" : "Canonical"
         }, 
         {
-            "label" : "RDO-Mitaka", 
-            "value" : "RDO-Mitaka"
+            "value" : "Apex", 
+            "label" : "Apex"
         }, 
         {
-            "label" : "RDO-Liberty", 
-            "value" : "RDO-Liberty"
+            "value" : "Packstack", 
+            "label" : "Packstack"
         }, 
         {
-            "label" : "RDO-Juno", 
-            "value" : "RDO-Juno"
+            "value" : "Stratoscale", 
+            "label" : "Stratoscale"
         }, 
         {
-            "label" : "RDO-kilo", 
-            "value" : "RDO-kilo"
-        }, 
-        {
-            "label" : "devstack-liberty", 
-            "value" : "devstack-liberty"
-        }, 
-        {
-            "label" : "Canonical-icehouse", 
-            "value" : "Canonical-icehouse"
-        }, 
-        {
-            "label" : "Canonical-juno", 
-            "value" : "Canonical-juno"
-        }, 
-        {
-            "label" : "Canonical-liberty", 
-            "value" : "Canonical-liberty"
-        }, 
-        {
-            "label" : "Canonical-mitaka", 
-            "value" : "Canonical-mitaka"
-        }, 
-        {
-            "label" : "Apex-Mitaka", 
-            "value" : "Apex-Mitaka"
-        }, 
-        {
-            "label" : "Devstack-Mitaka", 
-            "value" : "Devstack-Mitaka"
-        }, 
-        {
-            "label" : "packstack-7.0.0-0.10.dev1682", 
-            "value" : "packstack-7.0.0-0.10.dev1682"
-        }, 
-        {
-            "label" : "Stratoscale-v2.1.6", 
-            "value" : "Stratoscale-v2.1.6"
-        }, 
-        {
-            "label" : "Mirantis-9.1", 
-            "value" : "Mirantis-9.1"
-        },
-        {
-            "value" : "Mirantis-10.0", 
-            "label" : "Mirantis-10.0"
-        },
-        {
-            "value" : "Apex-Euphrates",
-            "label" : "Apex-Euphrates"
-        },
-        {
-            "label" : "Mercury_10239", 
-            "value" : "Mercury_10239"
+            "value" : "Mercury", 
+            "label" : "Mercury"
         }
-    ], 
-    "name" : "distributions"
+    ]
+},
+{ 
+    "name" : "distribution_versions", 
+    "data" : [
+        {
+            "value" : "6.0", 
+            "label" : "6.0"
+        }, 
+        {
+            "value" : "7.0", 
+            "label" : "7.0"
+        }, 
+        {
+            "value" : "8.0", 
+            "label" : "8.0"
+        }, 
+        {
+            "value" : "9.0", 
+            "label" : "9.0"
+        }, 
+        {
+            "value" : "Mitaka", 
+            "label" : "Mitaka"
+        }, 
+        {
+            "value" : "Liberty", 
+            "label" : "Liberty"
+        }, 
+        {
+            "value" : "Newton", 
+            "label" : "Newton"
+        }, 
+        {
+            "value" : "Ocata", 
+            "label" : "Ocata"
+        }, 
+        {
+            "value" : "Juno", 
+            "label" : "Juno"
+        }, 
+        {
+            "value" : "Kilo", 
+            "label" : "Kilo"
+        }, 
+        {
+            "value" : "Icehouse", 
+            "label" : "Icehouse"
+        }, 
+        {
+            "value" : "7.0.0-0.10.dev1682", 
+            "label" : "7.0.0-0.10.dev1682"
+        }, 
+        {
+            "value" : "2.1.6", 
+            "label" : "2.1.6"
+        }, 
+        {
+            "value" : "9.1", 
+            "label" : "9.1"
+        }, 
+        {
+            "value" : "10.0", 
+            "label" : "10.0"
+        }, 
+        {
+            "value" : "Euphrates", 
+            "label" : "Euphrates"
+        }, 
+        {
+            "value" : "10239", 
+            "label" : "10239"
+        }
+    ]
 },
 {  
     "name" : "message_source_systems", 
