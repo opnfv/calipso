@@ -131,10 +131,10 @@ class EventSubnetAdd(EventBase):
         # Check DHCP enable, if true, scan network.
         if subnet['enable_dhcp'] is True:
             # update network
-            if len(ApiAccess.regions) == 0:
+            if not ApiAccess.regions:
                 fetcher = ApiFetchRegions()
                 fetcher.set_env(env)
-                fetcher.get(None)
+                fetcher.get(project_id)
 
             self.log.info("add new subnet.")
             host_id = notification["publisher_id"].replace("network.", "", 1)

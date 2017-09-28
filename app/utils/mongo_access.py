@@ -86,7 +86,7 @@ class MongoAccess(DictNamingConverter):
         self.prepare_connect_uri()
         MongoAccess.client = MongoClient(
             self.connect_params["server"],
-            self.connect_params["port"]
+            int(self.connect_params["port"])
         )
         MongoAccess.db = getattr(MongoAccess.client,
                                  config_params.get('auth_db', self.DB_NAME))

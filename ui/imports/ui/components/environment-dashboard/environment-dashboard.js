@@ -26,7 +26,7 @@ import { calcIconForMessageLevel, lastMessageTimestamp, calcColorClassForMessage
 import { Counts } from 'meteor/tmeasday:publish-counts';
 import { Roles } from 'meteor/alanning:roles';
 //import { idToStr } from '/imports/lib/utilities';
-import { Configurations } from '/imports/api/configurations/configurations';
+import { UserSettings } from '/imports/api/user-settings/user-settings';
 import { Counter } from 'meteor/natestrauser:publish-performant-counts';
         
 import '/imports/ui/components/data-cubic/data-cubic';
@@ -167,9 +167,9 @@ Template.EnvironmentDashboard.onCreated(function() {
   });
 
   instance.autorun(function () {
-    instance.subscribe('configurations?user');
-    Configurations.find({user_id: Meteor.userId()}).forEach((conf) => {
-      instance.state.set('msgsViewBackDelta', conf.messages_view_backward_delta); 
+    instance.subscribe('user_settings?user');
+    UserSettings.find({user_id: Meteor.userId()}).forEach((userSettings) => {
+      instance.state.set('msgsViewBackDelta', userSettings.messages_view_backward_delta); 
     });
   });
 

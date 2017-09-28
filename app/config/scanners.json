@@ -220,6 +220,11 @@
         },
         "fetcher": "CliFetchHostPnics",
         "children_scanner": "ScanHostPnic"
+      },
+      {
+        "type": "host_pnic",
+        "fetcher": "CliFetchBondHostPnics",
+        "children_scanner": "ScanHostPnic"
       }
     ],
     "ScanHostPnic": [

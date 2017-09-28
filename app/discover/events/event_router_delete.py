@@ -21,7 +21,6 @@ class EventRouterDelete(EventDeleteBase):
             self.log.error("Publisher_id is not in event values. Aborting router delete")
             return EventResult(result=False, retry=False)
 
-        host_id = values['publisher_id'].replace('network.', '', 1)
         if 'router_id' in payload:
             router_id = payload['router_id']
         elif 'id' in payload:
@@ -33,5 +32,5 @@ class EventRouterDelete(EventDeleteBase):
             self.log.error("Router id is not in payload. Aborting router delete")
             return EventResult(result=False, retry=False)
 
-        router_full_id = encode_router_id(host_id, router_id)
+        router_full_id = encode_router_id(router_id)
         return self.delete_handler(env, router_full_id, "vservice")

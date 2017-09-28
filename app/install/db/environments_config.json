@@ -7,14 +7,14 @@
             "name" : "OpenStack", 
             "admin_token" : "dummy_token", 
             "user" : "adminuser", 
-            "port" : 5000, 
+            "port" : "5000", 
             "pwd" : "dummy_pwd", 
             "host" : "10.0.0.1"
         }, 
         {
             "name" : "mysql", 
             "pwd" : "dummy_pwd",
-            "port" : 3307, 
+            "port" : "3307", 
             "user" : "mysqluser", 
             "host" : "10.0.0.1"
         }, 
@@ -27,18 +27,18 @@
         {
             "name" : "AMQP", 
             "pwd" : "dummy_pwd",
-            "port" : 5673, 
+            "port" : "5673", 
             "user" : "rabbitmquser", 
             "host" : "10.0.0.1"
         }, 
         {
-            "rabbitmq_port" : 5671, 
+            "rabbitmq_port" : "5671", 
             "ssh_user" : "root", 
             "server_name" : "sensu_server", 
             "env_type" : "production", 
             "provision" : "None", 
             "name" : "Monitoring", 
-            "ssh_port" : 20022, 
+            "ssh_port" : "20022", 
             "rabbitmq_pass" : "dummy_pwd", 
             "ssh_password" : "dummy_pwd", 
             "rabbitmq_user" : "sensu", 

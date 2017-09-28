@@ -24,37 +24,44 @@
 
         <div class="sm-main-content-segment">
 
-          {{#if selectedNodeType }}
-            {{#if (getShow 'dashboard') }}
-              <div class="sm-dashboard">
-                {{> UI.dynamic template=dashboardTemplate 
-                               data=(argsDashboard rdxSelectedNodeId) }}
-              </div>
-            {{/if }}
-            {{#if (getShow 'graph') }}
-              {{#if isSelectedNodeAGraph }}
+          {{#if isLoading }}
 
-                <!--div class="sm-graph">
-                  > d3graph argsD3Graph
-                </div-->
+            <div class="sm-loading-message"></div>
 
-                <div class="sm-network-graph">
-                  {{> NetworkGraphManager argsNetworkGraphManager }}
+          {{else }}
+
+            {{#if selectedNodeType }}
+              {{#if (getShow 'dashboard') }}
+                <div class="sm-dashboard">
+                  {{> UI.dynamic template=dashboardTemplate 
+                                 data=(argsDashboard rdxSelectedNodeId) }}
                 </div>
+              {{/if }}
+              {{#if (getShow 'graph') }}
+                {{#if isSelectedNodeAGraph }}
 
-                {{> GraphTooltipWindow (argsGraphTooltipWindow graphTooltipWindow) }}
+                  <!--div class="sm-graph">
+                    > d3graph argsD3Graph
+                  </div-->
 
-                {{#if showVedgeInfoWindow }}
-                  {{> VedgeInfoWindow (argsVedgeInfoWindow vedgeInfoWindow) }}
+                  <div class="sm-network-graph">
+                    {{> NetworkGraphManager argsNetworkGraphManager }}
+                  </div>
+
+                  {{> GraphTooltipWindow (argsGraphTooltipWindow graphTooltipWindow) }}
+
+                  {{#if showVedgeInfoWindow }}
+                    {{> VedgeInfoWindow (argsVedgeInfoWindow vedgeInfoWindow) }}
+                  {{/if }}
+                
+                {{else }}
+
+                <div class="sm-node-no-graph-data-msg">{{ rPath i18n 'components.environment.noGraphForLeafMsg' }}</div>
+
                 {{/if }}
-              
-              {{else }}
-
-              <div class="sm-node-no-graph-data-msg">{{ rPath i18n 'components.environment.noGraphForLeafMsg' }}</div>
-
               {{/if }}
             {{/if }}
-          {{/if }}
+          {{/if }} <!-- if isLoading -->
         </div>
 
     </div>

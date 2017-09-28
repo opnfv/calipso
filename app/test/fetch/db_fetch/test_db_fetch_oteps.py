@@ -32,11 +32,13 @@ class TestDbFetchOteps(TestFetch):
         original_get_vconnector = self.fetcher.get_vconnector
         self.fetcher.get_vconnector = MagicMock()
         self.fetcher.inv.get_by_id = MagicMock(side_effect=[vedge, host])
+        original_get_env_config = self.fetcher.config.get_env_config
         self.fetcher.config.get_env_config = MagicMock(return_value=config)
         self.fetcher.get_objects_list_for_id = MagicMock(return_value=oteps_from_db)
         results = self.fetcher.get(VEDGE_ID)
         self.assertEqual(results, expected_results, err_msg)
         self.fetcher.get_vconnector = original_get_vconnector
+        self.fetcher.config.get_env_config = original_get_env_config
 
     def test_get(self):
         test_cases = [

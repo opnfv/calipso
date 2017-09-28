@@ -67,21 +67,17 @@ class CliFetchHostPnics(CliAccess):
             tokens = None
             if interface is None:
                 tokens = line.split()
-                name = tokens[0].strip('- :')
-                name = name.strip()
-                if name == interface_name:
-                    line_remainder = line.strip('-')[len(interface_name)+2:]
-                    line_remainder = line_remainder.strip(' :')
-                    id = interface_name
-                    interface = {
-                        "host": host_id,
-                        "name": id,
-                        "local_name": interface_name,
-                        "lines": []
-                    }
-                    self.handle_line(interface, line_remainder)
-                    if '<UP,' in line:
-                        status_up = True
+                line_remainder = line.strip('-')[len(interface_name)+2:]
+                line_remainder = line_remainder.strip(' :')
+                interface = {
+                    "host": host_id,
+                    "name": interface_name,
+                    "local_name": interface_name,
+                    "lines": []
+                }
+                self.handle_line(interface, line_remainder)
+                if '<UP,' in line:
+                    status_up = True
             if status_up is None:
                 if tokens is None:
                     tokens = line.split()

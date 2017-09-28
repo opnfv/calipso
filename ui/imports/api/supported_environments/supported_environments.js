@@ -14,14 +14,21 @@ export const SupportedEnvironments = new Mongo.Collection(
 
 export const subsNameSupportedEnvs = 'supported-environments';
 
-export function isMonitoringSupported(distribution, type_drivers, mechanism_drivers) {
+export function isMonitoringSupported(
+  distribution, 
+  distribution_version, 
+  type_drivers, 
+  mechanism_drivers
+) {
   console.log('isMonitoringSupported');
   console.log(`distribution: ${R.toString(distribution)}`);
+  console.log(`distribution_version: ${R.toString(distribution_version)}`);
   console.log(`type_drivers: ${R.toString(type_drivers)}`);
   console.log(`mechanism_drivers: ${R.toString(mechanism_drivers)}`);
 
   let result = SupportedEnvironments.find({
     'environment.distribution': distribution,
+    'environment.distribution_version': { $in: [ distribution_version ] },
     'environment.type_drivers': type_drivers,
     'environment.mechanism_drivers': { $in: mechanism_drivers },
     'features.monitoring': true
@@ -31,14 +38,21 @@ export function isMonitoringSupported(distribution, type_drivers, mechanism_driv
   return result;
 }
 
-export function isListeningSupported(distribution, type_drivers, mechanism_drivers) {
+export function isListeningSupported(
+  distribution, 
+  distribution_version, 
+  type_drivers, 
+  mechanism_drivers
+) {
   console.log('isListeningSupported');
+  console.log(`distribution: ${R.toString(distribution)}`);
   console.log(`distribution: ${R.toString(distribution)}`);
   console.log(`type_drivers: ${R.toString(type_drivers)}`);
   console.log(`mechanism_drivers: ${R.toString(mechanism_drivers)}`);
 
   let result = SupportedEnvironments.find({
     'environment.distribution': distribution,
+    'environment.distribution_version': { $in: [ distribution_version ] },
     'environment.type_drivers': type_drivers,
     'environment.mechanism_drivers': { $in: mechanism_drivers },
     'features.listening': true

@@ -84,8 +84,12 @@ class TestBase(TestCase):
                               expected_code,
                               expected_response)
 
-    def get_updated_data(self, original_data, deleted_keys=[], updates={}):
+    def get_updated_data(self, original_data, deleted_keys=None, updates=None):
         copy_data = copy.deepcopy(original_data)
+        if deleted_keys is None:
+            deleted_keys = []
+        if updates is None:
+            updates = {}
 
         for key in deleted_keys:
             del copy_data[key]

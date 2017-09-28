@@ -19,7 +19,7 @@ class Auth:
         super().__init__()
         self.inv = InventoryMgr()
         self.log = FullLogger()
-        self.tokens_coll = self.inv.client['tokens']['api_tokens']
+        self.tokens_coll = self.inv.collections['api_tokens']
         self.ldap_access = LDAPAccess()
 
     def get_token(self, token):
@@ -37,7 +37,7 @@ class Auth:
             self.tokens_coll.insert_one(token)
         except Exception as e:
             self.log.error("Failed to write new token {0} to database for {1}"
-                           .format(token[token], str(e)))
+                           .format(token['token'], str(e)))
             error = 'Failed to create new token'
 
         return error

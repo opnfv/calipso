@@ -43,6 +43,9 @@ Template.EnvMonitoringInfo.rendered = function() {
  */
 
 Template.EnvMonitoringInfo.events({
+  'click .js-test-connection' : function (e, instance) {
+    instance.data.onTestConnection();
+  },
 });
    
 /*  

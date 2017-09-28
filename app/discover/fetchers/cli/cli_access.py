@@ -12,6 +12,7 @@ import time
 
 from discover.fetcher import Fetcher
 from utils.binary_converter import BinaryConverter
+from utils.cli_dist_translator import CliDistTranslator
 from utils.logging.console_logger import ConsoleLogger
 from utils.ssh_conn import SshConn
 
@@ -41,11 +42,16 @@ class CliAccess(BinaryConverter, Fetcher):
     def run(self, cmd, ssh_to_host="", enable_cache=True, on_gateway=False,
             ssh=None, use_sudo=True):
         ssh_conn = ssh if ssh else SshConn(ssh_to_host)
-        if use_sudo and not cmd.strip().startswith("sudo "):
-            cmd = "sudo " + cmd
-        if not on_gateway and ssh_to_host \
-                and not ssh_conn.is_gateway_host(ssh_to_host):
-            cmd = self.ssh_cmd + ssh_to_host + " " + cmd
+        commands = self.adapt_cmd_to_env(ssh_conn, cmd, use_sudo, on_gateway,
+                                         ssh_to_host)
+        out = ''
+        for c in commands:
+            out += self.run_single_command(c, ssh_conn, ssh_to_host,
+                                           enable_cache=enable_cache)
+        return out
+
+    def run_single_command(self, cmd, ssh_conn, ssh_to_host="",
+                           enable_cache=True):
         curr_time = time.time()
         cmd_path = ssh_to_host + ',' + cmd
         if enable_cache and cmd_path in self.cached_commands:
@@ -73,8 +79,43 @@ class CliAccess(BinaryConverter, Fetcher):
         ret = out.splitlines()
         # if split by whitespace did not work, try splitting by "\\n"
         if len(ret) == 1:
-            ret = [l for l in out.split("\\n") if l != ""]
+            ret = [line for line in out.split("\\n") if line != ""]
         return ret
+
+    MULTI_COMMAND_SEPARATOR = ';;;'
+
+    @staticmethod
+    def handle_split_cmd(cmd: str):
+        if CliAccess.MULTI_COMMAND_SEPARATOR in cmd:
+            return cmd.split(CliAccess.MULTI_COMMAND_SEPARATOR)
+        return [cmd]
+
+    def adapt_cmd_to_env(self, ssh_conn, cmd, use_sudo, on_gateway,
+                         ssh_to_host):
+        cmd = self.adapt_cmd_to_dist(cmd)
+        commands = self.handle_split_cmd(cmd)
+        return [self.adapt_cmd_to_environment(c, use_sudo, on_gateway,
+                                              ssh_to_host, ssh_conn)
+                for c in commands]
+
+    def adapt_cmd_to_environment(self, cmd, use_sudo, on_gateway, ssh_to_host,
+                                 ssh_conn):
+        if self.configuration.environment["distribution"] == "Mercury":
+            use_sudo = False
+        if use_sudo and not cmd.strip().startswith("sudo "):
+            cmd = "sudo " + cmd
+        if not on_gateway and ssh_to_host \
+                and not ssh_conn.is_gateway_host(ssh_to_host):
+            cmd = self.ssh_cmd + ssh_to_host + " " + cmd
+        return cmd
+
+    def adapt_cmd_to_dist(self, cmd):
+        env_conf = self.configuration.get_env_config()
+        dist = env_conf.get('distribution')
+        dist_version = env_conf.get('distribution_version')
+        translator = CliDistTranslator(dist, dist_version=dist_version)
+        cmd = translator.translate(cmd)
+        return cmd
 
     # parse command output columns separated by whitespace
     # since headers can contain whitespace themselves,
@@ -126,7 +167,8 @@ class CliAccess(BinaryConverter, Fetcher):
             content[headers[i]] = content_parts[i]
         return content
 
-    def merge_ws_spillover_lines(self, lines):
+    @staticmethod
+    def merge_ws_spillover_lines(lines):
         # with WS-separated output, extra output sometimes spills to next line
         # detect that and add to the end of the previous line for our procesing
         pending_line = None
@@ -156,7 +198,8 @@ class CliAccess(BinaryConverter, Fetcher):
     - header_regexp: regexp marking the start of the section
     - end_regexp: regexp marking the end of the section
     """
-    def get_section_lines(self, lines, header_regexp, end_regexp):
+    @staticmethod
+    def get_section_lines(lines, header_regexp, end_regexp):
         if not lines:
             return []
         header_re = re.compile(header_regexp)
@@ -196,7 +239,8 @@ class CliAccess(BinaryConverter, Fetcher):
             if 'name' not in o and 'default' in regexp_tuple:
                 o[name] = regexp_tuple['default']
 
-    def find_matching_regexps(self, o, line, regexps):
+    @staticmethod
+    def find_matching_regexps(o, line, regexps):
         for regexp_tuple in regexps:
             name = regexp_tuple['name']
             regex = regexp_tuple['re']

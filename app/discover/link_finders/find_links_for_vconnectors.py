@@ -31,7 +31,8 @@ class FindLinksForVconnectors(FindLinks):
         is_ovs = mechanism_drivers and mechanism_drivers[0] == 'OVS'
         if is_ovs:
             # interface ID for OVS
-            vnic = self.inv.get_by_id(self.get_env(), interface_name)
+            vnic_id = "{}-{}".format(vconnector["host"], interface_name)
+            vnic = self.inv.get_by_id(self.get_env(), vnic_id)
         else:
             # interface ID for VPP - match interface MAC address to vNIC MAC
             interface = vconnector['interfaces'][interface_name]

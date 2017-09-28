@@ -7,10 +7,24 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
+import os
 from abc import ABC, abstractmethod
+
+from utils.logging.console_logger import ConsoleLogger
+from utils.logging.file_logger import FileLogger
+from utils.logging.logger import Logger
 
 
 class ListenerBase(ABC):
+
+    LOG_FILENAME = "listener_base.log"
+    LOG_LEVEL = Logger.WARNING
+
+    def __init__(self):
+        super().__init__()
+        self.log_file = os.path.join(FileLogger.LOG_DIRECTORY,
+                                     self.LOG_FILENAME)
+        self.log = ConsoleLogger(level=Logger.INFO)
 
     @staticmethod
     @abstractmethod

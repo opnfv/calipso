@@ -23,7 +23,7 @@ import { Counts } from 'meteor/tmeasday:publish-counts';
 //import { Messages } from '/imports/api/messages/messages';
 import { store } from '/imports/ui/store/store';
 import { setMainAppSelectedEnvironment } from '/imports/ui/actions/main-app.actions';
-import { Configurations } from '/imports/api/configurations/configurations';
+import { UserSettings } from '/imports/api/user-settings/user-settings';
 
 import '/imports/ui/components/messages-info-box/messages-info-box';
 import '/imports/ui/components/environment-box/environment-box';
@@ -62,9 +62,9 @@ Template.Dashboard.onCreated(function () {
   });
 
   instance.autorun(function () {
-    instance.subscribe('configurations?user');
-    Configurations.find({user_id: Meteor.userId()}).forEach((conf) => {
-      instance.state.set('msgsViewBackDelta', conf.messages_view_backward_delta); 
+    instance.subscribe('user_settings?user');
+    UserSettings.find({user_id: Meteor.userId()}).forEach((userSettings) => {
+      instance.state.set('msgsViewBackDelta', userSettings.messages_view_backward_delta); 
     });
   });
 

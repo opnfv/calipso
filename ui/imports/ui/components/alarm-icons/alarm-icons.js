@@ -15,7 +15,7 @@ import { Messages } from '/imports/api/messages/messages';
 import { Roles } from 'meteor/alanning:roles';
 import { ReactiveDict } from 'meteor/reactive-dict';
 
-import { Configurations } from '/imports/api/configurations/configurations';
+import { UserSettings } from '/imports/api/user-settings/user-settings';
 
 import './alarm-icons.html';     
 
@@ -32,9 +32,9 @@ Template.alarmIcons.onCreated(function () {
   });
 
   instance.autorun(function () {
-    instance.subscribe('configurations?user');
-    Configurations.find({user_id: Meteor.userId()}).forEach((conf) => {
-      instance.state.set('msgsViewBackDelta', conf.messages_view_backward_delta); 
+    instance.subscribe('user_settings?user');
+    UserSettings.find({user_id: Meteor.userId()}).forEach((userSettings) => {
+      instance.state.set('msgsViewBackDelta', userSettings.messages_view_backward_delta); 
     });
   });
 

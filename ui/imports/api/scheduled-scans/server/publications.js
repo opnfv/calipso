@@ -2,10 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import * as R from 'ramda';
 import { Counts } from 'meteor/tmeasday:publish-counts';
 
-import { ScheduledScans,
+import { 
+  ScheduledScans,
   subsScheduledScansPageAmountSorted,
   subsScheduledScansPageAmountSortedCounter,
   subsScheduledScansId,
+  subsScheduledScansEnv,
 } from '../scheduled-scans.js';
 
 Meteor.publish(subsScheduledScansPageAmountSorted, function (
@@ -24,7 +26,7 @@ Meteor.publish(subsScheduledScansPageAmountSorted, function (
   let sortParams = {};
 
   sortParams = R.ifElse(R.isNil, R.always(sortParams), 
-      R.assoc(R.__, sortDirection, sortParams))(sortField);
+    R.assoc(R.__, sortDirection, sortParams))(sortField);
 
   console.log('sort params:', sortParams);
 
@@ -48,5 +50,15 @@ Meteor.publish(subsScheduledScansId, function (_id) {
   //let that = this;
 
   let query = { _id: _id };
+  return ScheduledScans.find(query); 
+});
+
+Meteor.publish(subsScheduledScansEnv, function (env) {
+  console.log(`server subscribtion: ${subsScheduledScansEnv}`);
+  console.log('-env: ', env);
+
+  //let that = this;
+
+  let query = { environment: env };
   return ScheduledScans.find(query); 
 });

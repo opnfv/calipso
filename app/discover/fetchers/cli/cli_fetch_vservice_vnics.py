@@ -42,7 +42,7 @@ class CliFetchVserviceVnics(CliAccess):
             return []
         if "Network" not in host["host_type"]:
             return []
-        lines = self.run_fetch_lines("ip netns", host_id)
+        lines = self.run_fetch_lines("ip netns list", host_id)
         ret = []
         for l in [l for l in lines
                   if l.startswith("qdhcp") or l.startswith("qrouter")]:
@@ -68,7 +68,7 @@ class CliFetchVserviceVnics(CliAccess):
                     current = None
                 else:
                     line_remainder = matches.group(2)
-                    vservice_id = host + "-" + service
+                    master_parent_id = "{}-{}".format(host, service)
                     current = {
                         "id": host + "-" + name,
                         "type": "vnic",
@@ -76,9 +76,9 @@ class CliFetchVserviceVnics(CliAccess):
                         "host": host,
                         "name": name,
                         "master_parent_type": "vservice",
-                        "master_parent_id": vservice_id,
+                        "master_parent_id": master_parent_id,
                         "parent_type": "vnics_folder",
-                        "parent_id": vservice_id + "-vnics",
+                        "parent_id": "{}-vnics".format(master_parent_id),
                         "parent_text": "vNICs",
                         "lines": []
                     }

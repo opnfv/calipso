@@ -27,6 +27,7 @@ Template.NetworkGraph.onCreated(function() {
   instance.simpleState = {
     graphData: null
   };
+  instance.prevForce = null;
 
   instance.autorun(function () {
     let data = Template.currentData();
@@ -73,11 +74,27 @@ Template.NetworkGraph.rendered = function() {
       instance.onDragStart,
       instance.onDragEnd,
       instance.onGroupOver,
-      instance.onLinkOver
+      instance.onLinkOver,
+      function onNewForce(newForce) {
+        if (instance.prevForce) {
+          instance.prevForce.stop();
+        }
+        instance.prevForce = newForce;
+      }
     );
   });
 };  
 
+Template.NetworkGraph.onDestroyed(function () {
+  let instance = Template.instance();
+  let graphEl = instance.$('.sm-graph')[0];
+  let svg = d3.select(graphEl).select('svg');
+  if (instance.prevForce) {
+    instance.prevForce.stop();
+  }
+  
+  svg.remove();
+});
 /*
  * Events
  */
@@ -138,10 +155,13 @@ function renderGraph(
   onDragStart,
   onDragEnd,
   onGroupOver,
-  onLinkOver
+  onLinkOver,
+  onNewForce
 ) {
 
   let force = genForceCola(cola, d3, w, h);
+  onNewForce(force);
+
   let drag = force.drag()
     .on('start', function (_d) {
       onDragStart();
@@ -295,7 +315,8 @@ function genSvgNodes(g, nodes, drag, onNodeOver, onNodeOut, onNodeClick, onGroup
       onNodeOut(d._osmeta.nodeId);
     })
     .on('click', function (d) {
-      if (R.path(['_osmeta', 'type'], d) === 'view_group') {
+      let type = R.defaultTo('', R.path(['_osmeta', 'type'], d));
+      if (R.contains(type, ['view_group-host', 'view_group-switch'])) {
         onGroupNodeClick(d._osmeta.nodeId);
       }
       onNodeClick(d._osmeta.nodeId);
@@ -624,7 +645,7 @@ function calcClosedGroupsNodes(rejectedGroups, prevViewNodes) {
     return R.append({
       _osid: nodeId,
       _osmeta: {
-        type: 'view_group',
+        type: `view_group-${group.type}`,
         nodeId: group._osid,
       },
       width: 60,

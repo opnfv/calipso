@@ -28,6 +28,7 @@ export const insert = new ValidatedMethod({
       'configuration', 
       'configuration.$', 
       'distribution', 
+      'distribution_version', 
       'name', 
       'type_drivers',
       'mechanism_drivers',
@@ -40,6 +41,7 @@ export const insert = new ValidatedMethod({
   run({
     configuration,
     distribution,
+    distribution_version,
     name,
     type_drivers,
     mechanism_drivers,
@@ -64,6 +66,7 @@ export const insert = new ValidatedMethod({
     environment = R.merge(environment, {
       configuration,
       distribution,
+      distribution_version,
       name,
       type_drivers,
       mechanism_drivers,

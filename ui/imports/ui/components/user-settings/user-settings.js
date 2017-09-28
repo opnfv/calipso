@@ -1,5 +1,5 @@
 /*
- * Template Component: Configuration 
+ * Template Component: UserSettings 
  */
     
 //import { Meteor } from 'meteor/meteor'; 
@@ -8,20 +8,20 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 //import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import * as R from 'ramda';
 
-import { save } from '/imports/api/configurations/methods';
-import { Configurations } from '/imports/api/configurations/configurations';
+import { save } from '/imports/api/user-settings/methods';
+import { UserSettings } from '/imports/api/user-settings/user-settings';
         
-import './configuration.html';     
+import './user-settings.html';     
     
 /*  
  * Lifecycles
  */   
   
-Template.Configuration.onCreated(function() {
+Template.UserSettings.onCreated(function() {
   let instance = this;
   instance.state = new ReactiveDict();
   instance.state.setDefault({
-    model: Configurations.schema.clean({}),
+    model: UserSettings.schema.clean({}),
     actionResult: 'none',
     message: null,
   });
@@ -36,15 +36,15 @@ Template.Configuration.onCreated(function() {
   */
 
   instance.autorun(function () {
-    instance.subscribe('configurations?user');
-    Configurations.find({user_id: Meteor.userId()}).forEach((conf) => {
-      instance.state.set('model', conf);
+    instance.subscribe('user_settings?user');
+    UserSettings.find({user_id: Meteor.userId()}).forEach((userSettings) => {
+      instance.state.set('model', userSettings);
     });
   });
 });  
 
 /*
-Template.Configuration.rendered = function() {
+Template.UserSettings.rendered = function() {
 };  
 */
 
@@ -52,7 +52,7 @@ Template.Configuration.rendered = function() {
  * Events
  */
 
-Template.Configuration.events({
+Template.UserSettings.events({
   'click .js-submit-button': function (event, instance) {
     event.preventDefault(); 
     let msgsViewBackDelta = Number.parseInt(instance.$('.sm-msgs-view-back-delta')[0].value);
@@ -71,7 +71,7 @@ Template.Configuration.events({
  * Helpers
  */
 
-Template.Configuration.helpers({    
+Template.UserSettings.helpers({    
   getModelField: function (fieldName) {
     let instance = Template.instance();
     return R.path([fieldName], instance.state.get('model'));

@@ -51,7 +51,10 @@ export const MonitoringSchema = new SimpleSchema({
     defaultValue: 'sensu'
   }, 
 
-  rabbitmq_pass: { type: String },
+  rabbitmq_pass: { 
+    type: String,
+    defaultValue: 'osdna'
+  },
 
   server_ip: {
     type: String,
@@ -108,7 +111,7 @@ export const MonitoringSchema = new SimpleSchema({
 
   ssh_password: {
     type: String,
-    defaultValue: 'calipso',
+    defaultValue: 'osdna',
     optional: true
   },
 

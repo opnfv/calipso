@@ -44,10 +44,9 @@ class MongoLoggingHandler(logging.Handler):
         # make ID from current timestamp
         now = datetime.datetime.utcnow()
         d = now - datetime.datetime(1970, 1, 1)
-        ts = stringify_datetime(now)
         timestamp_id = '{}.{}.{}'.format(d.days, d.seconds, d.microseconds)
         source = self.SOURCE_SYSTEM
         message = Message(msg_id=timestamp_id, env=self.env, source=source,
-                          msg=Logger.formatter.format(record), ts=ts,
+                          msg=Logger.formatter.format(record), ts=now,
                           level=record.levelname)
         self.inv.collections['messages'].insert_one(message.get())

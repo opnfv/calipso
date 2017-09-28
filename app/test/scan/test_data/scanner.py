@@ -120,7 +120,8 @@ CONFIGURATIONS = {
             "pwd": "NF2nSv3SisooxPkCTr8fbfOa"
         }
     ],
-    "distribution": "Mirantis-8.0",
+    "distribution": "Mirantis",
+    "distribution_version": "8.0",
     "last_scanned:": "5/8/16",
     "name": "Mirantis-Liberty-Nvn",
     "mechanism_drivers": [
@@ -330,7 +331,8 @@ CONFIGURATIONS_WITHOUT_MECHANISM_DRIVERS = {
             "pwd": "NF2nSv3SisooxPkCTr8fbfOa"
         }
     ],
-    "distribution": "Mirantis-8.0",
+    "distribution": "Mirantis",
+    "distribution_version": "8.0",
     "last_scanned:": "5/8/16",
     "name": "Mirantis-Liberty-Nvn",
     "operational": "yes",

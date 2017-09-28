@@ -15,7 +15,9 @@ URL = "/environment_configs"
 NAME = "Mirantis-Liberty-API"
 UNKNOWN_NAME = "UNKNOWN NAME"
 WRONG_DISTRIBUTION = base.WRONG_DISTRIBUTION
+WRONG_DIST_VER = base.WRONG_DIST_VER
 CORRECT_DISTRIBUTION = base.CORRECT_DISTRIBUTION
+CORRECT_DIST_VER = base.CORRECT_DIST_VER
 WRONG_MECHANISM_DRIVER = base.WRONG_MECHANISM_DRIVER
 CORRECT_MECHANISM_DRIVER = base.CORRECT_MECHANISM_DRIVER
 WRONG_TYPE_DRIVER = base.WRONG_TYPE_DRIVER
@@ -29,11 +31,13 @@ BOOL_LISTEN = BOOL_SCANNED = \
 
 ENV_CONFIGS = [
     {
-        "distribution": "Mirantis-8.0",
+        "distribution": "Mirantis",
+        "distribution_version": "8.0",
         "name": "Mirantis-Liberty-API"
     },
     {
-        "distribution": "Mirantis-9.0",
+        "distribution": "Mirantis",
+        "distribution_version": "9.0",
         "name": "Mirantis-Liberty"
     }
 ]
@@ -44,7 +48,8 @@ ENV_CONFIGS_RESPONSE = {
 
 ENV_CONFIGS_WITH_SPECIFIC_NAME = [
     {
-        "distribution": "Mirantis-8.0",
+        "distribution": "Mirantis",
+        "distribution_version": "8.0",
         "name": NAME
     }
 ]
@@ -52,10 +57,12 @@ ENV_CONFIGS_WITH_SPECIFIC_NAME = [
 ENV_CONFIGS_WITH_SPECIFIC_DISTRIBUTION = [
     {
         "distribution": CORRECT_DISTRIBUTION,
+        "distribution_version": CORRECT_DIST_VER,
         "name": "Mirantis-Liberty-API",
     },
     {
         "distribution": CORRECT_DISTRIBUTION,
+        "distribution_version": CORRECT_DIST_VER,
         "name": "Mirantis-Liberty"
     }
 ]
@@ -206,7 +213,8 @@ ENV_CONFIG = {
             "type": "Sensu"
         }
     ],
-    "distribution": "Mirantis-8.0",
+    "distribution": "Mirantis",
+    "distribution_version": "8.0",
     "last_scanned": "2017-03-16T11:14:54Z",
     "listen": True,
     "mechanism_drivers": [

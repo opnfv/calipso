@@ -1,0 +1,7 @@
+{ 
+    "token" : "ec56537a-a448-43f9-b36e-3e2bee44f018", 
+    "issued_at" : "2017-04-06T14:32:17.893797Z", 
+    "expires_at" : "2017-11-11T15:32:17.893769Z", 
+    "lifetime" : "86400", 
+    "method" : "credentials"
+}

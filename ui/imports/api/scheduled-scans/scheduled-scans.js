@@ -54,7 +54,6 @@ let schema = new SimpleSchema({
   },
   scheduled_timestamp: {
     type: Date,
-    defaultValue: null,
     optional: true,
   }
 });
@@ -81,3 +80,5 @@ export const subsScheduledScansPageAmountSorted = 'scheduled_scans?page&amount&s
 export const subsScheduledScansPageAmountSortedCounter = `${subsScheduledScansPageAmountSorted}!counter`;
 
 export const subsScheduledScansId = 'scheduled_scans?_id';
+
+export const subsScheduledScansEnv = 'scheduled_scans?env';

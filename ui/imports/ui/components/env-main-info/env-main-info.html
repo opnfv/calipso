@@ -72,6 +72,26 @@
       <div class="form-group">
         <label for="" 
           class="col-sm-2 control-label"
+          >Distribution Version</label>
+
+        <div class="col-sm-3">
+          {{> SelectModel(createSelectArgs
+                values=model.distribution_version
+                key="distribution_version"
+                disabled=(isFieldDisabled 'distribution_version' disabled)
+                options=distributionVersionOptions
+                showNullOption=true)
+          }}
+        </div>
+
+        <div class="col-sm-4">
+          <p>Enter type of the distribution</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" 
+          class="col-sm-2 control-label"
           >Type Drivers</label>
 
         <div class="col-sm-3">

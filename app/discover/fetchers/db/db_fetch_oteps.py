@@ -35,7 +35,9 @@ class DbFetchOteps(DbAccess, CliAccess, metaclass=Singleton):
         table_name = "{}.ml2_{}_endpoints".format(self.neutron_db, tunnel_type)
         env_config = self.config.get_env_config()
         distribution = env_config["distribution"]
-        if distribution == "Canonical-icehouse":
+        distribution_version = env_config["distribution_version"]
+        dist_ver = "{}-{}".format(distribution, distribution_version)
+        if dist_ver == "Canonical-icehouse":
             # for Icehouse, we only get IP address from the DB, so take the
             # host IP address and from the host data in Mongo
             host = self.inv.get_by_id(self.get_env(), host_id)

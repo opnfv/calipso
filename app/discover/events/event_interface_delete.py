@@ -18,8 +18,7 @@ class EventInterfaceDelete(EventDeleteBase):
     def handle(self, env, values):
         interface = values['payload']['router_interface']
         port_id = interface['port_id']
-        host_id = values["publisher_id"].replace("network.", "", 1)
-        router_id = encode_router_id(host_id, interface['id'])
+        router_id = encode_router_id(interface['id'])
 
         # update router document
         port_doc = self.inv.get_by_id(env, port_id)

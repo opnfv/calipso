@@ -7,15 +7,15 @@
 // http://www.apache.org/licenses/LICENSE-2.0                                           /
 /////////////////////////////////////////////////////////////////////////////////////////
 import { Meteor } from 'meteor/meteor';
+import * as R from 'ramda';
+import { ConnectionTests } from '../connection-tests.js';
 
-import { Configurations } from '../configurations.js';
+Meteor.publish('connection_tests?_id', function (_id) {
+  console.log('server subscribtion to: connection_tests?_id');
+  console.log('-_id: ', R.toString(_id));
 
-Meteor.publish('configurations?user', function () {
-  console.log('server subscribtion: configurations?user');
-
-  let userId = this.userId;
-
-  let query = { user_id: userId };
-  console.log('-query: ', query);
-  return Configurations.find(query); 
+  let query = {
+    _id: _id,
+  };
+  return ConnectionTests.find(query);
 });

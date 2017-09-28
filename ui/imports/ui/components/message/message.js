@@ -151,7 +151,7 @@ Template.Message.helpers({
 
   sourceSystemsList: function () {
     return R.ifElse(R.isNil, R.always([]), R.prop('data')
-      )(Constants.findOne({ name: 'message_source_systems' }));
+    )(Constants.findOne({ name: 'message_source_systems' }));
   },
 
   getAttrDisabled: function () {
@@ -202,11 +202,6 @@ Template.Message.helpers({
     let instance = Template.instance();
     let action = instance.state.get('action');
     return calcActionLabel(action);
-  },
-
-  asString: function (val) {
-    let str = JSON.stringify(val, null, 4);
-    return str;
   },
 
   argsInvPropDisplay: function (env, nodeId) {

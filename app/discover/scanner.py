@@ -240,7 +240,7 @@ class Scanner(Fetcher):
         run_app_path = conf.get('run_app_path', '')
         if not run_app_path:
             run_app_path = conf.get('app_path', '/etc/calipso')
-            return run_app_path
+        return run_app_path
 
     def load_scanners_metadata(self):
         parser = ScanMetadataParser(self.inv)

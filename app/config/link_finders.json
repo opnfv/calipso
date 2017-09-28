@@ -4,9 +4,9 @@
   "link_finders": [
     "FindLinksForInstanceVnics",
     "FindLinksForOteps",
-    "FindLinksForPnics",
     "FindLinksForVconnectors",
     "FindLinksForVedges",
-    "FindLinksForVserviceVnics"
+    "FindLinksForVserviceVnics",
+    "FindLinksForPnics"
   ]
 }

@@ -9,11 +9,12 @@
 /*
  */
 
-import { Meteor } from 'meteor/meteor';
+//import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import * as R from 'ramda';
+import { ConnectionTests } from '/imports/api/connection-tests/connection-tests';
 
 import { Environments } from '/imports/api/environments/environments';
 import { subsNameSupportedEnvs, 
@@ -39,6 +40,8 @@ import {
   update
 } from '/imports/api/environments/methods';
 
+import { insert as insertConnectionTests } from '/imports/api/connection-tests/methods';
+
 /*
  * Lifecycles
  */
@@ -54,6 +57,7 @@ Template.EnvironmentWizard.onCreated(function(){
     isMessage: false,
     message: null,
     disabled: false,
+    connectionTestId: null
   });
 
   instance.autorun(function () {
@@ -77,18 +81,39 @@ Template.EnvironmentWizard.onCreated(function(){
     let action = instance.state.get('action');
     if (action === 'update') {
       Environments.find({'name': envName})
-      .forEach(function (envItem) {
-        instance.state.set('environmentModel', R.clone(envItem));
-      });
+        .forEach(function (envItem) {
+          instance.state.set('environmentModel', R.clone(envItem));
+        });
     } else if (action === 'insert') {
       instance.state.set('environmentModel', generateNewEnv());
     }
+  });
+
+  instance.autorun(function () {
+    let connectionTestId = instance.state.get('connectionTestId');
+    if (R.isNil(connectionTestId)) { return; }
+    
+    instance.subscribe('connection_tests?_id', connectionTestId);
+    ConnectionTests.find({ _id: connectionTestId }).forEach((connTest) => {
+      if (connTest.status !== 'response') { 
+        return; 
+      }
+
+      R.mapObjIndexed((success, groupName) => {
+        if (success) {
+          toastr.success(`${groupName} connection is OK`, { timeOut: 5000 });
+        } else {
+          toastr.error(`${groupName} connection is DOWN`, { timeOut: 5000 });
+        }
+      }, connTest.test_results);
+    });
   });
 
   instance.storeUnsubscribe = store.subscribe(() => {
     let i18n = store.getState().api.i18n;
     instance.state.set('i18n', i18n);
   });
+
 
   let i18n = store.getState().api.i18n;
   instance.state.set('i18n', i18n);
@@ -135,6 +160,7 @@ Template.EnvironmentWizard.helpers({
 
     let isMonSupportedRes = isMonitoringSupported(
       environmentModel.distribution, 
+      environmentModel.distribution_version, 
       environmentModel.type_drivers,
       environmentModel.mechanism_drivers
     );
@@ -149,6 +175,7 @@ Template.EnvironmentWizard.helpers({
     
     let isListeningSupportedRes = isListeningSupported(
       environmentModel.distribution, 
+      environmentModel.distribution_version, 
       environmentModel.type_drivers,
       environmentModel.mechanism_drivers
     );
@@ -171,6 +198,28 @@ Template.EnvironmentWizard.helpers({
         isMonitoringDisabled: isMonitoringDisabled,
         setModel: function (newModel) {
           Session.set('isDirty', true);
+
+          if (newModel.aci_enabled) {
+            let monitoringGroup = getGroupInArray('Monitoring', newModel.configuration);
+            newModel = setConfigurationGroup('Monitoring', monitoringGroup, newModel);
+          } else {
+            newModel = removeConfigurationGroup('Monitoring', newModel);
+          }
+
+          if (newModel.enable_monitoring) {
+            let monitoringGroup = getGroupInArray('ACI', newModel.configuration);
+            newModel = setConfigurationGroup('ACI', monitoringGroup, newModel);
+          } else {
+            newModel = removeConfigurationGroup('ACI', newModel);
+          }
+
+          if (newModel.listen) {
+            let monitoringGroup = getGroupInArray('AMQP', newModel.configuration);
+            newModel = setConfigurationGroup('AMQP', monitoringGroup, newModel);
+          } else {
+            newModel = removeConfigurationGroup('AMQP', newModel);
+          }
+
           instance.state.set('environmentModel', newModel);
         },
         onNextRequested: activateNextTab.bind(null, 'endpoint-panel'),
@@ -192,6 +241,9 @@ Template.EnvironmentWizard.helpers({
         },
         onNextRequested: activateNextTab.bind(null, 'db-credentials'),
         action: action,
+        onTestConnection: function () {
+          testConnection(instance);
+        },
       }
     }, {
       label: 'OS DB Credentials',
@@ -209,6 +261,9 @@ Template.EnvironmentWizard.helpers({
         },
         onNextRequested: activateNextTab.bind(null, 'master-host'),
         action: action,
+        onTestConnection: function () {
+          testConnection(instance);
+        },
       }
     }, {
       label: 'Master Host Credentials',
@@ -226,6 +281,9 @@ Template.EnvironmentWizard.helpers({
         },
         onNextRequested: activateNextTab.bind(null, 'amqp'),
         action: action,
+        onTestConnection: function () {
+          testConnection(instance);
+        },
       }
     }, {
       label: 'AMQP Credentials',
@@ -243,6 +301,9 @@ Template.EnvironmentWizard.helpers({
         },
         onNextRequested: activateNextTab.bind(null, 'aci'),
         action: action,
+        onTestConnection: function () {
+          testConnection(instance);
+        },
       }
     }, 
     /*  {
@@ -279,6 +340,9 @@ Template.EnvironmentWizard.helpers({
         },
         onNextRequested: activateNextTab.bind(null, 'monitoringInfo'),
         action: action,
+        onTestConnection: function () {
+          testConnection(instance);
+        },
       }
     }, {
       label: 'Monitoring',
@@ -296,6 +360,9 @@ Template.EnvironmentWizard.helpers({
           instance.state.set('environmentModel', newModel);
         },
         action: action,
+        onTestConnection: function () {
+          testConnection(instance);
+        },
       }
     }];
   },
@@ -327,14 +394,18 @@ Template.EnvironmentWizard.helpers({
  */
 
 Template.EnvironmentWizard.events({
+  /*
   'click .toast' : function () {
     toastr.success('Have fun storming the castle!', 'Open Stack server says');
   },
+  */
 
   // todo: research: seems not implemented
+  /*
   'click .fa-trash' : function () {
     Meteor.call('deleteRecipe', this._id);
   },
+  */
 
   'click .sm-submit-button': function () {
     let instance = Template.instance();
@@ -391,6 +462,36 @@ function processActionResult(instance, error) {
   }
 }
 
+function processInsertTestConnnectionResult(instance, error, itemId) {
+  if (error) {
+    instance.state.set('isError', true);
+    instance.state.set('isSuccess', false);
+    instance.state.set('isMessage', true);  
+
+    if (typeof error === 'string') {
+      instance.state.set('message', error);
+    } else {
+      let message = error.message;
+      if (error.errors) {
+        message = R.reduce((acc, errorItem) => {
+          return acc + '\n- ' + errorItem.name;
+        }, message, error.errors);
+      }
+      instance.state.set('message', message);
+    }
+
+    return;
+  } 
+
+  instance.state.set('connectionTestId', itemId);
+
+  instance.state.set('isError', false);
+  instance.state.set('isSuccess', true);
+  instance.state.set('isMessage', true);  
+
+  instance.state.set('message', 'Connection send to be tested');
+}
+
 function getGroupInArray(groupName, array) {
   let group = R.find(R.propEq('name', groupName), array);
   return group ? group : createNewConfGroup(groupName);
@@ -403,6 +504,12 @@ function removeGroupInArray(groupName, array) {
 function setConfigurationGroup(groupName, group, model) {
   let tempConfiguration = removeGroupInArray(groupName, model.configuration);
   let newConfiguration = R.append(group, tempConfiguration);
+  let newModel = R.assoc('configuration', newConfiguration, model);
+  return newModel;
+}
+
+function removeConfigurationGroup(groupName, model) {
+  let newConfiguration = removeGroupInArray(groupName, model.configuration);
   let newModel = R.assoc('configuration', newConfiguration, model);
   return newModel;
 }
@@ -422,6 +529,7 @@ function doSubmit(instance) {
     insert.call({
       configuration: environment.configuration,
       distribution: environment.distribution,
+      distribution_version: environment.distribution_version,
       name: environment.name,
       type_drivers: environment.type_drivers,
       mechanism_drivers: environment.mechanism_drivers,
@@ -449,4 +557,12 @@ function doSubmit(instance) {
     // todo
     break;
   }
+}
+
+function testConnection(instance) {
+  let environmentModel = instance.state.get('environmentModel');
+  insertConnectionTests.call({
+    environment: environmentModel.name,
+    test_configurations: environmentModel.configuration,
+  }, processInsertTestConnnectionResult.bind(null, instance));
 }

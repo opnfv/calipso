@@ -75,6 +75,12 @@ Template.EnvMainInfo.helpers({
     return item.data;
   },
 
+  distributionVersionOptions: function () {
+    let item = Constants.findOne({ name: 'distribution_versions' });
+    if (R.isNil(item)) { return []; }
+    return item.data;
+  },
+
   /* depracated 
   networkOptions: function () {
     let item = Constants.findOne({ name: 'network_plugins' });
@@ -116,6 +122,10 @@ Template.EnvMainInfo.events({
 
 function isDisabledByField(fieldName, actionName) {
   if (R.contains(fieldName, ['name', 'distribution']) && actionName !== 'insert') {
+    return true;
+  }
+
+  if (R.contains(fieldName, ['name', 'distribution_version']) && actionName !== 'insert') {
     return true;
   }
   

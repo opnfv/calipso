@@ -58,7 +58,7 @@ class CliFetchInstanceVnicsBase(CliAccess):
 
     def set_vnic_properties(self, v, instance):
         v["name"] = self.get_vnic_name(v, instance)
-        v["id"] = v["name"]
+        v["id"] = "{}-{}".format(instance["host"], v["name"])
         v["vnic_type"] = "instance_vnic"
         v["host"] = instance["host"]
         v["instance_id"] = instance["id"]
