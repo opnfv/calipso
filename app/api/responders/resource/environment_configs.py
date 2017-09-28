@@ -239,6 +239,7 @@ class EnvironmentConfigs(ResponderBase):
             "configuration": self.require(list, mandatory=True),
             "distribution": self.require(str, False, DataValidate.LIST,
                                          self.distributions, True),
+            "distribution_version": self.require(str, mandatory=True),
             "listen": self.require(bool, True, mandatory=True),
             "user": self.require(str),
             "mechanism_drivers": self.require(list, False, DataValidate.LIST,
@@ -343,8 +344,11 @@ class EnvironmentConfigs(ResponderBase):
         # validate the environment config with supported environments
         matches = {
             'environment.distribution': env_config['distribution'],
+            'environment.distribution_version':
+                env_config['distribution_version'],
             'environment.type_drivers': env_config['type_drivers'],
-            'environment.mechanism_drivers': {'$in': env_config['mechanism_drivers']}
+            'environment.mechanism_drivers':
+                {'$in': env_config['mechanism_drivers']}
         }
 
         err_prefix = 'configuration not accepted: '

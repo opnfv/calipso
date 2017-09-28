@@ -14,6 +14,7 @@ import { store } from '/imports/ui/store/store';
 import { activateGraphTooltipWindow } from '/imports/ui/actions/graph-tooltip-window.actions';
 import { closeGraphTooltipWindow } from '/imports/ui/actions/graph-tooltip-window.actions';
 //import { activateVedgeInfoWindow } from '/imports/ui/actions/vedge-info-window.actions';
+import { EJSON } from 'meteor/ejson';
         
 import '/imports/ui/components/network-graph/network-graph';
 
@@ -31,7 +32,14 @@ Template.NetworkGraphManager.onCreated(function() {
     id_path: null,
     graphDataChanged: null,
     isReady: false,
+    inventoriesToFind: [],
+    cliquesToFind: [],
+    linksToFind: [],
+    nodesToFind: [],
+    graphLinks: [],
+    graphNodes: [],
   });
+
   instance.simpleState = {
     graphData: {
       links: [],
@@ -55,10 +63,116 @@ Template.NetworkGraphManager.onCreated(function() {
     let id_path = instance.state.get('id_path');
 
     instance.simpleState.graphData = generateGraphData();
+    instance.state.set('graphDataChanged', null);
     instance.state.set('isReady', false);
+    instance.state.set('inventoriesToFind', []);
+    instance.state.set('cliquesToFind', []);
+    instance.state.set('linksToFind', []);
+    instance.state.set('nodesToFind', []);
+    instance.state.set('graphLinks', []);
+    instance.state.set('graphNodes', []);
 
-    instance.subscribe('attributes_for_hover_on_data');
-    subscribeToNodeAndRelatedData(id_path, instance, instance.simpleState);
+    //instance.subscribe('attributes_for_hover_on_data');
+    //subscribeToNodeAndRelatedData(id_path, instance, instance.simpleState);
+    instance.state.set('inventoriesToFind', [id_path]);
+  });
+
+  instance.autorun(function () {
+    let inventories = instance.state.get('inventoriesToFind');
+    if (inventories.length <= 0) { 
+      return; 
+    }
+
+    instance.subscribe('inventory?id_path', inventories[0]);
+
+    // id_path: assumption - unique
+    Inventory.find({ id_path: inventories[0] }).forEach((inventory) => {
+      if (! inventory.clique) {
+        return;
+      }
+
+      instance.state.set('cliquesToFind', [inventory._id]);
+    });
+  });
+
+  instance.autorun(function () {
+    let cliques = instance.state.get('cliquesToFind');
+    if (cliques.length <= 0) { 
+      return; 
+    }
+
+    // focal point: assumption - unique per inventory node.
+    let mainNodeIdStr = cliques[0]._str;
+    instance.subscribe('cliques?focal_point', mainNodeIdStr);
+
+    Cliques.find({ focal_point: new Mongo.ObjectID(mainNodeIdStr) }).forEach( function (cliqueItem) {
+      instance.state.set('linksToFind', cliqueItem.links);
+    });
+  });
+
+  instance.autorun(function () {
+    let linksToFind = instance.state.get('linksToFind');
+    if (linksToFind.length <= 0) { 
+      return; 
+    }
+
+    // Find links for focal point.
+    instance.subscribe('links?_id-in', linksToFind);
+
+    Links.find({ _id: {$in: linksToFind} }).forEach(function(link) {
+      let graphLinks = EJSON.parse(instance.state.keys['graphLinks']);
+      graphLinks = R.concat([link], graphLinks);
+      instance.state.set('graphLinks', graphLinks);
+    });
+  });
+
+  instance.autorun(function () {
+    let graphLinks = instance.state.get('graphLinks');
+    if (graphLinks.length <= 0) { 
+      return; 
+    }
+
+    instance.simpleState.graphData = addLinksToGraph(graphLinks, instance.simpleState.graphData);
+    instance.state.set('graphDataChanged', Date.now());
+
+    // Find nodes for link
+    // todo: remove dubplicates.
+    let nodesIds = R.chain(link => {
+      return [ link['source'], link['target'] ]; 
+    }, graphLinks); 
+
+    let nodesToFind = EJSON.parse(instance.state.keys['nodesToFind']);
+    nodesToFind = R.concat(nodesIds, nodesToFind);
+    instance.state.set('nodesToFind', nodesToFind);
+  });
+
+  instance.autorun(function () {
+    let nodesToFind = instance.state.get('nodesToFind');
+    if (nodesToFind.length <= 0) { 
+      return; 
+    }
+
+    instance.subscribe('inventory?_id-in', nodesToFind);
+
+    Inventory.find({ _id: { $in: nodesToFind } }).forEach(function (node) {
+      let graphNodes = EJSON.parse(instance.state.keys['graphNodes']);
+      graphNodes = R.concat([node], graphNodes);
+      instance.state.set('graphNodes', graphNodes);
+    });
+
+  });
+
+  instance.autorun(function () {
+    let graphNodes = instance.state.get('graphNodes');
+    if (graphNodes.length <= 0) { 
+      return; 
+    }
+
+    instance.simpleState.graphData = addNodesToGraph(graphNodes, instance.simpleState.graphData);
+
+    let isReady = calcIsReady(instance.simpleState.graphData);
+    instance.state.set('graphDataChanged', Date.now());
+    instance.state.set('isReady', isReady);
   });
 });  
 
@@ -111,7 +225,7 @@ Template.NetworkGraphManager.helpers({
             }
 
             store.dispatch(
-              activateGraphTooltipWindow(res.nodeName, res.attributes, x - 30, y - 10));
+              activateGraphTooltipWindow(res.nodeName, res.attributes, x + 30, y - 10));
           });
       },
       onNodeOut: function (_nodeId) {
@@ -127,8 +241,8 @@ Template.NetworkGraphManager.helpers({
         isDragging = false;
       },
       onGroupOver: function () {
-        instance.simpleState.itemOfInterest = null;
-        store.dispatch(closeGraphTooltipWindow());
+        //instance.simpleState.itemOfInterest = null;
+        //store.dispatch(closeGraphTooltipWindow());
       },
       onLinkOver: function (linkId, x, y) {
         if (isDragging) {
@@ -162,46 +276,6 @@ Template.NetworkGraphManager.helpers({
   }
 }); // end: helpers
 
-function subscribeToNodeAndRelatedData(id_path, instance, simpleState) {
-  instance.subscribe('inventory?id_path', id_path);
-
-  // id_path: assumption - unique
-  Inventory.find({ id_path: id_path }).forEach((inventory) => {
-    if (! inventory.clique) {
-      return;
-    }
-
-    // focal point: assumption - unique per inventory node.
-    let mainNodeIdStr = inventory._id._str;
-    instance.subscribe('cliques?focal_point', mainNodeIdStr);
-
-    Cliques.find({ focal_point: new Mongo.ObjectID(mainNodeIdStr) }).forEach( function (cliqueItem) {
-
-      // Find links for focal point.
-      instance.subscribe('links?_id-in', cliqueItem.links);
-
-      Links.find({ _id: {$in: cliqueItem.links} }).forEach(function(link) {
-        simpleState.graphData = addLinkToGraph(link, simpleState.graphData);
-        instance.state.set('graphDataChanged', Date.now());
-
-        // Find nodes for link
-        let nodesIds = [ link['source'], link['target'] ];
-        instance.subscribe('inventory?_id-in', nodesIds);
-
-        Inventory.find({ _id: { $in: nodesIds } }).forEach(function (node) {
-          simpleState.graphData = addNodeToGraph(node, simpleState.graphData);
-          let isReady = calcIsReady(simpleState.graphData);
-          instance.state.set('graphDataChanged', Date.now());
-          instance.state.set('isReady', isReady);
-
-          // Find nodes attributes for links nodes.
-          instance.subscribe('attributes_for_hover_on_data?type', node.type);
-        });
-      });
-    });
-  });
-}
-
 function generateGraphData() {
   return {
     nodes: [],
@@ -210,7 +284,7 @@ function generateGraphData() {
   };
 }
 
-function addLinkToGraph(link, graphData) {
+function genGraphLink(link) {
   let newLink = {
     sourceId: link.source, 
     targetId: link.target, 
@@ -222,6 +296,24 @@ function addLinkToGraph(link, graphData) {
     }
   };
 
+  return newLink;
+}
+
+function addLinksToGraph(linksInfo, graphData) {
+  let newLinks = R.map(link => genGraphLink(link), linksInfo);
+
+  let links = R.unionWith(R.eqBy(R.prop('_osid')), graphData.links, newLinks);
+  links = expandLinks(links, graphData.nodes);
+
+  return R.merge(graphData, {
+    links: links
+  });
+}
+
+/*
+function addLinkToGraph(link, graphData) {
+  let newLink = genGraphLink(link);
+
   let links = R.unionWith(R.eqBy(R.prop('_osid')), graphData.links, [newLink]);
   links = expandLinks(links, graphData.nodes);
 
@@ -229,6 +321,7 @@ function addLinkToGraph(link, graphData) {
     links: links
   });
 }
+*/
 
 function expandLinks(links, nodes) {
   return R.map((link) => {
@@ -248,7 +341,7 @@ function expandLinks(links, nodes) {
   }, links);
 }
 
-function addNodeToGraph(node, graphData) {
+function genGraphNode(node) {
   let newNode = {
     _osid: node._id,
     _osmeta: {
@@ -268,7 +361,29 @@ function addNodeToGraph(node, graphData) {
   })(groupMarkers);
   if (groupKey) {
     newNode = R.assocPath(['_osmeta', 'groupId'], node[groupKey], newNode);
+    newNode = R.assocPath(['_osmeta', 'groupType'], groupKey, newNode);
   }
+
+  return newNode;
+}
+
+function addNodesToGraph(nodesInfo, graphData) {
+  let newNodes = R.map((node) => genGraphNode(node), nodesInfo);
+
+  let nodes = R.unionWith(R.eqBy(R.prop('_osid')), graphData.nodes, newNodes);
+  let links = expandLinks(graphData.links, nodes);
+  let groups = calcGroups(nodes);
+
+  return R.merge(graphData, {
+    nodes: nodes,
+    links: links,
+    groups: groups,
+  });
+}
+
+/*
+function addNodeToGraph(node, graphData) {
+  let newNode = genGraphNode(node);
 
   let nodes = R.unionWith(R.eqBy(R.prop('_osid')), graphData.nodes, [newNode]);
   let links = expandLinks(graphData.links, nodes);
@@ -280,6 +395,7 @@ function addNodeToGraph(node, graphData) {
     groups: groups,
   });
 }
+*/
 
 function calcIsReady(graphData) {
   return R.all((link) => {
@@ -302,6 +418,7 @@ function calcGroups(nodes) {
         leaves: [node],
         isExpanded: true,
         name: groupId,
+        type: node._osmeta.groupType,
       };
       accGroups = R.append(group, accGroups);
 

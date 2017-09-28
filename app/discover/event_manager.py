@@ -40,12 +40,18 @@ class EventManager(Manager):
     }
 
     LISTENERS = {
-        'Mirantis-6.0': DefaultListener,
-        'Mirantis-7.0': DefaultListener,
-        'Mirantis-8.0': DefaultListener,
-        'RDO-Mitaka': DefaultListener,
-        'RDO-Liberty': DefaultListener,
-        'Apex-Euphrates': DefaultListener,
+        'Mirantis': {
+            '6.0': DefaultListener,
+            '7.0': DefaultListener,
+            '8.0': DefaultListener,
+        },
+        'RDO': {
+            'Mitaka': DefaultListener,
+            'Liberty': DefaultListener,
+        },
+        'Apex': {
+            'Euphrates': DefaultListener,
+        },
     }
 
     def __init__(self):
@@ -105,7 +111,8 @@ class EventManager(Manager):
 
     def get_listener(self, env: str):
         env_config = self.inv.get_env_config(env)
-        return self.LISTENERS.get(env_config.get('distribution'))
+        return (self.LISTENERS.get(env_config.get('distribution'), {})
+                              .get(env_config.get('distribution_version')))
 
     def listen_to_events(self, listener: ListenerBase, env_name: str, process_vars: dict):
         listener.listen({

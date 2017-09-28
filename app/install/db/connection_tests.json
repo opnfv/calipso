@@ -1,0 +1,156 @@
+[
+{ 
+    "environment" : "My-Environment", 
+    "test_targets" : [
+        "AMQP", 
+        "CLI", 
+        "ACI", 
+        "mysql", 
+        "OpenStack", 
+        "Monitoring"
+    ], 
+    "test_results" : {
+        "AMQP" : false, 
+        "CLI" : true, 
+        "ACI" : false, 
+        "mysql" : false, 
+        "OpenStack" : false, 
+        "Monitoring" : false
+    },
+    "targets_configuration" : 
+    [
+        {
+            "name" : "OpenStack", 
+            "host" : "1.1.1.1", 
+            "port" : "5000", 
+            "user" : "admin", 
+            "pwd" : "admin", 
+            "admin_token" : "tokentoken"
+        }, 
+        {
+            "name" : "ACI", 
+            "host" : "2.2.2.2", 
+            "user" : "admin", 
+            "pwd" : "password"
+        }, 
+        {
+            "name" : "mysql", 
+            "host" : "1.1.1.1", 
+            "port" : "3307", 
+            "user" : "root", 
+            "pwd" : "password"
+        }, 
+        {
+            "name" : "CLI", 
+            "host" : "1.1.1.7", 
+            "user" : "root", 
+            "key" : "/local_dir/ACI-id_rsa"
+        }, 
+        {
+            "name" : "AMQP", 
+            "host" : "1.1.1.1", 
+            "port" : "5673", 
+            "user" : "nova", 
+            "pwd" : "password"
+        }, 
+        {
+            "name" : "Monitoring", 
+            "config_folder" : "/local_dir/sensu_config", 
+            "env_type" : "production", 
+            "rabbitmq_port" : "5671", 
+            "rabbitmq_user" : "sensu", 
+            "server_ip" : "the_sensu_server", 
+            "server_name" : "sensu_server", 
+            "type" : "Sensu", 
+            "provision" : "None", 
+            "ssh_port" : "20022", 
+            "ssh_user" : "root", 
+            "ssh_password" : "osdna", 
+            "api_port" : 4567, 
+            "rabbitmq_pass" : "osdna"
+        }
+    ],  
+    "submit_timestamp" : "2017-05-17T07:53:09.194+0000", 
+    "response_time" : "78ms", 
+    "response_timestamp" : "2017-03-17T11:00:17.939+0000", 
+    "status" : "response", 
+    "last_response_message" : "cli says yes i am alive"
+},
+{ 
+    "environment" : "Mirantis-Liberty", 
+    "test_targets" : [
+        "AMQP", 
+        "CLI", 
+        "ACI", 
+        "mysql", 
+        "OpenStack", 
+        "Monitoring"
+    ],
+    "targets_configuration" : 
+    [
+        {
+            "name" : "OpenStack", 
+            "host" : "1.1.1.1", 
+            "port" : "5000", 
+            "user" : "admin", 
+            "pwd" : "admin", 
+            "admin_token" : "tokentoken"
+        }, 
+        {
+            "name" : "ACI", 
+            "host" : "2.2.2.2", 
+            "user" : "admin", 
+            "pwd" : "password"
+        }, 
+        {
+            "name" : "mysql", 
+            "host" : "1.1.1.1", 
+            "port" : "3307", 
+            "user" : "root", 
+            "pwd" : "password"
+        }, 
+        {
+            "name" : "CLI", 
+            "host" : "1.1.1.7", 
+            "user" : "root", 
+            "key" : "/local_dir/ACI-id_rsa"
+        }, 
+        {
+            "name" : "AMQP", 
+            "host" : "1.1.1.1", 
+            "port" : "5673", 
+            "user" : "nova", 
+            "pwd" : "password"
+        }, 
+        {
+            "name" : "Monitoring", 
+            "config_folder" : "/local_dir/sensu_config", 
+            "env_type" : "production", 
+            "rabbitmq_port" : "5671", 
+            "rabbitmq_user" : "sensu", 
+            "server_ip" : "the_sensu_server", 
+            "server_name" : "sensu_server", 
+            "type" : "Sensu", 
+            "provision" : "None", 
+            "ssh_port" : "20022", 
+            "ssh_user" : "root", 
+            "ssh_password" : "osdna", 
+            "api_port" : 4567, 
+            "rabbitmq_pass" : "osdna"
+        }
+    ],  
+    "test_results" : {
+        "AMQP" : false, 
+        "CLI" : false, 
+        "ACI" : false, 
+        "mysql" : true, 
+        "OpenStack" : false, 
+        "Monitoring" : false
+    }, 
+    "submit_timestamp" : "2017-05-17T07:53:09.194+0000", 
+    "response_time" : "56ms", 
+    "response_timestamp" : "2017-05-17T11:00:17.939+0000", 
+    "status" : "response", 
+    "last_response_message" : "mysql says yes i am alive"
+}
+]

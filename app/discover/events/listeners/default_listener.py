@@ -30,16 +30,18 @@ from monitoring.setup.monitoring_setup_manager import MonitoringSetupManager
 from utils.constants import OperationalStatus, EnvironmentFeatures
 from utils.inventory_mgr import InventoryMgr
 from utils.logging.full_logger import FullLogger
+from utils.logging.logger import Logger
 from utils.mongo_access import MongoAccess
-from utils.string_utils import stringify_datetime
 from utils.util import SignalHandler, setup_args
 
 
 class DefaultListener(ListenerBase, ConsumerMixin):
 
     SOURCE_SYSTEM = "OpenStack"
-
     COMMON_METADATA_FILE = "events.json"
+
+    LOG_FILENAME = "default_listener.log"
+    LOG_LEVEL = Logger.INFO
 
     DEFAULTS = {
         "env": "Mirantis-Liberty",
@@ -92,7 +94,7 @@ class DefaultListener(ListenerBase, ConsumerMixin):
             return False, None
 
     def process_task(self, body, message):
-        received_timestamp = stringify_datetime(datetime.datetime.now())
+        received_timestamp = datetime.datetime.now()
         processable, event_data = self._extract_event_data(body)
         # If env listener can't process the message
         # or it's not intended for env listener to handle,
@@ -100,7 +102,7 @@ class DefaultListener(ListenerBase, ConsumerMixin):
         if processable and event_data["event_type"] in self.handler.handlers:
             event_result = self.handle_event(event_data["event_type"],
                                              event_data)
-            finished_timestamp = stringify_datetime(datetime.datetime.now())
+            finished_timestamp = datetime.datetime.now()
             self.save_message(message_body=event_data,
                               result=event_result,
                               started=received_timestamp,
@@ -143,8 +145,8 @@ class DefaultListener(ListenerBase, ConsumerMixin):
     # 'Retry' flag specifies if the error is recoverable or not
     # 'Retry' flag is checked only is 'result' is False
     def handle_event(self, event_type: str, notification: dict) -> EventResult:
-        print("Got notification.\nEvent_type: {}\nNotification:\n{}".
-              format(event_type, notification))
+        self.log.error("Got notification.\nEvent_type: {}\nNotification:\n{}".
+                       format(event_type, notification))
         try:
             result = self.handler.handle(event_name=event_type,
                                          notification=notification)
@@ -154,7 +156,7 @@ class DefaultListener(ListenerBase, ConsumerMixin):
             return EventResult(result=False, retry=False)
 
     def save_message(self, message_body: dict, result: EventResult,
-                     started: str, finished: str):
+                     started: datetime, finished: datetime):
         try:
             message = Message(
                 msg_id=message_body.get('message_id'),

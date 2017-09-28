@@ -34,10 +34,12 @@ VEDGE_WITHOUT_TUNNEL_TYPES = {
     }
 }
 NON_ICEHOUSE_CONFIGS = {
-    "distribution": "Mirantis-8.0"
+    "distribution": "Mirantis",
+    "distribution_version": "8.0"
 }
 ICEHOUSE_CONFIGS = {
-    "distribution": "Canonical-icehouse"
+    "distribution": "Canonical",
+    "distribution_version": "icehouse"
 }
 HOST = {
     "host": "node-5.cisco.com",

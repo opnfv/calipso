@@ -45,7 +45,7 @@ class TestRouterAdd(TestEvent):
         self.router = self.payload['router']
         self.network_id = self.router['external_gateway_info']['network_id']
         self.host_id = self.values["publisher_id"].replace("network.", "", 1)
-        self.router_id = encode_router_id(self.host_id, self.router['id'])
+        self.router_id = encode_router_id(self.router['id'])
 
         self.inv.get_by_id.side_effect = self.get_by_id
 

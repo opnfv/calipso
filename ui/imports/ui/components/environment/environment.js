@@ -96,6 +96,7 @@ Template.Environment.onCreated(function () {
     vedgeInfoWindow: { node: null, left: 0, top: 0, show: false },
     dashboardName: 'environment',
     collapsedSideMenu: instance.collapsedSideMenu,
+    isLoading: false,
   });
 
   instance.currentData = new ReactiveVar(null, EJSON.equals);
@@ -226,27 +227,44 @@ Template.Environment.onCreated(function () {
     
   });
 
-    /*
-    (() => {
-      if (R.isNil(controller.params.query.selectedNodeId) &&
-          R.isNil(selectedNodeId)) {
-        return;
-      }
+  /*
+  (() => {
+    if (R.isNil(controller.params.query.selectedNodeId) &&
+        R.isNil(selectedNodeId)) {
+      return;
+    }
 
-      let srlSelectedNodeId = idToStr(selectedNodeId);
-      if (R.equals(controller.params.query.selectedNodeId, srlSelectedNodeId)) {
-        return;
-      }
+    let srlSelectedNodeId = idToStr(selectedNodeId);
+    if (R.equals(controller.params.query.selectedNodeId, srlSelectedNodeId)) {
+      return;
+    }
 
+    setTimeout(() => {
+      Router.go('environment', 
+        { _id: controller.params._id }, 
+        { query: { selectedNodeId: srlSelectedNodeId } });
+    }, 1);
+
+  })();
+  */
+
+  let prevIdPath = null;
+  instance.autorun(function () {
+    let idPath = instance.rdxSelectedNodeIdPath.get();
+    if (prevIdPath !== idPath) {
+      prevIdPath = idPath;
+      instance.state.set('isLoading', true);
+    }
+  });
+
+  instance.autorun(function () {
+    let isLoading = instance.state.get('isLoading');
+    if (isLoading) {
       setTimeout(() => {
-        Router.go('environment', 
-          { _id: controller.params._id }, 
-          { query: { selectedNodeId: srlSelectedNodeId } });
-      }, 1);
-
-    })();
-    */
-
+        instance.state.set('isLoading', false);
+      }, 200);
+    }
+  });
 });
 
 Template.Environment.onDestroyed(function () {
@@ -292,6 +310,11 @@ Template.Environment.helpers({
   getState: function (key) {
     let instance = Template.instance();
     return instance.state.get(key);
+  },
+
+  isLoading: function () {
+    let instance = Template.instance();
+    return instance.state.get('isLoading');
   },
 
   argsNavMenu: function (envName, mainNode) {

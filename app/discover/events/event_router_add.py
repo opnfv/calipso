@@ -96,7 +96,7 @@ class EventRouterAdd(EventBase):
         router = values['payload']['router']
         host_id = values["publisher_id"].replace("network.", "", 1)
         project_id = values['_context_project_id']
-        router_id = encode_router_id(host_id, router['id'])
+        router_id = encode_router_id(router['id'])
         host = self.inv.get_by_id(env, host_id)
 
         fetcher = CliFetchHostVservice()

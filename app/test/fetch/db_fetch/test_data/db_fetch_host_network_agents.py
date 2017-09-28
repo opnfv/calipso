@@ -37,13 +37,13 @@ NETWORK_AGENT = [
 NETWORK_AGENT_WITH_MECHANISM_DRIVERS_IN_CONFIG_RESULTS = [
     {
         'configurations': {},
-        'id': 'OVS-1764430c-c09e-4717-86fa-c04350b1fcbb',
+        'id': 'neutron-openvswitch-agent-1764430c-c09e-4717-86fa-c04350b1fcbb',
         'binary': 'neutron-openvswitch-agent',
         'name': 'neutron-openvswitch-agent'
     },
     {
         'configurations': {},
-        'id': 'OVS-2c2ddfee-91f9-47da-bd65-aceecd998b7c',
+        'id': 'neutron-dhcp-agent-2c2ddfee-91f9-47da-bd65-aceecd998b7c',
         'binary': 'neutron-dhcp-agent',
         'name': 'neutron-dhcp-agent'
     }
@@ -52,13 +52,13 @@ NETWORK_AGENT_WITH_MECHANISM_DRIVERS_IN_CONFIG_RESULTS = [
 NETWORK_AGENT_WITHOUT_MECHANISM_DRIVERS_IN_CONFIG_RESULTS = [
     {
         'configurations': {},
-        'id': 'network_agent-1764430c-c09e-4717-86fa-c04350b1fcbb',
+        'id': 'neutron-openvswitch-agent-1764430c-c09e-4717-86fa-c04350b1fcbb',
         'binary': 'neutron-openvswitch-agent',
         'name': 'neutron-openvswitch-agent'
     },
     {
         'configurations': {},
-        'id': 'network_agent-2c2ddfee-91f9-47da-bd65-aceecd998b7c',
+        'id': 'neutron-dhcp-agent-2c2ddfee-91f9-47da-bd65-aceecd998b7c',
         'binary': 'neutron-dhcp-agent',
         'name': 'neutron-dhcp-agent'
     }

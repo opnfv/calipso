@@ -34,8 +34,7 @@ class TestInterfaceDelete(TestEvent):
         self.payload = self.values['payload']
         self.interface = self.payload['router_interface']
         self.port_id = self.interface['port_id']
-        self.host_id = self.values["publisher_id"].replace("network.", "", 1)
-        self.router_id = encode_router_id(self.host_id, self.interface['id'])
+        self.router_id = encode_router_id(self.interface['id'])
 
         port_delete_mock = port_delete_class_mock.return_value
         port_delete_mock.delete_port.return_value = EventResult(result=True)

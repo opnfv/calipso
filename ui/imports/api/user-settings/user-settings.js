@@ -10,7 +10,7 @@ import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 //import * as R from 'ramda';
 
-export const Configurations = new Mongo.Collection('configurations', { idGeneration: 'MONGO' });
+export const UserSettings = new Mongo.Collection('user_settings', { idGeneration: 'MONGO' });
 
 let schema = {
   _id: { type: { _str: { type: String, regEx: SimpleSchema.RegEx.Id } } },
@@ -25,5 +25,5 @@ let schema = {
 };
 
 let simpleSchema = new SimpleSchema(schema);
-Configurations.schema = simpleSchema;
-Configurations.attachSchema(Configurations.schema);
+UserSettings.schema = simpleSchema;
+UserSettings.attachSchema(UserSettings.schema);

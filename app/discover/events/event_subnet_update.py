@@ -23,6 +23,7 @@ class EventSubnetUpdate(EventBase):
     def handle(self, env, notification):
         # check for network document.
         subnet = notification['payload']['subnet']
+        project_id = notification['_context_project_id']
         project = notification['_context_project_name']
         host_id = notification['publisher_id'].replace('network.', '', 1)
         subnet_id = subnet['id']
@@ -47,10 +48,10 @@ class EventSubnetUpdate(EventBase):
                                                network_document['name'])
 
                 # make sure that self.regions is not empty.
-                if len(ApiAccess.regions) == 0:
+                if not ApiAccess.regions:
                     fetcher = ApiFetchRegions()
                     fetcher.set_env(env)
-                    fetcher.get(None)
+                    fetcher.get(project_id)
 
                 self.log.info("add port binding to DHCP server.")
                 port_id = DbFetchPort(). \

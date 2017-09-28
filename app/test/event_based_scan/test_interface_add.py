@@ -25,7 +25,7 @@ class TestInterfaceAdd(TestEvent):
     def get_by_id(self, env, object_id):
         interface = self.values["payload"]["router_interface"]
         host_id = self.values["publisher_id"].replace("network.", "", 1)
-        router_id = encode_router_id(host_id, interface['id'])
+        router_id = encode_router_id(interface['id'])
 
         if object_id == host_id:
             return HOST

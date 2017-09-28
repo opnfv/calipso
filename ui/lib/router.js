@@ -186,8 +186,8 @@ Router.route('/messages-list', function () {
   this.render('MessagesList');
 }, { });
 
-Router.route('/configuration', function () {
-  this.render('Configuration');
+Router.route('/user-settings', function () {
+  this.render('UserSettings');
 }, { });
 
 Router.route('/message', function () {

@@ -7,6 +7,7 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
+import datetime
 from typing import Union
 
 from bson import ObjectId
@@ -26,9 +27,9 @@ class Message:
                  display_context: Union[str, ObjectId] = None,
                  level: str = DEFAULT_LEVEL,
                  object_type: str = None,
-                 ts: str = None,
-                 received_ts: str = None,
-                 finished_ts: str = None):
+                 ts: datetime = None,
+                 received_ts: datetime = None,
+                 finished_ts: datetime = None):
         super().__init__()
 
         if level and level.lower() in self.LEVELS:

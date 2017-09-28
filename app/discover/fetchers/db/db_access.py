@@ -7,12 +7,31 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
+import functools
 import mysql.connector
 
 from discover.configuration import Configuration
 from discover.fetcher import Fetcher
 from discover.scan_error import ScanError
 from utils.string_utils import jsonify
+
+
+def with_cursor(method):
+    @functools.wraps(method)
+    def wrap(self, *args, **kwargs):
+        self.connect_to_db(DbAccess.query_count_per_con >= 25)
+        DbAccess.query_count_per_con += 1
+        cursor = DbAccess.conn.cursor(dictionary=True)
+        try:
+            res = method(self, *args, cursor=cursor, **kwargs)
+            DbAccess.conn.commit()
+            return res
+        except:
+            DbAccess.conn.rollback()
+            raise
+        finally:
+            cursor.close()
+    return wrap
 
 
 class DbAccess(Fetcher):
@@ -47,10 +66,9 @@ class DbAccess(Fetcher):
             return
         DbAccess.query_count_per_con = 0
 
-    @staticmethod
-    def get_neutron_db_name():
+    @with_cursor
+    def get_neutron_db_name(self, cursor=None):
         # check if DB schema 'neutron' exists
-        cursor = DbAccess.conn.cursor(dictionary=True)
         cursor.execute('SHOW DATABASES')
         matches = [row.get('Database', '') for row in cursor
                    if 'neutron' in row.get('Database', '')]
@@ -68,6 +86,8 @@ class DbAccess(Fetcher):
             self.log.info("DbAccess: ****** forcing reconnect, " +
                           "query count: %s ******",
                           DbAccess.query_count_per_con)
+            DbAccess.conn.commit()
+            DbAccess.conn.close()
             DbAccess.conn = None
         self.conf = self.config.get("mysql")
         cnf = self.conf
@@ -76,16 +96,15 @@ class DbAccess(Fetcher):
                         cnf["user"], cnf["pwd"],
                         cnf["schema"])
 
-    def get_objects_list_for_id(self, query, object_type, id):
-        self.connect_to_db(DbAccess.query_count_per_con >= 25)
-        DbAccess.query_count_per_con += 1
+    @with_cursor
+    def get_objects_list_for_id(self, query, object_type, object_id,
+                                cursor=None):
         self.log.debug("query count: %s, running query:\n%s\n",
                        str(DbAccess.query_count_per_con), query)
 
-        cursor = DbAccess.conn.cursor(dictionary=True)
         try:
-            if id:
-                cursor.execute(query, [str(id)])
+            if object_id:
+                cursor.execute(query, [str(object_id)])
             else:
                 cursor.execute(query)
         except (AttributeError, mysql.connector.errors.OperationalError) as e:
@@ -93,13 +112,13 @@ class DbAccess(Fetcher):
             self.connect_to_db(True)
             # try again to run the query
             cursor = DbAccess.conn.cursor(dictionary=True)
-            if id:
-                cursor.execute(query, [str(id)])
+            if object_id:
+                cursor.execute(query, [str(object_id)])
             else:
                 cursor.execute(query)
 
         rows = []
-        for row in cursor:
+        for row in cursor.fetchall():
             rows.append(row)
         return rows
 

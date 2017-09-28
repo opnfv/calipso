@@ -53,7 +53,9 @@ WRONG_ENV_TYPE = ""
 CORRECT_ENV_TYPE = "development"
 
 WRONG_DISTRIBUTION = "wrong-environment"
-CORRECT_DISTRIBUTION = "Mirantis-6.0"
+WRONG_DIST_VER = "wrong-environment"
+CORRECT_DISTRIBUTION = "Mirantis"
+CORRECT_DIST_VER = "6.0"
 
 WRONG_OBJECT_ID = "58a2406e6a283a8bee15d43"
 CORRECT_OBJECT_ID = "58a2406e6a283a8bee15d43f"
@@ -150,11 +152,8 @@ CONSTANTS_BY_NAMES = {
         "production"
     ],
     "distributions": [
-        "Mirantis-6.0",
-        "Mirantis-7.0",
-        "Mirantis-8.0",
-        "Mirantis-9.0",
-        "RDO-Juno"
+        "Mirantis",
+        "RDO"
     ],
     "environment_operational_status": [
         "stopped",

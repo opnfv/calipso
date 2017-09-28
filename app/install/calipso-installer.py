@@ -176,6 +176,10 @@ def start_mongo(dbport, copy):
     copy_file("scheduled_scans")
     copy_file("statistics")
     copy_file("supported_environments")
+    copy_file("connection_tests")
+    copy_file("api_tokens")
+    copy_file("user_settings")
+    copy_file("apex_environment_config")
 
     # note : 'messages', 'roles', 'users' and some of the 'constants'
     # are filled by calipso-ui at runtime
@@ -216,14 +220,14 @@ def start_ldap():
                                 volumes=calipso_volume)
 
 
-def start_api():
+def start_api(apiport):
     name = "calipso-api"
     if container_started(name):
         return
     print("\nstarting container {}...\n".format(name))
     image_name = "korenlev/calipso:api"
     download_image(image_name)
-    api_ports = {'8000/tcp': 8000, '22/tcp': 40022}
+    api_ports = {'8000/tcp': apiport, '22/tcp': 40022}
     DockerClient.containers.run(image_name,
                                 detach=True,
                                 name=name,
@@ -252,15 +256,15 @@ def start_scan():
                                 volumes=calipso_volume)
 
 
-def start_sensu():
+def start_sensu(uchiwaport, sensuport, rabbitport, rabbitmport):
     name = "calipso-sensu"
     if container_started(name):
         return
     print("\nstarting container {}...\n".format(name))
     image_name = "korenlev/calipso:sensu"
     download_image(image_name)
-    sensu_ports = {'22/tcp': 20022, '3000/tcp': 3000, '4567/tcp': 4567,
-                   '5671/tcp': 5671, '15672/tcp': 15672}
+    sensu_ports = {'22/tcp': 20022, '3000/tcp': uchiwaport, '4567/tcp': sensuport,
+                   '5671/tcp': rabbitport, '15672/tcp': rabbitmport}
     DockerClient.containers.run(image_name,
                                 detach=True,
                                 name=name,
@@ -326,6 +330,36 @@ parser.add_argument("--dbport",
                     type=int,
                     default="27017",
                     required=False)
+parser.add_argument("--apiport",
+                    help="Port for the Calipso API "
+                         "(default=8000)",
+                    type=int,
+                    default="8000",
+                    required=False)
+parser.add_argument("--uchiwaport",
+                    help="Port for the Calipso Uchiwa "
+                         "(default=3000)",
+                    type=int,
+                    default="3000",
+                    required=False)
+parser.add_argument("--rabbitmport",
+                    help="Port for the Calipso Sensu RabbitMQ Managment "
+                         "(default=15672)",
+                    type=int,
+                    default="15672",
+                    required=False)
+parser.add_argument("--sensuport",
+                    help="Port for the Calipso Sensu-api "
+                         "(default=4567)",
+                    type=int,
+                    default="4567",
+                    required=False)
+parser.add_argument("--rabbitport",
+                    help="Port for the Calipso Sensu RabbitMQ "
+                         "(default=5671)",
+                    type=int,
+                    default="5671",
+                    required=False)
 parser.add_argument("--dbuser",
                     help="User for the Calipso MongoDB "
                          "(default=calipso)",
@@ -339,14 +373,14 @@ parser.add_argument("--dbpassword",
                     default="calipso_default",
                     required=False)
 parser.add_argument("--command",
-                    help="'start-all' or 'stop-all' the calipso containers "
+                    help="'start-all' or 'stop-all' the Calipso containers "
                          "(default=None)",
                     type=str,
                     default=None,
                     required=False)
 parser.add_argument("--copy",
                     help="'c' to copy json files from 'db' folder to mongoDB, 'q' to skip copy of files "
-                         "(default=q)",
+                         "(default=None)",
                     type=str,
                     default=None,
                     required=False)
@@ -382,9 +416,10 @@ if action == "start":
     calipso_mongo_access_text = \
         "server {}\n" \
         "user {}\n" \
+        "port {}\n" \
         "pwd {}\n" \
         "auth_db calipso" \
-            .format(args.hostname, args.dbuser, args.dbpassword)
+            .format(args.hostname, args.dbuser, args.dbport, args.dbpassword)
     LDAP_PWD_ATTRIBUTE = "password password"
     LDAP_USER_PWD_ATTRIBUTE = "userpassword"
     ldap_text = \
@@ -421,13 +456,13 @@ if action == "start":
         start_ldap()
         time.sleep(1)
     if container == "calipso-api" or container == "all":
-        start_api()
+        start_api(args.apiport)
         time.sleep(1)
     if container == "calipso-scan" or container == "all":
         start_scan()
         time.sleep(1)
     if container == "calipso-sensu" or container == "all":
-        start_sensu()
+        start_sensu(args.uchiwaport, args.sensuport, args.rabbitport, args.rabbitmport)
         time.sleep(1)
     if container == "calipso-ui" or container == "all":
         start_ui(args.hostname, args.dbuser, args.dbpassword, args.webport,

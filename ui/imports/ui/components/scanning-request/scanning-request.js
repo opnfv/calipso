@@ -283,7 +283,7 @@ function submitItem(instance) {
     }, processActionResult.bind(null, instance));
     break;
   default:
-      // todo
+    // todo
     break;
   }
 }

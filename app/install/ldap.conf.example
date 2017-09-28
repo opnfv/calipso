@@ -1,6 +1,6 @@
 user admin
 password password
-url ldap://korlev-calipso-dev.cisco.com:389
+url ldap://your-server.cisco.com:389
 user_id_attribute CN
 user_pass_attribute userpassword
 user_objectclass inetOrgPerson

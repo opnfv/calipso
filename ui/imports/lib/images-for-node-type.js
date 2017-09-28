@@ -11,6 +11,18 @@ export let imagesForNodeType = {
     warning: 'ic_dns_black_48dp_2x-orange.png',
     error: 'ic_dns_black_48dp_2x-red.png',
   },
+  'host_pnic': {
+    default: 'ic_device_hub_black_24dp_2x.png',
+    ok: 'ic_device_hub_black_24dp_2x-green.png',
+    warning: 'ic_device_hub_black_24dp_2x-orange.png',
+    error: 'ic_device_hub_black_24dp_2x-red.png',
+  },
+  'switch_pnic': {
+    default: 'ic_device_hub_black_24dp_2x.png',
+    ok: 'ic_device_hub_black_24dp_2x-green.png',
+    warning: 'ic_device_hub_black_24dp_2x-orange.png',
+    error: 'ic_device_hub_black_24dp_2x-red.png',
+  },
   'vconnector': {
     default: 'ic_settings_input_composite_black_48dp_2x.png',
     ok: 'ic_settings_input_composite_black_48dp_2x-green.png',
@@ -47,6 +59,12 @@ export let imagesForNodeType = {
     ok: 'ic_keyboard_return_black_48dp_2x-green.png',
     warning: 'ic_keyboard_return_black_48dp_2x-orange.png',
     error: 'ic_keyboard_return_black_48dp_2x-red.png',
+  },
+  'view_group-host': {
+    default: 'ic_tv_black_24dp_2x.png'
+  },
+  'view_group-switch': {
+    default: 'ic_zoom_out_map_black_24dp_2x.png'
   },
 };
 

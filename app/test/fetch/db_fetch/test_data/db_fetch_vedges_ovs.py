@@ -166,3 +166,58 @@ DOC_TO_GET_OVERLAY = {
     "agent_type": "Open vSwitch agent",
     "configurations": {"tunneling_ip": "192.168.2.3"},
 }
+
+LIST_IFACES_LINES = [
+    "eth0",
+    "p",
+    "t"
+]
+LIST_IFACES_NAMES = LIST_IFACES_LINES
+LIST_IFACES_LINES_MIRANTIS = {
+    "eth0--br-eth0",
+    "phy-eth0"
+}
+LIST_IFACES_NAMES_MIRANTIS = ["eth0"]
+
+VEDGE_CONFIGURATIONS_MIRANTIS = {
+    "bridge_mappings": {
+        "br-prv": "eth0"
+    }
+}
+VEDGE_CONFIGURATIONS = {
+    "bridge_mappings": {
+        "physnet1": "eth0",
+        "physnet2": "p",
+        "physnet3": "t",
+        "physnet4": "p",
+        "physnet5": "p"
+    }
+}
+
+VEDGE_MIRANTIS = {
+    'host': HOST['host'],
+    'ports': {
+        "eth0": {"name": "eth0", "id": "eth0-port_id"}
+    },
+    'configurations': VEDGE_CONFIGURATIONS_MIRANTIS
+}
+VEDGE = {
+    'host': HOST['host'],
+    'ports': {
+        "eth0": {"name": "eth0", "id": "eth0-port_id"},
+        "p": {"name": "p", "id": "p-port_id"},
+        "t": {"name": "t", "id": "t-port_id"}
+    },
+    'configurations': VEDGE_CONFIGURATIONS
+}
+
+ANOTHER_DIST = "another distribution"
+
+PNICS_MIRANTS = {
+    "eth0": {"name": "eth0", "mac_address": "eth0 mac_address"}
+}
+PNICS = {
+    "eth0": {"name": "eth0", "mac_address": "eth0 mac_address"},
+    "p": {"name": "p", "mac_address": "p mac_address"},
+    "t": {"name": "t", "mac_address": "t mac_address"}
+}

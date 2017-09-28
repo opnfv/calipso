@@ -82,7 +82,7 @@ Template.GeneralFolderNodeDashboard.helpers({
   argsMainCubic: function (childrenCount) {
     return {
       header: R.path(['components', 'generalFolderNodeDashboard', 'mainCubic', 'header']
-        )(store.getState().api.i18n),
+      )(store.getState().api.i18n),
       dataInfo: R.toString(childrenCount), 
       icon: new Icon({ type: 'fa', name: 'desktop' }),
     };

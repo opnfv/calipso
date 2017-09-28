@@ -25,6 +25,9 @@ import './graph-tooltip-window.html';
   
 Template.GraphTooltipWindow.onCreated(function() {
   let instance = this;
+  instance.simpleState = {
+    gotIn: false,
+  };
 
   instance.autorun(() => {
     new SimpleSchema({
@@ -47,14 +50,19 @@ Template.GraphTooltipWindow.rendered = function() {
  */
 
 Template.GraphTooltipWindow.events({
-  'mouseout .os-graph-tooltip-window': function(_e, _instance) {
-    /*
+  'mouseenter .os-graph-tooltip-window': function(e, instance) {
+    instance.simpleState.gotIn = true;
+  },
+
+  'mouseleave .os-graph-tooltip-window': function(e, instance) {
     if (!instance.data.show) { return; }
 
-    e.preventDefault();
-    e.stopPropagation();
-    store.dispatch(closeGraphTooltipWindow());
-    */
+    //e.preventDefault();
+    //e.stopPropagation();
+    if (instance.simpleState.gotIn) {
+      instance.simpleState.gotIn = false;
+      store.dispatch(closeGraphTooltipWindow());
+    }
   },
 
   'click .os-graph-tooltip-window': function(e, instance) {

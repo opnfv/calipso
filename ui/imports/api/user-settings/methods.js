@@ -7,12 +7,12 @@
 // http://www.apache.org/licenses/LICENSE-2.0                                           /
 /////////////////////////////////////////////////////////////////////////////////////////
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import { Configurations } from '/imports/api/configurations/configurations';
+import { UserSettings } from '/imports/api/user-settings/user-settings';
 import * as R from 'ramda';
 
 export const save = new ValidatedMethod({
-  name: 'configurations.save',
-  validate: Configurations.simpleSchema()
+  name: 'user-settings.save',
+  validate: UserSettings.simpleSchema()
     .pick([
       'messages_view_backward_delta'
     ]).validator({ clean: true, filter: false }),
@@ -21,19 +21,19 @@ export const save = new ValidatedMethod({
   }) {
 
     let userId = this.userId;
-    let conf = Configurations.findOne({ user_id: userId });
+    let userSettings = UserSettings.findOne({ user_id: userId });
 
-    if (conf) {
-      Configurations.update({ _id: conf._id}, { $set: {
+    if (userSettings) {
+      UserSettings.update({ _id: userSettings._id}, { $set: {
         messages_view_backward_delta: messages_view_backward_delta
       }});
     } else {
-      let item =  Configurations.schema.clean({});
+      let item =  UserSettings.schema.clean({});
       item = R.merge(item, {
         user_id: userId,
         messages_view_backward_delta: messages_view_backward_delta
       });
-      Configurations.insert(item);
+      UserSettings.insert(item);
     }
   }
 });

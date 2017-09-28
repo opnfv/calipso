@@ -30,3 +30,9 @@ Template.registerHelper('countOf', function (name) {
     return Counter.get(name);
   }
 });
+
+
+Template.registerHelper('jsonAsString', function (val) {
+  let str = JSON.stringify(val, null, 4);
+  return str;
+});

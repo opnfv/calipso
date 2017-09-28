@@ -41,6 +41,18 @@ class FindLinksForPnics(FindLinks):
 
     def add_pnic_network_links(self, pnic):
         host = pnic["host"]
+        if self.configuration.get_env_config()['type_drivers'] == "vlan":
+            # take this pnic only if we can find matching vedge-pnic links
+            matches = self.inv.find({
+                "environment": self.get_env(),
+                "link_type": "vedge-host_pnic",
+                "host": host,
+                "target_id": pnic["id"]},
+                projection={"_id": 1},
+                collection="links",
+                get_single=True)
+            if not matches:
+                return
         # find ports for that host, and fetch just the network ID
         ports = self.inv.find_items({
             "environment": self.get_env(),

@@ -10,10 +10,11 @@
 import time
 
 from discover.fetchers.cli.cli_access import CliAccess
+from discover.configuration import Configuration
+from test.fetch.api_fetch.test_data.configurations import CONFIGURATIONS
 from test.fetch.cli_fetch.test_data.cli_access import *
 from test.fetch.test_fetch import TestFetch
-from unittest.mock import MagicMock, patch
-from utils.ssh_conn import SshConn
+from unittest.mock import MagicMock
 
 
 class TestCliAccess(TestFetch):
@@ -22,6 +23,11 @@ class TestCliAccess(TestFetch):
         super().setUp()
         self.configure_environment()
         self.cli_access = CliAccess()
+        self.conf = Configuration()
+        self.cli_access.configuration = self.conf
+        self.conf.use_env = MagicMock()
+        self.conf.environment = CONFIGURATIONS
+        self.conf.configuration = CONFIGURATIONS["configuration"]
 
     def check_run_result(self, is_gateway_host,
                          enable_cache,
@@ -40,7 +46,8 @@ class TestCliAccess(TestFetch):
         self.ssh_conn.exec.return_value = exec_result
         self.ssh_conn.is_gateway_host.return_value = is_gateway_host
         result = self.cli_access.run(COMMAND, COMPUTE_HOST_ID,
-                                     on_gateway=False, enable_cache=enable_cache)
+                                     on_gateway=False,
+                                     enable_cache=enable_cache)
         self.assertEqual(result, expected_result, err_msg)
 
         # reset the cached commands after testing

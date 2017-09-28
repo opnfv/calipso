@@ -72,12 +72,21 @@ class TestEnvironmentConfigs(TestBase):
                                   },
                                   expected_code=base.BAD_REQUEST_CODE)
 
+    def test_get_environment_configs_list_with_wrong_distribution_version(self):
+        self.validate_get_request(environment_configs.URL,
+                                  params={
+                                      "distribution_version":
+                                          environment_configs.WRONG_DIST_VER
+                                  },
+                                  expected_code=base.BAD_REQUEST_CODE)
+
     @patch(base.RESPONDER_BASE_READ)
     def test_get_environment_configs_list_with_distribution(self, read):
         self.validate_get_request(environment_configs.URL,
                                   params={
                                       "distribution":
-                                          environment_configs.CORRECT_DISTRIBUTION
+                                          environment_configs.
+                                          CORRECT_DISTRIBUTION
                                   },
                                   mocks={
                                       read: environment_configs.
@@ -377,11 +386,12 @@ class TestEnvironmentConfigs(TestBase):
 
     def mock_validate_env_config_with_supported_envs(self, scanning,
                                                      monitoring, listening):
-        InventoryMgr.is_feature_supported_in_env = lambda self, matches, feature: {
-            EnvironmentFeatures.SCANNING: scanning,
-            EnvironmentFeatures.MONITORING: monitoring,
-            EnvironmentFeatures.LISTENING: listening
-        }[feature]
+        InventoryMgr.is_feature_supported_in_env = \
+            lambda self, matches, feature: {
+                EnvironmentFeatures.SCANNING: scanning,
+                EnvironmentFeatures.MONITORING: monitoring,
+                EnvironmentFeatures.LISTENING: listening
+            }[feature]
 
     @patch(base.RESPONDER_BASE_WRITE)
     def test_post_environment_config(self, write):
