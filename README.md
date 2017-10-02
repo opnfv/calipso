@@ -19,10 +19,10 @@ Calipso = OpenStack/VIM Network Discovery and Assurance
 We are going to enhance the way Cloud Network Administrators(CNA) and Tenant Network Administrators(TNA) 
 Understands, Monitors and Troubleshoot highly distributed OpenStack and other virtual Environments.
 
-We are following Domain-Driven-Design process and procedures:
+Product developed using micro-services and following the Domain-Driven-Design process and procedures:
 ref: http://www.methodsandtools.com/archive/archive.php?id=97
 
-### Prototype Intent:
+### Product Intent:
 
 Provide CNA and TNA with support for:
 <br>
@@ -34,9 +34,9 @@ Provide CNA and TNA with support for:
 <br>
 4. Assess impact of failure in virtual networks
 <br>
-5. baseline plugin framework for analytics of this type of data/details
+5. baseline plugin framework for analytics of this type of data and details, like root cause analysis
 
-### Proto (pre-release, updated Aug 15th)
+### Promo (pre-release, updated Aug 15th)
 calipso.io 
 
 ### Contacts
@@ -44,7 +44,7 @@ calipso.io
 * Yaron Yogev (yayogev@cisco.com)
 
 Calipso uses API, DataBase and Command-Line adapters for interfacing with the Cloud infrastructure to logically discover every networking component and it's relationships with others, building a smart topology and inventory.
-Calipso uses Sensu framework for Monitoring. It automatically deploys and configures the necessary config files on all hosts, writes customized checks and handlers to setup monitoring per inventory object.
+Calipso uses Sensu framework for Monitoring. It automatically deploys and configures the necessary config files on all hosts, writes customized checks and handlers to setup monitoring per inventory object, as defined in the clipso virtual networking model.
 After collecting the data, from processes and workers provisioned by the cloud management systems, calipso dynamically checks for health and availability, as a baseline for SLA monitoring.
 Calipso allows networking administrators to operate, plan for maintenance or troubleshooting and provides an easy to use hierarchical representation of all the virtual networking components.
 Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems)
