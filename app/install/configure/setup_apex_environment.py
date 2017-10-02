@@ -132,7 +132,8 @@ class ApexEnvironmentFetcher:
     DEFAULTS = {
         'logfile': '/home/calipso/log/apex_environment_fetch.log',
         'mongo_config': '/local_dir/calipso_mongo_access.conf',
-        'config_dir': '/home/calipso/Calipso/app/install/db',
+        'config_dir': '/home/calipso/apex_setup_files',
+        'install_db_dir': '/home/calipso/Calipso/app/install/db',
         'env': 'Apex-Euphrates',
         'loglevel': 'INFO',
         'git_repo': 'https://git.opnfv.org/calipso',
@@ -144,7 +145,7 @@ class ApexEnvironmentFetcher:
     REPO_LOCAL_NAME = 'Calipso'
     INSTALLER = 'python3 app/install/calipso-installer.py --command start-all'
     CONFIG_FILE_NAME = 'apex-configuration.conf'
-    ENV_CONFIG_FILE_NAME = 'apex_environment_config.json'
+    ENV_CONFIG_FILE_NAME = 'environments_config.json'
     OVERCLOUDRC_FILE = 'overcloudrc.v3'
     SSH_DIR = '/home/calipso/.ssh'
     SSH_OPTIONS = '-q -o StrictHostKeyChecking=no'
@@ -162,7 +163,7 @@ class ApexEnvironmentFetcher:
         self.log = None
         self.config_file = '{}/{}'.format(self.args.config_dir,
                                           self.CONFIG_FILE_NAME)
-        self.env_config_file = '{}/{}'.format(self.args.config_dir,
+        self.env_config_file = '{}/{}'.format(self.args.install_db_dir,
                                               self.ENV_CONFIG_FILE_NAME)
         self.undercloud_user = 'root'
         self.undercloud_host = '192.0.2.1'
@@ -192,7 +193,12 @@ class ApexEnvironmentFetcher:
                             default=self.DEFAULTS['config_dir'],
                             help='path to directory with config data\n'
                                  '(Default: {})'
-                                 .format(self.DEFAULTS['config_dir']))
+                            .format(self.DEFAULTS['config_dir']))
+        parser.add_argument('-i', '--install_db_dir', nargs='?', type=str,
+                            default=self.DEFAULTS['install_db_dir'],
+                            help='path to directory with DB data\n'
+                                 '(Default: {})'
+                                 .format(self.DEFAULTS['install_db_dir']))
         parser.add_argument('-a', '--apex', nargs='?', type=str,
                             help='name of environment to Apex host')
         parser.add_argument('-e', '--env', nargs='?', type=str,
