@@ -19,11 +19,13 @@ class StringEnum(Enum):
 
 
 class ScanStatus(StringEnum):
+    DRAFT = "draft"
     PENDING = "pending"
     RUNNING = "running"
     COMPLETED = "completed"
     COMPLETED_WITH_ERRORS = "completed_with_errors"
     FAILED = "failed"
+    ABORTED = "aborted"
 
 
 class OperationalStatus(StringEnum):

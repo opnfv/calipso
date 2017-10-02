@@ -21,22 +21,24 @@ class Scans(ResponderBase):
         self.PROJECTION = {
             self.ID: True,
             "environment": True,
-            "status": True,
-            "scan_completed": True
+            "status": True
         }
 
     def on_get(self, req, resp):
         self.log.debug("Getting scans")
         filters = self.parse_query_params(req)
 
-        scan_statuses = self.get_constants_by_name("scan_statuses")
+        scan_statuses = self.get_constants_by_name("scans_statuses")
         filters_requirements = {
             "env_name": self.require(str, mandatory=True),
-            "id": self.require(ObjectId, True),
+            "id": self.require(ObjectId, convert_to_type=True),
             "base_object": self.require(str),
-            "status": self.require(str, False, DataValidate.LIST, scan_statuses),
-            "page": self.require(int, True),
-            "page_size": self.require(int, True)
+            "status": self.require(str,
+                                   convert_to_type=False,
+                                   validate=DataValidate.LIST,
+                                   requirement=scan_statuses),
+            "page": self.require(int, convert_to_type=True),
+            "page_size": self.require(int, convert_to_type=True)
         }
 
         self.validate_query_data(filters, filters_requirements)
@@ -58,21 +60,21 @@ class Scans(ResponderBase):
         if error:
             self.bad_request(error)
 
-        scan_statuses = self.get_constants_by_name("scan_statuses")
+        scan_statuses = self.get_constants_by_name("scans_statuses")
         log_levels = self.get_constants_by_name("log_levels")
 
         scan_requirements = {
             "status": self.require(str,
+                                   mandatory=True,
                                    validate=DataValidate.LIST,
-                                   requirement=scan_statuses,
-                                   mandatory=True),
+                                   requirement=scan_statuses),
             "log_level": self.require(str,
                                       validate=DataValidate.LIST,
                                       requirement=log_levels),
-            "clear": self.require(bool, True),
-            "scan_only_inventory": self.require(bool, True),
-            "scan_only_links": self.require(bool, True),
-            "scan_only_cliques": self.require(bool, True),
+            "clear": self.require(bool, convert_to_type=True),
+            "scan_only_inventory": self.require(bool, convert_to_type=True),
+            "scan_only_links": self.require(bool, convert_to_type=True),
+            "scan_only_cliques": self.require(bool, convert_to_type=True),
             "environment": self.require(str, mandatory=True),
             "inventory": self.require(str),
             "object_id": self.require(str)
@@ -86,9 +88,8 @@ class Scans(ResponderBase):
 
         env_name = scan["environment"]
         if not self.check_environment_name(env_name):
-            self.bad_request("unkown environment: " + env_name)
+            self.bad_request("unknown environment: " + env_name)
 
-        scan["scan_completed"] = False
         scan["submit_timestamp"] = datetime.now()
         self.write(scan, self.COLLECTION)
         self.set_successful_response(resp,
