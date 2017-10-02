@@ -1,3 +1,0 @@
-# run meteor with different mongo 
-MONGO_URL=mongodb://localhost:27017/osdna meteor run
-# MONGO_URL=mongodb://calipso:calipso_default@64.103.124.119:27017/calipso meteor run
