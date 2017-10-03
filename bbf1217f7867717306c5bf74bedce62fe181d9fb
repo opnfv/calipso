@@ -1,0 +1,7 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+2: Yaron Yogev <yaronyogev@gmail.com>
+Submitted-by: Yaron Yogev <yaronyogev@gmail.com>
+Submitted-at: Tue, 03 Oct 2017 09:44:59 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/44041
+Project: calipso
+Branch: refs/heads/stable/euphrates
