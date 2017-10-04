@@ -342,7 +342,7 @@ parser.add_argument("--uchiwaport",
                     default="3000",
                     required=False)
 parser.add_argument("--rabbitmport",
-                    help="Port for the Calipso Sensu RabbitMQ Managment "
+                    help="Port for the Calipso Sensu RabbitMQ Management "
                          "(default=15672)",
                     type=int,
                     default="15672",
@@ -354,7 +354,7 @@ parser.add_argument("--sensuport",
                     default="4567",
                     required=False)
 parser.add_argument("--rabbitport",
-                    help="Port for the Calipso Sensu RabbitMQ "
+                    help="Port for the Calipso Sensu RabbitMQ BUS"
                          "(default=5671)",
                     type=int,
                     default="5671",
