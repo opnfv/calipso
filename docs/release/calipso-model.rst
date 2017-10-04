@@ -786,9 +786,8 @@ have the “network” attribute.
 Connection\_tests
 -----------------
 
-This collection keeps requests from the UI to test the different
-adapters (API, DB, CLI etc) connections to the underlying VIM, making
-sure dynamic and real-time data is maintained.
+This collection keeps requests from the UI or API to test the different adapters (API, DB, and CLI etc) 
+and their connections to the underlying VIM, making sure dynamic and real-time data will be maintained during discovery.
 
 Messages
 --------
@@ -914,6 +913,9 @@ Constants-scan\_object\_types
 -----------------------------
 
 Object\_types used during scanning, see development-guide for details.
+
+Constants-configuration_targets
+Names of the configuration targets used in the configuration section of environment configs.
 
 .. |image0| image:: media/image1.png
    :width: 6.50000in
