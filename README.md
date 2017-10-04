@@ -44,7 +44,7 @@ calipso.io
 * Yaron Yogev (yayogev@cisco.com)
 
 Calipso uses API, DataBase and Command-Line adapters for interfacing with the Cloud infrastructure to logically discover every networking component and it's relationships with others, building a smart topology and inventory.
-Calipso uses Sensu framework for Monitoring. It automatically deploys and configures the necessary config files on all hosts, writes customized checks and handlers to setup monitoring per inventory object, as defined in the clipso virtual networking model.
+Calipso uses Sensu framework for Monitoring. It automatically deploys and configures the necessary config files on all hosts, writes customized checks and handlers to setup monitoring per inventory object, as defined in the Calipso virtual networking discovery model.
 After collecting the data, from processes and workers provisioned by the cloud management systems, calipso dynamically checks for health and availability, as a baseline for SLA monitoring.
 Calipso allows networking administrators to operate, plan for maintenance or troubleshooting and provides an easy to use hierarchical representation of all the virtual networking components.
 Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems)
