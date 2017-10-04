@@ -284,6 +284,21 @@ Calipso.io Installation Guide 1
    Allows to enter a password to be used for mongoDB access on the host,
    an optional argument, default ‘calipso\_default’ (calipso-mongo
    container’s default) is deployed if not used.
+   
+8. **--apiport **
+   Allows to enter a TCP port to be used for the Calipso API (default=8000)
+   
+9. **--uchiwaport **
+   Allows to enter a TCP port to be used for the Sensu UI (default=3000)
+   
+10. **--rabbitmport **
+   Allows to enter a TCP port to be used for the RabbitMQ mgmt (default=15672)
+   
+11. **--sensuport **
+   Allows to enter a TCP port to be used for the Sensu API (default=4567)
+   
+12.	**--rabbitport **
+   Allows to enter a TCP port to be used for the RabbitMQ BUS (default=5671)
 
 2.4 Micro Services App, customized interactive install
 --------------------------------------------------
@@ -318,18 +333,35 @@ with Apex for OPNFV.
 APEX scenarios 
 ---------------
 
-    When using apex to install OPNFV, the Triple-O based OpenStack is
-    installed automatically and calipso installation can be initiated
-    automatically after apex completes the VIM installation process for
-    a certain scenario.
+When using apex to install OPNFV, the Triple-O based OpenStack is
+installed automatically and calipso installation can be initiated
+automatically after apex completes the VIM installation process for
+a certain scenario.
 
-    In this case calipso-configuration.py can be used for creating a new
-    environment automatically into mongoDB and UI of Calipso (instead of
-    using the calipso UI to do that as typical user would do), then
-    detailed scanning can start immediately, the following options are
-    available for calipso-configuration.py:
-
-    TBD
+In this case setup_apex_environment.py can be used for creating a new environment automatically into mongoDB and UI of Calipso,
+instead of using the calipso UI to do that as typical user would do, then detailed scanning can start immediately, 
+the following options are available for setup_apex_environment.py:
+     -m [MONGO_CONFIG], --mongo_config [MONGO_CONFIG]
+                        name of config file with MongoDB server access details
+                        (Default: /local_dir/calipso_mongo_access.conf)
+     -d [CONFIG_DIR], --config_dir [CONFIG_DIR]
+                        path to directory with config data (Default:
+                        /home/calipso/apex_setup_files)
+     -i [INSTALL_DB_DIR], --install_db_dir [INSTALL_DB_DIR]
+                        path to directory with DB data (Default:
+                        /home/calipso/Calipso/app/install/db)
+     -a [APEX], --apex [APEX]
+                        name of environment to Apex host
+     -e [ENV], --env [ENV]
+                        name of environment to create(Default: Apex-Euphrates)
+     -l [LOGLEVEL], --loglevel [LOGLEVEL]
+                        logging level (default: "INFO")
+     -f [LOGFILE], --logfile [LOGFILE]
+                        log file (default:
+                        "/home/calipso/log/apex_environment_fetch.log")
+     -g [GIT], --git [GIT]
+                        URL to clone Git repository (default:
+                        https://git.opnfv.org/calipso)
 
 Fuel scenarios 
 ---------------
