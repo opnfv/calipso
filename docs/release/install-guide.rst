@@ -49,10 +49,10 @@ Calipso.io Installation Guide 1
 
 3.2 Fuel scenarios 7
 
-Pre Requisites 
+1. Pre Requisites 
 ===============
 
-Pre Requisites for Calipso “all in one” application 
+1.1 Pre Requisites for Calipso “all in one” application 
 ----------------------------------------------------
 
     Calipso’s main application is written with Python3.5 for Linux
@@ -111,11 +111,11 @@ Pre Requisites for Calipso “all in one” application
 
     **sudo pip3 install docker**
 
-1. Git : https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+4. Git : https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 
-2. Docker : https://docs.docker.com/engine/installation/
+5. Docker : https://docs.docker.com/engine/installation/
 
-Pre Requisites for Calipso UI application 
+1.2 Pre Requisites for Calipso UI application 
 ------------------------------------------
 
     Calipso UI is developed and maintained using Meteor Framework
@@ -125,10 +125,10 @@ Pre Requisites for Calipso UI application
     required steps for installing the Calipso UI with several options
     are listed below.
 
-Installation Options
+2. Installation Options
 ====================
 
-Monolithic App 
+2.1 Monolithic App 
 ---------------
 
     For development use, one might require Calipso to be installed as a
@@ -146,16 +146,16 @@ Monolithic App
 
     **git clone https://git.opnfv.org/calipso/**
 
-1. Move to the default install directory: **cd calipso**
+4. Move to the default install directory: **cd calipso**
 
-2. Setup Python3 environment for calipso:
+5. Setup Python3 environment for calipso:
 
     **export PYTHONPATH=/home/calipso/calipso/app**
 
-1. Follow quick-start guide on how to use calipso modules for monolithic
+6. Follow quick-start guide on how to use calipso modules for monolithic
        scenario, and run each module manually.
 
-Micro Services App, single line install
+2.2 Micro Services App, single line install
 ---------------------------------------
 
     For most users, this will be the fastest and more reliable install
@@ -164,14 +164,12 @@ Micro Services App, single line install
     are pre-packaged and fully customized per our design needs. Here are
     the required steps for installation using this option:
 
-1. Follow steps 1- 4 per section 2.1 above.
+1. Follow steps 1- 5 per section 2.1 above.
 
-2. Install Docker : https://docs.docker.com/engine/installation/
+2. Install the following python3 libraries using pip3 : docker, pymongo
 
-3. Install the following python3 libraries using pip3 : docker, pymongo
-
-4. Although Calipso installer can download all needed containers, if
-   they doesn’t exist locally already, we recommend doing a manual
+3. Although Calipso installer can download all needed containers, if
+   they does not exist locally already, we recommend doing a manual
    download of all 7 containers, providing better control and logging:
 
     **sudo docker login** # use your DockerHub username and password to
@@ -196,7 +194,7 @@ Micro Services App, single line install
 
     **sudo docker pull korenlev/calipso:ldap** # calipso ldap container
 
-1. Check that all containers were downloaded and registered
+4. Check that all containers were downloaded and registered
    successfully:
 
     **sudo docker images**
@@ -219,7 +217,7 @@ Micro Services App, single line install
 
     **korenlev/calipso ldap 316bc94b25ad 2 months ago 269MB**
 
-1. Run the calipso installer using single line arguments:
+5. Run the calipso installer using single line arguments:
 
     **python3 calipso/app/install/calipso-installer.py--command
     start-all --copy q**
@@ -227,7 +225,7 @@ Micro Services App, single line install
     This should launch all calipso modules in sequence along with all
     needed configuration files placed in /home/calipso.
 
-Micro Services App, customized single line install
+2.3 Micro Services App, customized single line install
 --------------------------------------------------
 
     Calipso app includes the following directory in its default
@@ -287,7 +285,7 @@ Micro Services App, customized single line install
    an optional argument, default ‘calipso\_default’ (calipso-mongo
    container’s default) is deployed if not used.
 
-Micro Services App, customized interactive install
+2.4 Micro Services App, customized interactive install
 --------------------------------------------------
 
     Calipso’s application containers can be initiated and stopped
@@ -310,7 +308,7 @@ automatically creates and place 2 configuration files under
 those are mandatory configuration files used by calipso containers to
 interact with each other!
 
-OPNFV Options
+2.5 OPNFV Options
 =============
 
 Although calipso is designed for any VIM and for enterprise use-cases
