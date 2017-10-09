@@ -389,7 +389,7 @@ Bond
 ----
 
     It’s a logical Network Interface using etherchannel standard
-    protovcols to form a group of pNICs providing enhanced throughput
+    protocols to form a group of pNICs providing enhanced throughput
     for communications to/from the host.
 
     Calipso currently maintains bond details inside a host\_pnic object.
