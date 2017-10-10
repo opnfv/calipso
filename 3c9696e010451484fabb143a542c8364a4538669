@@ -1,0 +1,7 @@
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+2: Koren Lev <korenlev@gmail.com>
+Submitted-by: Koren Lev <korenlev@gmail.com>
+Submitted-at: Tue, 10 Oct 2017 15:43:06 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/44703
+Project: calipso
+Branch: refs/heads/stable/euphrates
