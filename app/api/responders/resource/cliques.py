@@ -33,15 +33,17 @@ class Cliques(ResponderBase):
         link_types = self.get_constants_by_name("link_types")
         filters_requirements = {
             'env_name': self.require(str, mandatory=True),
-            'id': self.require(ObjectId, True),
-            'focal_point': self.require(ObjectId, True),
-            'focal_point_type': self.require(str, validate=DataValidate.LIST,
+            'id': self.require(ObjectId, convert_to_type=True),
+            'focal_point': self.require(ObjectId, convert_to_type=True),
+            'focal_point_type': self.require(str,
+                                             validate=DataValidate.LIST,
                                              requirement=focal_point_types),
-            'link_type': self.require(str, validate=DataValidate.LIST,
+            'link_type': self.require(str,
+                                      validate=DataValidate.LIST,
                                       requirement=link_types),
-            'link_id': self.require(ObjectId, True),
-            'page': self.require(int, True),
-            'page_size': self.require(int, True)
+            'link_id': self.require(ObjectId, convert_to_type=True),
+            'page': self.require(int, convert_to_type=True),
+            'page_size': self.require(int, convert_to_type=True)
         }
         self.validate_query_data(filters, filters_requirements)
         page, page_size = self.get_pagination(filters)

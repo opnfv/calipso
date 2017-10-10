@@ -19,18 +19,12 @@ class CliFetchHostPnics(CliAccess):
         self.inv = InventoryMgr()
         self.ethtool_attr = re.compile('^\s+([^:]+):\s(.*)$')
         self.regexps = [
-            {'name': 'mac_address', 're': '^.*\sHWaddr\s(\S+)(\s.*)?$',
-             'description': 'MAC address with HWaddr'},
-            {'name': 'mac_address', 're': '^.*\sether\s(\S+)(\s.*)?$',
-             'description': 'MAC address with ether'},
-            {'name': 'IP Address', 're': '^\s*inet addr:?(\S+)\s.*$',
-             'description': 'IP Address with "inet addr"'},
-            {'name': 'IP Address', 're': '^\s*inet ([0-9.]+)\s.*$',
-             'description': 'IP Address with "inet"'},
-            {'name': 'IPv6 Address', 're': '^\s*inet6 addr:\s*(\S+)(\s.*)?$',
-             'description': 'IPv6 Address with "inet6 addr"'},
-            {'name': 'IPv6 Address', 're': '^\s*inet6 \s*(\S+)(\s.*)?$',
-             'description': 'IPv6 Address with "inet6"'}
+            {'name': 'mac_address', 're': '^.*\slink/ether\s(\S+)\s',
+             'description': 'MAC address'},
+            {'name': 'IP Address', 're': '^\s*inet ([0-9.]+)/',
+             'description': 'IP Address v4'},
+            {'name': 'IPv6 Address', 're': '^\s*inet6 (\S+) .* global ',
+             'description': 'IPv6 Address'}
         ]
 
     def get(self, id):
@@ -52,7 +46,7 @@ class CliFetchHostPnics(CliAccess):
         for line in interface_lines:
             interface_name = line[line.rindex('/')+1:]
             interface_name = interface_name.strip()
-            # run ifconfig with specific interface name,
+            # run 'ip address show' with specific interface name,
             # since running it with no name yields a list without inactive pNICs
             interface = self.find_interface_details(host_id, interface_name)
             if interface:
@@ -60,15 +54,15 @@ class CliFetchHostPnics(CliAccess):
         return interfaces
 
     def find_interface_details(self, host_id, interface_name):
-        lines = self.run_fetch_lines("ifconfig " + interface_name, host_id)
+        cmd = "ip address show {}".format(interface_name)
+        lines = self.run_fetch_lines(cmd, host_id)
         interface = None
         status_up = None
         for line in [l for l in lines if l != '']:
             tokens = None
             if interface is None:
                 tokens = line.split()
-                line_remainder = line.strip('-')[len(interface_name)+2:]
-                line_remainder = line_remainder.strip(' :')
+                line_remainder = line.split(":")[2].strip()
                 interface = {
                     "host": host_id,
                     "name": interface_name,

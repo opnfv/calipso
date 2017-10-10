@@ -26,12 +26,13 @@ class CliqueConstraints(ResponderBase):
         filters = self.parse_query_params(req)
         focal_point_types = self.get_constants_by_name("object_types")
         filters_requirements = {
-            'id': self.require(ObjectId, True),
-            'focal_point_type': self.require(str, False, DataValidate.LIST,
-                                             focal_point_types),
+            'id': self.require(ObjectId, convert_to_type=True),
+            'focal_point_type': self.require(str,
+                                             validate=DataValidate.LIST,
+                                             requirement=focal_point_types),
             'constraint': self.require([list, str]),
-            'page': self.require(int, True),
-            'page_size': self.require(int, True)
+            'page': self.require(int, convert_to_type=True),
+            'page_size': self.require(int, convert_to_type=True)
         }
         self.validate_query_data(filters, filters_requirements)
         page, page_size = self.get_pagination(filters)
@@ -44,7 +45,8 @@ class CliqueConstraints(ResponderBase):
         else:
             clique_constraints_ids = self.get_objects_list(self.COLLECTION,
                                                            query,
-                                                           page, page_size, self.PROJECTION)
+                                                           page, page_size,
+                                                           self.PROJECTION)
             self.set_successful_response(
                 resp, {"clique_constraints": clique_constraints_ids}
             )

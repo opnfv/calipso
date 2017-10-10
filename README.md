@@ -47,5 +47,14 @@ Calipso uses API, DataBase and Command-Line adapters for interfacing with the Cl
 Calipso uses Sensu framework for Monitoring. It automatically deploys and configures the necessary config files on all hosts, writes customized checks and handlers to setup monitoring per inventory object, as defined in the Calipso virtual networking discovery model.
 After collecting the data, from processes and workers provisioned by the cloud management systems, calipso dynamically checks for health and availability, as a baseline for SLA monitoring.
 Calipso allows networking administrators to operate, plan for maintenance or troubleshooting and provides an easy to use hierarchical representation of all the virtual networking components.
-Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems)
-and others.
+
+Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others.
+
+The following wonderful and very talented engineers has been coding, at various times, and contributing to Calipsos development:
+
+Ilia Abashin - iabashin@cisco.com
+Eyal Lapid - eyal.lapid@protonmail.com
+Xiaocong Dong - buptdxc@gmail.com
+Stas Isakov - iabashin@cisco.com
+Ofir Ashery - oashery@cisco.com
+

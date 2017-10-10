@@ -34,7 +34,6 @@ class Scans(ResponderBase):
             "id": self.require(ObjectId, convert_to_type=True),
             "base_object": self.require(str),
             "status": self.require(str,
-                                   convert_to_type=False,
                                    validate=DataValidate.LIST,
                                    requirement=scan_statuses),
             "page": self.require(int, convert_to_type=True),

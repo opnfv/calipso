@@ -253,10 +253,12 @@ class ScanController(Fetcher):
         args = setup_args(args, self.DEFAULTS, self.get_args)
         # After this setup we assume args dictionary has all keys
         # defined in self.DEFAULTS
+        self.log.set_loglevel(args['loglevel'])
 
         try:
             MongoAccess.set_config_file(args['mongo_config'])
             self.inv = InventoryMgr()
+            self.inv.log.set_loglevel(args['loglevel'])
             self.inv.set_collections(args['inventory'])
             self.conf = Configuration()
         except FileNotFoundError as e:
@@ -273,6 +275,7 @@ class ScanController(Fetcher):
 
         # generate ScanObject Class and instance.
         scanner = Scanner()
+        scanner.log.set_loglevel(args['loglevel'])
         scanner.set_env(env_name)
         scanner.found_errors[env_name] = False
 

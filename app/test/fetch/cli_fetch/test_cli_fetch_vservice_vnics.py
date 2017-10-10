@@ -7,6 +7,8 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
+import copy
+
 from discover.fetchers.cli.cli_fetch_vservice_vnics import CliFetchVserviceVnics
 from test.fetch.test_fetch import TestFetch
 from test.fetch.cli_fetch.test_data.cli_fetch_vservice_vnics import *
@@ -52,7 +54,9 @@ class TestCliFetchVserviceVnics(TestFetch):
         # reset methods
         self.fetcher.inv.get_by_id = original_get_by_id
 
-        self.assertEqual(result, [], "Can't get empty array when the host doesn't contain host_type")
+        self.assertEqual(result, [],
+                         "Can't get empty array when the host "
+                         "doesn't contain host_type")
 
     def test_get_with_compute_host(self):
         # store original methods
@@ -66,14 +70,17 @@ class TestCliFetchVserviceVnics(TestFetch):
         # reset methods
         self.fetcher.inv.get_by_id = original_get_by_id
 
-        self.assertEqual(result, [], "Can't get empty array when the host type doesn't contain network")
+        self.assertEqual(result, [],
+                         "Can't get empty array when the host type "
+                         "doesn't contain network")
 
     def test_handle_service(self):
         # store original method
         original_run_fetch_lines = self.fetcher.run_fetch_lines
         original_set_interface_data = self.fetcher.set_interface_data
         # mock the method
-        self.fetcher.run_fetch_lines = MagicMock(return_value=IFCONFIG_RESULT)
+        self.fetcher.run_fetch_lines = \
+            MagicMock(return_value=IP_ADDRESS_SHOW_RESULT)
         self.fetcher.set_interface_data = MagicMock()
         result = self.fetcher.handle_service(NETWORK_NODE['id'], SERVICE_ID)
         # reset method
@@ -81,6 +88,8 @@ class TestCliFetchVserviceVnics(TestFetch):
         self.fetcher.set_interface_data = original_set_interface_data
 
         self.assertNotEqual(result, [], "Can't get interfaces data")
+        self.assertEqual(result[0].get("IPv6 Address"), IPV6_ADDRESS,
+                         "incorrect IPv6 address")
 
     def test_set_interface_data(self):
         # store original methods
@@ -93,33 +102,38 @@ class TestCliFetchVserviceVnics(TestFetch):
         self.fetcher.inv.get_by_id = MagicMock(return_value=VSERVICE)
         self.fetcher.inv.set = MagicMock()
 
-        self.fetcher.set_interface_data(VNIC)
+        vnic = copy.deepcopy(VNIC)
+        self.fetcher.set_interface_data(vnic)
 
         # reset methods
         self.fetcher.inv.get_by_field = original_get_by_field
         self.fetcher.inv.get_by_id = original_get_by_id
         self.fetcher.inv.set = original_set
 
-        self.assertIn("data", VNIC, "Can't set data")
-        self.assertIn("cidr", VNIC, "Can't set cidr")
-        self.assertIn("network", VNIC, "Can't set network")
+        self.assertIn("data", vnic, "Can't set data")
+        self.assertIn("cidr", vnic, "Can't set cidr")
+        self.assertIn("network", vnic, "Can't set network")
 
     def test_handle_mac_address_line(self):
         self.fetcher.handle_line(RAW_VNIC, MAC_ADDRESS_LINE)
-        self.assertEqual(RAW_VNIC['mac_address'], MAC_ADDRESS, "Can't get the correct mac address from the line")
+        self.assertEqual(RAW_VNIC['mac_address'], MAC_ADDRESS,
+                         "Can't get the correct mac address from the line")
 
     def test_handle_ipv4_address_line(self):
         self.fetcher.handle_line(RAW_VNIC, IPV4_ADDRESS_LINE)
-        self.assertEqual(RAW_VNIC['IP Address'], IPV4_ADDRESS, "Can't get the correct ipv4 address from the line")
+        self.assertEqual(RAW_VNIC['IP Address'], IPV4_ADDRESS,
+                         "Can't get the correct ipv4 address from the line")
 
     def test_handle_ipv6_address_line(self):
         self.fetcher.handle_line(RAW_VNIC, IPV6_ADDRESS_LINE)
-        self.assertEqual(RAW_VNIC['IPv6 Address'], IPV6_ADDRESS, "Can't get the correct ipv6 address from the line")
+        self.assertEqual(RAW_VNIC['IPv6 Address'], IPV6_ADDRESS,
+                         "Can't get the correct ipv6 address from the line")
 
     def test_get_net_size(self):
         size = self.fetcher.get_net_size(NET_MASK_ARRAY)
         self.assertEqual(size, SIZE, "Can't get the size of network by netmask")
 
     def test_get_cidr_for_vnic(self):
-        cidr = self.fetcher.get_cidr_for_vnic(VNIC)
+        vnic = copy.deepcopy(VNIC)
+        cidr = self.fetcher.get_cidr_for_vnic(vnic)
         self.assertEqual(cidr, CIDR, "the cidr info is wrong")
