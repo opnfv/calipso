@@ -55,6 +55,6 @@ The following wonderful and very talented engineers has been coding, at various 
 Ilia Abashin - iabashin@cisco.com
 Eyal Lapid - eyal.lapid@protonmail.com
 Xiaocong Dong - buptdxc@gmail.com
-Stas Isakov - iabashin@cisco.com
+Stas Isakov - sisakov@cisco.com
 Ofir Ashery - oashery@cisco.com
 
