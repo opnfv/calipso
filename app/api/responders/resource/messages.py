@@ -35,15 +35,17 @@ class Messages(ResponderBase):
             'env_name': self.require(str, mandatory=True),
             'source_system': self.require(str),
             'id': self.require(str),
-            'level': self.require(str, validate=DataValidate.LIST,
+            'level': self.require(str,
+                                  validate=DataValidate.LIST,
                                   requirement=messages_severity),
             'related_object': self.require(str),
-            'related_object_type': self.require(str, validate=DataValidate.LIST,
+            'related_object_type': self.require(str,
+                                                validate=DataValidate.LIST,
                                                 requirement=object_types),
             'start_time': self.require(str),
             'end_time': self.require(str),
-            'page': self.require(int, True),
-            'page_size': self.require(int, True)
+            'page': self.require(int, convert_to_type=True),
+            'page_size': self.require(int, convert_to_type=True)
         }
         self.validate_query_data(filters, filters_requirements)
         page, page_size = self.get_pagination(filters)

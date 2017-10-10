@@ -44,7 +44,7 @@ class FindLinksForInstanceVnics(FindLinks):
         network_name = None
         network_id = None
         for net in instance["network_info"]:
-            if net["devname"] == v["id"]:
+            if "{}-{}".format(v["host"], net["devname"]) == v["id"]:
                 network_name = net["network"]["label"]
                 network_id = net['network']['id']
                 v['network'] = network_id

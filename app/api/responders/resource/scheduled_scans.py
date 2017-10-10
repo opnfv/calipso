@@ -38,11 +38,12 @@ class ScheduledScans(ResponderBase):
 
         filters_requirements = {
             "environment": self.require(str, mandatory=True),
-            "id": self.require(ObjectId, True),
-            "freq": self.require(str, False,
-                                 DataValidate.LIST, self.SCAN_FREQ),
-            "page": self.require(int, True),
-            "page_size": self.require(int, True)
+            "id": self.require(ObjectId, convert_to_type=True),
+            "freq": self.require(str,
+                                 validate=DataValidate.LIST,
+                                 requirement=self.SCAN_FREQ),
+            "page": self.require(int, convert_to_type=True),
+            "page_size": self.require(int, convert_to_type=True)
         }
 
         self.validate_query_data(filters, filters_requirements)
@@ -71,16 +72,17 @@ class ScheduledScans(ResponderBase):
         log_levels = self.get_constants_by_name("log_levels")
         scheduled_scan_requirements = {
             "environment": self.require(str, mandatory=True),
-            "scan_only_links": self.require(bool, True),
-            "scan_only_cliques": self.require(bool, True),
-            "scan_only_inventory": self.require(bool, True),
-            "freq": self.require(str, validate=DataValidate.LIST,
-                                 requirement=self.SCAN_FREQ,
-                                 mandatory=True),
+            "scan_only_links": self.require(bool, convert_to_type=True),
+            "scan_only_cliques": self.require(bool, convert_to_type=True),
+            "scan_only_inventory": self.require(bool, convert_to_type=True),
+            "freq": self.require(str,
+                                 mandatory=True,
+                                 validate=DataValidate.LIST,
+                                 requirement=self.SCAN_FREQ),
             "log_level": self.require(str,
                                       validate=DataValidate.LIST,
                                       requirement=log_levels),
-            "clear": self.require(bool, True),
+            "clear": self.require(bool, convert_to_type=True),
             "submit_timestamp": self.require(str, mandatory=True)
         }
         self.validate_query_data(scheduled_scan, scheduled_scan_requirements)
@@ -93,12 +95,12 @@ class ScheduledScans(ResponderBase):
 
         env_name = scheduled_scan["environment"]
         if not self.check_environment_name(env_name):
-            self.bad_request("unkown environment: " + env_name)
+            self.bad_request("unknown environment: " + env_name)
 
         self.write(scheduled_scan, self.COLLECTION)
         self.set_successful_response(resp,
-                                     {"message": "created a new scheduled scan for "
-                                                 "environment {0}"
+                                     {"message": "created a new scheduled scan "
+                                                 "for environment {0}"
                                      .format(env_name)},
                                      "201")
 

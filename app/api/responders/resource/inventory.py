@@ -33,9 +33,9 @@ class Inventory(ResponderBase):
             'id_path': self.require(str),
             'parent_id': self.require(str),
             'parent_path': self.require(str),
-            'sub_tree': self.require(bool, True),
-            'page': self.require(int, True),
-            'page_size': self.require(int, True)
+            'sub_tree': self.require(bool, convert_to_type=True),
+            'page': self.require(int, convert_to_type=True),
+            'page_size': self.require(int, convert_to_type=True)
         }
         self.validate_query_data(filters, filters_requirements)
         page, page_size = self.get_pagination(filters)

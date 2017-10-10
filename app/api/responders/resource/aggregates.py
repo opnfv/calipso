@@ -31,10 +31,9 @@ class Aggregates(ResponderBase):
                                  requirement=self.AGGREGATE_TYPES,
                                  mandatory=True,
                                  error_messages={"mandatory":
-                                                 "type must be specified: " +
-                                                 "environment/" +
-                                                 " message/" +
-                                                 "constant"})
+                                                 "type must be specified: (" +
+                                                 ",".join(self.AGGREGATE_TYPES) +
+                                                 ")"})
         }
         self.validate_query_data(filters, filters_requirements)
         query = self.build_query(filters)

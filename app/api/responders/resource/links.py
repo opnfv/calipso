@@ -34,17 +34,19 @@ class Links(ResponderBase):
         link_states = self.get_constants_by_name("link_states")
         filters_requirements = {
             'env_name': self.require(str, mandatory=True),
-            'id': self.require(ObjectId, True),
+            'id': self.require(ObjectId, convert_to_type=True),
             'host': self.require(str),
-            'link_type': self.require(str, validate=DataValidate.LIST,
+            'link_type': self.require(str,
+                                      validate=DataValidate.LIST,
                                       requirement=link_types),
             'link_name': self.require(str),
             'source_id': self.require(str),
             'target_id': self.require(str),
-            'state': self.require(str, validate=DataValidate.LIST,
+            'state': self.require(str,
+                                  validate=DataValidate.LIST,
                                   requirement=link_states),
-            'page': self.require(int, True),
-            'page_size': self.require(int, True)
+            'page': self.require(int, convert_to_type=True),
+            'page_size': self.require(int, convert_to_type=True)
         }
 
         self.validate_query_data(filters, filters_requirements, r'^attributes\:\w+$')

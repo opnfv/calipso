@@ -25,7 +25,7 @@ VEDGE = {
     }, 
     "type": "vedge"
 }
-VEDGE_WITHOUT_CONFIGS ={
+VEDGE_WITHOUT_CONFIGS = {
 
 }
 VEDGE_WITHOUT_TUNNEL_TYPES = {
@@ -105,17 +105,16 @@ OTEP_FOR_GETTING_VECONNECTOR = {
         }
 }
 HOST_ID = "node-5.cisco.com"
-IFCONFIG_LINES = [
-    "br-mesh   Link encap:Ethernet  HWaddr 00:50:56:ac:28:9d  ",
-    "          inet addr:192.168.2.1  Bcast:192.168.2.255  Mask:255.255.255.0",
-    "          inet6 addr: fe80::d4e1:8fff:fe33:ed6a/64 Scope:Link",
-    "          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1",
-    "          RX packets:2273307 errors:0 dropped:0 overruns:0 frame:0",
-    "          TX packets:2255930 errors:0 dropped:0 overruns:0 carrier:0",
-    "          collisions:0 txqueuelen:0 ",
-    "          RX bytes:578536155 (578.5 MB)  TX bytes:598541522 (598.5 MB)",
-    ""
+IP_ADDRESS_SHOW_LINES = [
+    "2: br-mesh: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc "
+    "pfifo_fast state UP group default qlen 1000",
+    "    link/ether 00:50:56:ac:28:9d brd ff:ff:ff:ff:ff:ff",
+    "    inet 192.168.2.1/24 brd 192.168.2.255 scope global br-mesh",
+    "       valid_lft forever preferred_lft forever",
+    "    inet6 fe80::d4e1:8fff:fe33:ed6a/64 scope global mngtmpaddr dynamic",
+    "       valid_lft 2591951sec preferred_lft 604751sec"
 ]
+
 OTEP_WITH_CONNECTOR = {
     "host": "node-5.cisco.com",
     "ip_address": "192.168.2.1",

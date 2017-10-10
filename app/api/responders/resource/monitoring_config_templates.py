@@ -30,13 +30,14 @@ class MonitoringConfigTemplates(ResponderBase):
 
         sides = self.get_constants_by_name("monitoring_sides")
         filters_requirements = {
-            "id": self.require(ObjectId, True),
-            "order": self.require(int, True),
-            "side": self.require(str, validate=DataValidate.LIST,
+            "id": self.require(ObjectId, convert_to_type=True),
+            "order": self.require(int, convert_to_type=True),
+            "side": self.require(str,
+                                 validate=DataValidate.LIST,
                                  requirement=sides),
             "type": self.require(str),
-            "page": self.require(int, True),
-            "page_size": self.require(int, True)
+            "page": self.require(int, convert_to_type=True),
+            "page_size": self.require(int, convert_to_type=True)
         }
 
         self.validate_query_data(filters, filters_requirements)

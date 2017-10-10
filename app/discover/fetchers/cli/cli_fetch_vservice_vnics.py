@@ -17,18 +17,13 @@ class CliFetchVserviceVnics(CliAccess):
     def __init__(self):
         super().__init__()
         self.inv = InventoryMgr()
-        self.if_header = re.compile('^[-]?(\S+)\s+(.*)$')
+        self.if_header = re.compile('^\d+: ([^:]+): (.+)')
         self.regexps = [
-            {'name': 'mac_address', 're': '^.*\sHWaddr\s(\S+)(\s.*)?$'},
-            {'name': 'mac_address', 're': '^.*\sether\s(\S+)(\s.*)?$'},
-            {'name': 'IP Address', 're': '^\s*inet addr:(\S+)\s.*$'},
-            {'name': 'IP Address', 're': '^\s*inet ([0-9.]+)\s.*$'},
-            {'name': 'netmask', 're': '^.*\sMask:\s?([0-9.]+)(\s.*)?$'},
-            {'name': 'netmask', 're': '^.*\snetmask\s([0-9.]+)(\s.*)?$'},
+            {'name': 'mac_address', 're': '^.*\slink/ether\s(\S+)\s'},
+            {'name': 'IP Address', 're': '^\s*inet ([0-9.]+)/'},
+            {'name': 'netmask', 're': '^.*\slink/ether\s[^/]+/(\S+)'},
             {'name': 'IPv6 Address',
-             're': '^\s*inet6 addr: ?\s*([0-9a-f:/]+)(\s.*)?$'},
-            {'name': 'IPv6 Address',
-             're': '^\s*inet6 \s*([0-9a-f:/]+)(\s.*)?$'}
+             're': '^\s*inet6 ([^/]+)/.* global '}
         ]
 
     def get(self, host_id):
@@ -53,7 +48,7 @@ class CliFetchVserviceVnics(CliAccess):
         return ret
 
     def handle_service(self, host, service, enable_cache=True):
-        cmd = "ip netns exec " + service + " ifconfig"
+        cmd = "ip netns exec " + service + " ip address show"
         lines = self.run_fetch_lines(cmd, host, enable_cache)
         interfaces = []
         current = None
@@ -122,6 +117,7 @@ class CliFetchVserviceVnics(CliAccess):
             vnic["IP Address"] = "No IP Address"
             return "No IP Address"
         ipaddr = vnic["IP Address"].split('.')
+        vnic['netmask'] = self.convert_netmask(vnic['netmask'])
         netmask = vnic["netmask"].split('.')
 
         # calculate network start
@@ -138,3 +134,26 @@ class CliFetchVserviceVnics(CliAccess):
         for octet in netmask:
             binary_str += bin(int(octet))[2:].zfill(8)
         return str(len(binary_str.rstrip('0')))
+
+    @staticmethod
+    def convert_netmask(cidr):
+        netmask_conversion = {
+            '30': '255.255.255.252',
+            '29': '255.255.255.248',
+            '28': '255.255.255.240',
+            '27': '255.255.255.224',
+            '26': '255.255.255.192',
+            '25': '255.255.255.128',
+            '24': '255.255.255.0',
+            '23': '255.255.254.0',
+            '22': '255.255.252.0',
+            '21': '255.255.248.0',
+            '20': '255.255.240.0',
+            '19': '255.255.224.0',
+            '18': '255.255.192.0',
+            '17': '255.255.128.0',
+            '16': '255.255.0.0'
+        }
+        if cidr not in netmask_conversion:
+            raise ValueError('can''t convert to netmask: {}'.format(cidr))
+        return netmask_conversion.get(cidr)

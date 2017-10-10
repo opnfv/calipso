@@ -63,21 +63,23 @@ class DbFetchOteps(DbAccess, CliAccess, metaclass=Singleton):
         return results
 
     # find matching vConnector by tunneling_ip of vEdge
-    # look for that IP address in ifconfig for the host
+    # look for that IP address in 'ip address show' output for the host
     def get_vconnector(self, doc, host_id, vedge):
         tunneling_ip = vedge["configurations"]["tunneling_ip"]
-        ifconfig_lines = self.run_fetch_lines("ifconfig", host_id)
+        output_lines = self.run_fetch_lines("ip address show", host_id)
         interface = None
-        ip_string = " " * 10 + "inet addr:" + tunneling_ip + " "
+        ip_string = "    inet {}/".format(tunneling_ip)
         vconnector = None
-        for l in ifconfig_lines:
+        for l in output_lines:
             if l.startswith(" "):
                 if interface and l.startswith(ip_string):
                     vconnector = interface
                     break
             else:
                 if " " in l:
-                    interface = l[:l.index(" ")]
+                    # line format is like this:
+                    # <interface number>: <interface name>: ....
+                    interface = l.split(":")[1].strip()
 
         if vconnector:
             doc["vconnector"] = vconnector

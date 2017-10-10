@@ -157,26 +157,25 @@ NET_MASK_ARRAY = ["255", "255", "255", "0"]
 SIZE = '24'
 
 VNIC = {
-    "IP Address": "172.16.13.2",
-    "IPv6 Address": "fe80::f816:3eff:fea1:eb73/64",
+    "IP Address": "10.56.20.80",
+    "IPv6 Address": "2001:420:4482:24c1:250:56ff:feac:502a",
     "host": "node-6.cisco.com",
-    "id": "tapa68b2627-a1",
+    "id": "eth0",
     "lines": [
-        "Link encap:Ethernet  HWaddr fa:16:3e:a1:eb:73",
-        "inet addr:172.16.13.2  Bcast:172.16.13.255  Mask:255.255.255.0",
-        "inet6 addr: fe80::f816:3eff:fea1:eb73/64 Scope:Link",
-        "UP BROADCAST RUNNING MULTICAST  MTU:1450  Metric:1",
-        "RX packets:28 errors:0 dropped:35 overruns:0 frame:0",
-        "TX packets:8 errors:0 dropped:0 overruns:0 carrier:0",
-        "collisions:0 txqueuelen:0",
-        "RX bytes:4485 (4.4 KB)  TX bytes:648 (648.0 B)",
-        ""
+        "<BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000",
+        "link/ether 00:50:56:ac:50:2a brd ff:ff:ff:ff:ff:ff",
+        "inet 10.56.20.80/24 brd 10.56.20.255 scope global eth0",
+        "valid_lft forever preferred_lft forever",
+        "inet6 2001:420:4482:24c1:250:56ff:feac:502a/64 scope global mngtmpaddr dynamic",
+        "valid_lft 2591971sec preferred_lft 604771sec",
+        "inet6 fe80::250:56ff:feac:502a/64 scope link",
+        "valid_lft forever preferred_lft forever"
     ],
-    "mac_address": "fa:16:3e:a1:eb:73",
+    "mac_address": "00:50:56:ac:50:2a",
     "master_parent_id": "qdhcp-8673c48a-f137-4497-b25d-08b7b218fd17",
     "master_parent_type": "vservice",
     "name": "tapa68b2627-a1",
-    "netmask": "255.255.255.0",
+    "netmask": "24",
     "parent_id": "qdhcp-8673c48a-f137-4497-b25d-08b7b218fd17-vnics",
     "parent_text": "vNICs",
     "parent_type": "vnics_folder",
@@ -190,7 +189,7 @@ RAW_VNIC = {
     "lines": [],
     "master_parent_id": "qdhcp-8673c48a-f137-4497-b25d-08b7b218fd17",
     "master_parent_type": "vservice",
-    "name": "tapa68b2627-a1",
+    "name": "eth0",
     "parent_id": "qdhcp-8673c48a-f137-4497-b25d-08b7b218fd17-vnics",
     "parent_text": "vNICs",
     "parent_type": "vnics_folder",
@@ -276,35 +275,31 @@ VSERVICE = {
 }
 
 
-CIDR = "172.16.13.0/24"
+CIDR = "10.56.20.0/24"
 
-IFCONFIG_RESULT = [
-    "lo        Link encap:Local Loopback  ",
-    "          inet addr:127.0.0.1  Mask:255.0.0.0",
-    "          inet6 addr: ::1/128 Scope:Host",
-    "          UP LOOPBACK RUNNING  MTU:65536  Metric:1",
-    "          RX packets:0 errors:0 dropped:0 overruns:0 frame:0",
-    "          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0",
-    "          collisions:0 txqueuelen:0 ",
-    "          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)",
-    "",
-    "tapa68b2627-a1 Link encap:Ethernet  HWaddr fa:16:3e:a1:eb:73  ",
-    "          inet addr:172.16.13.2  Bcast:172.16.13.255  Mask:255.255.255.0",
-    "          inet6 addr: fe80::f816:3eff:fea1:eb73/64 Scope:Link",
-    "          UP BROADCAST RUNNING MULTICAST  MTU:1450  Metric:1",
-    "          RX packets:28 errors:0 dropped:35 overruns:0 frame:0",
-    "          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0",
-    "          collisions:0 txqueuelen:0 ",
-    "          RX bytes:4485 (4.4 KB)  TX bytes:648 (648.0 B)",
-    ""
+IP_ADDRESS_SHOW_RESULT = [
+    "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1",
+    "    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00",
+    "    inet 127.0.0.1/8 scope host lo",
+    "       valid_lft forever preferred_lft forever",
+    "    inet6 ::1/128 scope host",
+    "       valid_lft forever preferred_lft forever",
+    "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000",
+    "    link/ether 00:50:56:ac:50:2a brd ff:ff:ff:ff:ff:ff",
+    "    inet 10.56.20.80/24 brd 10.56.20.255 scope global eth0",
+    "       valid_lft forever preferred_lft forever",
+    "    inet6 2001:420:4482:24c1:250:56ff:feac:502a/64 scope global mngtmpaddr dynamic",
+    "       valid_lft 2591971sec preferred_lft 604771sec",
+    "    inet6 fe80::250:56ff:feac:502a/64 scope link",
+    "       valid_lft forever preferred_lft forever"
 ]
 
-MAC_ADDRESS_LINE = "tapa68b2627-a1 Link encap:Ethernet  HWaddr 00:50:56:ac:e8:97  "
-MAC_ADDRESS = "00:50:56:ac:e8:97"
-IPV6_ADDRESS_LINE = "          inet6 addr: fe80::f816:3eff:fea1:eb73/64 Scope:Link"
-IPV6_ADDRESS = "fe80::f816:3eff:fea1:eb73/64"
-IPV4_ADDRESS_LINE = "          inet addr:172.16.13.2  Bcast:172.16.13.255  Mask:255.255.255.0"
-IPV4_ADDRESS = "172.16.13.2"
+MAC_ADDRESS_LINE = "    link/ether 00:50:56:ac:50:2a brd ff:ff:ff:ff:ff:ff"
+MAC_ADDRESS = "00:50:56:ac:50:2a"
+IPV6_ADDRESS_LINE = "    inet6 2001:420:4482:24c1:250:56ff:feac:502a/64 scope global mngtmpaddr dynamic"
+IPV6_ADDRESS = "2001:420:4482:24c1:250:56ff:feac:502a"
+IPV4_ADDRESS_LINE = "    inet 10.56.20.80/24 brd 10.56.20.255 scope global eth0"
+IPV4_ADDRESS = "10.56.20.80"
 
 # functional test
 INPUT = "node-6.cisco.com"

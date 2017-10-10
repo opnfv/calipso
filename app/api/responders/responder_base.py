@@ -102,22 +102,22 @@ class ResponderBase(DataValidate, DictNamingConverter):
             env_name = query.get("environment")
             if env_name and \
                     not self.check_environment_name(env_name):
-                self.bad_request("unkown environment: " + env_name)
+                self.bad_request("unknown environment: " + env_name)
             self.not_found()
         obj = objs[0]
         stringify_object_values_by_types(obj, stringify_types)
-        if id is "_id":
+        if id == "_id":
             obj['id'] = obj.get('_id')
         return obj
 
-    def get_objects_list(self, collection, query, page, page_size,
-                         projection, stringify_types=None):
+    def get_objects_list(self, collection, query, page=0, page_size=1000,
+                         projection=None, stringify_types=None):
         objects = self.read(collection, query, projection, page, page_size)
         if not objects:
             env_name = query.get("environment")
             if env_name and \
                     not self.check_environment_name(env_name):
-                self.bad_request("unkown environment: " + env_name)
+                self.bad_request("unknown environment: " + env_name)
             self.not_found()
         for obj in objects:
             if "id" not in obj and "_id" in obj:
@@ -205,8 +205,8 @@ class ResponderBase(DataValidate, DictNamingConverter):
 
     def write(self, document, collection="inventory"):
         try:
-            self.get_collection_by_name(collection).\
-                insert_one(document)
+            return self.get_collection_by_name(collection)\
+                       .insert_one(document)
         except errors.DuplicateKeyError as e:
             self.conflict("The key value ({0}) already exists".
                           format(', '.

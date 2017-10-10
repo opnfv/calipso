@@ -37,6 +37,7 @@ class App:
         "/aggregates": "resource.aggregates.Aggregates",
         "/environment_configs":
             "resource.environment_configs.EnvironmentConfigs",
+        "/connection_tests": "resource.connection_tests.ConnectionTests",
         "/auth/tokens": "auth.tokens.Tokens"
     }
 

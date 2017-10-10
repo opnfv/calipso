@@ -21,7 +21,8 @@ class CliqueTypes(ResponderBase):
             self.ID: True,
             "focal_point_type": True,
             "link_types": True,
-            "environment": True
+            "environment": True,
+            "name": True
         }
 
     def on_get(self, req, resp):
@@ -32,15 +33,16 @@ class CliqueTypes(ResponderBase):
         link_types = self.get_constants_by_name("link_types")
         filters_requirements = {
             'env_name': self.require(str, mandatory=True),
-            'id': self.require(ObjectId, True),
+            'id': self.require(ObjectId, convert_to_type=True),
             'focal_point_type': self.require(str,
                                              validate=DataValidate.LIST,
                                              requirement=focal_point_types),
             'link_type': self.require([list, str],
                                       validate=DataValidate.LIST,
                                       requirement=link_types),
-            'page': self.require(int, True),
-            'page_size': self.require(int, True)
+            'name': self.require(str),
+            'page': self.require(int, convert_to_type=True),
+            'page_size': self.require(int, convert_to_type=True)
         }
 
         self.validate_query_data(filters, filters_requirements)
@@ -66,10 +68,14 @@ class CliqueTypes(ResponderBase):
         link_types = self.get_constants_by_name("link_types")
         clique_type_requirements = {
             'environment': self.require(str, mandatory=True),
-            'focal_point_type': self.require(str, False, DataValidate.LIST,
-                                             focal_point_types, True),
-            'link_types': self.require(list, False, DataValidate.LIST,
-                                       link_types, True),
+            'focal_point_type': self.require(str,
+                                             mandatory=True,
+                                             validate=DataValidate.LIST,
+                                             requirement=focal_point_types),
+            'link_types': self.require(list,
+                                       mandatory=True,
+                                       validate=DataValidate.LIST,
+                                       requirement=link_types),
             'name': self.require(str, mandatory=True)
         }
 
@@ -77,7 +83,7 @@ class CliqueTypes(ResponderBase):
 
         env_name = clique_type['environment']
         if not self.check_environment_name(env_name):
-            self.bad_request("unkown environment: " + env_name)
+            self.bad_request("unknown environment: " + env_name)
 
         self.write(clique_type, self.COLLECTION)
         self.set_successful_response(resp,
@@ -88,7 +94,7 @@ class CliqueTypes(ResponderBase):
 
     def build_query(self, filters):
         query = {}
-        filters_keys = ['focal_point_type']
+        filters_keys = ['name', 'focal_point_type']
         self.update_query_with_filters(filters, filters_keys, query)
         link_types = filters.get('link_type')
         if link_types:

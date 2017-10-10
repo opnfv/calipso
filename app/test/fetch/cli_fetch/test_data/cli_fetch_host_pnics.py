@@ -51,7 +51,7 @@ INTERFACE_DETAILS = {
     "state": "UP"
 }
 
-MAC_ADDRESS_LINE = "eno16777728 Link encap:Ethernet  HWaddr 00:50:56:ac:e8:97  "
+MAC_ADDRESS_LINE = "    link/ether 00:50:56:ac:e8:97 brd ff:ff:ff:ff:ff:ff"
 MAC_ADDRESS = "00:50:56:ac:e8:97"
 RAW_INTERFACE = {
     "host": "node-6.cisco.com",
@@ -132,9 +132,10 @@ INTERFACE = {
 
 INTERFACES_GET_RESULTS = [INTERFACE]
 
-IPV6_ADDRESS_LINE = "          inet6 addr: fe80::f816:3eff:fea1:eb73/64 Scope:Link"
+IPV6_ADDRESS_LINE = "    inet6 fe80::f816:3eff:fea1:eb73/64 " \
+                    "scope global mngtmpaddr dynamic"
 IPV6_ADDRESS = "fe80::f816:3eff:fea1:eb73/64"
-IPV4_ADDRESS_LINE = "          inet addr:172.16.13.2  Bcast:172.16.13.255  Mask:255.255.255.0"
+IPV4_ADDRESS_LINE = "    inet 172.16.13.2/24 brd 10.56.20.255 scope global eth0"
 IPV4_ADDRESS = "172.16.13.2"
 
 ETHTOOL_RESULT = [

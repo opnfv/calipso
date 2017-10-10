@@ -88,8 +88,10 @@ class TestDbFetchOteps(TestFetch):
                                          test_case["err_msg"])
 
     def test_get_vconnectors(self):
-        self.fetcher.run_fetch_lines = MagicMock(return_value=IFCONFIG_LINES)
-        self.fetcher.get_vconnector(OTEP_FOR_GETTING_VECONNECTOR,
+        self.fetcher.run_fetch_lines = \
+            MagicMock(return_value=IP_ADDRESS_SHOW_LINES)
+        otep_to_get_vconnector = copy.deepcopy(OTEP_FOR_GETTING_VECONNECTOR)
+        self.fetcher.get_vconnector(otep_to_get_vconnector,
                                     HOST_ID, VEDGE)
-        self.assertEqual(OTEP_FOR_GETTING_VECONNECTOR, OTEP_WITH_CONNECTOR,
+        self.assertEqual(otep_to_get_vconnector, OTEP_WITH_CONNECTOR,
                          "Can't get vconnector from the config lines for otep")
