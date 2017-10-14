@@ -13,17 +13,16 @@ from bson.objectid import ObjectId
 
 
 class Links(ResponderBase):
-    def __init__(self):
-        super().__init__()
-        self.COLLECTION = 'links'
-        self.ID = '_id'
-        self.PROJECTION = {
-            self.ID: True,
-            "link_name": True,
-            "link_type": True,
-            "environment": True,
-            "host": True
-        }
+
+    COLLECTION = 'links'
+    ID = '_id'
+    PROJECTION = {
+        ID: True,
+        "link_name": True,
+        "link_type": True,
+        "environment": True,
+        "host": True
+    }
 
     def on_get(self, req, resp):
         self.log.debug("Getting links from links")

@@ -3,9 +3,12 @@
     "attributes" : [
         "object_name", 
         "model", 
-        "mac_address", 
-        "type", 
-        "koren"
+        "mac_address",
+        "vnic_type",
+        "data",
+        "status", 
+        "status_timestamp", 
+        "status_text"
     ], 
     "type" : "vnic"
 },
@@ -14,7 +17,10 @@
         "object_name", 
         "connector_type", 
         "type", 
-        "interfaces"
+        "interfaces",
+        "status", 
+        "status_timestamp", 
+        "status_text"
     ], 
     "type" : "vconnector"
 },
@@ -23,7 +29,10 @@
         "object_name", 
         "host", 
         "service_type", 
-        "type"
+        "type",
+        "status_text",
+        "status",
+        "status_timestamp"
     ], 
     "type" : "vservice"
 },
@@ -32,8 +41,13 @@
         "object_name", 
         "host", 
         "agent_type", 
-        "binary", 
-        "type"
+        "binary",
+        "started_at",
+        "heartbeat_timestamp",
+        "type",
+        "status", 
+        "status_timestamp", 
+        "status_text"
     ], 
     "type" : "vedge"
 },
@@ -44,7 +58,13 @@
         "mac_address", 
         "Speed", 
         "Link detected", 
-        "type"
+        "type",
+        "Bonding Mode", 
+        "Ethernet Channel Bonding Driver", 
+        "members",
+        "status",
+        "status_timestamp",
+        "status_text"
     ], 
     "type" : "host_pnic"
 },
@@ -53,7 +73,11 @@
         "object_name", 
         "provider:segmentation_id", 
         "provider:network_type", 
-        "type"
+        "type",
+        "status",
+        "port_security_enabled",
+        "availability_zones",
+        "mtu"
     ], 
     "type" : "network"
 },
@@ -61,18 +85,25 @@
     "attributes" : [
         "object_name", 
         "host_type", 
-        "parent_id", 
-        "type"
+        "services", 
+        "type",
+        "status", 
+        "status_timestamp", 
+        "status_text"
     ], 
     "type" : "host"
 },
 { 
     "attributes" : [
-        "object_name", 
+        "object_name",
+        "local_name", 
         "host", 
         "project", 
         "type", 
-        "name_path"
+        "name_path",
+        "status", 
+        "status_timestamp", 
+        "status_text"
     ], 
     "type" : "instance"
 },
@@ -93,5 +124,14 @@
         "parent_id", 
         "role"
     ]
+},
+{ 
+    "attributes" : [
+        "link_type",
+        "status",
+        "status_timestamp",
+        "status_text"
+    ],
+    "type" : "link"
 }
 ]

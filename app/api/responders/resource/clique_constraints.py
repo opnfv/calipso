@@ -13,13 +13,12 @@ from bson.objectid import ObjectId
 
 
 class CliqueConstraints(ResponderBase):
-    def __init__(self):
-        super().__init__()
-        self.ID = '_id'
-        self.PROJECTION = {
-            self.ID: True
-        }
-        self.COLLECTION = 'clique_constraints'
+
+    COLLECTION = 'clique_constraints'
+    ID = '_id'
+    PROJECTION = {
+        ID: True
+    }
 
     def on_get(self, req, resp):
         self.log.debug("Getting clique_constraints")

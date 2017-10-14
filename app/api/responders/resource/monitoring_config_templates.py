@@ -13,15 +13,14 @@ from bson.objectid import ObjectId
 
 
 class MonitoringConfigTemplates(ResponderBase):
-    def __init__(self):
-        super().__init__()
-        self.ID = "_id"
-        self.COLLECTION = "monitoring_config_templates"
-        self.PROJECTION = {
-            self.ID: True,
-            "side": True,
-            "type": True
-        }
+
+    COLLECTION = "monitoring_config_templates"
+    ID = "_id"
+    PROJECTION = {
+        ID: True,
+        "side": True,
+        "type": True
+    }
 
     def on_get(self, req, resp):
         self.log.debug("Getting monitoring config template")

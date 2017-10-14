@@ -12,10 +12,9 @@ from bson.objectid import ObjectId
 
 
 class Constants(ResponderBase):
-    def __init__(self):
-        super().__init__()
-        self.ID = '_id'
-        self.COLLECTION = 'constants'
+
+    COLLECTION = 'constants'
+    ID = '_id'
 
     def on_get(self, req, resp):
         self.log.debug("Getting constants with name")

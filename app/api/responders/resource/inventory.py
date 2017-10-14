@@ -13,15 +13,14 @@ from datetime import datetime
 
 
 class Inventory(ResponderBase):
-    def __init__(self):
-        super().__init__()
-        self.COLLECTION = 'inventory'
-        self.ID = 'id'
-        self.PROJECTION = {
-            self.ID: True,
-            "name": True,
-            "name_path": True
-        }
+
+    COLLECTION = 'inventory'
+    ID = 'id'
+    PROJECTION = {
+        ID: True,
+        "name": True,
+        "name_path": True
+    }
 
     def on_get(self, req, resp):
         self.log.debug("Getting objects from inventory")

@@ -54,6 +54,19 @@
   { 
     "features" : {
         "listening" : true, 
+        "scanning" : true, 
+        "monitoring" : true
+    }, 
+    "environment" : {
+        "type_drivers" : "vlan", 
+        "mechanism_drivers" : "OVS", 
+        "distribution" : "Mercury", 
+        "distribution_version" : ["11190"]
+    }
+  },
+  { 
+    "features" : {
+        "listening" : true, 
         "monitoring" : true, 
         "scanning" : true
     }, 

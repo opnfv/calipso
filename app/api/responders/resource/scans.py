@@ -14,15 +14,14 @@ from datetime import datetime
 
 
 class Scans(ResponderBase):
-    def __init__(self):
-        super().__init__()
-        self.COLLECTION = "scans"
-        self.ID = "_id"
-        self.PROJECTION = {
-            self.ID: True,
-            "environment": True,
-            "status": True
-        }
+
+    COLLECTION = "scans"
+    ID = "_id"
+    PROJECTION = {
+        ID: True,
+        "environment": True,
+        "status": True
+    }
 
     def on_get(self, req, resp):
         self.log.debug("Getting scans")
