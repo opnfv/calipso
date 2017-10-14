@@ -15,15 +15,14 @@ from utils.util import generate_object_ids
 
 
 class Cliques(ResponderBase):
-    def __init__(self):
-        super().__init__()
-        self.COLLECTION = "cliques"
-        self.ID = '_id'
-        self.PROJECTION = {
-            self.ID: True,
-            "focal_point_type": True,
-            "environment": True
-        }
+
+    COLLECTION = "cliques"
+    ID = '_id'
+    PROJECTION = {
+        ID: True,
+        "focal_point_type": True,
+        "environment": True
+    }
 
     def on_get(self, req, resp):
         self.log.debug("Getting cliques")

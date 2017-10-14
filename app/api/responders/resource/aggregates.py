@@ -12,9 +12,11 @@ from api.validation.data_validate import DataValidate
 
 
 class Aggregates(ResponderBase):
+
+    AGGREGATE_TYPES = ["environment", "message", "constant"]
+
     def __init__(self):
         super().__init__()
-        self.AGGREGATE_TYPES = ["environment", "message", "constant"]
         self.AGGREGATES_MAP = {
             "environment": self.get_environments_aggregates,
             "message": self.get_messages_aggregates,

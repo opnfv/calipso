@@ -17,22 +17,22 @@ from utils.inventory_mgr import InventoryMgr
 
 
 class EnvironmentConfigs(ResponderBase):
-    def __init__(self):
-        super(EnvironmentConfigs, self).__init__()
-        self.inv = InventoryMgr()
-        self.ID = "name"
-        self.PROJECTION = {
-            self.ID: True,
-            "_id": False,
-            "name": True,
-            "distribution": True
-        }
-        self.COLLECTION = "environments_config"
-        self.CONFIGURATIONS_NAMES = ["mysql", "OpenStack",
-                                     "CLI", "AMQP", "Monitoring",
+
+    COLLECTION = "environments_config"
+    ID = "name"
+    PROJECTION = {
+        ID: True,
+        "_id": False,
+        "name": True,
+        "distribution": True
+    }
+    CONFIGURATIONS_NAMES = ["mysql", "OpenStack", "CLI", "AMQP",
+                            "Monitoring", "NFV_provider", "ACI"]
+    OPTIONAL_CONFIGURATIONS_NAMES = ["AMQP", "Monitoring",
                                      "NFV_provider", "ACI"]
-        self.OPTIONAL_CONFIGURATIONS_NAMES = ["AMQP", "Monitoring",
-                                              "NFV_provider", "ACI"]
+
+    def __init__(self):
+        super().__init__()
 
         self.provision_types = self.\
             get_constants_by_name("environment_provision_types")
@@ -41,6 +41,8 @@ class EnvironmentConfigs(ResponderBase):
             get_constants_by_name("environment_monitoring_types")
         self.distributions = self.\
             get_constants_by_name("distributions")
+        self.distribution_versions = self.\
+            get_constants_by_name("distribution_versions")
         self.mechanism_drivers = self.\
             get_constants_by_name("mechanism_drivers")
         self.operational_values = self.\
@@ -183,6 +185,9 @@ class EnvironmentConfigs(ResponderBase):
             "distribution": self.require(str,
                                          validate=DataValidate.LIST,
                                          requirement=self.distributions),
+            "distribution_version": self.require(str,
+                                                 validate=DataValidate.LIST,
+                                                 requirement=self.distribution_versions),
             "mechanism_drivers": self.require([str, list],
                                               validate=DataValidate.LIST,
                                               requirement=self.mechanism_drivers),
@@ -216,9 +221,9 @@ class EnvironmentConfigs(ResponderBase):
 
     def build_query(self, filters):
         query = {}
-        filters_keys = ["name", "distribution", "type_drivers", "user",
-                        "listen", "monitoring_setup_done", "scanned",
-                        "operational"]
+        filters_keys = ["name", "distribution", "distribution_version",
+                        "type_drivers", "user", "listen",
+                        "monitoring_setup_done", "scanned", "operational"]
         self.update_query_with_filters(filters, filters_keys, query)
         mechanism_drivers = filters.get("mechanism_drivers")
         if mechanism_drivers:

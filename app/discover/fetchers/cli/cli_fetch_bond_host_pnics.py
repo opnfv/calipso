@@ -37,7 +37,7 @@ class CliFetchBondHostPnics(CliAccess):
         if lines and 'No such file or directory' in lines[0]:
             return []  # no bonds so directory does not exist
         bonds = []
-        for line in lines:
+        for line in [l.strip() for l in lines]:
             bond = self.get_bond_details(host_id, line)
             if bond:
                 bonds.append(bond)
@@ -123,7 +123,7 @@ class CliFetchBondHostPnics(CliAccess):
         })
         if not pnic:
             self.log.error('unable to find slave pNIC {} under bond {}'
-                           .format(slave_id, interface_id))
+                           .format(slave['name'], interface_id))
             return
         mac_address = pnic['mac_address']
         slave_id = '{}-{}'.format(slave.get('name', ''), mac_address)

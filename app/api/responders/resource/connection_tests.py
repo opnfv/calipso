@@ -24,14 +24,14 @@ class ConnectionTests(ResponderBase):
     RESULTS = "test_results"
     CONFIGURATIONS = "targets_configuration"
     STATUSES = ["request", "response"]
+    PROJECTION = {
+        ID: True,
+        TARGETS: True,
+        RESULTS: True
+    }
 
     def __init__(self):
         super().__init__()
-        self.PROJECTION = {
-            self.ID: True,
-            self.TARGETS: True,
-            self.RESULTS: True
-        }
         self.allowed_targets = \
             self.get_constants_by_name("configuration_targets")
 

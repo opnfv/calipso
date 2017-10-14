@@ -14,23 +14,22 @@ from datetime import datetime
 
 
 class ScheduledScans(ResponderBase):
-    def __init__(self):
-        super().__init__()
-        self.COLLECTION = "scheduled_scans"
-        self.ID = "_id"
-        self.PROJECTION = {
-            self.ID: True,
-            "environment": True,
-            "scheduled_timestamp": True,
-            "freq": True
-        }
-        self.SCAN_FREQ = [
-            "YEARLY",
-            "MONTHLY",
-            "WEEKLY",
-            "DAILY",
-            "HOURLY"
-        ]
+
+    COLLECTION = "scheduled_scans"
+    ID = "_id"
+    PROJECTION = {
+        ID: True,
+        "environment": True,
+        "scheduled_timestamp": True,
+        "freq": True
+    }
+    SCAN_FREQ = [
+        "YEARLY",
+        "MONTHLY",
+        "WEEKLY",
+        "DAILY",
+        "HOURLY"
+    ]
 
     def on_get(self, req, resp):
         self.log.debug("Getting scheduled scans")

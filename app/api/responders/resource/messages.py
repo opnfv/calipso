@@ -15,16 +15,15 @@ from bson.objectid import ObjectId
 
 
 class Messages(ResponderBase):
-    def __init__(self):
-        super().__init__()
-        self.ID = "id"
-        self.COLLECTION = 'messages'
-        self.PROJECTION = {
-            self.ID: True,
-            "environment": True,
-            "source_system": True,
-            "level": True
-        }
+
+    COLLECTION = 'messages'
+    ID = "id"
+    PROJECTION = {
+        ID: True,
+        "environment": True,
+        "source_system": True,
+        "level": True
+    }
 
     def on_get(self, req, resp):
         self.log.debug("Getting messages from messages")
