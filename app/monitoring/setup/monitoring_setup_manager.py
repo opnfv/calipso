@@ -40,14 +40,13 @@ class MonitoringSetupManager(MonitoringHandler):
         if self.provision == self.provision_levels['none']:
             self.log.debug('Monitoring config setup skipped')
             return
-        sensu_server_files = [
-            'transport.json',
-            'client.json',
-            'rabbitmq.json',
-            'handlers.json',
-            'redis.json',
-            'api.json'
-        ]
+        sensu_server_files_templates = \
+            self.inv.find({'side': 'server'},
+                          projection={'type': 1},
+                          collection='monitoring_config_templates')
+        sensu_server_files = []
+        for f in sensu_server_files_templates:
+            sensu_server_files.append(f.get('type', ''))
         conf = self.env_monitoring_config
         is_container = bool(conf.get('ssh_user', ''))
         server_host = conf['server_ip']

@@ -319,13 +319,20 @@ class ScanController(Fetcher):
         SshConnection.disconnect_all()
         status = 'ok' if not scanner.found_errors.get(env_name, False) \
             else 'errors detected'
+        if status == 'ok' and scan_plan.object_type == "environment":
+            self.mark_env_scanned(scan_plan.env)
         self.log.info('Scan completed, status: {}'.format(status))
         return True, status
 
+    def mark_env_scanned(self, env):
+        environments_collection = self.inv.collection['environments_config']
+        environments_collection \
+            .update_one(filter={'name': env},
+                        update={'$set': {'scanned': True}})
 
 if __name__ == '__main__':
-    scan_manager = ScanController()
-    ret, msg = scan_manager.run()
+    scan_controller = ScanController()
+    ret, msg = scan_controller.run()
     if not ret:
-        scan_manager.log.error(msg)
+        scan_controller.log.error(msg)
     sys.exit(0 if ret else 1)

@@ -19,6 +19,7 @@ class CliqueFinder(Fetcher):
 
     def __init__(self):
         super().__init__()
+        self.env_config = None
         self.inv = InventoryMgr()
         self.inventory = self.inv.inventory_collection
         self.links = self.inv.collections["links"]
@@ -26,6 +27,10 @@ class CliqueFinder(Fetcher):
         self.clique_types_by_type = {}
         self.clique_constraints = self.inv.collections["clique_constraints"]
         self.cliques = self.inv.collections["cliques"]
+
+    def set_env(self, env):
+        super().set_env(env)
+        self.env_config = self.configuration.environment
 
     def find_cliques_by_link(self, links_list):
         return self.links.find({'links': {'$in': links_list}})
@@ -43,23 +48,62 @@ class CliqueFinder(Fetcher):
             self.find_cliques_for_type(clique_type)
         self.log.info("finished scanning for cliques")
 
+    # Calculate priority score
+    def _get_priority_score(self, clique_type):
+        if self.env == clique_type['environment']:
+            return 4
+        if (self.env_config['distribution'] == clique_type.get('distribution') and
+            self.env_config['distribution_version'] == clique_type.get('distribution_version')):
+            return 3
+        if clique_type.get('mechanism_drivers') in self.env_config['mechanism_drivers']:
+            return 2
+        if self.env_config['type_drivers'] == clique_type.get('type_drivers'):
+            return 1
+        else:
+            return 0
+
+    # Get clique type with max priority
+    # for given environment configuration and focal point type
+    def _get_clique_type(self, focal_point, clique_types):
+        # If there's no configuration match for the specified environment,
+        # we use the default clique type definition with environment='ANY'
+        fallback_type = next(
+            filter(lambda t: t['environment'] == 'ANY', clique_types),
+            None
+        )
+        if not fallback_type:
+            raise ValueError("No fallback clique type (ANY) "
+                             "defined for focal point type '{}'"
+                             .format(focal_point))
+
+        clique_types.remove(fallback_type)
+
+        priority_scores = [self._get_priority_score(clique_type)
+                           for clique_type
+                           in clique_types]
+        max_score = max(priority_scores) if priority_scores else 0
+
+        return (fallback_type
+                if max_score == 0
+                else clique_types[priority_scores.index(max_score)])
+
     def get_clique_types(self):
         if not self.clique_types_by_type:
-            clique_types = self.clique_types \
-                .find({"environment": self.get_env()})
-            default_clique_types = \
-                self.clique_types.find({'environment': 'ANY'})
-            for clique_type in clique_types:
-                focal_point_type = clique_type['focal_point_type']
-                self.clique_types_by_type[focal_point_type] = clique_type
-            # if some focal point type does not have an explicit definition in
-            # clique_types for this specific environment, use the default
-            # clique type definition with environment=ANY
-            for clique_type in default_clique_types:
-                focal_point_type = clique_type['focal_point_type']
-                if focal_point_type not in self.clique_types_by_type:
-                    self.clique_types_by_type[focal_point_type] = clique_type
-            return self.clique_types_by_type
+            clique_types_by_focal_point = self.clique_types.aggregate([{
+                "$group": {
+                    "_id": "$focal_point_type",
+                    "types": {"$push": "$$ROOT"}
+                }
+            }])
+
+            self.clique_types_by_type = {
+                cliques['_id']: self._get_clique_type(cliques['_id'],
+                                                      cliques['types'])
+                for cliques in
+                clique_types_by_focal_point
+            }
+
+        return self.clique_types_by_type
 
     def find_cliques_for_type(self, clique_type):
         focal_point_type = clique_type["focal_point_type"]
