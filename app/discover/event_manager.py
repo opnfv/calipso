@@ -44,6 +44,7 @@ class EventManager(Manager):
             '6.0': DefaultListener,
             '7.0': DefaultListener,
             '8.0': DefaultListener,
+            '9.0': DefaultListener
         },
         'RDO': {
             'Mitaka': DefaultListener,
@@ -112,7 +113,8 @@ class EventManager(Manager):
     def get_listener(self, env: str):
         env_config = self.inv.get_env_config(env)
         return (self.LISTENERS.get(env_config.get('distribution'), {})
-                              .get(env_config.get('distribution_version')))
+                              .get(env_config.get('distribution_version',
+                                                  DefaultListener)))
 
     def listen_to_events(self, listener: ListenerBase, env_name: str, process_vars: dict):
         listener.listen({

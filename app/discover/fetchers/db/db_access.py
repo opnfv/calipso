@@ -40,11 +40,12 @@ class DbAccess(Fetcher):
 
     # connection timeout set to 30 seconds,
     # due to problems over long connections
-    TIMEOUT = 30
+    TIMEOUT = 5
 
-    def __init__(self):
+    def __init__(self, mysql_config=None):
         super().__init__()
-        self.config = Configuration()
+        self.config = {'mysql': mysql_config} if mysql_config \
+            else Configuration()
         self.conf = self.config.get("mysql")
         self.connect_to_db()
         self.neutron_db = self.get_neutron_db_name()
@@ -61,8 +62,9 @@ class DbAccess(Fetcher):
                                               database=_database,
                                               raise_on_warnings=True)
             DbAccess.conn.ping(True)  # auto-reconnect if necessary
-        except:
-            self.log.critical("failed to connect to MySQL DB")
+        except Exception as e:
+            self.log.critical("failed to connect to MySQL DB: {}"
+                              .format(str(e)))
             return
         DbAccess.query_count_per_con = 0
 
@@ -91,10 +93,9 @@ class DbAccess(Fetcher):
             DbAccess.conn = None
         self.conf = self.config.get("mysql")
         cnf = self.conf
-        cnf['schema'] = cnf['schema'] if 'schema' in cnf else 'nova'
-        self.db_connect(cnf["host"], cnf["port"],
-                        cnf["user"], cnf["pwd"],
-                        cnf["schema"])
+        self.db_connect(cnf.get('host', ''), cnf.get('port', ''),
+                        cnf.get('user', ''), cnf.get('pwd', ''),
+                        cnf.get('schema', 'nova'))
 
     @with_cursor
     def get_objects_list_for_id(self, query, object_type, object_id,

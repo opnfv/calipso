@@ -9,6 +9,7 @@
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
 from abc import ABC, abstractmethod
+import datetime
 
 from utils.logging.file_logger import FileLogger
 from utils.logging.full_logger import FullLogger
@@ -18,6 +19,14 @@ from utils.mongo_access import MongoAccess
 class Manager(ABC):
 
     MIN_INTERVAL = 0.1  # To prevent needlessly frequent scans
+
+    INTERVALS = {
+        'YEARLY': datetime.timedelta(days=365.25),
+        'MONTHLY': datetime.timedelta(days=365.25/12),
+        'WEEKLY': datetime.timedelta(weeks=1),
+        'DAILY': datetime.timedelta(days=1),
+        'HOURLY': datetime.timedelta(hours=1)
+    }
 
     def __init__(self, log_directory: str = None,
                  mongo_config_file: str = None):

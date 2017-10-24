@@ -18,6 +18,20 @@ class StringEnum(Enum):
         return repr(self.value)
 
 
+class ConnectionTestType(StringEnum):
+    AMQP = "AMQP"
+    CLI = "CLI"
+    ACI = "ACI"
+    MYSQL = "mysql"
+    OPENSTACK = "OpenStack"
+    MONITORING = "Monitoring"
+
+
+class ConnectionTestStatus(StringEnum):
+    REQUEST = "request"
+    RESPONSE = "response"
+
+
 class ScanStatus(StringEnum):
     DRAFT = "draft"
     PENDING = "pending"

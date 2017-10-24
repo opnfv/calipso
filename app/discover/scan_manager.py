@@ -170,14 +170,6 @@ class ScanManager(Manager):
                 .update_many(filter={'name': {'$in': env_scans}},
                              update={'$set': {'scanned': False}})
 
-    INTERVALS = {
-        'YEARLY': datetime.timedelta(days=365.25),
-        'MONTHLY': datetime.timedelta(days=365.25/12),
-        'WEEKLY': datetime.timedelta(weeks=1),
-        'DAILY': datetime.timedelta(days=1),
-        'HOURLY': datetime.timedelta(hours=1)
-    }
-
     def _submit_scan_request_for_schedule(self, scheduled_scan, interval, ts):
         scans = self.scans_collection
         new_scan = {

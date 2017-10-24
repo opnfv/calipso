@@ -36,24 +36,23 @@ class ApiAccess(Fetcher):
         "neutron": ["quantum"]
     }
 
-    # identitity API v2 version with admin token
-    def __init__(self):
+    # identity API v2 version with admin token
+    def __init__(self, config=None):
         super(ApiAccess, self).__init__()
         if ApiAccess.initialized:
             return
-        ApiAccess.config = Configuration()
+        ApiAccess.config = {'OpenStack': config} if config else Configuration()
         ApiAccess.api_config = ApiAccess.config.get("OpenStack")
-        host = ApiAccess.api_config["host"]
+        host = ApiAccess.api_config.get("host", "")
         ApiAccess.host = host
-        port = ApiAccess.api_config["port"]
+        port = ApiAccess.api_config.get("port", "")
         if not (host and port):
             raise ValueError('Missing definition of host or port ' +
                              'for OpenStack API access')
         ApiAccess.base_url = "http://" + host + ":" + port
-        ApiAccess.admin_token = ApiAccess.api_config["admin_token"]
-        ApiAccess.admin_project = ApiAccess.api_config["admin_project"] \
-            if "admin_project" in ApiAccess.api_config \
-            else 'admin'
+        ApiAccess.admin_token = ApiAccess.api_config.get("admin_token", "")
+        ApiAccess.admin_project = ApiAccess.api_config.get("admin_project",
+                                                           "admin")
         ApiAccess.admin_endpoint = "http://" + host + ":" + "35357"
 
         token = self.v2_auth_pwd(ApiAccess.admin_project)
@@ -97,7 +96,8 @@ class ApiAccess(Fetcher):
         if subject_token:
             return subject_token
         req_url = ApiAccess.base_url + "/v2.0/tokens"
-        response = requests.post(req_url, json=post_body, headers=headers)
+        response = requests.post(req_url, json=post_body, headers=headers,
+                                 timeout=5)
         response = response.json()
         ApiAccess.auth_response[project_id] = response
         if 'error' in response:
