@@ -2,9 +2,14 @@
 .. http://creativecommons.org/licenses/by/4.0
 .. (c) OPNFV and others.
 
+.. _calipso-release-guide:
+
+=====================
+Calipso Release Guide
+=====================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    about.rst
    admin-guide.rst
