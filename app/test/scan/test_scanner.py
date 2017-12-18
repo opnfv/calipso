@@ -10,6 +10,9 @@
 from discover.scanner import Scanner
 from test.scan.test_scan import TestScan
 from unittest.mock import MagicMock, patch
+
+from discover.link_finders.find_links_metadata_parser \
+    import FindLinksMetadataParser
 from discover.scan_metadata_parser import ScanMetadataParser
 from test.scan.test_data.scanner import *
 from monitoring.setup.monitoring_setup_manager import MonitoringSetupManager
@@ -19,7 +22,10 @@ class TestScanner(TestScan):
 
     def setUp(self):
         super().setUp()
-        ScanMetadataParser.parse_metadata_file = MagicMock(return_value=METADATA)
+        ScanMetadataParser.parse_metadata_file = \
+            MagicMock(return_value=METADATA)
+        FindLinksMetadataParser.parse_metadata_file = \
+            MagicMock(return_value=LINK_FINDERS_METADATA)
         self.scanner = Scanner()
         self.scanner.set_env(self.env)
         MonitoringSetupManager.create_setup = MagicMock()

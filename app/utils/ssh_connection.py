@@ -22,6 +22,7 @@ class SshConnection(BinaryConverter):
 
     max_call_count_per_con = 100
     timeout = 15  # timeout for exec in seconds
+    CONNECT_TIMEOUT = 5
 
     DEFAULT_PORT = 22
 
@@ -118,7 +119,8 @@ class SshConnection(BinaryConverter):
                                     pkey=k,
                                     port=self.port if self.port is not None
                                     else self.DEFAULT_PORT,
-                                    password=self.pwd, timeout=30)
+                                    password=self.pwd,
+                                    timeout=self.CONNECT_TIMEOUT)
         else:
             port = None
             try:
@@ -127,7 +129,7 @@ class SshConnection(BinaryConverter):
                                         username=self.user,
                                         password=self.pwd,
                                         port=port,
-                                        timeout=30)
+                                        timeout=self.CONNECT_TIMEOUT)
             except paramiko.ssh_exception.AuthenticationException:
                 self.log.error('Failed SSH connect to host {}, port={}'
                                .format(self.host, port))

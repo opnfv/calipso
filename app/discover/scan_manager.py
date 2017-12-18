@@ -219,71 +219,74 @@ class ScanManager(Manager):
         for interval in self.INTERVALS.keys():
             self._prepare_scheduled_requests_for_interval(interval)
 
+    def handle_scans(self):
+        self._prepare_scheduled_requests()
+
+        # Find a pending request that is waiting the longest time
+        results = self.scans_collection \
+            .find({'status': ScanStatus.PENDING.value,
+                   'submit_timestamp': {'$ne': None}}) \
+            .sort("submit_timestamp", pymongo.ASCENDING) \
+            .limit(1)
+
+        # If no scans are pending, sleep for some time
+        if results.count() == 0:
+            time.sleep(self.interval)
+        else:
+            scan_request = results[0]
+            env = scan_request.get('environment')
+            scan_feature = EnvironmentFeatures.SCANNING
+            if not self.inv.is_feature_supported(env, scan_feature):
+                self.log.error("Scanning is not supported for env '{}'"
+                               .format(scan_request.get('environment')))
+                self._fail_scan(scan_request)
+                return
+
+            scan_request['start_timestamp'] = datetime.datetime.utcnow()
+            scan_request['status'] = ScanStatus.RUNNING.value
+            self._update_document(scan_request)
+
+            # Prepare scan arguments and run the scan with them
+            try:
+                scan_args = self._build_scan_args(scan_request)
+
+                self.log.info("Starting scan for '{}' environment"
+                              .format(scan_args.get('env')))
+                self.log.debug("Scan arguments: {}".format(scan_args))
+                result, message = ScanController().run(scan_args)
+            except ScanArgumentsError as e:
+                self.log.error("Scan request '{id}' "
+                               "has invalid arguments. "
+                               "Errors:\n{errors}"
+                               .format(id=scan_request['_id'],
+                                       errors=e))
+                self._fail_scan(scan_request)
+            except Exception as e:
+                self.log.exception(e)
+                self.log.error("Scan request '{}' has failed."
+                               .format(scan_request['_id']))
+                self._fail_scan(scan_request)
+            else:
+                # Check is scan returned success
+                if not result:
+                    self.log.error(message)
+                    self.log.error("Scan request '{}' has failed."
+                                   .format(scan_request['_id']))
+                    self._fail_scan(scan_request)
+                    return
+
+                # update the status and timestamps.
+                self.log.info("Request '{}' has been scanned. ({})"
+                              .format(scan_request['_id'], message))
+                end_time = datetime.datetime.utcnow()
+                scan_request['end_timestamp'] = end_time
+                self._complete_scan(scan_request, message)
+
     def do_action(self):
         self._clean_up()
         try:
             while True:
-                self._prepare_scheduled_requests()
-
-                # Find a pending request that is waiting the longest time
-                results = self.scans_collection \
-                    .find({'status': ScanStatus.PENDING.value,
-                           'submit_timestamp': {'$ne': None}}) \
-                    .sort("submit_timestamp", pymongo.ASCENDING) \
-                    .limit(1)
-
-                # If no scans are pending, sleep for some time
-                if results.count() == 0:
-                    time.sleep(self.interval)
-                else:
-                    scan_request = results[0]
-                    env = scan_request.get('environment')
-                    scan_feature = EnvironmentFeatures.SCANNING
-                    if not self.inv.is_feature_supported(env, scan_feature):
-                        self.log.error("Scanning is not supported for env '{}'"
-                                       .format(scan_request.get('environment')))
-                        self._fail_scan(scan_request)
-                        continue
-
-                    scan_request['start_timestamp'] = datetime.datetime.utcnow()
-                    scan_request['status'] = ScanStatus.RUNNING.value
-                    self._update_document(scan_request)
-
-                    # Prepare scan arguments and run the scan with them
-                    try:
-                        scan_args = self._build_scan_args(scan_request)
-
-                        self.log.info("Starting scan for '{}' environment"
-                                      .format(scan_args.get('env')))
-                        self.log.debug("Scan arguments: {}".format(scan_args))
-                        result, message = ScanController().run(scan_args)
-                    except ScanArgumentsError as e:
-                        self.log.error("Scan request '{id}' "
-                                       "has invalid arguments. "
-                                       "Errors:\n{errors}"
-                                       .format(id=scan_request['_id'],
-                                               errors=e))
-                        self._fail_scan(scan_request)
-                    except Exception as e:
-                        self.log.exception(e)
-                        self.log.error("Scan request '{}' has failed."
-                                       .format(scan_request['_id']))
-                        self._fail_scan(scan_request)
-                    else:
-                        # Check is scan returned success
-                        if not result:
-                            self.log.error(message)
-                            self.log.error("Scan request '{}' has failed."
-                                           .format(scan_request['_id']))
-                            self._fail_scan(scan_request)
-                            continue
-
-                        # update the status and timestamps.
-                        self.log.info("Request '{}' has been scanned. ({})"
-                                      .format(scan_request['_id'], message))
-                        end_time = datetime.datetime.utcnow()
-                        scan_request['end_timestamp'] = end_time
-                        self._complete_scan(scan_request, message)
+                self.handle_scans()
         finally:
             self._clean_up()
 

@@ -58,6 +58,27 @@
     ], 
     "name" : "log_levels"
 },
+{
+    "data" : [
+        {
+            "label" : "OpenStack",
+            "value" : "OpenStack"
+        },
+        {
+            "label" : "Kubernetes",
+            "value" : "Kubernetes"
+        },
+        {
+            "label" : "VMware",
+            "value" : "VMware"
+        },
+        {
+            "label" : "Bare-metal",
+            "value" : "Bare-metal"
+        }
+    ],
+    "name" : "environment_types"
+},
 { 
     "data" : [
         {
@@ -530,6 +551,10 @@
             "label" : "10239"
         },
         {
+            "label" : "10307", 
+            "value" : "10307"
+        },
+        {
             "value" : "10918",
             "label" : "10918"
         },
@@ -727,6 +752,14 @@
         {
             "label" : "switch", 
             "value" : "switch"
+        },
+        {
+            "value" : "namespace",
+            "label" : "namespace"
+        },
+        {
+            "value" : "namespaces_folder",
+            "label" : "namespaces_folder"
         }
     ]
 },

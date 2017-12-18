@@ -11,9 +11,11 @@ import json
 
 from discover.fetchers.api.api_access import ApiAccess
 from discover.fetchers.db.db_access import DbAccess
+from discover.fetchers.cli.cli_access import CliAccess
+from utils.ssh_connection import SshError
 
 
-class ApiFetchProjectHosts(ApiAccess, DbAccess):
+class ApiFetchProjectHosts(ApiAccess, DbAccess, CliAccess):
     def __init__(self):
         super(ApiFetchProjectHosts, self).__init__()
 
@@ -107,6 +109,7 @@ class ApiFetchProjectHosts(ApiAccess, DbAccess):
             s = services["nova-compute"]
             if s["available"] and s["active"]:
                 self.add_host_type(doc, "Compute", az['zoneName'])
+        self.fetch_host_os_details(doc)
         return doc
 
     # fetch more details of network nodes from neutron DB agents table
@@ -121,7 +124,12 @@ class ApiFetchProjectHosts(ApiAccess, DbAccess):
         """.format(self.neutron_db)
         results = self.get_objects_list(query, "")
         for r in results:
-            host = hosts[r["host"]]
+            host = r["host"]
+            if host not in hosts:
+                self.log.error("host from agents table not in hosts list: {}"
+                               .format(host))
+                continue
+            host = hosts[host]
             host["config"] = json.loads(r["configurations"])
             self.add_host_type(host, "Network", '')
 
@@ -136,9 +144,33 @@ class ApiFetchProjectHosts(ApiAccess, DbAccess):
         for db_row in results:
             doc.update(db_row)
 
-    def add_host_type(self, doc, type, zone):
-        if not type in doc["host_type"]:
-            doc["host_type"].append(type)
-            if type == 'Compute':
+    @staticmethod
+    def add_host_type(doc, host_type, zone):
+        if host_type not in doc["host_type"]:
+            doc["host_type"].append(host_type)
+            if host_type == 'Compute':
                 doc['zone'] = zone
                 doc['parent_id'] = zone
+
+    def fetch_host_os_details(self, doc):
+        cmd = 'cat /etc/os-release && echo "ARCHITECURE=`arch`"'
+        try:
+            lines = self.run_fetch_lines(cmd, ssh_to_host=doc['host'])
+        except SshError as e:
+            self.log.error('{}: {}', cmd, str(e))
+        os_attributes = {}
+        attributes_to_fetch = {
+            'NAME': 'name',
+            'VERSION': 'version',
+            'ID': 'ID',
+            'ID_LIKE': 'ID_LIKE',
+            'ARCHITECURE': 'architecure'
+        }
+        for attr in attributes_to_fetch:
+            matches = [l for l in lines if l.startswith(attr + '=')]
+            if matches:
+                line = matches[0]
+                attr_name = attributes_to_fetch[attr]
+                os_attributes[attr_name] = line[line.index('=')+1:].strip('"')
+        if os_attributes:
+            doc['OS'] = os_attributes

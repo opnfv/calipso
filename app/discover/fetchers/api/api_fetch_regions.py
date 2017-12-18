@@ -13,7 +13,7 @@ from discover.fetchers.api.api_access import ApiAccess
 class ApiFetchRegions(ApiAccess):
     def __init__(self):
         super(ApiFetchRegions, self).__init__()
-        self.endpoint = ApiAccess.base_url
+        self.endpoint = self.base_url
 
     def get(self, regions_folder_id):
         token = self.v2_auth_pwd(self.admin_project)

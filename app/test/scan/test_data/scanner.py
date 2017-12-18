@@ -17,6 +17,19 @@ METADATA = {
     "scanners_package": "discover",
     "scanners": {}
 }
+LINK_FINDERS_METADATA = {
+    "finders_package": "discover.link_finders",
+    "base_finder": "FindLinks",
+    "link_finders": [
+        "FindLinksForInstanceVnics",
+        "FindLinksForOteps",
+        "FindLinksForVconnectors",
+        "FindLinksForVedges",
+        "FindLinksForVserviceVnics",
+        "FindLinksForPnics",
+        "FindImplicitLinks"
+    ]
+}
 
 TYPE_TO_FETCH = {
     "type": "host_pnic",

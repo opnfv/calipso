@@ -36,7 +36,8 @@
           "types_name": "regions",
           "parent_type": "environment"
         },
-        "children_scanner": "ScanRegionsRoot"
+        "children_scanner": "ScanRegionsRoot",
+        "environment_condition": {"environment_type": "OpenStack"}
       },
       {
         "type": "projects_folder",
@@ -45,7 +46,20 @@
           "types_name": "projects",
           "parent_type": "environment"
         },
-        "children_scanner": "ScanProjectsRoot"
+        "children_scanner": "ScanProjectsRoot",
+        "environment_condition": {"environment_type": "OpenStack"}
+      },
+      {
+        "type": "namespaces_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "namespaces",
+          "parent_type": "environment"
+        },
+        "children_scanner": "ScanNamespacesRoot",
+        "environment_condition": {
+          "environment_type": "Kubernetes"
+        }
       }
     ],
     "ScanHostNetworkAgentsRoot": [
@@ -376,6 +390,13 @@
       {
         "type": "vservice",
         "fetcher": "CliFetchHostVservices"
+      }
+    ],
+    "ScanNamespacesRoot": [
+      {
+        "type": "namespace",
+        "fetcher": "KubeFetchNamespaces",
+        "environment_condition": {"environment_type": "Kubernetes"}
       }
     ]
   }

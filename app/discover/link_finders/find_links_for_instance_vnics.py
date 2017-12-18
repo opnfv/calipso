@@ -49,6 +49,8 @@ class FindLinksForInstanceVnics(FindLinks):
                 network_id = net['network']['id']
                 v['network'] = network_id
                 self.inv.set(v)
+                if self.inv.monitoring_setup_manager:
+                    self.inv.monitoring_setup_manager.create_setup(instance)
                 break
         state = "up"  # TBD
         link_weight = 0  # TBD

@@ -12,11 +12,15 @@
 # handle monitoring events
 
 import argparse
+import datetime
 import json
 import sys
 
+from discover.configuration import Configuration
+from monitoring.handlers.monitoring_check_handler import MonitoringCheckHandler
 from utils.inventory_mgr import InventoryMgr
 from utils.mongo_access import MongoAccess
+from utils.special_char_converter import SpecialCharConverter
 from utils.util import ClassResolver
 
 
@@ -32,7 +36,9 @@ class Monitor:
         MongoAccess.set_config_file(self.args.mongo_config)
         self.inv = InventoryMgr()
         self.inv.set_collections(self.args.inventory)
+        self.configuration = Configuration()
         self.input_text = None
+        self.converter = SpecialCharConverter()
 
     def get_args(self):
         parser = argparse.ArgumentParser()
@@ -125,12 +131,82 @@ class Monitor:
         return handler
 
     def get_handler(self, check_type, obj_type):
-        basic_handling_types = ['vedge', 'vservice']
+        basic_handling_types = ['instance', 'vedge', 'vservice', 'vconnector']
         if obj_type not in basic_handling_types:
             return self.get_handler_by_type(check_type, obj_type)
         from monitoring.handlers.basic_check_handler \
             import BasicCheckHandler
         return BasicCheckHandler(self.args)
+
+    def check_link_interdependency_for(self,
+                                       object_id: str,
+                                       from_type: str=None,
+                                       to_type: str=None):
+        if from_type is not None and to_type is not None or \
+                from_type is None and to_type is None:
+            raise ValueError('check_link_interdependency: '
+                             'supply one of from_type/to_type')
+        obj_id = self.converter.decode_special_characters(object_id)
+        obj = self.inv.get_by_id(environment=self.args.env, item_id=obj_id)
+        if not obj:
+            self.inv.log.error('check_link_interdependency: '
+                               'failed to find object with ID: {}'
+                               .format(object_id))
+            return
+        if 'status' not in obj:
+            return
+        id_attr = 'source_id' if from_type is None else 'target_id'
+        link_type = '{}-{}'.format(
+            from_type if from_type is not None else obj['type'],
+            to_type if to_type is not None else obj['type'])
+        condition = {
+            'environment': self.args.env,
+            'link_type': link_type,
+            id_attr: obj_id
+        }
+        link = self.inv.find_one(search=condition, collection='links')
+        if not link:
+            self.inv.log.error('check_link_interdependency: '
+                               'failed to find {} link with {}: {}'
+                               .format(link_type, id_attr, obj_id))
+            return
+        other_id_attr = '{}_id' \
+            .format('source' if from_type is not None else 'target')
+        other_obj = self.inv.get_by_id(environment=self.args.env,
+                                       item_id=link[other_id_attr])
+        if not other_obj:
+            self.inv.log.error('check_link_interdependency: '
+                               'failed to find {} with ID: {} (link type: {})'
+                               .format(other_id_attr, link[other_id_attr],
+                                       link_type))
+            return
+        if 'status' not in other_obj:
+            return
+        status = 'Warning'
+        if obj['status'] == 'OK' and other_obj['status'] == 'OK':
+            status = 'OK'
+        elif obj['status'] == 'OK' and other_obj['status'] == 'OK':
+            status = 'OK'
+        link['status'] = status
+        time_format = MonitoringCheckHandler.TIME_FORMAT
+        timestamp1 = obj['status_timestamp']
+        t1 = datetime.datetime.strptime(timestamp1, time_format)
+        timestamp2 = other_obj['status_timestamp']
+        t2 = datetime.datetime.strptime(timestamp2, time_format)
+        timestamp = max(t1, t2)
+        link['status_timestamp'] = datetime.datetime.strftime(timestamp,
+                                                              time_format)
+        self.inv.set(link, self.inv.collections['links'])
+
+    def check_link_interdependency(self, object_id: str, object_type: str):
+        conf = self.configuration.get_env_config()
+        if 'OVS' in conf['mechanism_drivers']:
+            if object_type == 'vedge':
+                self.check_link_interdependency_for(object_id,
+                                                    to_type='host_pnic')
+            if object_type == 'host_pnic':
+                self.check_link_interdependency_for(object_id,
+                                                    from_type='vedge')
 
     def process_input(self):
         check_result_full = json.loads(self.input_text)
@@ -142,14 +218,19 @@ class Monitor:
             monitor.find_object_type_and_id(name)
         if 'environment' in check_client:
             self.args.env = check_client['environment']
+        else:
+            raise ValueError('Check client should contain environment name')
+        self.configuration.use_env(self.args.env)
 
         check_handler = self.get_handler(check_type, object_type)
         if check_handler:
             check_handler.handle(object_id, check_result)
+        self.check_link_interdependency(object_id, object_type)
 
     def process_check_result(self):
         self.read_input()
         self.process_input()
+
 
 monitor = Monitor()
 monitor.process_check_result()

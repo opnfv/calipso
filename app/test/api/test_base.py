@@ -34,8 +34,10 @@ class TestBase(TestCase):
             self.original_auth_method = AuthenticationMiddleware.process_request
             AuthenticationMiddleware.process_request = mock_auth_method
 
-        ResponderBase.get_constants_by_name = MagicMock(side_effect=
-                                                        lambda name: base.CONSTANTS_BY_NAMES[name])
+        ResponderBase.get_constants_by_name = MagicMock(
+            side_effect=lambda name: base.CONSTANTS_BY_NAMES[name]
+        )
+
         # mock mongo access
         MongoAccess.mongo_connect = MagicMock()
         MongoAccess.db = MagicMock()
@@ -47,8 +49,8 @@ class TestBase(TestCase):
         log_level = 'debug'
         self.app = App(log_level=log_level).get_app()
 
-    def validate_get_request(self, url, params={}, headers=None, mocks={},
-                             side_effects={},
+    def validate_get_request(self, url, params=None, headers=None, mocks=None,
+                             side_effects=None,
                              expected_code=base.SUCCESSFUL_CODE,
                              expected_response=None):
         self.validate_request("GET", url, params, headers, "",
@@ -59,25 +61,27 @@ class TestBase(TestCase):
     def validate_request(self, action, url, params, headers, body,
                          mocks, side_effects, expected_code,
                          expected_response):
-        for mock_method, mock_data in mocks.items():
-            mock_method.return_value = mock_data
+        if mocks:
+            for mock_method, mock_data in mocks.items():
+                mock_method.return_value = mock_data
 
-        for mock_method, side_effect in side_effects.items():
-            mock_method.side_effect = side_effect
+        if side_effects:
+            for mock_method, side_effect in side_effects.items():
+                mock_method.side_effect = side_effect
 
         result = self.simulate_request(action, url, params=params, headers=headers, body=body)
         self.assertEqual(result.status, expected_code)
         if expected_response:
             self.assertEqual(result.json, expected_response)
 
-    def validate_post_request(self, url, headers={}, body="", mocks={},
-                              side_effects={},
+    def validate_post_request(self, url, headers=None, body="", mocks=None,
+                              side_effects=None,
                               expected_code=base.CREATED_CODE, expected_response=None):
         self.validate_request("POST", url, {}, headers, body, mocks, side_effects,
                               expected_code, expected_response)
 
-    def validate_delete_request(self, url, params={}, headers={}, mocks={},
-                                side_effects={},
+    def validate_delete_request(self, url, params=None, headers=None, mocks=None,
+                                side_effects=None,
                                 expected_code=base.SUCCESSFUL_CODE, expected_response=None):
         self.validate_request("DELETE", url, params, headers, "",
                               mocks, side_effects,

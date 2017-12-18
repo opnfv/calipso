@@ -19,6 +19,7 @@ class FindLinks(Fetcher):
     def create_link(self, env, source, source_id, target, target_id,
                     link_type, link_name, state, link_weight,
                     host=None, switch=None,
+                    implicit=False,
                     extra_attributes=None):
         if extra_attributes is None:
             extra_attributes = {}
@@ -27,9 +28,11 @@ class FindLinks(Fetcher):
         link = self.inv.create_link(env,
                                     source, source_id, target, target_id,
                                     link_type, link_name, state, link_weight,
+                                    implicit=implicit,
                                     source_label=source_label,
                                     target_label=target_label,
                                     host=host, switch=switch,
                                     extra_attributes=extra_attributes)
         if self.inv.monitoring_setup_manager:
             self.inv.monitoring_setup_manager.create_setup(link)
+        return link
