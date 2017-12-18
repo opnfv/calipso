@@ -21,31 +21,53 @@ class CliqueTypes(ResponderBase):
         "focal_point_type": True,
         "link_types": True,
         "environment": True,
-        "name": True
+        "name": True,
+        "distribution": True,
+        "distribution_version": True,
+        "mechanism_drivers": True,
+        "type_drivers": True,
+        "use_implicit_links": True
     }
     RESERVED_NAMES = ["ANY"]
+
+    def __init__(self):
+        super().__init__()
+        self.focal_point_types = self.get_constants_by_name("object_types")
+        self.link_types = self.get_constants_by_name("link_types")
+        self.mechanism_drivers = self.get_constants_by_name("mechanism_drivers")
+        self.type_drivers = self.get_constants_by_name("type_drivers")
 
     def on_get(self, req, resp):
         self.log.debug("Getting clique types")
 
         filters = self.parse_query_params(req)
-        focal_point_types = self.get_constants_by_name("object_types")
-        link_types = self.get_constants_by_name("link_types")
         filters_requirements = {
-            'env_name': self.require(str, mandatory=True),
+            'env_name': self.require(str),
             'id': self.require(ObjectId, convert_to_type=True),
+            'distribution': self.require(str),
+            'distribution_version': self.require(str),
+            'mechanism_drivers': self.require(str,
+                                              validate=DataValidate.LIST,
+                                              requirement=self.mechanism_drivers),
+            'type_drivers': self.require(str,
+                                         validate=DataValidate.LIST,
+                                         requirement=self.type_drivers),
             'focal_point_type': self.require(str,
                                              validate=DataValidate.LIST,
-                                             requirement=focal_point_types),
+                                             requirement=self.focal_point_types),
             'link_type': self.require([list, str],
                                       validate=DataValidate.LIST,
-                                      requirement=link_types),
+                                      requirement=self.link_types),
             'name': self.require(str),
             'page': self.require(int, convert_to_type=True),
             'page_size': self.require(int, convert_to_type=True)
         }
 
         self.validate_query_data(filters, filters_requirements)
+        if 'distribution_version' in filters and 'distribution' not in filters:
+            self.bad_request("Distribution version without distribution "
+                             "is not allowed")
+
         page, page_size = self.get_pagination(filters)
         query = self.build_query(filters)
         if self.ID in query:
@@ -64,40 +86,46 @@ class CliqueTypes(ResponderBase):
         error, clique_type = self.get_content_from_request(req)
         if error:
             self.bad_request(error)
-        focal_point_types = self.get_constants_by_name("object_types")
-        link_types = self.get_constants_by_name("link_types")
+
         clique_type_requirements = {
-            'environment': self.require(str, mandatory=True),
+            'environment': self.require(str),
             'focal_point_type': self.require(str,
                                              mandatory=True,
                                              validate=DataValidate.LIST,
-                                             requirement=focal_point_types),
+                                             requirement=self.focal_point_types),
             'link_types': self.require(list,
                                        mandatory=True,
                                        validate=DataValidate.LIST,
-                                       requirement=link_types),
-            'name': self.require(str, mandatory=True)
+                                       requirement=self.link_types),
+            'name': self.require(str, mandatory=True),
+            'distribution': self.require(str),
+            'distribution_version': self.require(str),
+            'mechanism_drivers': self.require(str,
+                                              validate=DataValidate.LIST,
+                                              requirement=self.mechanism_drivers),
+            'type_drivers': self.require(str,
+                                         validate=DataValidate.LIST,
+                                         requirement=self.type_drivers),
+            'use_implicit_links': self.require(bool)
         }
 
         self.validate_query_data(clique_type, clique_type_requirements)
-
-        env_name = clique_type['environment']
-        if not self.check_environment_name(env_name):
-            self.bad_request("Unknown environment: {}".format(env_name))
-        elif env_name.upper() in self.RESERVED_NAMES:
-            self.bad_request("Environment name '{}' is reserved".format(env_name))
+        self.validate_required_fields(clique_type)
+        self.validate_focal_point_type(clique_type)
+        self.validate_duplicate_configuration(clique_type)
 
         self.write(clique_type, self.COLLECTION)
         self.set_successful_response(resp,
-                                     {"message": "created a new clique_type "
-                                                 "for environment {0}"
-                                                 .format(env_name)},
+                                     {"message": "created a new clique_type"},
                                      "201")
 
     def build_query(self, filters):
         query = {}
-        filters_keys = ['name', 'focal_point_type']
+        filters_keys = ['name', 'focal_point_type',
+                        'distribution', 'distribution_version',
+                        'mechanism_drivers', 'type_drivers']
         self.update_query_with_filters(filters, filters_keys, query)
+
         link_types = filters.get('link_type')
         if link_types:
             if type(link_types) != list:
@@ -107,5 +135,71 @@ class CliqueTypes(ResponderBase):
         if _id:
             query[self.ID] = _id
 
-        query['environment'] = filters['env_name']
+        env_name = filters.get('env_name')
+        if env_name:
+            query['environment'] = filters['env_name']
         return query
+
+    def validate_required_fields(self, clique_type):
+        env_name = clique_type.get('environment')
+        distribution = clique_type.get('distribution')
+        distribution_version = clique_type.get('distribution_version')
+        if distribution_version and not distribution:
+            self.bad_request("Distribution version without distribution "
+                             "is not allowed")
+
+        configuration_specified = ((distribution and distribution_version)
+                                   or clique_type.get('mechanism_drivers')
+                                   or clique_type.get('type_drivers'))
+        if env_name:
+            if configuration_specified:
+                self.bad_request("Either environment or configuration "
+                                 "should be specified (not both).")
+
+            if not self.check_environment_name(env_name):
+                self.bad_request("Unknown environment: {}".format(env_name))
+            elif env_name.upper() in self.RESERVED_NAMES:
+                self.bad_request(
+                    "Environment name '{}' is reserved".format(env_name))
+        elif not configuration_specified:
+            self.bad_request("Either environment or configuration "
+                             "should be specified.")
+
+    def validate_focal_point_type(self, clique_type):
+        focal_point_type = clique_type['focal_point_type']
+        environment = clique_type.get('environment')
+        if environment:
+            env_match = self.read(
+                matches={"environment": environment,
+                         "focal_point_type": focal_point_type},
+                collection="clique_types"
+            )
+            if env_match:
+                self.bad_request("Clique type with focal point {} "
+                                 "is already registered for environment {}"
+                                 .format(focal_point_type, environment))
+        else:
+            pass
+
+    def validate_duplicate_configuration(self, clique_type):
+        if clique_type.get('environment'):
+            return
+
+        search = {'focal_point_type': clique_type['focal_point_type']}
+        for field in ['distribution', 'mechanism_drivers', 'type_drivers']:
+            value = clique_type.get(field)
+            if value:
+                search[field] = value
+                if field == 'distribution':
+                    dv = clique_type.get('distribution_version')
+                    if dv:
+                        search['distribution_version'] = dv
+                # Got a match with higher score, no need to look further
+                break
+
+        env_match = self.read(matches=search,
+                              collection="clique_types")
+        if env_match:
+            self.bad_request("Clique type with configuration '{}' "
+                             "is already registered"
+                             .format(search))

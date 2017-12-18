@@ -1,4 +1,3 @@
-#!/bin/bash
 ###############################################################################
 # Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems)   #
 # and others                                                                  #
@@ -8,11 +7,22 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-set -o errexit
-set -o nounset
-set -o pipefail
-PYTHONPATH=$PWD/app python3 -m unittest discover -s app/test/api
-PYTHONPATH=$PWD/app python3 -m unittest discover -s app/test/event_based_scan
-PYTHONPATH=$PWD/app python3 -m unittest discover -s app/test/fetch
-PYTHONPATH=$PWD/app python3 -m unittest discover -s app/test/scan
-PYTHONPATH=$PWD/app python3 -m unittest discover -s app/test/utils
+from kubernetes.client import Configuration as KubConf, CoreV1Api
+
+from utils.api_access_base import ApiAccessBase
+
+
+class KubeAccess(ApiAccessBase):
+
+    def __init__(self, config=None):
+        super().__init__('Kubernetes', config)
+        self.base_url = 'https://{}:{}'.format(self.host, self.port)
+        self.bearer_token = self.api_config.get('token', '')
+        conf = KubConf()
+        conf.host = self.base_url
+        conf.user = self.api_config.get('user')
+        conf.api_key_prefix['authorization'] = 'Bearer'
+        conf.api_key['authorization'] = self.bearer_token
+        conf.verify_ssl = False
+        self.api = CoreV1Api()
+

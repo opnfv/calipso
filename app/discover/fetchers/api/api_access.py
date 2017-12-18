@@ -12,21 +12,18 @@ import re
 import requests
 import time
 
-from discover.configuration import Configuration
-from discover.fetcher import Fetcher
+from utils.api_access_base import ApiAccessBase
 from utils.string_utils import jsonify
 
 
-class ApiAccess(Fetcher):
+class ApiAccess(ApiAccessBase):
+
+    ADMIN_PORT = "35357"
+
     subject_token = None
     initialized = False
     regions = {}
-    config = None
-    api_config = None
 
-    host = ""
-    base_url = ""
-    admin_token = ""
     tokens = {}
     admin_endpoint = ""
     admin_project = None
@@ -38,28 +35,19 @@ class ApiAccess(Fetcher):
 
     # identity API v2 version with admin token
     def __init__(self, config=None):
-        super(ApiAccess, self).__init__()
-        if ApiAccess.initialized:
+        super().__init__('OpenStack', config)
+        self.base_url = "http://" + self.host + ":" + self.port
+        if self.initialized:
             return
-        ApiAccess.config = {'OpenStack': config} if config else Configuration()
-        ApiAccess.api_config = ApiAccess.config.get("OpenStack")
-        host = ApiAccess.api_config.get("host", "")
-        ApiAccess.host = host
-        port = ApiAccess.api_config.get("port", "")
-        if not (host and port):
-            raise ValueError('Missing definition of host or port ' +
-                             'for OpenStack API access')
-        ApiAccess.base_url = "http://" + host + ":" + port
-        ApiAccess.admin_token = ApiAccess.api_config.get("admin_token", "")
-        ApiAccess.admin_project = ApiAccess.api_config.get("admin_project",
-                                                           "admin")
-        ApiAccess.admin_endpoint = "http://" + host + ":" + "35357"
+        ApiAccess.admin_project = self.api_config.get("admin_project", "admin")
+        ApiAccess.admin_endpoint = "http://" + self.host + ":" + self.ADMIN_PORT
 
         token = self.v2_auth_pwd(ApiAccess.admin_project)
         if not token:
             raise ValueError("Authentication failed. Failed to obtain token")
         else:
             self.subject_token = token
+            self.initialized = True
 
     @staticmethod
     def parse_time(time_str):
@@ -95,9 +83,9 @@ class ApiAccess(Fetcher):
         subject_token = self.get_existing_token(project_id)
         if subject_token:
             return subject_token
-        req_url = ApiAccess.base_url + "/v2.0/tokens"
+        req_url = self.base_url + "/v2.0/tokens"
         response = requests.post(req_url, json=post_body, headers=headers,
-                                 timeout=5)
+                                 timeout=self.CONNECT_TIMEOUT)
         response = response.json()
         ApiAccess.auth_response[project_id] = response
         if 'error' in response:
@@ -120,8 +108,8 @@ class ApiAccess(Fetcher):
         return token_details
 
     def v2_auth_pwd(self, project):
-        user = ApiAccess.api_config["user"]
-        pwd = ApiAccess.api_config["pwd"]
+        user = self.api_config["user"]
+        pwd = self.api_config["pwd"]
         post_body = {
             "auth": {
                 "passwordCredentials": {
@@ -148,23 +136,6 @@ class ApiAccess(Fetcher):
             auth_response = ApiAccess.auth_response.get('admin', {})
         return auth_response
 
-    def get_rel_url(self, relative_url, headers):
-        req_url = ApiAccess.base_url + relative_url
-        return self.get_url(req_url, headers)
-
-    def get_url(self, req_url, headers):
-        response = requests.get(req_url, headers=headers)
-        if response.status_code != requests.codes.ok:
-            # some error happened
-            if "reason" in response:
-                msg = ", reason: {}".format(response.reason)
-            else:
-                msg = ", response: {}".format(response.text)
-            self.log.error("req_url: {} {}".format(req_url, msg))
-            return None
-        ret = response.json()
-        return ret
-
     def get_region_url(self, region_name, service):
         if region_name not in self.regions:
             return None
@@ -174,7 +145,7 @@ class ApiAccess(Fetcher):
             return None
         orig_url = s["adminURL"]
         # replace host name with the host found in config
-        url = re.sub(r"^([^/]+)//[^:]+", r"\1//" + ApiAccess.host, orig_url)
+        url = re.sub(r"^([^/]+)//[^:]+", r"\1//" + self.host, orig_url)
         return url
 
     # like get_region_url(), but remove everything starting from the "/v2"

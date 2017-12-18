@@ -47,7 +47,6 @@ class ClassResolver:
         class_name = ''.join(name_parts)
         return class_name
 
-
     @staticmethod
     def get_fully_qualified_class(class_name: str = None,
                                   package_name: str = "discover",
@@ -58,8 +57,9 @@ class ClassResolver:
         module_name = ".".join(module_parts)
         try:
             class_module = importlib.import_module(module_name)
-        except ImportError:
-            raise ValueError('could not import module {}'.format(module_name))
+        except ImportError as e:
+            raise ValueError('could not import module {}: {}'
+                             .format(module_name, str(e)))
 
         clazz = getattr(class_module, class_name)
         return clazz
@@ -74,7 +74,8 @@ class ClassResolver:
             class_name = ClassResolver.get_class_name_by_module(module_name)
         if class_name in ClassResolver.instances:
             return 'instance', ClassResolver.instances[class_name]
-        clazz = ClassResolver.get_fully_qualified_class(class_name, package_name,
+        clazz = ClassResolver.get_fully_qualified_class(class_name,
+                                                        package_name,
                                                         module_name)
         return 'class', clazz
 

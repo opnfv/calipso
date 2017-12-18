@@ -18,7 +18,7 @@ class ApiFetchHostInstances(ApiAccess, DbAccess, metaclass=Singleton):
     def __init__(self):
         super(ApiFetchHostInstances, self).__init__()
         self.inv = InventoryMgr()
-        self.endpoint = ApiAccess.base_url.replace(":5000", ":8774")
+        self.endpoint = self.base_url.replace(":5000", ":8774")
         self.projects = None
         self.db_fetcher = DbFetchInstances()
 

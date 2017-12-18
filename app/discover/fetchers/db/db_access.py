@@ -38,8 +38,7 @@ class DbAccess(Fetcher):
     conn = None
     query_count_per_con = 0
 
-    # connection timeout set to 30 seconds,
-    # due to problems over long connections
+    # connection timeout set to 5 seconds
     TIMEOUT = 5
 
     def __init__(self, mysql_config=None):
@@ -47,6 +46,9 @@ class DbAccess(Fetcher):
         self.config = {'mysql': mysql_config} if mysql_config \
             else Configuration()
         self.conf = self.config.get("mysql")
+        self.connect_timeout = int(self.conf['connect_timeout']) \
+            if 'connect_timeout' in self.conf \
+            else self.TIMEOUT
         self.connect_to_db()
         self.neutron_db = self.get_neutron_db_name()
 
@@ -55,16 +57,18 @@ class DbAccess(Fetcher):
             return
         try:
             connector = mysql.connector
-            DbAccess.conn = connector.connect(host=_host, port=_port,
-                                              connection_timeout=self.TIMEOUT,
-                                              user=_user,
-                                              password=_pwd,
-                                              database=_database,
-                                              raise_on_warnings=True)
+            conn = connector.connect(host=_host, port=_port,
+                                     connection_timeout=self.connect_timeout,
+                                     user=_user,
+                                     password=_pwd,
+                                     database=_database,
+                                     raise_on_warnings=True)
+            DbAccess.conn = conn
             DbAccess.conn.ping(True)  # auto-reconnect if necessary
         except Exception as e:
-            self.log.critical("failed to connect to MySQL DB: {}"
-                              .format(str(e)))
+            msg = "failed to connect to MySQL DB: {}".format(str(e))
+            self.log.critical(msg)
+            raise ScanError(msg)
             return
         DbAccess.query_count_per_con = 0
 
@@ -93,8 +97,11 @@ class DbAccess(Fetcher):
             DbAccess.conn = None
         self.conf = self.config.get("mysql")
         cnf = self.conf
+        pwd = cnf.get('pwd', '')
+        if not pwd:
+            raise ScanError('db_access: attribute pwd is missing')
         self.db_connect(cnf.get('host', ''), cnf.get('port', ''),
-                        cnf.get('user', ''), cnf.get('pwd', ''),
+                        cnf.get('user', ''), pwd,
                         cnf.get('schema', 'nova'))
 
     @with_cursor

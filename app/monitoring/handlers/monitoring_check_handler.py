@@ -21,13 +21,13 @@ from utils.logging.full_logger import FullLogger
 from utils.special_char_converter import SpecialCharConverter
 from utils.string_utils import stringify_datetime
 
-TIME_FORMAT = '%Y-%m-%d %H:%M:%S %Z'
 SOURCE_SYSTEM = 'Sensu'
 ERROR_LEVEL = ['info', 'warn', 'error']
 
 
 class MonitoringCheckHandler(SpecialCharConverter):
     STATUS_LABEL = ['OK', 'Warning', 'Error']
+    TIME_FORMAT = '%Y-%m-%d %H:%M:%S %Z'
 
     def __init__(self, args):
         super().__init__()
@@ -61,7 +61,7 @@ class MonitoringCheckHandler(SpecialCharConverter):
             else status
         if status_text:
             doc['status_text'] = status_text
-        doc['status_timestamp'] = strftime(TIME_FORMAT, timestamp)
+        doc['status_timestamp'] = strftime(self.TIME_FORMAT, timestamp)
         if 'link_type' in doc:
             self.inv.write_link(doc)
         else:
