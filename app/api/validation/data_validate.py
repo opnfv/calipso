@@ -75,7 +75,9 @@ class DataValidate:
 
     def validate_data(self, data, requirements,
                       additional_key_re=None,
-                      can_be_empty_keys=[]):
+                      can_be_empty_keys=None):
+        if can_be_empty_keys is None:
+            can_be_empty_keys = []
 
         illegal_keys = [key for key in data.keys()
                         if key not in requirements.keys()]

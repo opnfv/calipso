@@ -36,8 +36,10 @@ class MongoAccess(DictNamingConverter):
 
     def __init__(self):
         super().__init__()
-        self.log_file = os.path.join(FileLogger.LOG_DIRECTORY,
-                                     MongoAccess.LOG_FILENAME)
+        log_dir = FileLogger.LOG_DIRECTORY \
+            if os.path.isdir(FileLogger.LOG_DIRECTORY) \
+            else os.path.abspath('.')
+        self.log_file = os.path.join(log_dir, MongoAccess.LOG_FILENAME)
 
         try:
             self.log = FileLogger(self.log_file)

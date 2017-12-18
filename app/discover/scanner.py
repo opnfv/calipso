@@ -26,6 +26,10 @@ from utils.ssh_connection import SshError
 
 
 class Scanner(Fetcher):
+
+    ENV_TYPE_OPENSTACK = 'OpenStack'
+    ENV_TYPE_KUBERNETES = 'Kubernetes'
+
     config = None
     environment = None
     env = None
@@ -82,16 +86,21 @@ class Scanner(Fetcher):
 
     def check_type_env(self, type_to_fetch):
         # check if type is to be run in this environment
-        if "environment_condition" not in type_to_fetch:
-            return True
-        env_cond = type_to_fetch.get("environment_condition", {})
+        basic_cond = {'environment_type': self.ENV_TYPE_OPENSTACK}
+        env_cond = type_to_fetch.get("environment_condition", {}) \
+            if "environment_condition" in type_to_fetch \
+            else basic_cond
         if not env_cond:
-            return True
+            env_cond = basic_cond
+        if 'environment_type' not in env_cond:
+            env_cond.update(basic_cond)
         if not isinstance(env_cond, dict):
             self.log.warn('illegal environment_condition given '
                           'for type {}'.format(type_to_fetch['type']))
             return True
         conf = self.config.get_env_config()
+        if 'environment_type' not in conf:
+            conf.update(basic_cond)
         for attr, required_val in env_cond.items():
             if attr == "mechanism_drivers":
                 if "mechanism_drivers" not in conf:
@@ -120,6 +129,9 @@ class Scanner(Fetcher):
 
         # get Fetcher instance
         fetcher = type_to_fetch["fetcher"]
+        if not isinstance(fetcher, Fetcher):
+            type_to_fetch['fetcher'] = fetcher()  # make it an instance
+            fetcher = type_to_fetch["fetcher"]
         fetcher.set_env(self.get_env())
 
         # get children_scanner instance
@@ -254,7 +266,6 @@ class Scanner(Fetcher):
 
     def load_link_finders_metadata(self):
         parser = FindLinksMetadataParser()
-        conf = self.config.get_env_config()
         finders_file = os.path.join(self.get_run_app_path(),
                                     'config',
                                     FindLinksMetadataParser.FINDERS_FILE)

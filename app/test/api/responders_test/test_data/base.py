@@ -16,14 +16,14 @@ UNAUTHORIZED_CODE = "401"
 CREATED_CODE = "201"
 
 ENV_NAME = "Mirantis-Liberty-API"
-UNKNOWN_ENV = "Unkown-Environment"
+UNKNOWN_ENV = "Unknown-Environment"
 NON_INT_PAGE = 1.4
 INT_PAGE = 1
 NON_INT_PAGESIZE = 2.4
 INT_PAGESIZE = 2
 
 WRONG_LINK_TYPE = "instance-host"
-CORRECT_LINK_TYPE= "instance-vnic"
+CORRECT_LINK_TYPE = "instance-vnic"
 
 WRONG_LINK_STATE = "wrong"
 CORRECT_LINK_STATE = "up"
@@ -41,7 +41,7 @@ WRONG_TYPE_DRIVER = "wrong_type"
 CORRECT_TYPE_DRIVER = "local"
 
 WRONG_MECHANISM_DRIVER = "wrong-mechanism-dirver"
-CORRECT_MECHANISM_DRIVER = "ovs"
+CORRECT_MECHANISM_DRIVER = "OVS"
 
 WRONG_LOG_LEVEL = "wrong-log-level"
 CORRECT_LOG_LEVEL = "critical"
@@ -71,16 +71,32 @@ NON_DICT_OBJ = ""
 CONSTANTS_BY_NAMES = {
     "link_types": [
         "instance-vnic",
-        "otep-vconnector",
-        "otep-host_pnic",
-        "host_pnic-network",
-        "vedge-otep",
+        "vnic-instance",
         "vnic-vconnector",
-        "vconnector-host_pnic",
+        "vconnector-vnic",
         "vconnector-vedge",
-        "vnic-vedge",
+        "vedge-vconnector",
         "vedge-host_pnic",
-        "vservice-vnic"
+        "host_pnic-vedge",
+        "host_pnic-network",
+        "network-host_pnic",
+        "vedge-otep",
+        "otep-vedge",
+        "otep-vconnector",
+        "vconnector-otep",
+        "otep-host_pnic",
+        "host_pnic-otep",
+        "vconnector-host_pnic",
+        "host_pnic-vconnector",
+        "vnic-vedge",
+        "vedge-vnic",
+        "vservice-vnic",
+        "vnic-vservice",
+        "switch_pnic-host_pnic",
+        "host_pnic-switch_pnic",
+        "switch_pnic-switch_pnic",
+        "switch_pnic-switch",
+        "switch-switch_pnic"
     ],
     "link_states": [
         "up",
@@ -117,9 +133,9 @@ CONSTANTS_BY_NAMES = {
         "flat"
     ],
     "mechanism_drivers": [
-        "ovs",
-        "vpp",
-        "LinuxBridge",
+        "OVS",
+        "VPP",
+        "LXB",
         "Arista",
         "Nexus"
     ],
@@ -155,6 +171,10 @@ CONSTANTS_BY_NAMES = {
         "Mirantis",
         "RDO"
     ],
+    "distribution_versions": [
+        "8.0",
+        "9.0"
+    ],
     "environment_operational_status": [
         "stopped",
         "running",
@@ -168,6 +188,30 @@ CONSTANTS_BY_NAMES = {
     ],
     "environment_monitoring_types": [
        "Sensu"
+    ],
+    "scans_statuses": [
+        "draft",
+        "pending",
+        "running",
+        "completed",
+        "completed_with_errors",
+        "failed",
+        "aborted"
+    ],
+    "configuration_targets": [
+        "AMQP",
+        "CLI",
+        "ACI",
+        "mysql",
+        "OpenStack",
+        "Monitoring",
+        "Kubernetes"
+    ],
+    "environment_types": [
+        "OpenStack",
+        "Kubernetes",
+        "VMware",
+        "Bare-metal"
     ]
 }
 
@@ -175,7 +219,8 @@ CONSTANTS_BY_NAMES = {
 RESPONDER_BASE_PATH = "api.responders.responder_base.ResponderBase"
 RESPONDER_BASE_GET_OBJECTS_LIST = RESPONDER_BASE_PATH + ".get_objects_list"
 RESPONDER_BASE_GET_OBJECT_BY_ID = RESPONDER_BASE_PATH + ".get_object_by_id"
-RESPONDER_BASE_CHECK_ENVIRONMENT_NAME = RESPONDER_BASE_PATH + ".check_environment_name"
+RESPONDER_BASE_CHECK_ENVIRONMENT_NAME = \
+    RESPONDER_BASE_PATH + ".check_environment_name"
 RESPONDER_BASE_READ = RESPONDER_BASE_PATH + ".read"
 RESPONDER_BASE_WRITE = RESPONDER_BASE_PATH + ".write"
 RESPONDER_BASE_AGGREGATE = RESPONDER_BASE_PATH + ".aggregate"

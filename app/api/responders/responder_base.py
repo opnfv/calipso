@@ -71,7 +71,7 @@ class ResponderBase(DataValidate, DictNamingConverter):
 
     def validate_query_data(self, data, data_requirements,
                             additional_key_reg=None,
-                            can_be_empty_keys=[]):
+                            can_be_empty_keys=None):
         error_message = self.validate_data(data, data_requirements,
                                            additional_key_reg,
                                            can_be_empty_keys)
@@ -197,7 +197,9 @@ class ResponderBase(DataValidate, DictNamingConverter):
                                ': no "value" key for data: ' + str(d))
         return consts
 
-    def read(self, collection, matches={}, projection=None, skip=0, limit=1000):
+    def read(self, collection, matches=None, projection=None, skip=0, limit=1000):
+        if matches is None:
+            matches = {}
         collection = self.get_collection_by_name(collection)
         skip *= limit
         query = collection.find(matches, projection).skip(skip).limit(limit)

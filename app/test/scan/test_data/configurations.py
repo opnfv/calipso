@@ -47,6 +47,7 @@ CONFIGURATIONS = {
             "provision": "Deploy",
             "env_type": "development",
             "name": "Monitoring",
+            "install_monitoring_client": True,
             "rabbitmq_port": "5672",
             "rabbitmq_pass": "osdna",
             "rabbitmq_user": "sensu",

@@ -12,6 +12,7 @@ import os
 from os.path import join, sep
 
 from monitoring.setup.monitoring_handler import MonitoringHandler
+from monitoring.setup.sensu_client_installer import SensuClientInstaller
 
 RABBITMQ_CONFIG_FILE = 'rabbitmq.json'
 RABBITMQ_CONFIG_ATTR = 'rabbitmq'
@@ -27,13 +28,14 @@ class MonitoringHost(MonitoringHandler):
 
     # add monitoring setup for remote host
     def create_setup(self, o):
+        host_id = o.get('host', '')
+        self.install_sensu_on_host(host_id)
         sensu_host_files = [
             'transport.json',
             'rabbitmq.json',
             'client.json'
         ]
         server_ip = self.env_monitoring_config['server_ip']
-        host_id = o['host']
         sub_dir = join('/host', host_id)
         config = copy.copy(self.env_monitoring_config)
         env_name = self.configuration.env_name
@@ -88,3 +90,10 @@ class MonitoringHost(MonitoringHandler):
             # this configuration requires SSL
             # keep the path of the files for later use
             self.fetch_ssl_files.append(path)
+
+    def install_sensu_on_host(self, host_id):
+        auto_install = self.env_monitoring_config \
+            .get('install_monitoring_client', False)
+        if auto_install:
+            installer = SensuClientInstaller(self.env, host_id)
+            installer.install()

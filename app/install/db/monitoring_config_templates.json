@@ -311,6 +311,34 @@
     "type" : "client_check_link_vnic-vconnector.json"
 },
 {
+    "side" : "client",
+    "order" : "1",
+    "condition" : {
+        "mechanism_drivers" : [
+            "OVS"
+        ]
+    },
+    "config" : {
+        "checks" : {
+            "{objtype}_{objid}" : {
+                "interval" : 15,
+                "command" : "check_vconnector_ovs.py {name}",
+                "standalone" : true,
+                "type": "metric",
+                "subscribers" : [
+                    "base"
+                ],
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ]
+            }
+        }
+    },
+    "monitoring_system" : "sensu",
+    "type" : "client_check_vconnector_ovs.json"
+},
+{
     "side" : "client", 
     "order" : "1", 
     "condition" : {
@@ -394,5 +422,28 @@
     }, 
     "monitoring_system" : "sensu", 
     "type" : "client_check_vservice.json"
+},
+{
+    "side" : "client",
+    "order" : "1",
+    "config" : {
+        "checks" : {
+            "{objtype}_{objid}" : {
+                "standalone" : true,
+                "interval" : 15,
+                "command" : "PYTHONPATH=/etc/sensu/plugins check_instance_communications.py {services_and_vnics}",
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ],
+                "type" : "metric",
+                "subscribers" : [
+                    "base"
+                ]
+            }
+        }
+    },
+    "monitoring_system" : "sensu",
+    "type" : "client_check_instance.json"
 }
 ]

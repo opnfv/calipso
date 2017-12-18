@@ -292,6 +292,22 @@ def start_ui(host, dbuser, dbpassword, webport, dbport):
                                 environment=[root_url, mongo_url, LDAP_CONFIG])
 
 
+def start_test():
+    name = "calipso-test"
+    if container_started(name):
+        return
+    print("\nstarting container {}...\n".format(name))
+    image_name = "korenlev/calipso:test"
+    download_image(image_name)
+    ports = {'22/tcp': 10022}
+    DockerClient.containers.run(image_name,
+                                detach=True,
+                                name=name,
+                                ports=ports,
+                                restart_policy=RESTART_POLICY,
+                                environment=[PYTHON_PATH, MONGO_CONFIG],
+                                volumes=calipso_volume)
+
 # check and stop a calipso container by given name
 def container_stop(container_name):
     if not container_started(container_name, print_message=False):
@@ -395,7 +411,7 @@ else:
     container = ""
     action = ""
 
-container_names = ["calipso-ui", "calipso-scan", "calipso-listen",
+container_names = ["calipso-ui", "calipso-scan", "calipso-test", "calipso-listen",
                    "calipso-ldap", "calipso-api", "calipso-sensu", "calipso-mongo"]
 container_actions = ["stop", "start"]
 while action not in container_actions:
@@ -459,6 +475,9 @@ if action == "start":
         time.sleep(1)
     if container == "calipso-scan" or container == "all":
         start_scan()
+        time.sleep(1)
+    if container == "calipso-test" or container == "all":
+        start_test()
         time.sleep(1)
     if container == "calipso-sensu" or container == "all":
         start_sensu(args.uchiwaport, args.sensuport, args.rabbitport, args.rabbitmport)

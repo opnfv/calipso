@@ -37,7 +37,8 @@
             "server_name" : "sensu_server", 
             "env_type" : "production", 
             "provision" : "None", 
-            "name" : "Monitoring", 
+            "name" : "Monitoring",
+            "install_monitoring_client": false,
             "ssh_port" : "20022", 
             "rabbitmq_pass" : "dummy_pwd", 
             "ssh_password" : "dummy_pwd", 
@@ -55,7 +56,7 @@
         }
     ], 
     "enable_monitoring" : true, 
-    "name" : "DEMO-ENVIRONMENT-SCHEME", 
+    "name" : "DEMO-OpenStack", 
     "distribution" : "Mirantis",
     "distribution_version" : "8.0", 
     "last_scanned" : "filled-by-scanning", 
@@ -74,6 +75,93 @@
             "wNLeBJxNDyw8G7Ssg"
         ]
     }, 
-    "type" : "environment"
+    "type" : "environment",
+    "environment_type" : "OpenStack"
+},
+{  
+    "user" : "wNLeBJxNDyw8G7Ssg", 
+    "name" : "DEMO-Kubernetes", 
+    "last_scanned" : "filled-by-scanning", 
+    "auth" : {
+        "view-env" : [
+            "wNLeBJxNDyw8G7Ssg"
+        ], 
+        "edit-env" : [
+            "wNLeBJxNDyw8G7Ssg"
+        ]
+    }, 
+    "type_drivers" : "vxlan", 
+    "distribution_version" : "8.0", 
+    "enable_monitoring" : true, 
+    "operational" : "stopped", 
+    "mechanism_drivers" : [
+        "OVS"
+    ], 
+    "type" : "environment", 
+    "distribution" : "Mirantis", 
+    "listen" : true, 
+    "configuration" : [
+        {
+            "user" : "adminuser", 
+            "name" : "OpenStack", 
+            "pwd" : "dummy_pwd", 
+            "host" : "10.0.0.1", 
+            "admin_token" : "dummy_token", 
+            "port" : "5000"
+        }, 
+        {
+            "host" : "10.56.20.78", 
+            "name" : "Kubernetes", 
+            "user" : "koren", 
+            "token" : "baba-token-xyz", 
+            "port" : "6443"
+        }, 
+        {
+            "user" : "mysqluser", 
+            "name" : "mysql", 
+            "pwd" : "dummy_pwd", 
+            "port" : "3307", 
+            "host" : "10.0.0.1"
+        }, 
+        {
+            "user" : "sshuser", 
+            "name" : "CLI", 
+            "pwd" : "dummy_pwd", 
+            "host" : "10.0.0.1"
+        }, 
+        {
+            "user" : "rabbitmquser", 
+            "name" : "AMQP", 
+            "pwd" : "dummy_pwd", 
+            "port" : "5673", 
+            "host" : "10.0.0.1"
+        }, 
+        {
+            "name" : "Monitoring",
+            "install_monitoring_client": false,
+            "api_port" : 4567,
+            "ssh_port" : "20022", 
+            "rabbitmq_pass" : "dummy_pwd", 
+            "env_type" : "production", 
+            "rabbitmq_port" : "5671", 
+            "server_ip" : "10.0.0.1", 
+            "config_folder" : "/local_dir/sensu_config", 
+            "type" : "Sensu", 
+            "provision" : "None", 
+            "ssh_user" : "root", 
+            "ssh_password" : "dummy_pwd", 
+            "rabbitmq_user" : "sensu", 
+            "server_name" : "sensu_server"
+        }, 
+        {
+            "user" : "admin", 
+            "name" : "ACI", 
+            "pwd" : "dummy_pwd", 
+            "host" : "10.1.1.104"
+        }
+    ], 
+    "app_path" : "/home/scan/calipso_prod/app", 
+    "scanned" : false, 
+    "environment_type" : "Kubernetes"
 }
 ]

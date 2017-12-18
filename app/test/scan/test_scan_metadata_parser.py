@@ -104,6 +104,8 @@ class TestScanMetadataParser(TestScan):
                 'input': METADATA_SCANNER_INCORRECT_FETCHER,
                 'msg': 'failed to find fetcher class f1 '
                        'in scanner ScanAggregate type #1'
+                       ' (could not import module discover.fetchers.f1.f1: '
+                       'No module named \'discover.fetchers.f1\')'
             },
             {
                 'input': METADATA_SCANNER_WITH_INCORRECT_CHILD,

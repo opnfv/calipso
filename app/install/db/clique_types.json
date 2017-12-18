@@ -26,6 +26,23 @@
     ], 
     "name" : "vservice"
 },
+{
+    "environment" : "config_based_example",
+    "focal_point_type" : "vservice",
+    "link_types" : [
+        "vservice-vnic",
+        "vnic-vedge",
+        "vedge-otep",
+        "otep-vconnector",
+        "vconnector-host_pnic",
+        "host_pnic-network"
+    ],
+    "name" : "vservice_config_based",
+    "distribution" : "Mirantis",
+    "distribution_version" : "6.0",
+    "mechanism_drivers" : "OVS",
+    "type_drivers" : "vxlan"
+},
 { 
     "environment" : "ANY", 
     "focal_point_type" : "network", 
@@ -135,5 +152,14 @@
         "vnic-vservice"
     ], 
     "name" : "network"
+},
+{ 
+    "name" : "instance", 
+    "use_implicit_links" : true, 
+    "link_types" : [
+        "instance-network"
+    ], 
+    "environment" : "implicit-links-ex", 
+    "focal_point_type" : "instance"
 }
 ]

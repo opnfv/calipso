@@ -13,7 +13,6 @@ from api.responders.responder_base import ResponderBase
 from bson.objectid import ObjectId
 from datetime import datetime
 from utils.constants import EnvironmentFeatures
-from utils.inventory_mgr import InventoryMgr
 
 
 class EnvironmentConfigs(ResponderBase):
@@ -27,9 +26,13 @@ class EnvironmentConfigs(ResponderBase):
         "distribution": True
     }
     CONFIGURATIONS_NAMES = ["mysql", "OpenStack", "CLI", "AMQP",
-                            "Monitoring", "NFV_provider", "ACI"]
-    OPTIONAL_CONFIGURATIONS_NAMES = ["AMQP", "Monitoring",
-                                     "NFV_provider", "ACI"]
+                            "Monitoring", "NFV_provider", "ACI",
+                            "Kubernetes", "VMware", "Bare-metal"]
+    REQUIRED_CONFIGURATIONS_NAMES = {
+        "OpenStack": ["OpenStack", "mysql", "CLI"],
+        "Kubernetes": ["Kubernetes", "CLI"],
+    }
+    DEFAULT_ENV_TYPE = "OpenStack"
 
     def __init__(self):
         super().__init__()
@@ -49,6 +52,8 @@ class EnvironmentConfigs(ResponderBase):
             get_constants_by_name("environment_operational_status")
         self.type_drivers = self.\
             get_constants_by_name("type_drivers")
+        self.environment_types = self.\
+            get_constants_by_name("environment_types")
 
         self.CONFIGURATIONS_REQUIREMENTS = {
             "mysql": {
@@ -108,6 +113,7 @@ class EnvironmentConfigs(ResponderBase):
             },
             "Monitoring": {
                 "name": self.require(str, mandatory=True),
+                "install_monitoring_client": self.require(bool),
                 "config_folder": self.require(str,
                                               mandatory=True,
                                               validate=DataValidate.REGEX,
@@ -169,6 +175,20 @@ class EnvironmentConfigs(ResponderBase):
                                      requirement=[regex.IP, regex.HOSTNAME]),
                 "user": self.require(str, mandatory=True),
                 "pwd": self.require(str, mandatory=True)
+            },
+            "Kubernetes": {
+                "name": self.require(str, mandatory=True),
+                "host": self.require(str,
+                                     mandatory=True,
+                                     validate=DataValidate.REGEX,
+                                     requirement=[regex.IP, regex.HOSTNAME]),
+                "port": self.require(int,
+                                     mandatory=True,
+                                     convert_to_type=True,
+                                     validate=DataValidate.REGEX,
+                                     requirement=regex.PORT),
+                "user": self.require(str, mandatory=True),
+                "token": self.require(str, mandatory=True)
             }
         }
         self.AUTH_REQUIREMENTS = {
@@ -201,6 +221,9 @@ class EnvironmentConfigs(ResponderBase):
             "operational": self.require(str,
                                         validate=DataValidate.LIST,
                                         requirement=self.operational_values),
+            "environment_type": self.require(str,
+                                             validate=DataValidate.LIST,
+                                             requirement=self.environment_types),
             "page": self.require(int, convert_to_type=True),
             "page_size": self.require(int, convert_to_type=True)
         }
@@ -223,7 +246,8 @@ class EnvironmentConfigs(ResponderBase):
         query = {}
         filters_keys = ["name", "distribution", "distribution_version",
                         "type_drivers", "user", "listen",
-                        "monitoring_setup_done", "scanned", "operational"]
+                        "monitoring_setup_done", "scanned", "operational",
+                        "environment_type"]
         self.update_query_with_filters(filters, filters_keys, query)
         mechanism_drivers = filters.get("mechanism_drivers")
         if mechanism_drivers:
@@ -272,16 +296,26 @@ class EnvironmentConfigs(ResponderBase):
             "enable_monitoring": self.require(bool, convert_to_type=True),
             "monitoring_setup_done": self.require(bool, convert_to_type=True),
             "auth": self.require(dict),
-            "aci_enabled": self.require(bool, convert_to_type=True)
+            "aci_enabled": self.require(bool, convert_to_type=True),
+            "environment_type": self.require(str,
+                                             validate=DataValidate.LIST,
+                                             requirement=self.environment_types),
         }
         self.validate_query_data(env_config,
                                  environment_config_requirement,
-                                 can_be_empty_keys=["last_scanned"]
-                                 )
+                                 can_be_empty_keys=["last_scanned",
+                                                    "environment_type"])
         self.check_and_convert_datetime("last_scanned", env_config)
+
         # validate the configurations
+        environment_type = env_config.get("environment_type")
+        if not environment_type:
+            environment_type = self.DEFAULT_ENV_TYPE
         configurations = env_config['configuration']
-        config_validation = self.validate_environment_config(configurations)
+        config_validation = (
+            self.validate_environment_config(configurations=configurations,
+                                             environment_type=environment_type)
+        )
 
         if not config_validation['passed']:
             self.bad_request(config_validation['error_message'])
@@ -310,12 +344,11 @@ class EnvironmentConfigs(ResponderBase):
                                                  .format(env_config["name"])},
                                      "201")
 
-    def validate_environment_config(self, configurations,
+    def validate_environment_config(self, configurations, environment_type=None,
                                     require_mandatory=True):
         configurations_of_names = {}
         validation = {"passed": True}
-        if [config for config in configurations
-            if 'name' not in config]:
+        if any('name' not in config for config in configurations):
             validation['passed'] = False
             validation['error_message'] = "configuration must have name"
             return validation
@@ -338,12 +371,19 @@ class EnvironmentConfigs(ResponderBase):
                                                   "configuration for {0}".format(name)
                     return validation
                 configurations_of_names[name] = configs[0]
-            elif require_mandatory:
-                if name not in self.OPTIONAL_CONFIGURATIONS_NAMES:
-                    validation["passed"] = False
-                    validation['error_message'] = "configuration for {0} " \
-                                                  "is mandatory".format(name)
-                    return validation
+
+        if require_mandatory:
+            required_list = (
+                self.REQUIRED_CONFIGURATIONS_NAMES.get(environment_type, [])
+            )
+            if any(required_conf not in configurations_of_names
+                   for required_conf
+                   in required_list):
+                validation["passed"] = False
+                validation['error_message'] = ("configurations for ({})"
+                                               "are mandatory for "
+                                               "this environment type"
+                                               .format(", ".join(required_list)))
 
         for name, config in configurations_of_names.items():
             error_message = self.validate_configuration(name, config)

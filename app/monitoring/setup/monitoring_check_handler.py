@@ -8,7 +8,6 @@
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
 from monitoring.setup.monitoring_handler import MonitoringHandler
-from utils.inventory_mgr import InventoryMgr
 from utils.special_char_converter import SpecialCharConverter
 
 
@@ -28,14 +27,13 @@ class MonitoringCheckHandler(MonitoringHandler, SpecialCharConverter):
         type_str = values['check_type'] if 'check_type' in values else \
             (o['type'] if 'type' in o else 'link_' + o['link_type'])
         file_type = 'client_check_' + type_str + '.json'
-        host = o['host']
+        host = values['host'] if 'host' in values else o['host']
         sub_dir = '/host/' + host
         content = self.prepare_config_file(
             file_type,
             {'side': 'client', 'type': file_type})
         # need to put this content inside client.json file
         client_file = 'client.json'
-        host = o['host']
         client_file_content = self.get_config_from_db(host, client_file)
         # merge checks attribute from current content into client.json
         checks = client_file_content['config']['checks'] \
@@ -53,3 +51,14 @@ class MonitoringCheckHandler(MonitoringHandler, SpecialCharConverter):
             }
         content = client_file_content
         self.write_config_file(client_file, sub_dir, host, content)
+
+    def get_check_from_db(self, o, postfix=''):
+        client_config = self.get_config_from_db(o. get('host', ''),
+                                                'client.json')
+        if not client_config:
+            return {}
+        checks = client_config.get('config', {}).get('checks', {})
+        objid = self.encode_special_characters(o.get('id', ''))
+        object_check_id = '{}_{}{}'.format(o.get('type'), objid, postfix)
+        check = checks.get(object_check_id, {})
+        return check

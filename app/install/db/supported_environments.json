@@ -12,6 +12,21 @@
       "monitoring" : true
     }
   },
+  { 
+    "environment" : {
+        "distribution_version" : [
+            "10307"
+        ], 
+        "distribution" : "Mercury", 
+        "type_drivers" : "vlan", 
+        "mechanism_drivers" : "OVS"
+    }, 
+    "features" : {
+        "scanning" : true, 
+        "monitoring" : false, 
+        "listening" : true
+    }
+  },
   {
     "environment" : {
       "distribution" : "Devstack",
