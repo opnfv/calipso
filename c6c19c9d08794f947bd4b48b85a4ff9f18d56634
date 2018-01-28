@@ -1,0 +1,8 @@
+Code-Review+2: Yaron Yogev <yaronyogev@gmail.com>
+Verified+1: jenkins-ci <jenkins-opnfv-ci@opnfv.org>
+Code-Review+1: Aric Gardner <agardner@linuxfoundation.org>
+Submitted-by: Yaron Yogev <yaronyogev@gmail.com>
+Submitted-at: Sun, 28 Jan 2018 12:15:06 +0000
+Reviewed-on: https://gerrit.opnfv.org/gerrit/50993
+Project: calipso
+Branch: refs/heads/master
