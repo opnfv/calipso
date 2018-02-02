@@ -1,0 +1,47 @@
+---
+project: 'Virtual Infrastructure Network Assurance (Calipso)'
+project_creation_date: 'March 21st 2017'
+project_category: ''
+lifecycle_state: ''
+project_lead: &opnfv_calipso_ptl
+primary_contact: *opnfv_calipso_ptl
+issue_tracking:
+    type: 'jira'
+    url: 'https://jira.opnfv.org/projects/CALIPSO'
+    key: 'CALIPSO'
+mailing_list:
+    type: 'mailman2'
+    url: 'opnfv-tech-discuss@lists.opnfv.org'
+    tag: '[calipso]'
+realtime_discussion:
+    type: irc
+    server: 'freenode.net'
+    channel: '#opnfv-calipso'
+meetings:
+    - type: 'gotomeeting+irc'
+      agenda:  # eg: 'https://wiki.opnfv.org/display/'
+      url:  # eg: 'https://global.gotomeeting.com/join/819733085'
+      server: 'freenode.net'
+      channel: '#opnfv-meeting'
+      repeats: 'weekly'
+      time:  # eg: '16:00 UTC'
+repositories:
+    - 'calipso'
+committers:
+    - <<: *opnfv_calipso_ptl
+    - name: 'Frank Brockners'
+      email: 'fbrockne@cisco.com'
+      company: 'cisco.com'
+      id: 'brockners'
+    - name: 'Koren Lev'
+      email: 'korenlev@gmail.com'
+      company: 'gmail.com'
+      id: 'KorenLev'
+    - name: 'Yaron Yogev'
+      email: 'yaronyogev@gmail.com'
+      company: 'gmail.com'
+      id: 'yaronyogev'
+tsc:
+    # yamllint disable rule:line-length
+    approval: ''
+    # yamllint enable rule:line-length
