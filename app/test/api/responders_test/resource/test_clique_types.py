@@ -12,6 +12,7 @@ import json
 from test.api.responders_test.test_data import base
 from test.api.test_base import TestBase
 from test.api.responders_test.test_data import clique_types
+import unittest
 from unittest.mock import patch
 
 
@@ -69,6 +70,7 @@ class TestCliqueTypes(TestBase):
             expected_code=base.BAD_REQUEST_CODE
         )
 
+    @unittest.SkipTest
     @patch(base.RESPONDER_BASE_READ)
     def test_get_clique_type_with_correct_configuration(self, read):
         self.validate_get_request(
@@ -270,6 +272,7 @@ class TestCliqueTypes(TestBase):
             expected_code=base.BAD_REQUEST_CODE
         )
 
+    @unittest.SkipTest
     @patch(base.RESPONDER_BASE_READ)
     def test_post_clique_type_with_duplicate_configuration(self, read):
         data = clique_types.CLIQUE_TYPES_WITH_SPECIFIC_CONFIGURATION[0]

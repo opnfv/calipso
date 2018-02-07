@@ -60,15 +60,15 @@ CLIQUE_TYPES_WITH_SPECIFIC_ID = [
     get_payload(update={'id': CORRECT_ID})
 ]
 
-CLIQUE_TYPES_WITH_SPECIFIC_CONFIGURATION = [
-    get_payload(update={'id': SAMPLE_IDS[0],
-                        **TEST_CONFIGURATION},
-                delete=['environment'])
-]
+# CLIQUE_TYPES_WITH_SPECIFIC_CONFIGURATION = [
+#     get_payload(update={'id': SAMPLE_IDS[0],
+#                         **TEST_CONFIGURATION},
+#                 delete=['environment'])
+# ]
 
-CLIQUE_TYPES_WITH_SPECIFIC_CONFIGURATION_RESPONSE = {
-    "clique_types": CLIQUE_TYPES_WITH_SPECIFIC_CONFIGURATION
-}
+# CLIQUE_TYPES_WITH_SPECIFIC_CONFIGURATION_RESPONSE = {
+#     "clique_types": CLIQUE_TYPES_WITH_SPECIFIC_CONFIGURATION
+# }
 
 CLIQUE_TYPES_WITH_SPECIFIC_FOCAL_POINT_TYPE = [
     get_payload(update={'id': _id,
