@@ -8,18 +8,16 @@
 # which accompanies this distribution, and is available at                    #
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
-#set -o errexit
-#set -o nounset
-#set -o pipefail
 
-#sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
-#sudo yum -y install python35
-#sudo pip install virtualenv
-#virtualenv -p $(which python3.5) $WORKSPACE/venv       
-#. $WORKSPACE/venv/bin/activate
-
+ret=0
 PYTHONPATH=$PWD/app python3 -m unittest discover -s app/test/api
+if [ $? -eq 1 ]; then ret=1; fi
 PYTHONPATH=$PWD/app python3 -m unittest discover -s app/test/event_based_scan
+if [ $? -eq 1 ]; then ret=1; fi
 PYTHONPATH=$PWD/app python3 -m unittest discover -s app/test/fetch
+if [ $? -eq 1 ]; then ret=1; fi
 PYTHONPATH=$PWD/app python3 -m unittest discover -s app/test/scan
+if [ $? -eq 1 ]; then ret=1; fi
 PYTHONPATH=$PWD/app python3 -m unittest discover -s app/test/utils
+if [ $? -eq 1 ]; then ret=1; fi
+return $ret
