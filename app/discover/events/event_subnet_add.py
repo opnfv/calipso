@@ -29,7 +29,7 @@ class EventSubnetAdd(EventBase):
         # document does not has project attribute. In this case, network_name should not be provided.
 
         fetcher = ApiFetchPort()
-        fetcher.set_env(env)
+        fetcher.setup(env=env, origin=self.origin)
         ports = fetcher.get(port_id)
 
         if ports:
@@ -133,7 +133,7 @@ class EventSubnetAdd(EventBase):
             # update network
             if not ApiAccess.regions:
                 fetcher = ApiFetchRegions()
-                fetcher.set_env(env)
+                fetcher.setup(env=env, origin=self.origin)
                 fetcher.get(project_id)
 
             self.log.info("add new subnet.")
@@ -146,7 +146,7 @@ class EventSubnetAdd(EventBase):
         FindLinksForVserviceVnics().add_links(search={"parent_id": "qdhcp-%s-vnics" % network_id})
 
         scanner = Scanner()
-        scanner.set_env(env)
+        scanner.setup(env=env, origin=self.origin)
         scanner.scan_cliques()
         self.log.info("Finished subnet added.")
         return EventResult(result=True,

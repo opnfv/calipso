@@ -82,4 +82,4 @@ class DbFetchOteps(DbAccess, CliAccess, metaclass=Singleton):
                     interface = l.split(":")[1].strip()
 
         if vconnector:
-            doc["vconnector"] = vconnector
+            doc["vconnector"] = '{}-{}'.format(host_id, vconnector)

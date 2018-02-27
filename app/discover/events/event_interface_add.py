@@ -30,7 +30,7 @@ class EventInterfaceAdd(EventBase):
 
     def add_gateway_port(self, env, project, network_name, router_doc, host_id):
         fetcher = CliFetchHostVservice()
-        fetcher.set_env(env)
+        fetcher.setup(env=env, origin=self.origin)
         router_id = router_doc['id']
         router = fetcher.get_vservice(host_id, router_id)
         device_id = decode_router_id(router_id)
@@ -101,7 +101,7 @@ class EventInterfaceAdd(EventBase):
         # add router-interface port document.
         if not ApiAccess.regions:
             fetcher = ApiFetchRegions()
-            fetcher.set_env(env)
+            fetcher.setup(env=env, origin=self.origin)
             fetcher.get(project_id)
         port_doc = EventSubnetAdd().add_port_document(env, port_id,
                                                       network_name=network_name)
@@ -134,7 +134,7 @@ class EventInterfaceAdd(EventBase):
         # update vservice-vnic, vnic-network,
         FindLinksForVserviceVnics().add_links(search={"parent_id": router_id})
         scanner = Scanner()
-        scanner.set_env(env)
+        scanner.setup(env=env, origin=self.origin)
 
         scanner.scan_cliques()
         self.log.info("Finished router-interface added.")

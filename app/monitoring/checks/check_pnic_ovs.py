@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 ###############################################################################
 # Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems)   #
 # and others                                                                  #
@@ -15,7 +15,7 @@ import subprocess
 from binary_converter import binary2str
 
 
-def nic_not_found(name: str, output: str):
+def nic_not_found(name, output):
     print("Error finding NIC {}{}{}\n".format(name, ': ' if output else '',
                                               output))
     return 2

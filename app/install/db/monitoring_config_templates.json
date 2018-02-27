@@ -315,14 +315,15 @@
     "order" : "1",
     "condition" : {
         "mechanism_drivers" : [
-            "OVS"
+            "OVS",
+            "Flannel"
         ]
     },
     "config" : {
         "checks" : {
             "{objtype}_{objid}" : {
                 "interval" : 15,
-                "command" : "check_vconnector_ovs.py {name}",
+                "command" : "check_vconnector.py {name}",
                 "standalone" : true,
                 "type": "metric",
                 "subscribers" : [

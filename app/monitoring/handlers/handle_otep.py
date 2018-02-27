@@ -29,7 +29,7 @@ class HandleOtep(MonitoringCheckHandler):
             self.log.error('Port not found: ' + port_id)
             return 1
         status = check_result['status']
-        port['status'] = self.STATUS_LABEL[status]
+        port['status'] = self.get_label_for_status(status)
         port['status_value'] = status
         port['status_text'] = check_result['output']
 

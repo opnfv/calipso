@@ -50,7 +50,7 @@ class EventSubnetUpdate(EventBase):
                 # make sure that self.regions is not empty.
                 if not ApiAccess.regions:
                     fetcher = ApiFetchRegions()
-                    fetcher.set_env(env)
+                    fetcher.setup(env=env, origin=self.origin)
                     fetcher.get(project_id)
 
                 self.log.info("add port binding to DHCP server.")
@@ -69,12 +69,12 @@ class EventSubnetUpdate(EventBase):
                     # add link for vservice - vnic
                     FindLinksForVserviceVnics().add_links(search={"id": "qdhcp-%s" % network_id})
                     scanner = Scanner()
-                    scanner.set_env(env)
+                    scanner.setup(env=env, origin=self.origin)
                     scanner.scan_cliques()
                     FindLinksForVserviceVnics(). \
                         add_links(search={"id": "qdhcp-%s" % network_id})
                     scanner = Scanner()
-                    scanner.set_env(env)
+                    scanner.setup(env=env, origin=self.origin)
                     scanner.scan_cliques()
 
             if subnet['enable_dhcp'] is False and subnets[key]['enable_dhcp']:

@@ -128,5 +128,5 @@ OTEP_WITH_CONNECTOR = {
         "br-tun": {
         }
     },
-    "vconnector": "br-mesh"
+    "vconnector": "node-5.cisco.com-br-mesh"
 }

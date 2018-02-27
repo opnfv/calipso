@@ -11,11 +11,11 @@ import json
 
 from discover.fetchers.api.api_access import ApiAccess
 from discover.fetchers.db.db_access import DbAccess
-from discover.fetchers.cli.cli_access import CliAccess
+from discover.fetchers.cli.cli_fetch_host_details import CliFetchHostDetails
 from utils.ssh_connection import SshError
 
 
-class ApiFetchProjectHosts(ApiAccess, DbAccess, CliAccess):
+class ApiFetchProjectHosts(ApiAccess, DbAccess, CliFetchHostDetails):
     def __init__(self):
         super(ApiFetchProjectHosts, self).__init__()
 

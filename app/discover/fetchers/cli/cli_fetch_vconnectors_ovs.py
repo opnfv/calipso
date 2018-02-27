@@ -18,8 +18,8 @@ class CliFetchVconnectorsOvs(CliFetchVconnectors):
 
     def get_vconnectors(self, host):
         host_id = host['id']
-        lines = self.run_fetch_lines("brctl show", host_id)
-        headers = ["bridge_name", "bridge_id", "stp_enabled", "interfaces"]
+        lines = self.run_fetch_lines('brctl show', host_id)
+        headers = ['bridge_name', 'bridge_id', 'stp_enabled', 'interfaces']
         headers_count = len(headers)
         # since we hard-coded the headers list, remove the headers line
         del lines[:1]
@@ -31,26 +31,32 @@ class CliFetchVconnectorsOvs(CliFetchVconnectors):
         results = self.parse_cmd_result_with_whitespace(fixed_lines, headers, False)
         ret = []
         for doc in results:
-            doc["name"] = doc.pop("bridge_name")
-            doc["id"] = doc["name"] + "-" +  doc.pop("bridge_id")
-            doc["host"] = host_id
-            doc["connector_type"] = "bridge"
-            if "interfaces" in doc:
-                interfaces = {}
-                interface_names = doc["interfaces"].split(",")
-                for interface_name in interface_names:
-                    # find MAC address for this interface from ports list
-                    port_id_prefix = interface_name[3:]
-                    port = self.inv.find_items({
-                        "environment": self.get_env(),
-                        "type": "port",
-                        "binding:host_id": host_id,
-                        "id": {"$regex": r"^" + re.escape(port_id_prefix)}
-                    }, get_single=True)
-                    mac_address = '' if not port else port['mac_address']
-                    interface = {'name': interface_name, 'mac_address': mac_address}
-                    interfaces[interface_name] = interface
-                doc["interfaces"] = interfaces
-                doc['interfaces_names'] = list(interfaces.keys())
-                ret.append(doc)
+            doc['name'] = '{}-{}'.format(host_id, doc['bridge_name'])
+            doc['id'] = '{}-{}'.format(doc['name'], doc.pop('bridge_id'))
+            doc['host'] = host_id
+            doc['connector_type'] = 'bridge'
+            self.get_vconnector_interfaces(doc, host_id)
+            ret.append(doc)
         return ret
+
+    def get_vconnector_interfaces(self, doc, host_id):
+        if 'interfaces' not in doc:
+            doc['interfaces'] = {}
+            doc['interfaces_names'] = []
+            return
+        interfaces = {}
+        interface_names = doc['interfaces'].split(',')
+        for interface_name in interface_names:
+            # find MAC address for this interface from ports list
+            port_id_prefix = interface_name[3:]
+            port = self.inv.find_items({
+                'environment': self.get_env(),
+                'type': 'port',
+                'binding:host_id': host_id,
+                'id': {'$regex': r'^' + re.escape(port_id_prefix)}
+            }, get_single=True)
+            mac_address = '' if not port else port['mac_address']
+            interface = {'name': interface_name, 'mac_address': mac_address}
+            interfaces[interface_name] = interface
+        doc['interfaces'] = interfaces
+        doc['interfaces_names'] = list(interfaces.keys())

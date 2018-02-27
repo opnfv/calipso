@@ -42,43 +42,74 @@ class CliqueFinder(Fetcher):
         return self.links.find({'target': db_id})
 
     def find_cliques(self):
-        self.log.info("scanning for cliques")
+        self.log.info("Scanning for cliques")
         clique_types = self.get_clique_types().values()
         for clique_type in clique_types:
             self.find_cliques_for_type(clique_type)
-        self.log.info("finished scanning for cliques")
+        self.log.info("Finished scanning for cliques")
 
     # Calculate priority score for clique type per environment and configuration
-    def _get_priority_score(self, clique_type):
+    def get_priority_score(self, clique_type):
         # environment-specific clique type takes precedence
-        if self.env == clique_type['environment']:
-            return 16
-        if (self.env_config['distribution'] == clique_type.get('distribution')
-            and
-            self.env_config['distribution_version'] ==
-                clique_type.get('distribution_version')):
-            return 8
-        if clique_type.get('mechanism_drivers') \
-                in self.env_config['mechanism_drivers']:
-            return 4
-        if self.env_config['type_drivers'] == clique_type.get('type_drivers'):
-            return 2
-        if clique_type.get('environment', '') == 'ANY':
-            # environment=ANY serves as fallback option, but it's not mandatory
-            return 1
-        else:
+        env = clique_type.get('environment')
+        config = self.env_config
+        # ECT - Clique Type with Environment name
+        if env:
+            if self.env == env:
+                return 2**6
+            if env == 'ANY':
+                # environment=ANY serves as fallback option
+                return 2**0
             return 0
+        # NECT - Clique Type without Environment name
+        else:
+            env_type = clique_type.get('environment_type')
+            # TODO: remove backward compatibility ('if not env_type' check)
+            if env_type and env_type != config.get('environment_type'):
+                return 0
+
+            score = 0
+
+            distribution = clique_type.get('distribution')
+            if distribution:
+                if config['distribution'] != distribution:
+                    return 0
+
+                score += 2**5
+
+                dv = clique_type.get('distribution_version')
+                if dv:
+                    if dv != config['distribution_version']:
+                        return 0
+                    score += 2**4
+
+            mechanism_drivers = clique_type.get('mechanism_drivers')
+            if mechanism_drivers:
+                if mechanism_drivers not in config['mechanism_drivers']:
+                    return 0
+                score += 2**3
+
+            type_drivers = clique_type.get('type_drivers')
+            if type_drivers:
+                if type_drivers != config['type_drivers']:
+                    return 0
+                score += 2**2
+
+            # If no configuration is specified, this clique type
+            # is a fallback for its environment type
+            return max(score, 2**1)
 
     # Get clique type with max priority
     # for given focal point type
     def _get_clique_type(self, clique_types):
-        scored_clique_types = [{'score': self._get_priority_score(clique_type),
+        scored_clique_types = [{'score': self.get_priority_score(clique_type),
                                 'clique_type': clique_type}
                                for clique_type in clique_types]
         max_score = max(scored_clique_types, key=lambda t: t['score'])
         if max_score['score'] == 0:
-            self.log.warn('No matching clique types for focal point type: {}'
-                          .format(clique_types[0].get('focal_point_type')))
+            self.log.warn('No matching clique types '
+                          'for focal point type: {fp_type}'
+                          .format(fp_type=clique_types[0].get('focal_point_type')))
             return None
         return max_score.get('clique_type')
 
@@ -143,8 +174,9 @@ class CliqueFinder(Fetcher):
             clique["constraints"][c] = val
         allow_implicit = clique_type.get('use_implicit_links', False)
         for link_type in clique_type["link_types"]:
-            self.check_link_type(clique, link_type, nodes_of_type,
-                                 allow_implicit=allow_implicit)
+            if not self.check_link_type(clique, link_type, nodes_of_type,
+                                        allow_implicit=allow_implicit):
+                break
 
         # after adding the links to the clique, create/update the clique
         if not clique["links"]:
@@ -197,7 +229,7 @@ class CliqueFinder(Fetcher):
         return CliqueFinder.link_type_reversed.get(link_type)
 
     def check_link_type(self, clique, link_type, nodes_of_type,
-                        allow_implicit=False):
+                        allow_implicit=False) -> bool:
         # check if it's backwards
         link_type_reversed = self.get_link_type_reversed(link_type)
         # handle case of links like T<-->T
@@ -213,15 +245,16 @@ class CliqueFinder(Fetcher):
             matches = self.links.find_one(link_search_condition)
             use_reversed = True if matches else False
         if self_linked or not use_reversed:
-            self.check_link_type_forward(clique, link_type, nodes_of_type,
-                                         allow_implicit=allow_implicit)
+            return self.check_link_type_forward(clique, link_type,
+                                                nodes_of_type,
+                                                allow_implicit=allow_implicit)
         if self_linked or use_reversed:
-            self.check_link_type_back(clique, link_type, nodes_of_type,
-                                      allow_implicit=allow_implicit)
+            return self.check_link_type_back(clique, link_type, nodes_of_type,
+                                             allow_implicit=allow_implicit)
 
     def check_link_type_for_direction(self, clique, link_type, nodes_of_type,
                                       is_reversed=False,
-                                      allow_implicit=False):
+                                      allow_implicit=False) -> bool:
         if is_reversed:
             link_type = self.get_link_type_reversed(link_type)
         from_type = link_type[:link_type.index("-")]
@@ -230,7 +263,7 @@ class CliqueFinder(Fetcher):
         other_side = 'target' if not is_reversed else 'source'
         match_type = to_type if is_reversed else from_type
         if match_type not in nodes_of_type.keys():
-            return
+            return False
         other_side_type = to_type if not is_reversed else from_type
         nodes_to_add = set()
         for match_point in nodes_of_type[match_type]:
@@ -245,6 +278,7 @@ class CliqueFinder(Fetcher):
             nodes_of_type[other_side_type] = set()
         nodes_of_type[other_side_type] = \
             nodes_of_type[other_side_type] | nodes_to_add
+        return len(nodes_to_add) > 0
 
     def find_matches_for_point(self, match_point, clique, link_type,
                                side_to_match, other_side,
@@ -271,13 +305,15 @@ class CliqueFinder(Fetcher):
         return nodes_to_add
 
     def check_link_type_forward(self, clique, link_type, nodes_of_type,
-                                allow_implicit=False):
-        self.check_link_type_for_direction(clique, link_type, nodes_of_type,
-                                           is_reversed=False,
-                                           allow_implicit=allow_implicit)
+                                allow_implicit=False) -> bool:
+        return self.check_link_type_for_direction(clique, link_type,
+                                                  nodes_of_type,
+                                                  is_reversed=False,
+                                                  allow_implicit=allow_implicit)
 
     def check_link_type_back(self, clique, link_type, nodes_of_type,
-                             allow_implicit=False):
-        self.check_link_type_for_direction(clique, link_type, nodes_of_type,
-                                           is_reversed=True,
-                                           allow_implicit=allow_implicit)
+                             allow_implicit=False) -> bool:
+        return self.check_link_type_for_direction(clique, link_type,
+                                                  nodes_of_type,
+                                                  is_reversed=True,
+                                                  allow_implicit=allow_implicit)

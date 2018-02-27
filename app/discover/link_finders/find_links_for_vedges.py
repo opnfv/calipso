@@ -104,8 +104,6 @@ class FindLinksForVedges(FindLinks):
         if "pnic" in vedge:
             if pname != vedge["pnic"]:
                 return
-        elif self.configuration.has_network_plugin('VPP'):
-            pass
         pnic = self.inv.find_items({
             "environment": self.get_env(),
             "type": "host_pnic",

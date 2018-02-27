@@ -8,6 +8,7 @@
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
 from bson.objectid import ObjectId
+from datetime import datetime
 
 
 class DictNamingConverter:
@@ -20,21 +21,33 @@ class DictNamingConverter:
     # Returns:
     #     Dictionary with the new keys.
     @staticmethod
-    def change_dict_naming_convention(d, cf):
+    def change_dict_naming_convention(d, cf, level: int=0):
         new = {}
+        change_convention = DictNamingConverter.change_dict_naming_convention
         if not d:
             return d
-        if isinstance(d, str):
+        if isinstance(d, str) or isinstance(d, int) or isinstance(d, float) \
+                or isinstance(d, bool) or isinstance(d, datetime):
             return d
         if isinstance(d, ObjectId):
             return d
-        for k, v in d.items():
-            new_v = v
-            if isinstance(v, dict):
-                new_v = DictNamingConverter.change_dict_naming_convention(v, cf)
-            elif isinstance(v, list):
-                new_v = list()
-                for x in v:
-                    new_v.append(DictNamingConverter.change_dict_naming_convention(x, cf))
-            new[cf(k)] = new_v
+        if isinstance(d, object) and not isinstance(d, dict):
+            for k in dir(d):
+                if k.startswith('_'):
+                    continue
+                v = getattr(d, k)
+                if callable(v):
+                    continue
+                new[cf(k)] = change_convention(v, cf, level+1)
+        if isinstance(d, dict):
+            for k, v in d.items():
+                new_v = v
+                if isinstance(v, dict):
+                    new_v = change_convention(v, cf, level+1)
+                elif isinstance(v, list):
+                    new_v = list()
+                    for x in v:
+                        list_val = change_convention(x, cf, level+1)
+                        new_v.append(list_val)
+                new[cf(k)] = new_v
         return new

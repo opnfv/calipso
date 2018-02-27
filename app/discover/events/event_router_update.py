@@ -60,7 +60,7 @@ class EventRouterUpdate(EventBase):
 
             # add gw_port_id info and port document.
             fetcher = CliFetchHostVservice()
-            fetcher.set_env(env)
+            fetcher.setup(env=env, origin=self.origin)
             router_vservice = fetcher.get_vservice(host_id, router_full_id)
             if router_vservice.get('gw_port_id'):
                 router_doc['gw_port_id'] = router_vservice['gw_port_id']
@@ -74,7 +74,7 @@ class EventRouterUpdate(EventBase):
 
         # update the cliques.
         scanner = Scanner()
-        scanner.set_env(env)
+        scanner.setup(env=env, origin=self.origin)
         scanner.scan_cliques()
         self.log.info("Finished router update.")
         return EventResult(result=True,

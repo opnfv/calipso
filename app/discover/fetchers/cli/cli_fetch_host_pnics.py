@@ -27,8 +27,8 @@ class CliFetchHostPnics(CliAccess):
              'description': 'IPv6 Address'}
         ]
 
-    def get(self, id):
-        host_id = id[:id.rindex("-")]
+    def get(self, parent_id):
+        host_id = parent_id[:parent_id.rindex("-")]
         cmd = 'ls -l /sys/class/net | grep ^l | grep -v "/virtual/"'
         host = self.inv.get_by_id(self.get_env(), host_id)
         if not host:
@@ -39,7 +39,8 @@ class CliFetchHostPnics(CliAccess):
                            ", host: " + str(host))
             return []
         host_types = host["host_type"]
-        if "Network" not in host_types and "Compute" not in host_types:
+        accepted_host_types = ['Network', 'Compute', 'Kube-node']
+        if not [t for t in accepted_host_types if t in host_types]:
             return []
         interface_lines = self.run_fetch_lines(cmd, host_id)
         interfaces = []

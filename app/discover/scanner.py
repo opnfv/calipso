@@ -10,6 +10,7 @@
 # base class for scanners
 
 import json
+
 import os
 import queue
 import traceback
@@ -26,9 +27,6 @@ from utils.ssh_connection import SshError
 
 
 class Scanner(Fetcher):
-
-    ENV_TYPE_OPENSTACK = 'OpenStack'
-    ENV_TYPE_KUBERNETES = 'Kubernetes'
 
     config = None
     environment = None
@@ -92,11 +90,11 @@ class Scanner(Fetcher):
             else basic_cond
         if not env_cond:
             env_cond = basic_cond
-        if 'environment_type' not in env_cond:
+        if 'environment_type' not in env_cond.keys():
             env_cond.update(basic_cond)
         if not isinstance(env_cond, dict):
-            self.log.warn('illegal environment_condition given '
-                          'for type {}'.format(type_to_fetch['type']))
+            self.log.warn('Illegal environment_condition given '
+                          'for type {type}'.format(type=type_to_fetch['type']))
             return True
         conf = self.config.get_env_config()
         if 'environment_type' not in conf:
@@ -104,14 +102,24 @@ class Scanner(Fetcher):
         for attr, required_val in env_cond.items():
             if attr == "mechanism_drivers":
                 if "mechanism_drivers" not in conf:
-                    self.log.warn('illegal environment configuration: '
+                    self.log.warn('Illegal environment configuration: '
                                   'missing mechanism_drivers')
                     return False
                 if not isinstance(required_val, list):
                     required_val = [required_val]
-                return bool(set(required_val) & set(conf["mechanism_drivers"]))
-            elif attr not in conf or conf[attr] != required_val:
+                value_ok = bool(set(required_val) &
+                                set(conf["mechanism_drivers"]))
+                if not value_ok:
+                    return False
+            elif attr not in conf:
                 return False
+            else:
+                if isinstance(required_val, list):
+                    if conf[attr] not in required_val:
+                        return False
+                else:
+                    if conf[attr] != required_val:
+                        return False
         # no check failed
         return True
 
@@ -132,18 +140,20 @@ class Scanner(Fetcher):
         if not isinstance(fetcher, Fetcher):
             type_to_fetch['fetcher'] = fetcher()  # make it an instance
             fetcher = type_to_fetch["fetcher"]
-        fetcher.set_env(self.get_env())
+        fetcher.setup(env=self.get_env(), origin=self.origin)
 
         # get children_scanner instance
         children_scanner = type_to_fetch.get("children_scanner")
 
         escaped_id = fetcher.escape(str(obj_id)) if obj_id else obj_id
         self.log.info(
-            "scanning : type=%s, parent: (type=%s, name=%s, id=%s)",
-            type_to_fetch["type"],
-            parent.get('type', 'environment'),
-            parent.get('name', ''),
-            escaped_id)
+            "Scanning: type={type}, "
+            "parent: (type={parent_type}, "
+            "name={parent_name}, "
+            "id={parent_id})".format(type=type_to_fetch["type"],
+                                     parent_type=parent.get('type', 'environment'),
+                                     parent_name=parent.get('name', ''),
+                                     parent_id=escaped_id))
 
         # fetch OpenStack data from environment by CLI, API or MySQL
         # or physical devices data from ACI API
@@ -154,18 +164,21 @@ class Scanner(Fetcher):
             self.found_errors[self.get_env()] = True
             return []
         except Exception as e:
-            self.log.error("Error while scanning : " +
-                           "fetcher=%s, " +
-                           "type=%s, " +
-                           "parent: (type=%s, name=%s, id=%s), " +
-                           "error: %s",
-                           fetcher.__class__.__name__,
-                           type_to_fetch["type"],
-                           "environment" if "type" not in parent
-                           else parent["type"],
-                           "" if "name" not in parent else parent["name"],
-                           escaped_id,
-                           e)
+            self.log.error(
+                "Error while scanning: fetcher={fetcher}, type={type}, "
+                "parent: (type={parent_type}, name={parent_name}, "
+                "id={parent_id}), "
+                "error: {error}".format(fetcher=fetcher.__class__.__name__,
+                                        type=type_to_fetch["type"],
+                                        parent_type="environment"
+                                                    if "type" not in parent
+                                                    else parent["type"],
+                                        parent_name=""
+                                                    if "name" not in parent
+                                                    else parent["name"],
+                                        parent_id=escaped_id,
+                                        error=e))
+
             traceback.print_exc()
             raise ScanError(str(e))
 
@@ -232,14 +245,16 @@ class Scanner(Fetcher):
         self.log.info("Scan complete")
 
     def scan_links(self):
-        self.log.info("scanning for links")
+        self.log.info("Scanning for links")
         for fetcher in self.link_finders:
-            fetcher.set_env(self.get_env())
+            fetcher.setup(env=self.get_env(),
+                          origin=self.origin)
             fetcher.add_links()
 
     def scan_cliques(self):
         clique_scanner = CliqueFinder()
-        clique_scanner.set_env(self.get_env())
+        clique_scanner.setup(env=self.get_env(),
+                             origin=self.origin)
         clique_scanner.find_cliques()
 
     def deploy_monitoring_setup(self):

@@ -21,6 +21,7 @@ NETWORKS_RESPONSE = {
 
 NETWORKS_RESULT = [
     {
+        "type": "network",
         "id": "8673c48a-f137-4497-b25d-08b7b218fd17",
         "subnets": {
             "test23":  {

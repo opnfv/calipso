@@ -25,7 +25,7 @@ class EventInstanceAdd(EventBase):
 
         # scan instance
         scanner = Scanner()
-        scanner.set_env(env)
+        scanner.setup(env=env, origin=self.origin)
         scanner.scan("ScanInstancesRoot", instances_root,
                      limit_to_child_id=instance_id,
                      limit_to_child_type='instance')

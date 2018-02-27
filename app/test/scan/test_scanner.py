@@ -188,9 +188,11 @@ class TestScanner(TestScan):
 
         # store original method
         original_set = self.scanner.inv.set
+        original_get_by_id = self.scanner.inv.get_by_id
 
         # mock method
         self.scanner.inv.set = MagicMock()
+        self.scanner.inv.get_by_id = MagicMock(return_value=PARENT)
 
         self.scanner.scan_type(TYPE_TO_FETCH_FOR_ENVIRONMENT, PARENT, ID_FIELD)
         self.assertIn("projects", DB_RESULTS_WITH_PROJECT[0],
@@ -199,43 +201,53 @@ class TestScanner(TestScan):
                          "Can't delete the project key in the object")
 
         self.scanner.inv.set = original_set
+        self.scanner.inv.get_by_id = original_get_by_id
 
     @patch("discover.fetchers.folder_fetcher.FolderFetcher.get")
     def test_scan_type_without_create_object(self, fetcher_get):
         fetcher_get.return_value = DB_RESULTS_WITHOUT_CREATE_OBJECT
 
         original_set = self.scanner.inv.set
+        original_get_by_id = self.scanner.inv.get_by_id
 
         self.scanner.inv.set = MagicMock()
+        self.scanner.inv.get_by_id = MagicMock(return_value=PARENT)
         self.scanner.scan_type(TYPE_TO_FETCH_FOR_ENVIRONMENT, PARENT, ID_FIELD)
 
         self.assertEqual(self.scanner.inv.set.call_count, 0,
                          "Set the object when the create object is false")
 
         self.scanner.inv.set = original_set
+        self.scanner.inv.get_by_id = original_get_by_id
 
     @patch("discover.fetchers.folder_fetcher.FolderFetcher.get")
     def test_scan_type_with_create_object(self, fetcher_get):
         fetcher_get.return_value = DB_RESULTS_WITH_CREATE_OBJECT
 
         original_set = self.scanner.inv.set
+        original_get_by_id = self.scanner.inv.get_by_id
 
         self.scanner.inv.set = MagicMock()
+        self.scanner.inv.get_by_id = MagicMock(return_value=PARENT)
+
         self.scanner.scan_type(TYPE_TO_FETCH_FOR_ENVIRONMENT, PARENT, ID_FIELD)
 
         self.assertEqual(self.scanner.inv.set.call_count, 1,
                          "Set the object when the create object is false")
 
         self.scanner.inv.set = original_set
+        self.scanner.inv.get_by_id = original_get_by_id
 
     @patch("discover.fetchers.folder_fetcher.FolderFetcher.get")
     def test_scan_type_with_children_scanner(self, fetcher_get):
         fetcher_get.return_value = DB_RESULTS_WITH_CREATE_OBJECT
 
         original_set = self.scanner.inv.set
+        original_get_by_id = self.scanner.inv.get_by_id
         original_queue_for_scan = self.scanner.queue_for_scan
 
         self.scanner.inv.set = MagicMock()
+        self.scanner.inv.get_by_id = MagicMock(return_value=PARENT)
         self.scanner.queue_for_scan = MagicMock()
 
         self.scanner.scan_type(TYPE_TO_FETCH_FOR_ENVIRONMENT, PARENT, ID_FIELD)
@@ -244,6 +256,7 @@ class TestScanner(TestScan):
                          "Can't put children scanner in the queue")
 
         self.scanner.inv.set = original_set
+        self.scanner.inv.get_by_id = original_get_by_id
         self.scanner.queue_for_scan = original_queue_for_scan
 
     @patch("discover.fetchers.folder_fetcher.FolderFetcher.get")
@@ -251,9 +264,11 @@ class TestScanner(TestScan):
         fetcher_get.return_value = DB_RESULTS_WITH_CREATE_OBJECT
 
         original_set = self.scanner.inv.set
+        original_get_by_id = self.scanner.inv.get_by_id
         original_queue_for_scan = self.scanner.queue_for_scan
 
         self.scanner.inv.set = MagicMock()
+        self.scanner.inv.get_by_id = MagicMock(return_value=PARENT)
         self.scanner.queue_for_scan = MagicMock()
 
         self.scanner.scan_type(TYPE_TO_FETCH_FOR_ENV_WITHOUT_CHILDREN_FETCHER,
@@ -263,6 +278,7 @@ class TestScanner(TestScan):
                          "Can't put children scanner in the queue")
 
         self.scanner.inv.set = original_set
+        self.scanner.inv.get_by_id = original_get_by_id
         self.scanner.queue_for_scan = original_queue_for_scan
 
     @patch("discover.fetchers.folder_fetcher.FolderFetcher.get")
@@ -270,9 +286,11 @@ class TestScanner(TestScan):
         fetcher_get.return_value = DB_RESULTS_WITH_CREATE_OBJECT
 
         original_set = self.scanner.inv.set
+        original_get_by_id = self.scanner.inv.get_by_id
         original_queue_for_scan = self.scanner.queue_for_scan
 
         self.scanner.inv.set = MagicMock()
+        self.scanner.inv.get_by_id = MagicMock(return_value=PARENT)
         self.scanner.queue_for_scan = MagicMock()
 
         result = self.scanner.scan_type(TYPE_TO_FETCH_FOR_ENVIRONMENT, PARENT,
@@ -281,6 +299,7 @@ class TestScanner(TestScan):
         self.assertNotEqual(result, [], "Can't get children form scan_type")
 
         self.scanner.inv.set = original_set
+        self.scanner.inv.get_by_id = original_get_by_id
         self.scanner.queue_for_scan = original_queue_for_scan
 
     def test_scan_with_limit_to_child_type(self):

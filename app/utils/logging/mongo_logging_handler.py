@@ -11,9 +11,9 @@ import datetime
 import logging
 
 from messages.message import Message
+from utils.origins import Origin
 from utils.inventory_mgr import InventoryMgr
 from utils.logging.logger import Logger
-from utils.string_utils import stringify_datetime
 
 
 class MongoLoggingHandler(logging.Handler):
@@ -22,11 +22,12 @@ class MongoLoggingHandler(logging.Handler):
     """
     SOURCE_SYSTEM = 'Calipso'
 
-    def __init__(self, env: str, level: str):
+    def __init__(self, env: str, level: str, origin: Origin = None):
         super().__init__(Logger.get_numeric_level(level))
         self.str_level = level
         self.env = env
         self.inv = None
+        self.origin = origin
 
     def emit(self, record):
         # Try to invoke InventoryMgr for logging
@@ -46,7 +47,22 @@ class MongoLoggingHandler(logging.Handler):
         d = now - datetime.datetime(1970, 1, 1)
         timestamp_id = '{}.{}.{}'.format(d.days, d.seconds, d.microseconds)
         source = self.SOURCE_SYSTEM
+
         message = Message(msg_id=timestamp_id, env=self.env, source=source,
                           msg=Logger.formatter.format(record), ts=now,
                           level=record.levelname)
+        if self.origin:
+            message.extra['origin_id'] = (
+                str(self.origin.origin_id)
+                if self.origin.origin_id
+                else None
+            )
+            message.extra['origin_type'] = (
+                self.origin.origin_type.value
+                if self.origin.origin_type
+                else None
+            )
+            for extra_field in self.origin.extra:
+                message.extra[extra_field] = getattr(self.origin, extra_field)
+
         self.inv.collections['messages'].insert_one(message.get())

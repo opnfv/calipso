@@ -10,7 +10,6 @@
 import queue
 from discover.fetchers.folder_fetcher import FolderFetcher
 
-
 SCANNER_TYPE_FOR_ENV = "ScanEnvironment"
 
 METADATA = {
@@ -64,7 +63,8 @@ TYPES_TO_FETCH = [
     },
     {
         "type": "network_services_folder",
-        "fetcher": FolderFetcher("network_services", "network", "Network vServices")
+        "fetcher": FolderFetcher("network_services", "network",
+                                 "Network vServices")
     }
 ]
 
@@ -162,16 +162,12 @@ TYPES_TO_FETCHES_FOR_SCAN_AGGREGATE = [{
     "fetcher": "DbFetchAggregateHosts"
 }]
 
-
-
-
 # id = 'RegionOne-aggregates'
 # obj = self.inv.get_by_id(self.env, id)
 obj = {'id': 'Mirantis-Liberty-Nvn'}
 id_field = 'id'
 child_id = '',
 child_type = ''
-
 
 child_data = [
     {
@@ -191,15 +187,23 @@ child_data = [
 ]
 
 PARENT = {
-    "environment" : "Mirantis-Liberty-Xiaocong",
-    "id" : "node-6.cisco.com-vservices-dhcps",
-    "name" : "node-6.cisco.com-vservices-dhcps",
-    "object_name" : "DHCP servers",
-    "parent_id" : "node-6.cisco.com-vservices",
-    "parent_type" : "vservices_folder",
-    "show_in_tree" : True,
-    "text" : "DHCP servers",
-    "type" : "vservice_dhcps_folder"
+    "environment": "Mirantis-Liberty-Xiaocong",
+    "id": "node-6.cisco.com-vservices-dhcps",
+    "id_path": "/Mirantis-Liberty-Xiaocong/Mirantis-Liberty-Xiaocong-regions"
+               "/RegionOne/RegionOne-availability_zones"
+               "/internal/node-6.cisco.com"
+               "/node-6.cisco.com-vservices/node-6.cisco.com-vservices-dhcps",
+    "name": "node-6.cisco.com-vservices-dhcps",
+    "name_path": "/Mirantis-Liberty-Xiaocong/Regions"
+               "/RegionOne/Availability Zones"
+               "/internal/node-6.cisco.com"
+               "/vServices/DHCP servers",
+    "object_name": "DHCP servers",
+    "parent_id": "node-6.cisco.com-vservices",
+    "parent_type": "vservices_folder",
+    "show_in_tree": True,
+    "text": "DHCP servers",
+    "type": "vservice_dhcps_folder"
 }
 
 PARENT_WITHOUT_ID = {
@@ -285,7 +289,6 @@ DB_RESULTS_WITHOUT_MASTER_PARENT_IN_DB = [
     }
 ]
 
-
 DICTIONARY_DB_RESULTS = {
     "name": "Mirantis-Liberty-Xiaocong-regions",
     "parent_type": "environment",
@@ -296,18 +299,22 @@ DICTIONARY_DB_RESULTS = {
 }
 
 MASTER_PARENT = {
-    "create_object" : True,
-    "environment" : "Mirantis-Liberty-Xiaocong",
-    "id" : "node-6.cisco.com-vservices",
-    "id_path" : "/Mirantis-Liberty/Mirantis-Liberty-regions/RegionOne/RegionOne-availability_zones/internal/node-6.cisco.com/node-6.cisco.com-vservices",
-    "name" : "Vservices",
-    "name_path" : "/Mirantis-Liberty/Regions/RegionOne/Availability Zones/internal/node-6.cisco.com/Vservices",
-    "object_name" : "Vservices",
-    "parent_id" : "node-6.cisco.com",
-    "parent_type" : "host",
-    "show_in_tree" : True,
-    "text" : "Vservices",
-    "type" : "vservices_folder"
+    "create_object": True,
+    "environment": "Mirantis-Liberty-Xiaocong",
+    "id": "node-6.cisco.com-vservices",
+    "id_path": "/Mirantis-Liberty/Mirantis-Liberty-regions"
+               "/RegionOne/RegionOne-availability_zones"
+               "/internal/node-6.cisco.com/node-6.cisco.com-vservices",
+    "name": "Vservices",
+    "name_path": "/Mirantis-Liberty/Regions"
+                 "/RegionOne/Availability Zones"
+                 "/internal/node-6.cisco.com/Vservices",
+    "object_name": "Vservices",
+    "parent_id": "node-6.cisco.com",
+    "parent_type": "host",
+    "show_in_tree": True,
+    "text": "Vservices",
+    "type": "vservices_folder"
 }
 
 CONFIGURATIONS_WITHOUT_MECHANISM_DRIVERS = {

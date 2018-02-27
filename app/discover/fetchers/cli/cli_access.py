@@ -17,7 +17,7 @@ from utils.logging.console_logger import ConsoleLogger
 from utils.ssh_conn import SshConn
 
 
-class CliAccess(BinaryConverter, Fetcher):
+class CliAccess(Fetcher, BinaryConverter):
     connections = {}
     ssh_cmd = "ssh -q -o StrictHostKeyChecking=no "
     call_count_per_con = {}
@@ -71,8 +71,9 @@ class CliAccess(BinaryConverter, Fetcher):
         self.cached_commands[cmd_path] = {"timestamp": curr_time, "result": ret}
         return ret
 
-    def run_fetch_lines(self, cmd, ssh_to_host="", enable_cache=True):
-        out = self.run(cmd, ssh_to_host, enable_cache)
+    def run_fetch_lines(self, cmd, ssh_to_host="", enable_cache=True,
+                        use_sudo=True):
+        out = self.run(cmd, ssh_to_host, enable_cache, use_sudo=use_sudo)
         if not out:
             return []
         # first try to split lines by whitespace
@@ -236,7 +237,7 @@ class CliAccess(BinaryConverter, Fetcher):
             self.find_matching_regexps(o, line, regexps)
         for regexp_tuple in regexps:
             name = regexp_tuple['name']
-            if 'name' not in o and 'default' in regexp_tuple:
+            if name not in o and 'default' in regexp_tuple:
                 o[name] = regexp_tuple['default']
 
     @staticmethod
@@ -247,4 +248,8 @@ class CliAccess(BinaryConverter, Fetcher):
             regex = re.compile(regex)
             matches = regex.search(line)
             if matches and name not in o:
-                o[name] = matches.group(1)
+                try:
+                    o[name] = matches.group(1)
+                except IndexError as e:
+                    self.log.error('failed to find group 1 in match, {}'
+                                   .format(str(regexp_tuple)))

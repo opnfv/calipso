@@ -61,7 +61,7 @@ class EventPortDelete(EventDeleteBase):
             # update instance mac address.
             if port_doc['mac_address'] == instance_doc['mac_address']:
                 instance_fetcher = ApiFetchHostInstances()
-                instance_fetcher.set_env(env)
+                instance_fetcher.setup(env=env, origin=self.origin)
                 host_id = port_doc['binding:host_id']
                 instance_id = port_doc['device_id']
                 instance_docs = instance_fetcher.get(host_id + '-')

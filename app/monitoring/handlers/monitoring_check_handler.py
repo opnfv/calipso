@@ -19,14 +19,13 @@ from messages.message import Message
 from utils.inventory_mgr import InventoryMgr
 from utils.logging.full_logger import FullLogger
 from utils.special_char_converter import SpecialCharConverter
-from utils.string_utils import stringify_datetime
 
 SOURCE_SYSTEM = 'Sensu'
 ERROR_LEVEL = ['info', 'warn', 'error']
 
 
 class MonitoringCheckHandler(SpecialCharConverter):
-    STATUS_LABEL = ['OK', 'Warning', 'Error']
+    status_labels = {}
     TIME_FORMAT = '%Y-%m-%d %H:%M:%S %Z'
 
     def __init__(self, args):
@@ -39,8 +38,29 @@ class MonitoringCheckHandler(SpecialCharConverter):
             self.inv = InventoryMgr()
             self.inv.log.set_loglevel(args.loglevel)
             self.inv.set_collections(args.inventory)
+            self.status_labels = self.get_status_labels()
         except FileNotFoundError:
             sys.exit(1)
+
+    def get_status_labels(self):
+        statuses_name_search = {'name': 'monitoring_check_statuses'}
+        labels_data = self.inv.find_one(search=statuses_name_search,
+                                        collection='constants')
+        if not isinstance(labels_data, dict) or 'data' not in labels_data:
+            return ''
+        labels = {}
+        for status_data in labels_data['data']:
+            if not isinstance(status_data, dict):
+                continue
+            val = int(status_data['value'])
+            label = status_data['label']
+            labels[val] = label
+        return labels
+
+    def get_label_for_status(self, status: int) -> str:
+        if status not in self.status_labels.keys():
+            return ''
+        return self.status_labels.get(status, '')
 
     def doc_by_id(self, object_id):
         doc = self.inv.get_by_id(self.env, object_id)
@@ -57,7 +77,10 @@ class MonitoringCheckHandler(SpecialCharConverter):
         return doc
 
     def set_doc_status(self, doc, status, status_text, timestamp):
-        doc['status'] = self.STATUS_LABEL[status] if isinstance(status, int) \
+        doc['status_value'] = status if isinstance(status, int) \
+            else status
+        doc['status'] = self.get_label_for_status(status) \
+            if isinstance(status, int) \
             else status
         if status_text:
             doc['status_text'] = status_text
@@ -83,7 +106,8 @@ class MonitoringCheckHandler(SpecialCharConverter):
         obj_id = 'link_{}_{}'.format(doc['source_id'], doc['target_id']) \
             if is_link \
             else doc['id']
-        obj_type = 'link_{}'.format(doc['link_type']) if is_link else doc['type']
+        obj_type = 'link_{}'.format(doc['link_type']) if is_link else \
+            doc['type']
         display_context = obj_id if is_link \
             else doc['network_id'] if doc['type'] == 'port' else doc['id']
         level = error_level if error_level\

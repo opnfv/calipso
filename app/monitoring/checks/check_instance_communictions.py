@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 ###############################################################################
 # Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems)   #
 # and others                                                                  #
@@ -31,7 +31,7 @@ arp_mac_pos = arp_headers.index('HWaddress')
 arp_flags_pos = arp_headers.index('Flags')
 
 
-def check_vnic_tuple(vnic_and_service: str):
+def check_vnic_tuple(vnic_and_service):
     tuple_parts = vnic_and_service.split(',')
     local_service_id = tuple_parts[0]
     mac_address = tuple_parts[1]

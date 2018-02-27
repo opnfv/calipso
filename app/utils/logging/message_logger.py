@@ -18,4 +18,18 @@ class MessageLogger(Logger):
     def __init__(self, env: str = None, level: str = None):
         super().__init__(logger_name="{}-Message".format(self.PROJECT_NAME),
                          level=level)
+        self.env = env
         self.add_handler(MongoLoggingHandler(env, self.level))
+
+    def set_env(self, env):
+        self.env = env
+
+        if self.log.handlers:
+            self.log.handlers[0].env = env
+        else:
+            self.add_handler(MongoLoggingHandler(env, self.level))
+
+    def setup(self, **kwargs):
+        env = kwargs.get('env')
+        if env and self.env != env:
+            self.set_env(env)

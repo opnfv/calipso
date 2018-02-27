@@ -100,7 +100,7 @@ class EventRouterAdd(EventBase):
         host = self.inv.get_by_id(env, host_id)
 
         fetcher = CliFetchHostVservice()
-        fetcher.set_env(env)
+        fetcher.setup(env=env, origin=self.origin)
         router_doc = fetcher.get_vservice(host_id, router_id)
         gateway_info = router['external_gateway_info']
 
@@ -114,7 +114,7 @@ class EventRouterAdd(EventBase):
         # scan links and cliques
         FindLinksForVserviceVnics().add_links(search={"parent_id": router_id})
         scanner = Scanner()
-        scanner.set_env(env)
+        scanner.setup(env=env, origin=self.origin)
         scanner.scan_cliques()
         self.log.info("Finished router added.")
 

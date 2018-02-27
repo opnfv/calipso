@@ -28,7 +28,7 @@ class ApiFetchAvailabilityZones(ApiAccess):
         # because the later does not inclde the "internal" zone in the results
         endpoint = self.get_region_url_nover(region, "nova")
         req_url = endpoint + "/v2/" + token["tenant"]["id"] + \
-                  "/os-availability-zone/detail"
+            "/os-availability-zone/detail"
         headers = {
             "X-Auth-Project-Id": project,
             "X-Auth-Token": token["id"]
@@ -45,11 +45,10 @@ class ApiFetchAvailabilityZones(ApiAccess):
         for doc in azs:
             doc["id"] = doc["zoneName"]
             doc["name"] = doc.pop("zoneName")
-            doc["master_parent_type"] = "region"
-            doc["master_parent_id"] = region
-            doc["parent_type"] = "availability_zones_folder"
-            doc["parent_id"] = region + "-availability_zones"
-            doc["parent_text"] = "Availability Zones"
+            self.set_folder_parent(doc, object_type="availability_zone",
+                                   master_parent_type="region",
+                                   master_parent_id=region,
+                                   parent_text="Availability Zones")
             doc["available"] = doc["zoneState"]["available"]
             doc.pop("zoneState")
             ret.append(doc)

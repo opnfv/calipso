@@ -168,7 +168,7 @@ class EventPortAdd(EventBase):
                     "router": ('Gateways', router_name)}
 
         fetcher = CliFetchVserviceVnics()
-        fetcher.set_env(env)
+        fetcher.setup(env=env, origin=self.origin)
         namespace = 'q{}-{}'.format(object_type, object_id)
         vnic_documents = fetcher.handle_service(host['id'], namespace, enable_cache=False)
         if not vnic_documents:
@@ -258,7 +258,7 @@ class EventPortAdd(EventBase):
 
             # update instance
             instance_fetcher = ApiFetchHostInstances()
-            instance_fetcher.set_env(env)
+            instance_fetcher.setup(env=env, origin=self.origin)
             instance_docs = instance_fetcher.get(host_id + '-')
             instance = next(filter(lambda i: i['id'] == instance_id, instance_docs), None)
 
@@ -278,7 +278,7 @@ class EventPortAdd(EventBase):
                 # set ovs as default type.
                 vnic_fetcher = CliFetchInstanceVnics()
 
-            vnic_fetcher.set_env(env)
+            vnic_fetcher.setup(env=env, origin=self.origin)
             vnic_docs = vnic_fetcher.get(instance_id + '-')
             vnic = next(filter(lambda vnic: vnic['mac_address'] == mac_address, vnic_docs), None)
 
@@ -298,7 +298,7 @@ class EventPortAdd(EventBase):
             for fetcher in fetchers_implementing_add_links:
                 fetcher.add_links()
             scanner = Scanner()
-            scanner.set_env(env)
+            scanner.setup(env=env, origin=self.origin)
             scanner.scan_cliques()
 
         port_document = self.inv.get_by_id(env, port['id'])

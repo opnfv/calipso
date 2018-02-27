@@ -11,6 +11,7 @@ from abc import abstractmethod, ABC
 
 from discover.fetcher import Fetcher
 from utils.inventory_mgr import InventoryMgr
+from utils.origins import ScanOrigin, ScanOrigins
 
 
 class EventResult:
@@ -23,6 +24,8 @@ class EventResult:
         self.message = message
         self.related_object = related_object
         self.display_context = display_context
+        self.origin = ScanOrigin(origin_id=None,
+                                 origin_type=ScanOrigins.EVENT)
 
 
 class EventBase(Fetcher, ABC):

@@ -16,7 +16,12 @@ import dockerpycreds
 # note : not used, useful for docker api security if used
 import time
 import json
-
+import socket
+# by default, we want to use the docker0 interface ip address for inter-contatiner communications,
+# if hostname argument will not be provided as argument for the calipso-installer
+import os
+dockerip = os.popen('ip addr show docker0 | grep "\<inet\>" | awk \'{ print $2 }\' | awk -F "/" \'{ print $1 }\'')
+local_hostname = dockerip.read().replace("\n", "")
 
 C_MONGO_CONFIG = "/local_dir/calipso_mongo_access.conf"
 H_MONGO_CONFIG = "/home/calipso/calipso_mongo_access.conf"
@@ -161,7 +166,8 @@ def start_mongo(dbport, copy):
     copy_file("clique_types")
     copy_file("cliques")
     copy_file("constants")
-    copy_file("environments_config")
+    copy_file("environments_config"),
+    copy_file("environment_options"),
     copy_file("inventory")
     copy_file("link_types")
     copy_file("links")
@@ -328,10 +334,10 @@ def container_stop(container_name):
 # parser for getting optional command arguments:
 parser = argparse.ArgumentParser()
 parser.add_argument("--hostname",
-                    help="Hostname or IP address of the server "
-                         "(default=172.17.0.1)",
+                    help="FQDN (ex:mysrv.cisco.com) or IP address of the Server"
+                         "(default=docker0 interface ip address)",
                     type=str,
-                    default="172.17.0.1",
+                    default=local_hostname,
                     required=False)
 parser.add_argument("--webport",
                     help="Port for the Calipso WebUI "
@@ -401,6 +407,8 @@ parser.add_argument("--copy",
                     required=False)
 args = parser.parse_args()
 
+print("\nrunning installer against host:", args.hostname, "\n")
+
 if args.command == "start-all":
     container = "all"
     action = "start"
@@ -423,6 +431,7 @@ while container != "all" and container not in container_names:
                       .format(", ".join(container_names)))
     if container == "q":
         exit()
+
 
 # starting the containers per arguments:
 if action == "start":

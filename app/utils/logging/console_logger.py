@@ -18,4 +18,3 @@ class ConsoleLogger(Logger):
         super().__init__(logger_name="{}-Console".format(self.PROJECT_NAME),
                          level=level)
         self.add_handler(logging.StreamHandler())
-

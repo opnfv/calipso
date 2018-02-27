@@ -103,7 +103,8 @@ class ScanManager(Manager):
 
     def _build_scan_args(self, scan_request: dict):
         args = {
-            'mongo_config': self.args.mongo_config
+            'mongo_config': self.args.mongo_config,
+            'scheduled': True if scan_request.get('interval') else False
         }
 
         def set_arg(name_from: str, name_to: str = None):
@@ -113,6 +114,7 @@ class ScanManager(Manager):
             if val:
                 args[name_to] = val
 
+        set_arg("_id")
         set_arg("object_id", "id")
         set_arg("log_level", "loglevel")
         set_arg("environment", "env")

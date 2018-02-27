@@ -29,7 +29,8 @@ class Message:
                  object_type: str = None,
                  ts: datetime = None,
                  received_ts: datetime = None,
-                 finished_ts: datetime = None):
+                 finished_ts: datetime = None,
+                 **kwargs):
         super().__init__()
 
         if level and level.lower() in self.LEVELS:
@@ -48,6 +49,7 @@ class Message:
         self.received_timestamp = received_ts
         self.finished_timestamp = finished_ts
         self.viewed = False
+        self.extra = kwargs
 
     def get(self):
         return {
@@ -62,5 +64,6 @@ class Message:
             "timestamp": self.timestamp,
             "received_timestamp": self.received_timestamp,
             "finished_timestamp": self.finished_timestamp,
-            "viewed": self.viewed
+            "viewed": self.viewed,
+            **self.extra
         }

@@ -23,7 +23,8 @@ class ApiFetchNetwork(ApiAccess):
             return []
         ret = []
         for region in self.regions:
-            # TODO: refactor legacy code (Unresolved reference - self.get_for_region)
+            # TODO: refactor legacy code
+            # (Unresolved reference - self.get_for_region)
             ret.extend(self.get_for_region(region, token, project_id))
         return ret
 
@@ -37,7 +38,7 @@ class ApiFetchNetwork(ApiAccess):
             "X-Auth-Token": token["id"]
         }
         response = self.get_url(req_url, headers)
-        if not "network" in response:
+        if "network" not in response:
             return []
         network = response["network"]
         subnets = network['subnets']
@@ -60,13 +61,12 @@ class ApiFetchNetwork(ApiAccess):
         network["cidrs"] = cidrs
         network["subnet_ids"] = subnet_ids
 
-        network["master_parent_type"] = "project"
-        network["master_parent_id"] = network["tenant_id"]
-        network["parent_type"] = "networks_folder"
-        network["parent_id"] = network["tenant_id"] + "-networks"
-        network["parent_text"] = "Networks"
-        # set the 'network' attribute for network objects to the name of network,
-        # to allow setting constraint on network when creating network clique
+        self.set_folder_parent(network, object_type="network",
+                               master_parent_type="project",
+                               master_parent_id=network["tenant_id"])
+        # set the 'network' attribute for network objects to the name of
+        # network, to allow setting constraint on network when creating
+        # network clique
         network['network'] = network["id"]
         # get the project name
         project = self.inv.get_by_id(self.get_env(), network["tenant_id"])

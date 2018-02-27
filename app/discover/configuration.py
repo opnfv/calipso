@@ -47,6 +47,10 @@ class Configuration(metaclass=Singleton):
     def get_env_name(self):
         return self.env_name
 
+    def get_env_type(self):
+        return 'OpenStack' if 'environment_type' not in self.environment \
+            else self.environment['environment_type']
+
     def update_env(self, values):
         self.collection.update_one({"name": self.env_name},
                                    {'$set': MongoAccess.encode_mongo_keys(values)})

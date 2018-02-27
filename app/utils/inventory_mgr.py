@@ -389,38 +389,9 @@ class InventoryMgr(MongoAccess, metaclass=Singleton):
         parent_id_path = parent.get("id_path", "/{}".format(environment))
         parent_name_path = parent.get("name_path", "/{}".format(environment))
 
-        try:
-            # case of dynamic folder added by need
-            master_parent_type = o["master_parent_type"]
-            master_parent_id = o["master_parent_id"]
-            master_parent = self.get_by_id(environment, master_parent_id)
-            if not master_parent:
-                self.log.error("failed to find master parent " +
-                               master_parent_id)
+        if 'master_parent_type' in o:
+            if not self.create_parent_folder(o, parent):
                 return False
-            folder_id_path = "/".join((master_parent["id_path"],
-                                       o["parent_id"]))
-            folder_name_path = "/".join((master_parent["name_path"],
-                                         o["parent_text"]))
-            folder = {
-                "environment": parent["environment"],
-                "parent_id": master_parent_id,
-                "parent_type": master_parent_type,
-                "id": o["parent_id"],
-                "id_path": folder_id_path,
-                "show_in_tree": True,
-                "name_path": folder_name_path,
-                "name": o["parent_id"],
-                "type": o["parent_type"],
-                "text": o["parent_text"]
-            }
-            # remove master_parent_type & master_parent_id after use,
-            # as they're there just ro help create the dynamic folder
-            o.pop("master_parent_type", True)
-            o.pop("master_parent_id", True)
-            self.set(folder)
-        except KeyError:
-            pass
 
         if o.get("text"):
             o["name"] = o["text"]
@@ -459,6 +430,42 @@ class InventoryMgr(MongoAccess, metaclass=Singleton):
         if "create_object" not in o or o["create_object"]:
             # add/update object in DB
             self.set(o)
-            if self.is_feature_supported(environment, EnvironmentFeatures.MONITORING):
+            if self.is_feature_supported(environment,
+                                         EnvironmentFeatures.MONITORING):
                 self.monitoring_setup_manager.create_setup(o)
+        return True
+
+    def create_parent_folder(self, o, parent) -> bool:
+        # case of dynamic folder added by need
+        master_parent_type = o["master_parent_type"]
+        master_parent_id = o["master_parent_id"]
+        env_path = '/{}'.format(parent['environment'])
+        master_parent = {'id_path': env_path, 'name_path': env_path} \
+            if master_parent_type == 'environment' \
+            else self.get_by_id(o['environment'], master_parent_id)
+        if not master_parent:
+            self.log.error("failed to find master parent " +
+                           master_parent_id)
+            return False
+        folder_id_path = "/".join((master_parent['id_path'],
+                                   o["parent_id"]))
+        folder_name_path = "/".join((master_parent["name_path"],
+                                     o["parent_text"]))
+        folder = {
+            "environment": parent["environment"],
+            "parent_id": master_parent_id,
+            "parent_type": master_parent_type,
+            "id": o["parent_id"],
+            "id_path": folder_id_path,
+            "show_in_tree": True,
+            "name_path": folder_name_path,
+            "name": o["parent_id"],
+            "type": o["parent_type"],
+            "text": o["parent_text"]
+        }
+        # remove master_parent_type & master_parent_id after use,
+        # as they're there just ro help create the dynamic folder
+        o.pop("master_parent_type", True)
+        o.pop("master_parent_id", True)
+        self.set(folder)
         return True
