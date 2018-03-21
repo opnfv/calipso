@@ -11,6 +11,7 @@ from test.api.responders_test.test_data import base
 from test.api.responders_test.test_data.base import WRONG_MECHANISM_DRIVER, \
     CORRECT_MECHANISM_DRIVER, CORRECT_TYPE_DRIVER, WRONG_TYPE_DRIVER, \
     CORRECT_DISTRIBUTION, CORRECT_DIST_VER
+from utils.util import merge_dicts
 
 URL = "/clique_types"
 
@@ -61,8 +62,7 @@ CLIQUE_TYPES_WITH_SPECIFIC_ID = [
 ]
 
 CLIQUE_TYPES_WITH_SPECIFIC_CONFIGURATION = [
-    get_payload(update={'id': SAMPLE_IDS[0],
-                        **TEST_CONFIGURATION},
+    get_payload(update=merge_dicts(TEST_CONFIGURATION, {'id': SAMPLE_IDS[0]}),
                 delete=['environment'])
 ]
 
