@@ -8,9 +8,8 @@
 # http://www.apache.org/licenses/LICENSE-2.0                                  #
 ###############################################################################
 import datetime
-from typing import Union
 
-from bson import ObjectId
+from utils.util import merge_dicts
 
 
 class Message:
@@ -23,8 +22,8 @@ class Message:
                  msg: dict,
                  source: str,
                  env: str = None,
-                 object_id: Union[str, ObjectId] = None,
-                 display_context: Union[str, ObjectId] = None,
+                 object_id=None,
+                 display_context=None,
                  level: str = DEFAULT_LEVEL,
                  object_type: str = None,
                  ts: datetime = None,
@@ -52,18 +51,21 @@ class Message:
         self.extra = kwargs
 
     def get(self):
-        return {
-            "id": self.id,
-            "environment": self.environment,
-            "source_system": self.source_system,
-            "related_object": self.related_object,
-            "related_object_type": self.related_object_type,
-            "display_context": self.display_context,
-            "level": self.level,
-            "message": self.message,
-            "timestamp": self.timestamp,
-            "received_timestamp": self.received_timestamp,
-            "finished_timestamp": self.finished_timestamp,
-            "viewed": self.viewed,
-            **self.extra
-        }
+        return merge_dicts(
+            self.extra,
+            {
+                "id": self.id,
+                "environment": self.environment,
+                "source_system": self.source_system,
+                "related_object": self.related_object,
+                "related_object_type": self.related_object_type,
+                "display_context": self.display_context,
+                "level": self.level,
+                "message": self.message,
+                "timestamp": self.timestamp,
+                "received_timestamp": self.received_timestamp,
+                "finished_timestamp": self.finished_timestamp,
+                "viewed": self.viewed
+            }
+        )
+

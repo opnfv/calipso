@@ -9,8 +9,6 @@
 ###############################################################################
 import importlib
 import signal
-from argparse import Namespace
-from typing import Dict, Callable
 
 import os
 import re
@@ -129,8 +127,8 @@ def generate_object_ids(keys, obj):
 # and convert them to dict to enforce uniformity.
 # Throws a TypeError if arguments can't be converted to dict.
 def setup_args(args: dict,
-               defaults: Dict[str, object],
-               get_cmd_args: Callable[[], Namespace] = None):
+               defaults,
+               get_cmd_args=None):
     if defaults is None:
         defaults = {}
 
@@ -171,3 +169,10 @@ def decode_aci_dn(object_id):
 def get_object_path_part(path: str, part_name: str):
     match = re.match(".*/{}/(.+?)/.*".format(part_name), path)
     return match.group(1) if match else None
+
+
+def merge_dicts(*dicts):
+    result = {}
+    for dictionary in dicts:
+        result.update(dictionary)
+    return result
