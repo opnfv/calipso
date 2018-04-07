@@ -31,7 +31,7 @@ Calipso.io Monitoring Guide 1
 
 1.1 Calipso monitoring provisioning 3
 
-1.2 Calipso-sensu container 5
+1.2 Calipso-monitor container 5
 
 2 Monitoring configurations 5
 
@@ -70,7 +70,7 @@ Monitoring deployment options
    config files and all needed plugins and scripts on all clients and
    the central server.
 
-2. Calipso sensu module: listens for the results of the customized
+2. Calipso monitor module: listens for the results of the customized
    events and updates the inventories with state and statuses, while
    generating all related messages.
 
@@ -171,8 +171,8 @@ Calipso monitoring provisioning
 
     |image1|
 
-Calipso-sensu container
------------------------
+Calipso-monitor container
+-------------------------
 
     Once sensu clients and all needed configurations and plugins are
     deployed properly, the sensu server should start receiving results
@@ -658,6 +658,6 @@ Calipso Apex monitoring integration
 .. |image0| image:: media/image1.png
    :width: 6.50000in
    :height: 4.27153in
-.. |image1| image:: media/image10.png
+.. |image1| image:: media/image2.png
    :width: 6.50000in
    :height: 3.62708in
