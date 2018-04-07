@@ -17,7 +17,7 @@ import sys
 
 from utils.binary_converter import BinaryConverter
 
-IMAGES_TO_SEARCH = ["ui", "sensu", "scan", "api", "ldap", "listen", "mongo"]
+IMAGES_TO_SEARCH = ["ui", "monitor", "scan", "api", "ldap", "listen", "mongo"]
 
 
 class DockerImageCheck:

@@ -261,12 +261,12 @@ def start_scan():
                                 volumes=calipso_volume)
 
 
-def start_sensu(uchiwaport, sensuport, rabbitport, rabbitmport):
-    name = "calipso-sensu"
+def start_monitor(uchiwaport, sensuport, rabbitport, rabbitmport):
+    name = "calipso-monitor"
     if container_started(name):
         return
     print("\nstarting container {}...\n".format(name))
-    image_name = "korenlev/calipso:sensu"
+    image_name = "korenlev/calipso:monitor"
     download_image(image_name)
     sensu_ports = {'22/tcp': 20022, '3000/tcp': uchiwaport, '4567/tcp': sensuport,
                    '5671/tcp': rabbitport, '15672/tcp': rabbitmport}
@@ -420,7 +420,7 @@ else:
     action = ""
 
 container_names = ["calipso-ui", "calipso-scan", "calipso-test", "calipso-listen",
-                   "calipso-ldap", "calipso-api", "calipso-sensu", "calipso-mongo"]
+                   "calipso-ldap", "calipso-api", "calipso-monitor", "calipso-mongo"]
 container_actions = ["stop", "start"]
 while action not in container_actions:
     action = input("Action? (stop, start, or 'q' to quit):\n")
@@ -488,8 +488,8 @@ if action == "start":
     if container == "calipso-test" or container == "all":
         start_test()
         time.sleep(1)
-    if container == "calipso-sensu" or container == "all":
-        start_sensu(args.uchiwaport, args.sensuport, args.rabbitport, args.rabbitmport)
+    if container == "calipso-monitor" or container == "all":
+        start_monitor(args.uchiwaport, args.sensuport, args.rabbitport, args.rabbitmport)
         time.sleep(1)
     if container == "calipso-ui" or container == "all":
         start_ui(args.hostname, args.dbuser, args.dbpassword, args.webport,
