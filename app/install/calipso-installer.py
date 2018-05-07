@@ -20,6 +20,7 @@ import socket
 # by default, we want to use the docker0 interface ip address for inter-contatiner communications,
 # if hostname argument will not be provided as argument for the calipso-installer
 import os
+import errno
 dockerip = os.popen('ip addr show docker0 | grep "\<inet\>" | awk \'{ print $2 }\' | awk -F "/" \'{ print $1 }\'')
 local_hostname = dockerip.read().replace("\n", "")
 
@@ -28,7 +29,7 @@ H_MONGO_CONFIG = "/home/calipso/calipso_mongo_access.conf"
 PYTHONPATH = "/home/scan/calipso_prod/app"
 C_LDAP_CONFIG = "/local_dir/ldap.conf"
 H_LDAP_CONFIG = "/home/calipso/ldap.conf"
-
+H_DIR="/home/calipso/"
 
 calipso_volume = {'/home/calipso': {'bind': '/local_dir', 'mode': 'rw'}}
 RESTART_POLICY = {"Name": "always"}
@@ -432,6 +433,14 @@ while container != "all" and container not in container_names:
     if container == "q":
         exit()
 
+# create local directory on host, raise error if it doesn't exists 
+try:
+    os.makedirs(H_DIR)
+    os.makedirs(H_DIR+'log')
+    os.makedirs(H_DIR+'log/calipso')
+except OSError as e:
+    if e.errno != errno.EEXIST:
+        raise
 
 # starting the containers per arguments:
 if action == "start":
