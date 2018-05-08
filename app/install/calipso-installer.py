@@ -435,8 +435,6 @@ while container != "all" and container not in container_names:
 
 # create local directory on host, raise error if it doesn't exists 
 try:
-    os.makedirs(H_DIR)
-    os.makedirs(H_DIR+'log')
     os.makedirs(H_DIR+'log/calipso')
 except OSError as e:
     if e.errno != errno.EEXIST:
