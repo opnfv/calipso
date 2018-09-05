@@ -1,6 +1,6 @@
 ###############################################################################
-# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems)   #
-# and others                                                                  #
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
 #                                                                             #
 # All rights reserved. This program and the accompanying materials            #
 # are made available under the terms of the Apache License, Version 2.0       #
@@ -25,13 +25,11 @@ dockerip = os.popen('ip addr show docker0 | grep "\<inet\>" | awk \'{ print $2 }
 local_hostname = dockerip.read().replace("\n", "")
 
 C_MONGO_CONFIG = "/local_dir/calipso_mongo_access.conf"
-H_MONGO_CONFIG = "/home/calipso/calipso_mongo_access.conf"
+H_MONGO_CONFIG = "calipso_mongo_access.conf"
 PYTHONPATH = "/home/scan/calipso_prod/app"
 C_LDAP_CONFIG = "/local_dir/ldap.conf"
-H_LDAP_CONFIG = "/home/calipso/ldap.conf"
-H_DIR="/home/calipso/"
+H_LDAP_CONFIG = "ldap.conf"
 
-calipso_volume = {'/home/calipso': {'bind': '/local_dir', 'mode': 'rw'}}
 RESTART_POLICY = {"Name": "always"}
 
 # environment variables definitions
@@ -140,7 +138,7 @@ def start_mongo(dbport, copy):
     if container_started(name):
         return
     print("\nstarting container {}, please wait...\n".format(name))
-    image_name = "korenlev/calipso:mongo"
+    image_name = "korenlev/calipso:mongo-v2"
     download_image(image_name)
     mongo_ports = {'27017/tcp': dbport, '28017/tcp': 28017}
     DockerClient.containers.run(image_name,
@@ -198,7 +196,7 @@ def start_listen():
     if container_started(name):
         return
     print("\nstarting container {}...\n".format(name))
-    image_name = "korenlev/calipso:listen"
+    image_name = "korenlev/calipso:listen-v2"
     download_image(image_name)
     ports = {'22/tcp': 50022}
     DockerClient.containers.run(image_name,
@@ -215,7 +213,7 @@ def start_ldap():
     if container_started(name):
         return
     print("\nstarting container {}...\n".format(name))
-    image_name = "korenlev/calipso:ldap"
+    image_name = "korenlev/calipso:ldap-v2"
     download_image(image_name)
     ports = {'389/tcp': 389, '389/udp': 389}
     DockerClient.containers.run(image_name,
@@ -231,7 +229,7 @@ def start_api(apiport):
     if container_started(name):
         return
     print("\nstarting container {}...\n".format(name))
-    image_name = "korenlev/calipso:api"
+    image_name = "korenlev/calipso:api-v2"
     download_image(image_name)
     api_ports = {'8000/tcp': apiport, '22/tcp': 40022}
     DockerClient.containers.run(image_name,
@@ -250,7 +248,7 @@ def start_scan():
     if container_started(name):
         return
     print("\nstarting container {}...\n".format(name))
-    image_name = "korenlev/calipso:scan"
+    image_name = "korenlev/calipso:scan-v2"
     download_image(image_name)
     ports = {'22/tcp': 30022}
     DockerClient.containers.run(image_name,
@@ -267,7 +265,7 @@ def start_monitor(uchiwaport, sensuport, rabbitport, rabbitmport):
     if container_started(name):
         return
     print("\nstarting container {}...\n".format(name))
-    image_name = "korenlev/calipso:monitor"
+    image_name = "korenlev/calipso:monitor-v2"
     download_image(image_name)
     sensu_ports = {'22/tcp': 20022, '3000/tcp': uchiwaport, '4567/tcp': sensuport,
                    '5671/tcp': rabbitport, '15672/tcp': rabbitmport}
@@ -285,12 +283,12 @@ def start_ui(host, dbuser, dbpassword, webport, dbport):
     if container_started(name):
         return
     print("\nstarting container {}...\n".format(name))
-    image_name = "korenlev/calipso:ui"
+    image_name = "korenlev/calipso:ui-v2"
     download_image(image_name)
     root_url = "ROOT_URL=http://{}:{}".format(host, str(webport))
     mongo_url = "MONGO_URL=mongodb://{}:{}@{}:{}/calipso" \
         .format(dbuser, dbpassword, host, str(dbport))
-    ports = {'3000/tcp': webport}
+    ports = {'4000/tcp': webport}
     DockerClient.containers.run(image_name,
                                 detach=True,
                                 name=name,
@@ -304,7 +302,7 @@ def start_test():
     if container_started(name):
         return
     print("\nstarting container {}...\n".format(name))
-    image_name = "korenlev/calipso:test"
+    image_name = "korenlev/calipso:test-v2"
     download_image(image_name)
     ports = {'22/tcp': 10022}
     DockerClient.containers.run(image_name,
@@ -394,6 +392,12 @@ parser.add_argument("--dbpassword",
                     type=str,
                     default="calipso_default",
                     required=False)
+parser.add_argument("--home",
+                    help="Home directory for configuration files "
+                         "(default=/home/calipso)",
+                    type=str,
+                    default="/home/calipso",
+                    required=False)
 parser.add_argument("--command",
                     help="'start-all' or 'stop-all' the Calipso containers "
                          "(default=None)",
@@ -406,7 +410,9 @@ parser.add_argument("--copy",
                     type=str,
                     default=None,
                     required=False)
+
 args = parser.parse_args()
+calipso_volume = {args.home: {'bind': '/local_dir', 'mode': 'rw'}}
 
 print("\nrunning installer against host:", args.hostname, "\n")
 
@@ -435,15 +441,14 @@ while container != "all" and container not in container_names:
 
 # create local directory on host, raise error if it doesn't exists 
 try:
-    os.makedirs(H_DIR+'log/calipso')
+    os.makedirs(os.path.join(args.home, 'log/calipso'))
 except OSError as e:
     if e.errno != errno.EEXIST:
         raise
 
 # starting the containers per arguments:
 if action == "start":
-    # building /home/calipso/calipso_mongo_access.conf and
-    # /home/calipso/ldap.conf files, per the arguments:
+    # building mongo.conf and ldap.conf files, per the arguments:
     calipso_mongo_access_text = \
         "server {}\n" \
         "user {}\n" \
@@ -466,13 +471,15 @@ if action == "start":
         "group_member_attribute member"
     ldap_text = ldap_text.format(LDAP_PWD_ATTRIBUTE, args.hostname,
                                  LDAP_USER_PWD_ATTRIBUTE)
-    print("creating default", H_MONGO_CONFIG, "file...\n")
-    calipso_mongo_access_file = open(H_MONGO_CONFIG, "w+")
+    mongo_file_path = os.path.join(args.home, H_MONGO_CONFIG)
+    print("creating default", mongo_file_path, "file...\n")
+    calipso_mongo_access_file = open(mongo_file_path, "w+")
     time.sleep(1)
     calipso_mongo_access_file.write(calipso_mongo_access_text)
     calipso_mongo_access_file.close()
-    print("creating default", H_LDAP_CONFIG, "file...\n")
-    ldap_file = open(H_LDAP_CONFIG, "w+")
+    ldap_file_path = os.path.join(args.home, H_LDAP_CONFIG)
+    print("creating default", ldap_file_path, "file...\n")
+    ldap_file = open(ldap_file_path, "w+")
     time.sleep(1)
     ldap_file.write(ldap_text)
     ldap_file.close()
