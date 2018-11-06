@@ -6,3 +6,5 @@
 mongo*.conf
 mongo_access.log
 .DS_Store
+.tox
+docs/_build/*
