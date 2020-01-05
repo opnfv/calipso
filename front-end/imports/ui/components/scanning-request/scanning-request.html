@@ -1,0 +1,64 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="ScanningRequest">
+  <div class="scanning-request-box box-container">
+    {{#if (getState 'beforeInsert') }} {{#if notificationsExists}}
+    <div class="sm-notification-panel alert alert-danger">
+      {{#each note in notifications }}
+      <div>{{ note }}</div>
+      {{/each }}
+    </div>
+    {{/if}} {{/if}}
+
+    <div class="box-header">{{ pageHeader }}</div>
+    <div class="sm-form-container">
+      {{#if (getState 'isMessage') }}
+      <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
+          {{#if (getState 'isSuccess')}}alert-success{{/if}}" role="alert">
+        {{ getState 'message' }}
+      </div>
+      {{/if }}
+
+      <form role="form" class="form-horizontal">
+
+        {{#each commandOption in commandOptions }}
+
+        <div class="form-group no-right-margin">
+          <label class="col-sm-2 control-label box-label">{{ commandOption.info.label }}</label>
+          <div class="col-sm-3">
+            {{#if (isCommandOptionSelectType commandOption)}} 
+                {{> SelectModel(createSelectArgs values=(getModelKeyValue commandOption.name)
+                  key=commandOption.name options=(calcCommandSelectOptions commandOption) setModel=(calcSetModelFn commandOption.name)
+                  disabled=(isCommandDisabled commandOption.info.disabled) ) }} 
+            {{else}} 
+              {{> InputModel(createInputArgs value=(getModelKeyValue
+                  commandOption.name) key=commandOption.name type=(calcInputType commandOption.info) disabled=(isCommandDisabled
+                  commandOption.info.disabled) placeholder=commandOption.info.placeholder) }} 
+            {{/if}}
+          </div>
+          <div class="col-sm-3 form-label-description">
+            {{commandOption.info.description}}
+          </div>
+        </div>
+
+        {{/each }} {{#if isUpdateableAction }}
+        <div class="submit-req-btn">
+          <button type="button" class="js-submit-button mdl-button mdl-js-button mdl-button--raised 
+              mdl-js-ripple-effect mdl-button--colored">Submit</button>
+        </div>
+        {{/if }}
+
+      </form>
+
+    </div>
+  </div>
+</template>

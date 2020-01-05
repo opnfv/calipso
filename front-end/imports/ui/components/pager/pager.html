@@ -1,0 +1,44 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="Pager">
+<div class="os-pager">
+  <nav aria-label="Page navigation">
+		<ul class="pagination">
+			<li class="{{#if disablePrev}}disabled{{/if}}">
+				<a class="sm-first-button first-round" aria-label="First">
+					<span aria-hidden="true">first</span>
+				</a>
+      </li>
+      
+			<li class="{{#if disablePrev}}disabled{{/if}}">
+				<a class="sm-prev-button prev-round" aria-label="Previous">
+					<span aria-hidden="true">previous</span>
+				</a>
+			</li>
+      {{#each pageButton in pagesButtons }}
+			<li class="{{#if (isCurrentPage pageButton.number currentPage)}}active{{/if}}"><a class="sm-page-button round-number" data-page-number="{{ pageButton.number }}"
+            >{{ pageButton.label }}</a></li>
+      {{/each }}
+			<li class="{{#if disableNext}}disabled{{/if}}">
+				<a class="sm-next-button next-round" aria-label="Next">
+					<span aria-hidden="true">next</span>
+				</a>
+			</li>
+			<li class="{{#if disableNext}}disabled{{/if}}">
+				<a class="sm-last-button last-round" aria-label="Last">
+					<span aria-hidden="true">last</span>
+				</a>
+			</li>
+		</ul>
+	</nav>	
+</div>
+</template>

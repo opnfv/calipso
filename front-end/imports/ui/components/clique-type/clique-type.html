@@ -1,0 +1,177 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="CliqueType">
+  <div class="clique-type-box box-container">
+    {{#if notificationsExists}}
+    <div class="sm-notification-panel alert alert-danger">
+      {{#each note in notifications }}
+      <div>{{ note }}</div>
+      {{/each }}
+    </div>
+    {{/if}}
+
+    <div class="box-header">{{ getState 'pageHeader' }}</div>
+    <div class="sm-form-container">
+      <form role="form" class="sm-item-form form-horizontal">
+
+        <div class="sm-field-group-id form-group">
+          <label class="col-sm-2 control-label box-label">Id</label>
+          <div class="col-sm-3">
+            <input name="id" disabled="disabled" value="{{ getModelField '_id' }}" class="sm-input-id inputField form-control input-control"
+              type="text" placeholder="Id" />
+          </div>
+          <div class="col-sm-3 form-label-description">
+            Id
+          </div>
+        </div>
+
+        <div class="sm-field-group-env form-group">
+          <label class="col-sm-2 control-label box-label">Environment</label>
+          <div class="col-sm-3">
+            <select id="env-select" name="env" class="sm-input-env inputField form-control select-control" {{ getEnvDisabled (getModelField
+              'environment') }}>
+              <option value="" selected></option>
+              {{#each env in envsList }}
+              <option value="{{ env.name }}" {{ getAttrSelected env.name (getModelField 'environment') }}>{{ env.name }}</option>
+              {{/each }}
+            </select>
+          </div>
+          <div class="col-sm-3 form-label-description">Environment</div>
+        </div>
+
+        <div class="sm-field-group-focal-point-type form-group">
+          <label class="col-sm-2 control-label box-label">Focal Point Type</label>
+          <div class="col-sm-3">
+            <select name="focalPointType" class="sm-input-focal-point-type inputField form-control select-control" {{ getAttrDisabled
+              }}>
+              {{#each objectType in objectTypesList }}
+              <option value="{{ objectType.value }}" {{ getAttrSelected objectType.value (getModelField 'focal_point_type') }}>{{ objectType.label }}</option>
+              {{/each }}
+            </select>
+          </div>
+          <div class="col-sm-3 form-label-description">Focal Point Type</div>
+        </div>
+
+        <div class="sm-field-group-environment-type form-group">
+          <label class="col-sm-2 control-label box-label">Environment Type</label>
+          <div class="col-sm-3">
+            <select id="environment-type-input" name="environmentType" class="sm-input-environment-type inputField form-control select-control conf-input"
+              {{ getConfDisabled (getModelField 'environment') }}>
+              <option selected></option>
+              {{#each etType in environmentTypesList }}
+              <option value="{{ etType.value }}" {{ getAttrSelected etType.value (getModelField 'environment_type') }}>{{ etType.label }}</option>
+              {{/each }}
+            </select>
+          </div>
+          <div class="col-sm-3 form-label-description">Environment Type</div>
+        </div>
+
+        <div class="sm-field-group-distribution form-group">
+          <label class="col-sm-2 control-label box-label">Distribution</label>
+          <div class="col-sm-3">
+            <select id="distribution-input" name="distribution" class="sm-input-distribution inputField form-control select-control conf-input"
+              {{ getConfDisabled (getModelField 'environment') }}>
+              <option selected></option>
+              {{#each dType in distributionsList (getModelField 'environment_type') }}
+              <option value="{{ dType.value }}" {{ getAttrSelected dType.value (getModelField 'distribution') }}>{{ dType.label }}</option>
+              {{/each }}
+            </select>
+          </div>
+          <div class="col-sm-3 form-label-description">Distribution</div>
+        </div>
+
+         <div class="sm-field-group-distribution-version form-group">
+          <label class="col-sm-2 control-label box-label">Distribution version</label>
+          <div class="col-sm-3">
+            <select id="distribution-version-input" name="distributionVersion" class="sm-input-distribution-version inputField form-control select-control conf-input env-options-input" {{ getConfDisabled (getModelField 'environment') }}>
+              <option selected></option>
+              {{#each dvType in distributionVersionsList (getModelField 'distribution') }}
+              <option value="{{ dvType.value }}" {{ getAttrSelected dvType.value (getModelField 'distribution_version') }}>{{ dvType.label }}</option>
+              {{/each }}
+            </select>
+          </div>
+          <div class="col-sm-3 form-label-description">Distribution version</div>
+        </div>
+
+        <div class="sm-field-group-mechanism-drivers form-group">
+          <label class="col-sm-2 control-label box-label">Mechanism drivers</label>
+          <div class="col-sm-3">
+            <select id="mechanism-drivers-input" name="mechanismDrivers" class="sm-input-mechanism-drivers inputField form-control select-control conf-input
+                                                 env-options-input" {{ getConfDisabled (getModelField 'environment') }}>
+              <option selected></option>
+              {{#each mdType in mechanismDriversList (getModelField 'distribution') }}
+              <option value="{{ mdType.value }}" {{ getAttrSelected mdType.value (getModelField 'mechanism_drivers') }}>{{ mdType.label }}</option>
+              {{/each }}
+            </select>
+          </div>
+          <div class="col-sm-3 form-label-description">Mechanism drivers</div>
+        </div>
+
+        <div class="sm-field-group-type-drivers form-group">
+          <label class="col-sm-2 control-label box-label">Type drivers</label>
+          <div class="col-sm-3">
+            <select name="typeDrivers" class="sm-input-type-drivers inputField form-control select-control conf-input
+                                            env-options-input" {{ getConfDisabled (getModelField 'environment') }}>
+              <option selected></option>
+              {{#each tdType in typeDriversList (getModelField 'distribution') }}
+              <option value="{{ tdType.value }}" {{ getAttrSelected tdType.value (getModelField 'type_drivers') }}>{{ tdType.label }}</option>
+              {{/each }}
+            </select>
+          </div>
+          <div class="col-sm-3 form-label-description">Type drivers</div>
+        </div>
+
+        <div class="sm-field-group-link-types form-group">
+          <label class="col-sm-2 control-label box-label">Link Types</label>
+          <div class="col-sm-5">
+            {{#if (exists (getModelField 'link_types')) }} {{>SelectableOrderedInput (argsLinkTypesInput linkTypesList (getModelField
+            'link_types'))}} {{/if }}
+          </div>
+        </div>
+
+        <div class="sm-field-group-name form-group">
+          <label class="col-sm-2 control-label box-label">Name</label>
+          <div class="col-sm-3">
+            <input name="name" {{ getAttrDisabled }} value="{{ getModelField 'name' }}" class="sm-input-name form-control input-control"
+              type="text" placeholder="Name" />
+          </div>
+          <div class="col-sm-3 form-label-description">Name</div>
+        </div>
+
+        <div class="sm-field-group-use-implicit-links form-group">
+          <label class="col-sm-2 control-label box-label">Use implicit links?</label>
+          <div class="col-sm-3" style="padding-top:8px;">
+            <label class="check-box-container" style="display: inline;">
+              <input name="use-implicit-links" {{ getAttrDisabled }} checked={{ getModelField 'use_implicit_links' }} class="sm-input-use-implicit-links form-control input-control"
+                type="checkbox" />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </div>
+
+        {{#if isUpdateableAction }}
+        <button type="submit" class="js-submit-button mdl-button mdl-js-button mdl-button--raised 
+            mdl-js-ripple-effect mdl-button--colored">{{ actionLabel }}</button>
+        {{/if }}
+
+      </form>
+
+      {{#if (getState 'isMessage') }}
+      <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
+          {{#if (getState 'isSuccess')}}alert-success{{/if}}" role="alert">
+        {{ getState 'message' }}
+      </div>
+      {{/if }}
+
+    </div>
+  </div>
+</template>

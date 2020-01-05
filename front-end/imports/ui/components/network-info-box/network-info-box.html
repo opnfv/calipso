@@ -1,0 +1,60 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="NetworkInfoBox">
+  <div class="network-details">
+    <div>
+      <div class="network-name" style="border-bottom: 1px solid #C4DFEB;padding-bottom: 10px;">
+        Network name: {{ network.name }}
+      </div>
+      <div style="display: flex;padding-top:10px; justify-content: space-between">
+        <div>
+          <span class="network-summary-item-title">Last Scanning:</span>
+          <div></div>
+        </div>
+        <div class="network-summary-item-container">
+          <div class="network-summary-item">
+            <span class="network-summary-item-title">Ports</span>
+            <div class="network-summary-item-counter">{{ portsCount }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+
+
+<!-- <template name="NetworkInfoBox">
+  <div class="content-details">
+    <div class="flex-box">
+      <div class="network-name" style="border-bottom: 1px solid #C4DFEB;padding-bottom: 10px;">
+          Network name: {{ network.name }}
+      </div>
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>Last Scanning</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Ports count</th>
+            <td>{{ portsCount }}</td>
+          </tr>
+          <tr>
+            <th>Instaces</th>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template> -->

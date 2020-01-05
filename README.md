@@ -1,4 +1,4 @@
-Copyright (c) 2018 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems)
+Copyright (c) 2017-2019 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems)
 and others
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,8 @@ and others
    See the License for the specific language governing permissions and
    limitations under the License.
 
-Calipso = OpenStack/VIM Network Discovery and Assurance
-==================================================
+Calipso = OpenStack,Kubernetes and other VIMs Network Discovery and Assurance
+=============================================================================
 ### About
 We are going to enhance the way Cloud Network Administrators(CNA) and Tenant Network Administrators(TNA) 
 Understands, Monitors and Troubleshoot highly distributed OpenStack and other virtual Environments.
@@ -48,7 +48,7 @@ Calipso uses Sensu framework for Monitoring. It automatically deploys and config
 After collecting the data, from processes and workers provisioned by the cloud management systems, calipso dynamically checks for health and availability, as a baseline for SLA monitoring.
 Calipso allows networking administrators to operate, plan for maintenance or troubleshooting and provides an easy to use hierarchical representation of all the virtual networking components.
 
-Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others.
+Copyright (c) 2017-2019 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others.
 
 The following wonderful and very talented engineers has been coding, at various times, and contributing to Calipsos development:
 

@@ -1,0 +1,28 @@
+{
+  "name": "calipso",
+  "version": "1.0.5",
+  "description": "",
+  "dependencies": {
+    "babel-runtime": "^6.26.0",
+    "bcrypt": "^1.0.3",
+    "bson": "^1.0.4",
+    "d3": "^4.13.0",
+    "fibers": "^1.0.15",
+    "jquery": "^1.9.1",
+    "jquery.scrollto": "^2.1.2",
+    "lodash": "^4.17.10",
+    "meteor-node-stubs": "^0.2.11",
+    "ramda": "^0.24.1",
+    "reactive-redux": "^1.1.1",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.3.0",
+    "rrule": "^2.2.9",
+    "webcola": "^3.3.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

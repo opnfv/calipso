@@ -1,0 +1,179 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+ 
+<template name="TopNavbarMenu">
+  <nav class="os-topnavbarmenu navbar navbar-inverse navbar-custom navbar-fixed-top">
+    <div class="nav-main justify-content-between">
+      <div class="nav-left-side">
+        <div class="sm-navbar-header navbar-header">
+          <div class="sm-navbar-brand-container">
+            <img class="sm-calipso-logo" src="/icons/icon-logo-temp.svg">
+            <div class="sm-project-label" href="/">CALIPSO</div>
+          </div>
+        </div>
+        <div class="sm-navbar-menu">
+          <div class="sm-get-started-link os-nav-link nav-dashboard-link">
+            <a>
+              GET STARTED
+            </a>
+          </div>
+          <div class="sm-dashboard-link os-nav-link nav-dashboard-link">
+            <a>
+              DASHBOARD
+            </a>
+          </div>
+
+          <div class="nav-environments-link dropdown os-nav-link">{{> envForm argsEnvForm }}</div>
+          <div class="search nav-search">
+            <div class="search-input-group" style="display: flex;">
+              <img class="search-icon" src="/icons/icon-search.svg">
+              <input id="search" placeholder="Search ...">
+            </div>
+            <div class="search-auto-complete">
+              {{>SearchAutoCompleteList (argsSearch envId searchTerm) }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-right-side">
+        <div id="navbar" class="nav-childs" style="width: 100%;display:flex;">
+          <div class="nav-buttons">
+            <div>
+              {{> settingsList}}
+            </div>
+            <div id="login-main-container" class="login-container">
+              <div id="login-user-container">
+                <a class="sm-login-buttons-link os-nav-link" href="#">
+                  <div dir="ltr">{{> loginButtons}}</div>
+                </a>
+              </div>
+              <div class="user-img">
+              </div>
+            </div>
+            <div class="alarm-section">
+              {{> alarmIcons }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <style>
+    div#login-old-password-label-and-input {
+      display: flex;
+    }
+
+    label#login-old-password-label {
+      float: right;
+      color: #31343F;
+      text-transform: uppercase;
+      font-size: 14px;
+      width: 175px;
+      margin-right: 23px;
+    }
+
+    input#login-old-password,
+    input#login-old-password:focus {
+      width: 245px;
+      border: 0px!important;
+      border-bottom: 2px solid #E4E6EA!important;
+      border-radius: 0px!important;
+      background-color: transparent!important;
+      -webkit-box-shadow: none!important;
+      -moz-box-shadow: none!important;
+      box-shadow: none!important;
+      outline: none!important;
+    }
+
+    div#login-password-label-and-input {
+      display: flex;
+      margin-top: 15px;
+    }
+
+    label#login-password-label {
+      float: right;
+      color: #31343F;
+      text-transform: uppercase;
+      font-size: 14px;
+      width: 175px;
+      margin-right: 23px;
+    }
+
+    input#login-password,
+    input#login-password:focus {
+      width: 245px;
+      border: 0px!important;
+      border-bottom: 2px solid #E4E6EA!important;
+      border-radius: 0px!important;
+      background-color: transparent!important;
+      -webkit-box-shadow: none!important;
+      -moz-box-shadow: none!important;
+      box-shadow: none!important;
+      outline: none!important;
+    }
+
+    div#login-password-again-label-and-input {
+      display: flex;
+      margin-top: 15px;
+    }
+
+    label#login-password-again-label {
+      float: right;
+      color: #31343F;
+      text-transform: uppercase;
+      font-size: 14px;
+      width: 175px;
+      margin-right: 23px;
+    }
+
+    input#login-password-again,
+    input#login-password-again:focus {
+      width: 245px;
+      border: 0px!important;
+      border-bottom: 2px solid #E4E6EA!important;
+      border-radius: 0px!important;
+      background-color: transparent!important;
+      -webkit-box-shadow: none!important;
+      -moz-box-shadow: none!important;
+      box-shadow: none!important;
+      outline: none!important;
+    }
+
+    div#login-buttons-do-change-password {
+      margin-left: 200px;
+      margin-top: 15px;
+    }
+
+    .login-button#login-buttons-do-change-password:hover {
+      background-color: #00AEF5;
+      border: 0;
+      padding-top: 9px;
+      color: white
+    }
+
+    div.message.error-message {
+      float: left!important;
+      text-align: left!important;
+      width: 350px!important;
+      position: absolute!important;
+      margin-top: 57px!important;
+      margin-left: 200px!important;
+    }
+
+    div.message.info-message {
+      float: right!important;
+      width: 370px!important;
+      position: absolute!important;
+      font-size: 22px;
+    }
+  </style>
+</template>

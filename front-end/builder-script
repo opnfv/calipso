@@ -1,0 +1,21 @@
+#!/bin/bash
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+
+set -e
+
+# build the ui-builder image, it is used to build new meteor apps:
+IMAGE_NAME=${1:-"korenlev/calipso"}
+printf "\n[-] Building the meteor ui builder $IMAGE_NAME...\n\n"
+sudo docker build -f ./builder-Dockerfile -t $IMAGE_NAME:ui-builder .
+
+# build the ui image, it is used to build the new meteor app from recent front-end code:
+printf "\n[-] Building the new meteor app from your local sorce...\n\n"
+sudo docker build -f ./Dockerfile -t $IMAGE_NAME:ui .
