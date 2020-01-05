@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
+    <defs>
+        <linearGradient id="SVGID_1_" x1="0" x2="1" y1="0.5" y2="0.5">
+            <stop offset="0" stop-color="#FFFFFF"/>
+            <stop offset="1" stop-color="#FFFFFF"/>
+        </linearGradient>
+    </defs>
+    <g>
+        <title>
+            background
+        </title>
+        <rect id="canvas_background" width="514" height="514" x="-1" y="-1" fill="none"/>
+    </g>
+    <g>
+        <title>
+            Layer 1
+        </title>
+        <g id="svg_1" stroke="null">
+            <g id="svg_2" stroke="null">
+                <circle id="svg_3" cx="256.000006" cy="256" r="249" fill="url(#SVGID_1_)" stroke="#FF9400" stroke-width="7"/>
+            </g>
+            <g id="svg_4" stroke="null">
+                <rect id="svg_5" width="254.833889" height="152.37175" x="128.584622" y="153.18932" fill="#FF9400" stroke="null"/>
+                <path id="svg_6" fill="#FF9400" stroke="null" d="m419.28383,97.1872l-328.512932,0c-12.959604,0 -23.464622,10.01869 -23.464622,22.37731l0,219.85139c0,12.35942 10.505009,22.37649 23.464622,22.37649l114.853469,0l-14.906093,51.10299l-43.810529,0l0,14.91744l216.235076,0l0,-14.91744l-43.806172,0l-14.906288,-51.10299l114.853469,0c12.958748,0 23.464632,-10.01707 23.464632,-22.37649l0,-219.85139c0,-12.35861 -10.505884,-22.37731 -23.464632,-22.37731zm-15.641149,227.31446l-297.225653,0l0,-190.01576l297.225653,0l0,190.01576z"/>
+            </g>
+        </g>
+    </g>
+</svg>

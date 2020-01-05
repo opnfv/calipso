@@ -1,0 +1,301 @@
+[
+{
+    "type" : "instance-vnic",
+    "description" : "instance-vnic",
+    "endPointA" : "instance",
+    "endPointB" : "vnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "container-vnic",
+    "description" : "container-vnic",
+    "endPointA" : "container",
+    "endPointB" : "vnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vnic-container",
+    "description" : "vnic-container",
+    "endPointA" : "vnic",
+    "endPointB" : "container",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "network-container",
+    "description" : "network-container",
+    "endPointA" : "network",
+    "endPointB" : "container",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "container-network",
+    "description" : "container-network",
+    "endPointA" : "container",
+    "endPointB" : "network",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "pod-container",
+    "description" : "pod-container",
+    "endPointA" : "pod",
+    "endPointB" : "container",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "container-pod",
+    "description" : "container-pod",
+    "endPointA" : "container",
+    "endPointB" : "pod",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "pod-vservice",
+    "description" : "pod-vservice",
+    "endPointA" : "pod",
+    "endPointB" : "vservice",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vservice-pod",
+    "description" : "vservice-pod",
+    "endPointA" : "vservice",
+    "endPointB" : "pod",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vnic-instance",
+    "description" : "vnic-instance",
+    "endPointA" : "vnic",
+    "endPointB" : "instance",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vconnector-vnic",
+    "description" : "vconnector-vnic",
+    "endPointA" : "vconnector",
+    "endPointB" : "vnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vnic-vconnector",
+    "description" : "vnic-vconnector",
+    "endPointA" : "vnic",
+    "endPointB" : "vconnector",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vconnector-vedge",
+    "description" : "vconnector-vedge",
+    "endPointA" : "vconnector",
+    "endPointB" : "vedge",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vedge-vconnector",
+    "description" : "vedge-vconnector",
+    "endPointA" : "vedge",
+    "endPointB" : "vconnector",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vedge-otep",
+    "description" : "vedge-otep",
+    "endPointA" : "vedge",
+    "endPointB" : "otep",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "otep-vedge",
+    "description" : "otep-vedge",
+    "endPointA" : "otep",
+    "endPointB" : "vedge",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "otep-vconnector",
+    "description" : "otep-vconnector",
+    "endPointA" : "otep",
+    "endPointB" : "vconnector",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vconnector-otep",
+    "description" : "vconnector-otep",
+    "endPointA" : "vconnector",
+    "endPointB" : "otep",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vnic-vedge",
+    "description" : "vnic-vedge",
+    "endPointA" : "vnic",
+    "endPointB" : "vedge",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vedge-vnic",
+    "description" : "vedge-vnic",
+    "endPointA" : "vedge",
+    "endPointB" : "vnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vnic-vservice",
+    "description" : "vnic-vservice",
+    "endPointA" : "vnic",
+    "endPointB" : "vservice",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vservice-vnic",
+    "description" : "vservice-vnic",
+    "endPointA" : "vservice",
+    "endPointB" : "vnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vconnector-host_pnic",
+    "description" : "vconnector-host_pnic",
+    "endPointA" : "vconnector",
+    "endPointB" : "host_pnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "host_pnic-vconnector",
+    "description" : "host_pnic-vconnector",
+    "endPointA" : "host_pnic",
+    "endPointB" : "vconnector",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "host_pnic-network",
+    "description" : "host_pnic-network",
+    "endPointA" : "host_pnic",
+    "endPointB" : "network",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "network-host_pnic",
+    "description" : "network-host_pnic",
+    "endPointA" : "network",
+    "endPointB" : "host_pnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "host_pnic-vedge",
+    "description" : "host_pnic-vedge",
+    "endPointA" : "host_pnic",
+    "endPointB" : "vedge",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "vedge-host_pnic",
+    "description" : "vedge-host_pnic",
+    "endPointA" : "vedge",
+    "endPointB" : "host_pnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "host_pnic-otep",
+    "description" : "host_pnic-otep",
+    "endPointA" : "host_pnic",
+    "endPointB" : "otep",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "otep-host_pnic",
+    "description" : "otep-host_pnic",
+    "endPointA" : "otep",
+    "endPointB" : "host_pnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "switch_pnic-switch_pnic",
+    "description" : "switch_pnic-switch_pnic",
+    "endPointA" : "switch_pnic",
+    "endPointB" : "switch_pnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "switch_pnic-host_pnic",
+    "description" : "switch_pnic-host_pnic",
+    "endPointA" : "switch_pnic",
+    "endPointB" : "host_pnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "host_pnic-switch_pnic",
+    "description" : "host_pnic-switch_pnic",
+    "endPointA" : "host_pnic",
+    "endPointB" : "switch_pnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "switch-switch_pnic",
+    "description" : "switch-switch_pnic",
+    "endPointA" : "switch",
+    "endPointB" : "switch_pnic",
+    "user_id" : "WS7j8oTbWPf3LbNne"
+},
+{
+    "type" : "switch_pnic-switch",
+    "description" : "switch_pnic-switch",
+    "endPointA" : "switch_pnic"
+},
+{
+    "endPointB" : "container",
+    "type" : "vedge-container",
+    "user_id" : "WS7j8oTbWPf3LbNne",
+    "endPointA" : "vedge",
+    "description" : "vedge-container"
+},
+{
+    "endPointB" : "vedge",
+    "type" : "container-vedge",
+    "user_id" : "WS7j8oTbWPf3LbNne",
+    "endPointA" : "container",
+    "description" : "container-vedge"
+},
+{
+    "endPointB" : "pod",
+    "type" : "vservice-pod",
+    "user_id" : "WS7j8oTbWPf3LbNne",
+    "endPointA" : "vservice",
+    "description" : "vservice-pod"
+},
+{
+    "endPointB" : "vservice",
+    "type" : "pod-vservice",
+    "user_id" : "WS7j8oTbWPf3LbNne",
+    "endPointA" : "pod",
+    "description" : "pod-vservice"
+},
+{
+    "endPointB" : "container",
+    "type" : "pod-container",
+    "user_id" : "WS7j8oTbWPf3LbNne",
+    "endPointA" : "pod",
+    "description" : "pod-container"
+},
+{
+    "endPointB" : "pod",
+    "type" : "container-pod",
+    "user_id" : "WS7j8oTbWPf3LbNne",
+    "endPointA" : "container",
+    "description" : "container-pod"
+},
+{
+    "endPointB" : "network",
+    "type" : "container-network",
+    "user_id" : "WS7j8oTbWPf3LbNne",
+    "endPointA" : "container",
+    "description" : "container-network"
+},
+{
+    "endPointB" : "container",
+    "type" : "network-container",
+    "user_id" : "WS7j8oTbWPf3LbNne",
+    "endPointA" : "network",
+    "description" : "network-container"
+}
+]

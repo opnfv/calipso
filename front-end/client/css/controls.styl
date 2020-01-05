@@ -1,0 +1,174 @@
+.box-container
+  .no-right-margin
+    margin-right: 0px;
+  input[type="textbox"].input-control, input[type="textbox"].input-control:focus
+    border: 0px;
+    border-bottom: 2px solid border-white-grey;
+    border-radius: 0px;
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  
+  input[type="text"].input-control, input[type="text"].input-control:focus
+    border: 0px;
+    border-bottom: 2px solid border-white-grey;
+    border-radius: 0px;
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+  select.select-control, select.select-control:focus
+    border: 0px;
+    border-bottom: 2px solid border-white-grey;
+    border-radius: 0px;
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+  input[type="password"].password-control, input[type="password"].password-control:focus
+    border: 0px;
+    border-bottom: 2px solid border-white-grey;
+    border-radius: 0px;
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+  input[type="number"].number-control, input[type="number"].number-control:focus
+    border: 0px;
+    border-bottom: 2px solid border-white-grey;
+    border-radius: 0px;
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  
+  input[type="email"].email-control, input[type="email"].email-control:focus
+    border: 0px;
+    border-bottom: 2px solid border-white-grey;
+    border-radius: 0px;
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+  input[type="text"]:disabled, input[type="textbox"]:disabled, input[type="email"]:disabled, input[type="password"]:disabled, input[type="checkbox"]:disabled
+    background-color: bg-disabled-grey;
+  select.select-control:disabled 
+    background-color: bg-disabled-grey;
+  textarea.textarea-control:disabled 
+    background-color: bg-disabled-grey;
+
+  textarea.textarea-control, textarea.textarea-control:focus
+    border: 1px solid border-white-grey;
+    border-bottom-width: 2px;
+    border-radius: 0px;
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    
+  .form-label-description
+    font-size: 14px;
+    color: text-placeholder-grey;
+    text-transform: capitalize;
+    padding-top: 7px;
+
+  input[type="textbox"]::placeholder
+  {
+    color: text-placeholder-grey !important;
+  }
+
+  input[type="textbox"]::-webkit-input-placeholder
+  {
+    color: text-placeholder-grey !important;
+  }
+
+  input[type="textbox"]::-moz-placeholder
+  {
+    color: text-placeholder-grey !important;
+  }
+
+  input[type="textbox"]:-ms-input-placeholder
+  {
+    color: text-placeholder-grey !important;
+  }
+
+  input[type="textbox"]:-moz-placeholder
+  {
+    color: text-placeholder-grey !important;
+  }
+
+
+  /* Customize the label (the container) */
+  .check-box-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    //margin-bottom: 12px;
+    margin-top: 7px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Hide the browser's default checkbox */
+  .check-box-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: transparent;
+    border: 1px solid #BEBEBE;
+  }
+
+  /* When the checkbox is checked, add a blue background */
+  .check-box-container input:checked ~ .checkmark {
+    background-color: #2196F3;
+  }
+
+  .check-box-container input:disabled ~ .checkmark {
+    background-color: bg-disabled-grey;
+  }
+
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  /* Show the checkmark when checked */
+  .check-box-container input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  /* Style the checkmark/indicator */
+  .check-box-container .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 7px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  .submit-req-btn
+    margin: 20px;

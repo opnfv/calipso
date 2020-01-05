@@ -1,0 +1,7 @@
+{
+  "processors_package": "scan.processors",
+  "base_processor": "Processor",
+  "processors": [
+    "ProcessVedgeType"
+  ]
+}

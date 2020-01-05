@@ -1,0 +1,15 @@
+{
+  "handlers_package": "listen.events.kube",
+  "endpoints": [
+    "list_pod_for_all_namespaces"
+  ],
+  "event_handlers": {
+    "pod.added": "KubePodAdd",
+    "pod.modified": "KubePodUpdate",
+    "pod.deleted": "KubePodDelete",
+    "service.added": "KubeServiceAdd",
+    "service.modified": "KubeServiceUpdate",
+    "service.deleted": "KubeServiceDelete",
+    "status.error": "KubeErrorHandler"
+  }
+}

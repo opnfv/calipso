@@ -1,0 +1,46 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+
+<template name="MessagesDeleteModal">
+  <div class="modal fade msg-dlt-container" id="messages-delete-modal" tabindex="-1" role="dialog" aria-labelledby="Delete environment messages">
+
+    <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="div-delete-icon">
+            <i class="fa fa-trash-o ms-delete-icon" aria-hidden="true" style="font-size: 20px;"></i>
+          </div>
+        </div>
+
+        <div class="modal-body ms-field-group">
+          <h5 class="modal-title" id="myModalLabel">Delete environment messages</h5>
+          <p>Which environment messages to delete?</p>
+          <select name="environment" class="sm-input-msgmodal ms-input">
+            <option value="" selected>Select Environment</option>
+            <option value="All">All</option>
+            {{#each environment in environmentsList }}
+            <option value="{{ environment.value }}" {{ getAttrSelected environment.value (getModelField 'environment') }}>{{ environment.label }}</option>
+            {{/each }}
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+          <button type="button" class="sm-button-delete btn btn-primary">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

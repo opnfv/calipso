@@ -1,0 +1,59 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="DetailedNodeInfoBox">
+<div class="os-detailed-node-info-box cards-450 white">
+  <div class="sm-icon-segment">
+  </div>
+  <div class="sm-info-segment">
+    <div class="sm-info-title">{{ node.type }} - {{#if node.objectName }}{{ node.objectName }}{{else}} {{ node.name }}{{/if}}</div>
+    <div class="sm-info-bits">
+      <div class="cl-info-bit">
+        <div class="cl-label">Environment</div>
+        <div class="cl-data"><div class="">{{ node.environment }}</div></div>
+      </div>
+      <div class="cl-info-bit">
+        <div class="cl-label">Name</div>
+        <div class="cl-data"><div class="">{{ node.name }}</div></div>
+      </div>
+      <div class="cl-info-bit">
+        <div class="cl-label">Parent Id</div>
+        <div class="cl-data"><div class="">{{ node.parent_id }}</div></div>
+      </div>
+      <div class="cl-info-bit">
+        <div class="cl-label">Host</div>
+        <div class="cl-data"><div class="">{{ node.host }}</div></div>
+      </div>
+      <div class="cl-info-bit">
+        <div class="cl-label">Last Scanned</div>
+        <div class="cl-data"><div class="">{{ node.last_scanned }}</div></div>
+      </div>
+      <div class="cl-info-bit">
+        <div class="cl-label">Configurations</div>
+        <div class="cl-data"><div class="">{{ node.configurations }}</div></div>
+      </div>
+      <div class="cl-info-bit">
+        <div class="cl-label">Agent Type</div>
+        <div class="cl-data"><div class="">{{ node.agent_type }}</div></div>
+      </div>
+      <div class="cl-info-bit">
+        <div class="cl-label">Admin State Up</div>
+        <div class="cl-data"><div class="">{{ node.admin_state_up }}</div></div>
+      </div>
+    </div>
+
+    <div class="sm-info-json">
+      <div class="cl-label">All Fields</div>
+      <div class="cl-data">{{ jsonAsString node }}</div>
+    </div>
+  </div>
+</div>
+</template>

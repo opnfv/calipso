@@ -1,0 +1,212 @@
+.header-main
+  height: 100px;
+  
+.os-alarm-icons
+  direction: rtl;
+  margin-right: 45px;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-end;
+
+  .alarm-icons
+    display: flex
+    
+    img
+      width: 25px;
+      height:25px;
+    
+    .material-icons:hover
+      cursor pointer
+      color spark-grey
+      trans()
+
+    .dropdown
+      display inline
+      trans()
+
+      .alarm-icon-error
+        color: alarm-red;
+        margin-top: 2px;
+        margin-left: 6px;
+    
+      .alarm-icon-warning
+        color: alarm-orange;
+        margin-top: 2px;
+        margin-left: 6px;
+
+      .alarm-icon-info
+        color: alarm-yellow-green;
+        margin-top: 2px;
+        margin-left: 6px;
+
+    .alarm-container
+      display: flex;
+      cursor: pointer;
+
+    .alarm-container-error
+      margin-left: 34px;
+
+    .alarm-container-warning
+      margin-left: 34px;
+
+    .alarm-container-info
+      margin-left: 0px;
+      
+    .dropdown-menu-right
+      right 25px
+
+    .dropdown-header
+      font-size 1.4em
+      color dk-gray1
+
+      >a
+        font-size: 20px;
+        color dk-gray1
+        line-height: 1.42857143;
+        padding-left: 4px;
+
+img.navbar-brand.navbar-custom {
+  padding-left: 40px;
+}
+
+p.navbar-brand.navbar-custom{
+  margin: 0px;
+  padding-left: 95px;
+  color: #FFF;
+}
+
+nav.navbar-inverse.navbar-custom 
+  height:100px;
+  margin: 0;
+  background-color: white;
+  border-bottom: 2px solid border-light-grey;
+  color: #FFF;
+  a
+    text-decoration: none;
+    color:text-light-grey;
+    .login-close-text
+      color: #555;
+    #login-name-link:hover 
+      color: rgb(63,81,181);
+    &:hover 
+      color: text-light-blue;
+      text-decoration: none;
+      trans()
+  a.droplist
+    color: text-darker-grey; 
+    height: 30px;
+    font-size:14px;
+    padding-top:6px;
+    padding-left: 35px;
+    //height: 36px;
+  a.droplist:hover
+    background-color: bg-hover-light-grey;
+    color: text-darker-grey;
+    //padding: 10px 0px 0px 10px
+  a.droplist-new-env
+    background-color: brand-blue;
+    color:white;
+    height:48px;
+    font-size:16px;
+    padding-top:10px;
+  
+  .search
+    position: relative;
+    color: text-light-grey
+    input 
+      height: 30px;
+      background: white;
+      border 0px
+      border-bottom 2px solid spark-grey
+      width 175px 
+      &:hover, &:active, &:focus
+        outline: none;
+        border-bottom 2px solid text-light-grey
+    ::-webkit-input-placeholder
+       color: text-light-grey
+    .fa-search 
+      position: absolute;
+      top: 7px;
+
+    .search-auto-complete 
+      position: absolute;
+      right: 0;
+      top: 34px 
+      z-index: 1000;
+
+.navbar-inverse .navbar-nav > .open > a, 
+.navbar-inverse .navbar-nav > .open > a:hover, 
+.navbar-inverse .navbar-nav > .open > a:focus {
+  color: brand-blue
+  background-color: #fff;
+}
+
+//container of buttons customized style
+#login-dropdown-list
+{
+  background-color: white;
+  left:-123px;
+  top:58px;
+  width: 180px;
+  border-radius: 0;
+  margin: 0;
+  border: 0;
+  padding:0;
+}
+
+.change-password-dialog-wide
+{
+  margin:auto!important;
+  width:880px!important;
+  height: 244px!important;
+  left:-825px!important;
+  padding-top:45px!important;
+  padding-left:165px!important;
+}
+
+/* Login form style */
+.sign-in #login-sign-in-link, #login-name-link, #login-name-link.login-link-text {
+  color: text-light-grey;
+  text-decoration: none;
+  text-transform: capitalize;
+  padding: 0;
+}
+
+.login-button#login-buttons-open-change-password,
+.login-button#login-buttons-password,
+.login-button#login-buttons-logout {
+  background-color: white;
+  border: 0;
+  width: 180px;
+  margin: 0;
+  padding: 10px 0 0 0;
+  height:36px;
+  border-radius: 0;
+  color: text-darker-grey;
+}
+
+.login-button#login-buttons-open-change-password:hover,
+.login-button#login-buttons-password:hover,
+.login-button#login-buttons-logout:hover {
+  background-color: bg-hover-light-grey;
+  border: bg-hover-light-grey;
+  padding: 10px 0 0 0;
+}
+
+.login-button#login-buttons-do-change-password
+{
+  width: 154px;
+  height:36px;
+  border-radius: 20px;
+  background-color: white;
+  border: 1px solid border-action-bottom;
+  color: border-action-bottom;
+  padding-top: 8px;
+}
+
+.login-close-text 
+{
+    display: none;
+}
+
+

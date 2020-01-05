@@ -1,0 +1,59 @@
+/* Set the component style here */
+// "GraphTooltipWindow"
+.os-graph-tooltip-window
+  visibility: hidden;
+  width: 400px;
+  max-height: 300px;
+  overflow: auto;
+  position: absolute;
+  text-align: left;
+  opacity: 0
+  font: normal 16px sans-serif;
+  /* width: 60px; */
+  /* height: 28px; */
+  padding: 20px;
+  background: dk-gray1;
+  color white
+  border: 2px solid stark-blue
+  border-radius: 10px;
+  // pointer-events: none;
+
+  transition: visibility 0.5s, opacity 0.5s linear
+
+  .sm-label
+    font-weight: bold;
+
+.os-graph-tooltip-window.cl-visible 
+  visibility: visible
+  opacity: 0.9
+  transition: visibility 0.2s, opacity 0.2s linear
+
+.attr-tooltip-header
+{
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.attr-container
+{
+  margin-top: 3px;
+  margin-bottom: 5px;
+
+  .attr-tooltip-keyname
+  {
+    text-transform: uppercase;
+    color: white;
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 12px;
+    width:140px;
+  }
+
+  .attr-tooltip-value
+  {
+    text-transform: uppercase;
+    color: #D4D5D6;
+    display: inline-block;
+    font-size: 11px;
+  }
+}

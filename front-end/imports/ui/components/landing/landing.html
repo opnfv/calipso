@@ -1,0 +1,361 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="landing" class="landing">
+<div class="os-landing">
+
+  <!-- hero section -->
+  <section id="landing-hero-section" 
+    class="sm-landing-hero-section animated slideInUp">
+
+    <div class="sm-section-content">
+
+      <!-- Logo and sign in -->
+      <div class="sm-login-subsection">
+          <img style="margin: 20px 0px" src="/logo-cisco.svg" alt="" height="30">
+          <h4><a class="sign-in" href="#">{{> loginButtons}}</a></h4>
+      </div>
+
+      <!-- Main content -->
+      <div class="sm-main-content">
+        <div class="sm-main-header">
+          <img class="sm-logo" src="/landing/calipso-logo.png"> 
+          <h1 class="text-align-center" style="margin: 50px 0px; font-size: 46px;">Calipso Virtual Networking<br>Discovery and Assurance</h1>
+        </div>
+
+        <div class="sm-description">
+          <p>
+            Calipso is enhancing the way Cloud Administrators and Tenant Administrators supports, operates and maintains highly distributed Cloud environments based on Kubernetes, Docker, OpenStack and VMware.
+          </p>
+          <p>
+            Calipso provides a unique real-time virtual networking visibility and assurance.
+          </p>
+        </div>
+
+        <div class="sm-learn-more">
+          <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" data-scroll href="#landing-section-2">Learn more
+          </a>
+        </div>
+        <br/>
+        <div class="sm-main-showcase" style="margin-bottom: 20px;">
+          <img src="/landing/new-first.png" alt="" class=" animated slideInUp" width="1000" height="470">
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- section 2  -->
+  <section id="landing-section-2" 
+    class="sm-landing-section-2">
+
+    <div class="sm-section-content">
+
+      <!-- first point -->
+      <div class="sm-desc-point">
+        <div class="sm-desc-point-content">
+          <h3 class="title-border-bottom">Application Intent</h3>
+          <p class="font20">
+            Provides operations tools for:
+          </p>
+          <ol class="font20">
+            <li>
+              Visualize virtual networking inventory details.
+            </li>
+            <li>
+              Analyze inter-connections and dependencies.
+            </li>
+            <li>
+              Visualizing topologies dynamically, in real time.
+            </li>
+            <li>
+              Monitoring virtual components for health, status and statistics.
+            </li>
+            <li>
+              Analyzing faults and assess impact and root cause.
+            </li>
+          </ol>
+          <a href="#landing-section3" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" data-scroll>Show more</a>
+        </div>
+
+        <div class="sm-desc-point-icon">
+            <img src="/logo_microscope_3.png" alt="" class="img_responsive wow slideInRight " data-wow-delay="0.3s" width="350">
+        </div>
+      </div>
+
+      <!-- second point -->
+      <div class="sm-desc-point">
+        <div>
+          <div style="display: block;">
+            <img src="/landing/kubernetes.png" alt="" class="img_responsive wow slideInLeft" 
+              data-wow-delay="0.3s" style="width: 500px;height: 425px;">
+          </div>
+          <div style="display: flex">
+            <img src="/landing/new-openstack.png" alt="" class="img_responsive wow slideInLeft" 
+              data-wow-delay="0.3s" style="width: 250px;height: 250px;">
+            <img src="/landing/new-docker.png" alt="" class="img_responsive wow slideInLeft" 
+              data-wow-delay="0.3s" style="width: 250px;height: 250px;">
+          </div>
+        </div>
+        <div class="sm-desc-point-content">
+          <h3 class="title-border-bottom">Vision</h3>
+          <p class="font20">
+            Substantially simplify Kubernetes, OpenStack and Docker networking operations and troubleshooting, provide detailed visibility and availability.
+          </p>
+        </div>
+      </div>
+
+      <!-- third point -->
+      <div class="sm-desc-point">
+        <div class="sm-desc-point-content" >
+          <h3 class="title-border-bottom">Strategy</h3>
+          <ul class="font20">
+            <li>
+              Building an operations application that dynamically discover, display, monitor and analyze virtual networking in major common cloud stacks. 
+            </li>
+            <li>
+              Framework for building a highly customized and open operations API for Cloud Stacks as a baseline for virtual networking assurance and analytics.
+            </li>
+          </ul>
+        </div>
+        <div class="sm-desc-point-icon">
+          <img src="/landing/eye.png" alt="" 
+            class="img_responsive wow slideInRight " 
+            data-wow-delay="0.3">
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- section Cisco partners -->
+  <section id="landing-section3" class="landing background-blue">
+      <div class="mdl-grid">
+
+          <div class="mdl-cell mdl-cell--4-col">
+              <div class="box text-align-center wow slideInUp">
+                  <div>
+                    <i class="material-icons">view_carousel</i>
+                  </div>
+                  <div class="iconbox_content">
+                      <h3>Cisco CCP</h3>
+                  </div>
+              </div>
+          </div>
+
+          <div class="mdl-cell mdl-cell--4-col">
+              <div class="box text-align-center wow slideInUp" data-wow-delay="0.5s">
+                  <div>
+                      <i class="material-icons">view_carousel</i>
+                  </div>
+                  <div class="iconbox_content">
+                      <h3>Cisco VIM</h3>
+                  </div>
+              </div>
+          </div>
+
+          <div class="mdl-cell mdl-cell--4-col">
+              <div class="box text-align-center wow slideInUp" data-wow-delay="0.8s">
+                  <div>
+                      <i class="material-icons">view_carousel</i>
+                  </div>
+                  <div class="iconbox_content">
+                      <h3>Red Hat</h3>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+  </section>
+
+  <!-- section number 3  -->
+  <section class="landing background-white section-margin-50">
+    <div class="sm-section-content">
+      <div class="sm-desc-point">
+          <!-- third point -->
+          <div class="sm-desc-point-content" >
+              <h3 class="title-border-bottom">
+                Visibility provides Predictability, leads to Stability 
+              </h3>
+              <!--Button-->
+              <a href="#landing-hero-section" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" data-scroll>Sign in</a>
+              <!-- //Button-->
+          </div>
+          <div class="sm-desc-point-icon">
+              <img src="/landing/kubernetes-topology-graph.png" alt="" 
+                class="sm-big-image-icon wow slideInRight " 
+                data-wow-delay="0.3">
+          </div>
+      </div>
+    </div>
+  </section>
+  <section class="background-blue">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col text-align-center">
+        <p>Cisco Systems, Inc © Copyright 2018</p>
+      </div>
+    </div>
+  </section>
+</div>
+<style>
+  #login-sign-in-link
+  {
+    color: white!important;
+  }
+  #login-dropdown-list
+  {
+    background-color: white;
+    left:-300px;
+    top:30px;
+    width: 420px;
+    height: auto;
+    border-radius: 20px!important;
+    margin: 0;
+    border: 0;
+    padding:0;
+    padding-top:25px!important;
+  }
+
+  div#login-username-label-and-input {
+    display: flex;
+  }
+
+  label#login-username-label {
+    text-align: right!important;
+    color: #31343F;
+    text-transform: uppercase;
+    font-size: 14px;
+    width: 150px;
+    margin-right: 23px;
+  }
+
+  input#login-username,
+  input#login-username:focus {
+    width: 170px;
+    border: 0px!important;
+    border-bottom: 2px solid #E4E6EA!important;
+    border-radius: 0px!important;
+    background-color: transparent!important;
+    -webkit-box-shadow: none!important;
+    -moz-box-shadow: none!important;
+    box-shadow: none!important;
+    outline: none!important;
+  }
+
+  div#login-password-label-and-input {
+    display: flex;
+    margin-top: 15px;
+  }
+
+  label#login-password-label {
+    text-align: right!important;
+    color: #31343F;
+    text-transform: uppercase;
+    font-size: 14px;
+    width: 150px;
+    margin-right: 23px;
+  }
+
+  input#login-password,
+  input#login-password:focus {
+    width: 170px;
+    border: 0px!important;
+    border-bottom: 2px solid #E4E6EA!important;
+    border-radius: 0px!important;
+    background-color: transparent!important;
+    -webkit-box-shadow: none!important;
+    -moz-box-shadow: none!important;
+    box-shadow: none!important;
+    outline: none!important;
+  }
+
+  div#login-password-again-label-and-input {
+    display: flex;
+    margin-top: 15px;
+  }
+
+  label#login-password-again-label {
+    text-align: right!important;
+    color: #31343F;
+    text-transform: uppercase;
+    font-size: 14px;
+    width: 150px;
+    margin-right: 23px;
+  }
+
+  input#login-password-again,
+  input#login-password-again:focus {
+    width: 170px;
+    border: 0px!important;
+    border-bottom: 2px solid #E4E6EA!important;
+    border-radius: 0px!important;
+    background-color: transparent!important;
+    -webkit-box-shadow: none!important;
+    -moz-box-shadow: none!important;
+    box-shadow: none!important;
+    outline: none!important;
+  }
+
+  #login-buttons-password
+  {
+    width: 154px!important;
+    height:36px!important;
+    border-radius: 20px!important;
+    background-color: white!important;
+    border: 1px solid #00AEF5!important;
+    color: #00AEF5!important;
+    padding-top: 8px!important;
+    margin-left: 175px!important;
+    margin-top:20px!important;
+  }
+
+  #login-buttons-password:hover {
+    background-color: #00AEF5!important;
+    border: 0!important;
+    padding-top: 9px!important;
+    color: white!important;
+  }
+
+  .additional-link
+  {
+    width: 154px!important;
+    height:36px!important;
+    border-radius: 20px!important;
+    background-color: white!important;
+    border: 1px solid #00AEF5!important;
+    color: #00AEF5!important;
+    padding-top: 8px!important;
+    top: -20px!important;
+    left: -91px!important;
+    position: relative!important;
+    text-decoration-line: none!important;
+    text-align: center!important;
+    margin-top:30px!important;
+  }
+
+  .additional-link:hover
+  {
+    background-color: #00AEF5!important;
+    border: 0!important;
+    padding-top: 9px!important;
+    color: white!important;
+  }
+
+  div.message.error-message {
+    text-align: left!important;
+    width: 350px!important;
+    position: absolute!important;
+    top: 0px!important;
+    left: 70px!important;
+  }
+</style>
+</template>

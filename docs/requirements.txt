@@ -1,2 +1,0 @@
-lfdocs-conf
-sphinx_opnfv_theme
