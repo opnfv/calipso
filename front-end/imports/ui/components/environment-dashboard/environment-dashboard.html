@@ -1,0 +1,59 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="EnvironmentDashboard">
+
+  <div class="os-environment-dashboard mainContentData flex">
+    <div class="action-buttons">
+      <div class="sm-delete-button cl-action-button {{#if notAllowEdit}}cl-action-disabled{{/if}}" title="Delete this environment"
+        href="#">
+        Delete
+      </div>
+      <div class="sm-edit-button cl-action-button {{#if notAllowEdit}}cl-action-disabled{{/if}}" title="Edit this environment">
+        Edit
+      </div>
+      <div class="sm-scan-button cl-action-button" title="Scan this environment">
+        Scan
+      </div>
+    </div>
+
+    <div class="content-details">
+      <div class="env-single-header justify-content-between">
+        <div style="display: flex;">
+          <div class="env-single-header-info">{{ getState 'envName' }}</div>
+          <div>
+            <div class="env-single-header-info-dist">{{ getState 'envDist' }}</div>
+            <div class="env-single-header-info-scan">Last Scanned: {{ getState 'infoLastScanning' }}</div>
+          </div>
+        </div>
+        <div class="env-single-header-alerts" style="display: block;">
+          {{> alarmIcons argsAlarmIcons (getState 'envName')}}
+        </div>
+      </div>
+      <div class="justify-content-between" style="display: flex">
+        <div class="sm-list-info-boxes mainContentData">
+          {{#each listInfoBox in (getListInfoBoxes (getState 'envType')) }}
+            {{> ListDetailsBox (argsListInfoBox listInfoBox) }} 
+          {{/each }}
+        </div>
+        <div class="single-env-summary">
+          {{#each briefInfo in (getBriefInfoList (getState 'envType')) }} 
+            {{> DataCube (argsBriefInfo briefInfo) }} 
+          {{/each }}
+        </div>
+      </div>
+    </div>
+
+    {{> EnvDeleteModal argsEnvDeleteModal }}
+
+  </div>
+
+</template>

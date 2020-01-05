@@ -1,0 +1,43 @@
+/* Set the component style here */
+.os-vedge-info-window
+  visibility: hidden;
+  opacity: 0
+
+  position: absolute;
+  padding: 20px;
+  width: 0;
+  height: 0;
+
+  text-align: left;
+  font: normal 18px sans-serif;
+  color white
+  background: dk-gray1;
+
+  border: 2px solid stark-blue
+
+  transition: opacity 0.5s linear
+
+  .cl-input
+    color: dk-gray1
+    padding: 7px 5px;
+
+  .sm-body 
+    margin: 20px 0;
+
+  .sm-form-group
+    display: flex;
+    flex-flow: column nowrap;
+
+.os-vedge-info-window.cl-visible 
+  visibility: visible
+  min-width: 500px;
+  min-height: 400px;
+  z-index: 3;
+  opacity: 0.9
+  transition: visibility 0s, opacity 0.2s linear
+  width: initial;
+  height: initial;
+
+  .sm-start-datetime-group
+    width: 500px;
+    color: dk-gray1;

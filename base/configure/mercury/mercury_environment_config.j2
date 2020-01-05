@@ -1,0 +1,51 @@
+{
+    "user" : "wNLeBJxNDyw8G7Ssg",
+    "auth" : {
+        "view-env" : [
+            "wNLeBJxNDyw8G7Ssg"
+        ],
+        "edit-env" : [
+            "wNLeBJxNDyw8G7Ssg"
+        ]
+    },
+    "type" : "environment",
+    "environment_type" : "OpenStack",
+    "distribution" : "Mercury",
+    "distribution_version" : "{{ image_tag }}",
+    "type_drivers" : "{{ TENANT_NETWORK_TYPES|lower }}",
+    "mechanism_drivers" : [
+        {% with mechanism_driver = MECHANISM_DRIVERS|upper %}
+            {% if mechanism_driver == 'OPENVSWITCH' %} "OVS"
+            {% else %} "{{ mechanism_driver }}"
+            {% endif %}
+        {% endwith %}
+    ],
+    "configuration" : [
+        {
+            "user" : "root",
+            "pwd" : "{{ DB_ROOT_PASSWORD }}",
+            "port" : "3306",
+            "host" : "{{ internal_lb_vip_address }}",
+            "name" : "mysql"
+        },
+        {
+            "user" : "admin",
+            "pwd" : "{{ ADMIN_USER_PASSWORD }}",
+            "port" : "5000",
+            "host" : "{{ internal_lb_vip_address }}",
+            "name" : "OpenStack"
+        },
+        {
+            "user" : "root",
+            "key" : "{{ CALIPSO_SSH_KEY_LOCATION }}",
+            "host" : "127.0.0.1",
+            "name" : "CLI"
+        }
+    ],
+    "name" : "cvim-{{ PODNAME|lower }}",
+    "app_path" : "/calipso",
+    "scanned": false,
+    "enable_monitoring" : false,
+    "aci_enabled" : false,
+    "listen" : false
+}

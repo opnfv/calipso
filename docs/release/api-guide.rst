@@ -1,12 +1,6 @@
 | Calipso.io
 | API Guide
 
-Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems) and others                                                                
-All rights reserved. This program and the accompanying materials           
-are made available under the terms of the Apache License, Version 2.0       
-which accompanies this distribution, and is available at                    
-http://www.apache.org/licenses/LICENSE-2.0                                  
-
 |image0|
 
 Project “Calipso” tries to illuminate complex virtual networking with
@@ -173,7 +167,9 @@ Authentication 
 
     Calipso API uses LDAP as the protocol to implement the
     authentication, so you can use any LDAP directory server as the
-    authentication backend, like OpenLDAP and `Microsoft
+    authentication backend,
+    like \ `OpenLDAP <https://help.ubuntu.com/lts/serverguide/openldap-server.html>`__
+    and `Microsoft
     AD <https://msdn.microsoft.com/en-us/library/bb742424.aspx>`__. You
     can edit the ldap.conf file which is located in app/config directory
     to configure LDAP server options (see details in quickstart-guide):
@@ -1125,7 +1121,7 @@ Error response code: badRequest(400), unauthorized(401),  conflict(409)
 
 **Request Example**
 
-**post  **\ http://korlev-calipso-testing.cisco.com:8000/clique\_types
+**post  **\ http://korlev-calipso-testing.cisco.com:8000/clique_types
 
 | {
 |    "environment" : "RDO-packstack-Mitaka",   
@@ -1394,7 +1390,7 @@ Error response code: badRequest (400), unauthorized (401)
 |        "log\_level" : "warning",
 |        "clear" : true,
 |        "scan\_only\_inventory" : true,
-|        "environment" : "Mirantis-Liberty",
+|        "env\_name" : "Mirantis-Liberty",
 |        "inventory" : "koren",
 |        "object\_id" : "ff"
 | }
@@ -1423,19 +1419,19 @@ Error response code: badRequest (400), unauthorized (401), notFound(404)
 
 **Request**
 
-+--------------------------+----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Name**                 | **In**   | **Type**   | **Description**                                                                                                                                                             |
-+==========================+==========+============+=============================================================================================================================================================================+
-| environment(Mandatory)   | query    | string     | Environment of the scheduled\_scans. e.g. "Mirantis-Liberty".                                                                                                               |
-+--------------------------+----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| id (Optional)            | query    | string     | ID of the scheduled\_scan, it must be a string that can be converted to MongoDB ObjectId.                                                                                   |
-+--------------------------+----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| freq (Optional)          | query    | string     | Frequency of the scheduled\_scans, the possible values for the freq are "HOURLY", "DAILY", "WEEKLY", "MONTHLY", and "YEARLY".                                               |
-+--------------------------+----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| page (Optional)          | query    | int        | Which page is to be returned, the default is the first page, if the page is larger than the maximum page of the query, it will return an empty set. (Page starts from 0.)   |
-+--------------------------+----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| page\_size (Optional)    | query    | int        | Size of each page, the default is 1000.                                                                                                                                     |
-+--------------------------+----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++-------------------------+----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Name**                | **In**   | **Type**   | **Description**                                                                                                                                                             |
++=========================+==========+============+=============================================================================================================================================================================+
+| env\_name(Mandatory)    | query    | string     | Environment of the scheduled\_scans. e.g. "Mirantis-Liberty".                                                                                                               |
++-------------------------+----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id (Optional)           | query    | string     | ID of the scheduled\_scan, it must be a string that can be converted to MongoDB ObjectId.                                                                                   |
++-------------------------+----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| freq (Optional)         | query    | string     | Frequency of the scheduled\_scans, the possible values for the freq are "HOURLY", "DAILY", "WEEKLY", "MONTHLY", and "YEARLY".                                               |
++-------------------------+----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| page (Optional)         | query    | int        | Which page is to be returned, the default is the first page, if the page is larger than the maximum page of the query, it will return an empty set. (Page starts from 0.)   |
++-------------------------+----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| page\_size (Optional)   | query    | int        | Size of each page, the default is 1000.                                                                                                                                     |
++-------------------------+----------+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 **Response**
 
@@ -1467,7 +1463,7 @@ Error response code: badRequest (400), unauthorized (401), notFound(404)
 
 **Request**
 
-http://korlev-calipso-testing.cisco.com:8000/scheduled_scans?environment=Mirantis-Liberty
+http://korlev-calipso-testing.cisco.com:8000/scheduled_scans?env_name=Mirantis-Liberty
 
 **Response**
 
@@ -1490,7 +1486,7 @@ http://korlev-calipso-testing.cisco.com:8000/scheduled_scans?environment=Miranti
 
 **Request**
 
-http://korlev-calipso-testing.cisco.com:8000/scheduled_scans?environment=Mirantis-Liberty&id=589a49cf2e8f4d154386c725
+http://korlev-calipso-testing.cisco.com:8000/scheduled\_scans?env\_name=Mirantis-Liberty&id=589a49cf2e8f4d154386c725
 
 **Response**
 
@@ -1547,7 +1543,7 @@ Post** http://korlev-calipso-testing.cisco.com:8000/scheduled_scans
 |        "log\_level" : "warning",
 |        "clear" : true,
 |        "scan\_only\_inventory" : true,
-|        "environment" : "Mirantis-Liberty",
+|        "env\_name" : "Mirantis-Liberty",
 |        "submit\_timestamp" : "2017-01-28T01:07:54.011000"
 | }
 
@@ -1619,6 +1615,55 @@ Error response code: badRequest(400), unauthorized(401), notFound(404)
 |       "id": "588796ac2e8f4d02b8e7aa2a",
 |       "name": "link\_states"
 | }
+
+list of constants available in current release:
+
+    "name" : "constraints"
+
+    "name" : "env_types"
+
+    "name" : "log_levels"
+
+    "name" : "environment_types"
+
+    "name" : "mechanism_drivers"
+
+    "name" : "type_drivers"
+
+    "name" : "environment_monitoring_types"
+
+    "name" : "monitoring_check_statuses"
+
+    "name" : "link_states"
+
+    "name" : "environment_provision_types"
+
+    "name" : "environment_operational_status"
+
+    "name" : "link_types"
+
+    "name" : "monitoring_sides"
+
+    "name" : "messages_severity"
+
+    "name" : "object_types"
+
+    "name" : "scans_statuses"
+
+    "name" : "distributions"
+
+    "name" : "distribution_versions"
+
+    "name" : "message_source_systems"
+
+    "name" : "object_types_for_links"
+
+    "name" : "scan_object_types"
+
+    "name" : "configuration_targets"
+
+
+
 
 Monitoring\_Config\_Templates
 -----------------------------

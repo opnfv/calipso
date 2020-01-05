@@ -1,0 +1,97 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+ <template name="User">
+  <div class="user-box box-container">
+    {{#if notificationsExists}}
+    <div class="sm-notification-panel alert alert-danger">
+      {{#each note in notifications }}
+      <div>{{ note }}</div>
+      {{/each }}
+    </div>
+    {{/if}}
+
+    <div class="box-header">{{ getState 'pageHeader' }}</div>
+    <div class="sm-form-container">
+      <form role="form" class="sm-item-form form-horizontal">
+
+        <div class="sm-field-group-id form-group">
+          <label class="col-sm-2 control-label box-label">Id</label>
+          <div class="col-sm-3">
+            <input name="id" disabled="disabled" value="{{ getModelField '_id' }}" class="sm-input-id inputField form-control input-control"
+              type="text" placeholder="Id" />
+          </div>
+          <div class="col-sm-3 form-label-description">Id</div>
+        </div>
+
+        <div class="sm-field-group-username form-group">
+          <label class="col-sm-2 control-label box-label">User name</label>
+          <div class="col-sm-3">
+            <input name="username" {{ getAttrDisabled }} value="{{ getModelField 'username' }}" class="sm-input-username inputField form-control input-control"
+              type="text" placeholder="User name" autocomplete="new-user" />
+          </div>
+          <div class="col-sm-3 form-label-description">User name</div>
+        </div>
+
+        <div class="sm-field-group-password form-group">
+          <label class="col-sm-2 control-label box-label">Password</label>
+          <div class="col-sm-3">
+            <input name="password" {{ getAttrDisabled }} value="{{ getModelField 'password' }}" class="sm-input-password inputField form-control password-control"
+              type="password" placeholder="" autocomplete="new-password" />
+          </div>
+          <div class="col-sm-3 form-label-description">Password</div>
+        </div>
+
+        <div class="sm-field-group-view-env-roles form-group">
+          <label class="col-sm-2 control-label box-label">Allowed environments : viewing</label>
+          <div class="col-sm-3">
+            <select name="viewEnvs" class="sm-input-view-envs inputField form-control select-control" multiple size="3" {{ getAttrDisabled
+              }}>
+              {{#each env in envs }}
+              <option value="{{ env.name }}" {{ getAttrSelectedMultiple env.name viewEnvs }}>{{ env.name }}</option>
+              {{/each }}
+            </select>
+          </div>
+          <div class="col-sm-3 form-label-description">View role for environments</div>
+        </div>
+
+        <div class="sm-field-group-edit-env-roles form-group">
+          <label class="col-sm-2 control-label box-label">Allowed environments : editing</label>
+          <div class="col-sm-3">
+            <select name="editEnvs" class="sm-input-edit-envs inputField form-control select-control" multiple size="3" {{ getAttrDisabled
+              }}>
+              {{#each env in envs }}
+              <option value="{{ env.name }}" {{ getAttrSelectedMultiple env.name editEnvs }}>{{ env.name }}</option>
+              {{/each }}
+            </select>
+          </div>
+          <div class="col-sm-3 form-label-description">Edit/Delete role for environments</div>
+        </div>
+
+        {{#if isUpdateableAction }}
+        <div class="submit-req-btn">
+          <button type="submit" class="js-submit-button mdl-button mdl-js-button mdl-button--raised 
+            mdl-js-ripple-effect mdl-button--colored">{{ actionLabel }}</button>
+        </div>
+        {{/if }}
+
+      </form>
+
+      {{#if (getState 'isMessage') }}
+      <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
+          {{#if (getState 'isSuccess')}}alert-success{{/if}}" role="alert">
+        {{ getState 'message' }}
+      </div>
+      {{/if }}
+
+    </div>
+  </div>
+</template>

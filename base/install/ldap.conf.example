@@ -1,0 +1,20 @@
+# er BindDN to query the LDAP server
+user admin
+# password for BindDN to query the LDAP server
+password password
+# url for connecting to the LDAP server
+url ldap://your-server.cisco.com:389
+# LDAP attribute mapped to user id, must not be a multivalued attributes
+user_id_attribute CN
+# LDAP attribute mapped to user password
+user_pass_attribute userpassword
+# LDAP objectclass for user
+user_objectclass inetOrgPerson
+# Search base for users
+user_tree_dn OU=Users,DC=openstack,DC=org
+query_scope one
+# Valid options for tls_req_cert are demand, never, and allow
+tls_req_cert allow
+# CA certificate file path for communicating with LDAP servers.
+# tls_cacertfile None
+group_member_attribute member

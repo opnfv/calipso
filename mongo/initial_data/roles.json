@@ -1,0 +1,26 @@
+[
+{ 
+    "_id" : "z5W5wQqTnSHMYxXRB", 
+    "name" : "manage-users"
+},
+{ 
+    "_id" : "q3o6nbR3xY88KyCkt", 
+    "name" : "manage-link-types"
+},
+{ 
+    "_id" : "odxGpkgQ3oexmXYhc", 
+    "name" : "manage-clique-types"
+},
+{ 
+    "_id" : "RcEgj6kJnkPqpyJzR", 
+    "name" : "manage-clique-constraints"
+},
+{ 
+    "_id" : "7gs3Fyow2Cryc4cdf", 
+    "name" : "view-env"
+},
+{ 
+    "_id" : "DyhzqcNymdYgkzyie", 
+    "name" : "edit-env"
+}
+]

@@ -1,0 +1,63 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="CliqueConstraintsList">
+  <div class="table-view-container">
+    <div class="table-view-title">CLIQUE CONSTRAINTS</div>
+    <a class="add-new-item-text" href="{{pathFor route='clique-constraint' query=(asHash action='insert') }}">
+      <i class="view-new-item-icon fa fa-plus" area-hidden="true"></i> Create new clique constraint
+    </a>
+    <table class="table-view-results table">
+      <thead>
+        <tr>
+          <th>Focal Point Type</th>
+          <th>Environment</th>
+          <th>Constraints</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each cliqueConstraint in cliqueConstraints }}
+        <tr>
+          <td>{{ cliqueConstraint.focal_point_type }}</td>
+          <td>{{ cliqueConstraint.environment }}</td>
+          <td>{{ cliqueConstraint.constraints }}</td>
+          <td>
+            <div class="actions-list">
+              <div class="actions-icon">
+                <div class="dropdopwn drop-down-overflow">
+                  <div class="dropdown-toggle actions-button" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="true">
+                    <img src="/icons/icon-export.svg">
+                  </div>
+                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                    <li class="dropdown-action-header">
+                      <a href="{{pathFor route='clique-constraint' query=(asHash id=(idToStr cliqueConstraint._id) action='view') }}">View</a>
+                    </li>
+                    {{#if isAuthManageCliqueConstraints }}
+                    <li class="dropdown-action-header">
+                      <a href="{{pathFor route='clique-constraint' query=(asHash id=(idToStr cliqueConstraint._id) action='update') }}">Update</a>
+                    </li>
+                    <li class="dropdown-action-header">
+                      <a href="{{pathFor route='clique-constraint' query=(asHash id=(idToStr cliqueConstraint._id) action='remove') }}">Remove</a>
+                    </li>
+                    {{/if }}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {{/each }}
+      </tbody>
+    </table>
+  </div>
+</template>

@@ -1,0 +1,52 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="TreeNode">
+<div class="os-tree-node" style="background-color: {{ calcColor level }};">
+
+  {{#if showDetailsLine }}
+  <div class="{{ getNodeClass level }}">
+    <div class="sm-node-desc">
+      <div class="sm-space-a"></div>
+      <div class="sm-node-name">{{ node.object_name }}</div>
+    </div>
+
+    <div class="sm-actions-segment">
+      {{#if linkDetected }}
+      <div class="sm-link-icon"
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Link to {{ linkRefName }} under zone."
+        >
+        <i class="fa fa-arrow-right" aria-hidden="true" style="font-size: 12px;font-weight: normal;"></i>
+      </div>
+      {{/if }}
+
+      {{#if childDetected }}
+      <div class="sm-node-open-button">
+        {{#if isOpen }}
+        <i class="fa fa-angle-down angle-arrow" aria-hidden="true"></i>
+        {{else }}
+        <i class="fa fa-angle-right angle-arrow" aria-hidden="true"></i>
+        {{/if }}
+      </div>
+      {{/if }}
+    </div>
+  </div>
+  {{/if }}
+
+  <div class="sm-children-list {{#if isOpen }} cl-opened {{else }} cl-closed {{/if }}">
+    {{#each child in children }}
+      {{>TreeNode (argsChild child node) }}
+    {{/each }}
+  </div>
+</div>
+</template>

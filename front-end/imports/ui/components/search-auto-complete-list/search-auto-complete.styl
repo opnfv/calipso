@@ -1,0 +1,31 @@
+.os-search-auto-complete-list
+  
+  .sm-search-auto-complete-list
+    display: none
+    list-style: none;
+    -webkit-padding-start: 0px;
+    position: relative;
+    z-index: 4;
+
+  .sm-search-auto-complete-list.cl-open
+    position:absolute!important;
+    display: block
+    background: rgba(255, 255, 255, 0.98);
+    color: black;
+    border: 1px solid #d0d0d0;
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    top:35px;
+    left:-175px!important;
+
+  .sm-search-auto-complete-list.cl-open:empty
+    display: none;
+
+  .sm-backdrop
+    width: 100vw;
+    height: 100vh;
+    //background-color: rgba(82, 192, 245, 0.58);
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;  

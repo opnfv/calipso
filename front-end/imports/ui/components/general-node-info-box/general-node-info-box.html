@@ -1,0 +1,38 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="GeneralNodeInfoBox">
+<div class="os-general-node-info-box cards-450 white">
+  <div class="sm-icon-segment">
+  </div>
+  <div class="sm-info-segment">
+    <div class="sm-info-title">{{ type }} - {{ objectName }}</div>
+    <div class="sm-info-bits">
+      <div class="cl-info-bit">
+        <div class="cl-label">Name</div>
+        <div class="cl-data"><div class="sm-object-name">{{ objectName }}</div></div>
+      </div>
+      <div class="cl-info-bit">
+        <div class="cl-label">Type</div>
+        <div class="cl-data"><div class="sm-object-type">{{ type }}</div></div>
+      </div>
+      <div class="cl-info-bit">
+        <div class="cl-label">Last scanned</div>
+        <div class="cl-data"><div class="sm-last-scanned">{{ lastScanned }}</div></div>
+      </div>
+      <div class="cl-info-bit">
+        <div class="cl-label">Description</div>
+        <div class="cl-data"><div class="sm-description">{{ description }}</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</template>

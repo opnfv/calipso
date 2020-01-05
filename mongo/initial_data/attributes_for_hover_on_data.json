@@ -1,0 +1,249 @@
+[
+{ 
+    "type" : "ALL", 
+    "attributes" : [
+        "type"
+    ]
+},
+{
+    "attributes" : [
+        "type",
+	"ip_address",
+	"aci_document"
+   ],
+   "type" : "switch"
+},
+{ 
+    "attributes" : [
+        "type",
+        "object_name", 
+        "model", 
+        "mac_address",
+        "vnic_type",
+        "data",
+        "port",
+        "addresses",
+	"source", 
+        "alias", 
+        "last_scanned", 
+        "instance_id", 
+        "status", 
+        "status_timestamp", 
+        "status_text",
+        "root_cause"
+    ], 
+    "type" : "vnic"
+},
+{ 
+    "type" : "container", 
+    "attributes" : [
+        "type",
+        "name", 
+        "name_path", 
+        "ip_address",
+        "host",
+        "nat_tables", 
+        "kube_proxy_config",
+        "vservices",  
+        "container_type", 
+        "ports",
+        "pod", 
+        "namespace", 
+        "status",
+        "status_timestamp",
+        "status_text",
+        "root_cause"
+    ]
+},
+{ 
+    "type" : "pod", 
+    "attributes" : [
+        "type",
+        "object_name", 
+        "host", 
+        "namespace",
+        "vservices",
+        "pod_status", 
+        "status",
+        "root_cause" 
+    ]
+},
+{ 
+    "attributes" : [
+        "type",
+        "object_name", 
+        "connector_type", 
+        "interfaces",
+	"stp_enabled",
+	"connector_type", 
+	"last_scanned",
+        "status", 
+        "status_timestamp", 
+        "status_text",
+        "root_cause"
+    ], 
+    "type" : "vconnector"
+},
+{ 
+    "attributes" : [
+        "type", 
+        "object_name", 
+        "host", 
+        "service_type", 
+	"gw_port_id",
+        "kube-proxy",
+        "status_text",
+        "status",
+        "status_timestamp",
+        "root_cause",
+        "cluster_ip",
+        "ports",
+        "labels",
+        "swagger_types"
+    ], 
+    "type" : "vservice"
+},
+{ 
+    "attributes" : [
+        "type",
+        "object_name", 
+        "host", 
+        "agent_type", 
+        "binary",
+        "started_at",
+	"configurations",
+	"ports",
+        "heartbeat_timestamp",
+        "status", 
+        "status_timestamp", 
+        "status_text",
+        "root_cause",
+        "qos_class",
+        "labels",
+        "dns_policy",
+        "namespace"
+    ], 
+    "type" : "vedge"
+},
+{ 
+    "attributes" : [
+        "type",
+        "object_name", 
+        "host", 
+        "mac_address",
+	"state", 
+        "Supported link modes", 
+        "data",
+        "IP Address", 
+        "Speed", 
+        "Link detected", 
+        "Bonding Mode", 
+        "Ethernet Channel Bonding Driver", 
+        "members",
+        "status",
+        "status_timestamp",
+        "status_text",
+        "root_cause"
+    ], 
+    "type" : "host_pnic"
+},
+{ 
+    "attributes" : [
+        "type",
+        "object_name", 
+        "provider:segmentation_id", 
+        "provider:network_type", 
+        "status",
+        "port_security_enabled",
+        "availability_zones",
+	"port_security_enabled",
+	"ipv6_address_scope",
+	"shared",
+	"availability_zone_hints",
+        "mtu",
+        "scope",       
+        "IPAM",               
+        "local_name",                       
+        "driver",                               
+        "Containers",                                       
+        "Options"
+    ], 
+    "type" : "network"
+},
+{ 
+    "attributes" : [
+        "type",
+        "object_name",
+        "OS",	
+        "host_type", 
+        "services", 
+        "status", 
+        "status_timestamp", 
+        "status_text",
+        "root_cause"
+    ], 
+    "type" : "host"
+},
+{ 
+    "attributes" : [
+        "type",
+        "object_name",
+        "host",
+        "project", 
+ 	    "addresses",
+        "image",
+        "flavor",
+        "security_groups",
+        "parent_id", 
+        "local_name", 
+        "network",  
+        "name_path",
+        "status", 
+        "status_timestamp", 
+        "status_text",
+        "root_cause"
+    ], 
+    "type" : "instance"
+},
+{ 
+    "attributes" : [
+        "type",
+        "object_name", 
+        "overlay_type", 
+        "ip_address", 
+        "ports",
+        "overlay_mac_address", 
+        "udp_port",
+        "status",
+        "status_text",
+        "root_cause"
+    ], 
+    "type" : "otep"
+},
+{ 
+    "type" : "switch_pnic", 
+    "attributes" : [
+        "type",
+        "aci_document", 
+        "parent_id", 
+        "role"
+    ]
+},
+{ 
+    "attributes" : [
+        "type",
+        "link_type",
+	"source_id", 
+        "target_id", 
+        "link_weight", 
+        "state", 
+        "link_name", 
+        "host",
+        "status",
+        "status_timestamp",
+        "status_text",
+        "root_cause"
+    ],
+    "type" : "link"
+}
+]

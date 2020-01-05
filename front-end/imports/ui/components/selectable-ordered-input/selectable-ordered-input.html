@@ -1,0 +1,40 @@
+<!--
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="SelectableOrderedInput">
+<div class="os-selectable-ordered-input">
+  <div class="sm-choices-section">
+    {{>MtSelect (argsChoicesSelect currentChoices selectedChoiceValue) }}
+  </div>
+
+  <div class="sm-choices-product-actions-bar">
+    <button class="cl-action-btn sm-add-choice-btn">
+      <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </button>
+    <button class="cl-action-btn sm-remove-choice-btn">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <div class="sm-product-section">
+    {{>MtSelect (argsProductSelect currentProduct selectedProductOptValue) }}
+  </div>
+
+  <div class="sm-product-actions-bar">
+    <button class="cl-action-btn sm-move-up-product-btn">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </button>
+    <button class="cl-action-btn sm-move-down-product-btn">
+      <i class="fa fa-arrow-down" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>
+</template>
