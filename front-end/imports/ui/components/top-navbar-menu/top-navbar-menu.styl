@@ -1,0 +1,97 @@
+.os-topnavbarmenu 
+  .os-nav-link 
+   cursor: pointer; 
+  .os-nav-link:hover
+    a
+      color: text-blue
+
+  .nav-main
+    display: flex;
+    width:100%;
+    height:100%;
+
+    .nav-left-side
+      width: 935px;
+      display: flex; 
+      .sm-navbar-header 
+        padding-top: 30px;
+        height: 100%;
+        width: 245px;
+        .sm-navbar-brand-container
+          display: flex; 
+
+          .sm-calipso-logo
+            height: 40px;
+            width: 40px; 
+            margin-right: 37px;
+            margin-left: 40px;
+            
+          .sm-project-label
+            padding-top: 9px;
+            color: text-light-blue;
+            font-size: 22px;
+
+      .sm-navbar-menu
+        height:100%;
+        width: 695px;
+        display: flex;
+
+        .nav-dashboard-link
+          height:100%;
+          width: 160px;
+          text-align: center;
+          padding-top: 38px;
+          &:hover
+            border-bottom: 4px solid border-action-bottom;
+            >a
+              color: text-blue;
+
+        .nav-environments-link
+          height:100%;
+          width: 215px;
+          text-align: center;
+          padding-top: 38px;
+          &:hover
+            cursor: pointer;
+            border-bottom: 4px solid border-action-bottom;
+        
+        .nav-search
+          height:100%;
+          padding-top: 38px;
+          margin-left: 18px;
+
+          .search-icon
+            width: 25px;
+            height: 25px;
+
+  .nav-right-side
+    direction: rtl;
+    display: flex;
+    padding-top: 38px;
+
+    .nav-buttons
+      display: flex;
+
+      .login-container
+        height:60px;
+        width: 135px;
+        text-align: right;
+        display: flex;
+        justify-content: space-between;
+        &:hover
+          cursor: pointer;
+          border-bottom: 4px solid border-action-bottom;
+        .user-img
+          top:-15px;
+          position: relative;
+          text-align: center;
+          vertical-align: middle;
+          padding-top: 17px;
+          font-size: 18px;
+          //margin: auto 0;
+          width: 52px;
+          height: 52px;
+          border-radius: 26px;
+          background-image: url('images/calipso-logo.jpg');
+          background-repeat: no-repeat;
+          background-size: cover;

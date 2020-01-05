@@ -1,0 +1,313 @@
+[
+{ 
+    "environment" : "ANY", 
+    "focal_point_type" : "instance", 
+    "link_types" : [
+        "instance-vnic", 
+        "vnic-vconnector", 
+        "vconnector-vedge", 
+        "vedge-otep", 
+        "otep-vconnector", 
+        "vconnector-host_pnic", 
+        "host_pnic-network"
+    ], 
+    "name" : "instance"
+},
+{ 
+    "environment" : "ANY", 
+    "focal_point_type" : "vservice", 
+    "link_types" : [
+        "vservice-vnic", 
+        "vnic-vedge", 
+        "vedge-otep", 
+        "otep-vconnector", 
+        "vconnector-host_pnic", 
+        "host_pnic-network"
+    ], 
+    "name" : "vservice"
+},
+{
+    "environment" : "",
+    "focal_point_type" : "vservice",
+    "link_types" : [
+        "vservice-vnic",
+        "vnic-vedge",
+        "vedge-otep",
+        "otep-vconnector",
+        "vconnector-host_pnic",
+        "host_pnic-network"
+    ],
+    "name" : "vservice_config_based",
+    "distribution" : "Mirantis",
+    "distribution_version" : "6.0",
+    "mechanism_drivers" : "OVS",
+    "type_drivers" : "vxlan"
+},
+{ 
+    "environment" : "ANY", 
+    "focal_point_type" : "network", 
+    "link_types" : [ 
+        "network-host_pnic", 
+        "host_pnic-vconnector", 
+        "vconnector-otep", 
+        "otep-vedge", 
+        "vedge-vconnector", 
+        "vedge-vnic", 
+        "vconnector-vnic", 
+        "vnic-instance", 
+        "vnic-vservice"
+    ], 
+    "name" : "network"
+},
+{   
+    "focal_point_type" : "switch", 
+    "environment" : "ANY", 
+    "link_types" : [
+        "switch-switch_pnic",
+        "switch_pnic-switch_pnic",
+        "switch_pnic-switch", 
+        "switch-switch_pnic", 
+        "switch_pnic-host_pnic", 
+        "host_pnic-vconnector", 
+        "vconnector-otep", 
+        "otep-vedge", 
+        "vedge-vconnector", 
+        "vedge-vnic", 
+        "vconnector-vnic", 
+        "vnic-instance", 
+        "vnic-vservice"
+    ], 
+    "name" : "switch clique for generic openstack with oteps"
+},
+{ 
+    "environment" : "Apex-Euphrates", 
+    "link_types" : [
+        "instance-vnic", 
+        "vnic-vconnector", 
+        "vconnector-vedge", 
+        "vedge-otep", 
+        "otep-host_pnic", 
+        "host_pnic-network"
+    ], 
+    "name" : "instance", 
+    "focal_point_type" : "instance"
+},
+{ 
+    "environment" : "Apex-Euphrates", 
+    "link_types" : [
+        "vservice-vnic", 
+        "vnic-vedge", 
+        "vedge-otep", 
+        "otep-host_pnic", 
+        "host_pnic-network"
+    ], 
+    "name" : "vservice", 
+    "focal_point_type" : "vservice"
+},
+{ 
+    "environment" : "Apex-Euphrates", 
+    "link_types" : [
+        "network-host_pnic", 
+        "host_pnic-otep", 
+        "otep-vedge", 
+        "vedge-vconnector", 
+        "vedge-vnic", 
+        "vconnector-vnic", 
+        "vnic-instance", 
+        "vnic-vservice"
+    ], 
+    "name" : "network", 
+    "focal_point_type" : "network"
+},
+{  
+    "environment" : "", 
+    "distribution" : "Mercury",
+    "focal_point_type" : "instance", 
+    "link_types" : [
+        "instance-vnic", 
+        "vnic-vconnector", 
+        "vconnector-vedge", 
+        "vedge-host_pnic", 
+        "host_pnic-network"
+    ], 
+    "name" : "mercury_instance_vconnector_clique"
+},
+{ 
+    "environment" : "",
+    "distribution" : "Mercury",
+    "focal_point_type" : "vservice",
+    "link_types" : [
+        "vservice-vnic",
+        "vnic-vedge",
+        "vedge-host_pnic", 
+        "host_pnic-network"
+    ],
+    "name" : "mercury_vservice_vedge_clique"
+},
+{ 
+    "environment" : "",
+    "distribution" : "Mercury", 
+    "focal_point_type" : "network", 
+    "link_types" : [
+        "network-host_pnic", 
+        "host_pnic-vedge", 
+        "vedge-vconnector", 
+        "vedge-vnic", 
+        "vconnector-vnic", 
+        "vnic-instance", 
+        "vnic-vservice"
+    ], 
+    "name" : "mercury_network_clique"
+},
+{
+    "environment" : "",
+    "distribution" : "Mercury",
+    "focal_point_type" : "switch",
+    "link_types" : [
+        "switch-switch_pnic",
+        "switch_pnic-switch_pnic",
+        "switch_pnic-switch",
+        "switch-switch_pnic",
+        "switch_pnic-host_pnic",
+        "host_pnic-vedge",
+        "vedge-vconnector",
+        "vedge-vnic",
+        "vconnector-vnic",
+        "vnic-instance",
+        "vnic-vservice"
+    ],
+    "name" : "mercury_switch_clique"
+},
+    {
+    "environment" : "",
+    "focal_point_type" : "instance",
+    "link_types" : [
+        "instance-vnic",
+        "vnic-vconnector",
+        "vconnector-vedge",
+        "vedge-otep",
+        "otep-host_pnic",
+        "host_pnic-network"
+    ],
+    "name" : "instance",
+    "distribution" : "Kolla"
+},
+    {
+    "environment" : "",
+    "focal_point_type" : "vservice",
+    "link_types" : [
+        "vservice-vnic",
+        "vnic-vedge",
+        "vedge-otep",
+        "otep-host_pnic",
+        "host_pnic-network"
+    ],
+    "name" : "vservice",
+    "distribution" : "Kolla"
+},
+    {
+    "environment" : "",
+    "focal_point_type" : "network",
+    "link_types" : [
+        "network-host_pnic",
+        "host_pnic-otep",
+        "otep-vedge",
+        "vedge-vconnector",
+        "vedge-vnic",
+        "vconnector-vnic",
+        "vnic-instance",
+        "vnic-vservice"
+    ],
+    "name" : "network",
+    "distribution" : "Kolla"
+},
+{ 
+    "name" : "instance", 
+    "use_implicit_links" : true, 
+    "link_types" : [
+        "instance-network"
+    ], 
+    "environment" : "implicit-links-ex", 
+    "focal_point_type" : "instance"
+},
+{
+    "focal_point_type" : "container",
+    "environment_type" : "Kubernetes",	
+    "link_types" : [
+        "container-vedge",
+        "container-vnic",
+        "vnic-vconnector", 
+        "vconnector-vedge", 
+        "vedge-otep",
+        "otep-host_pnic",
+        "host_pnic-network"
+    ], 
+    "use_implicit_links" : false, 
+    "distribution" : "Kubernetes",
+    "distribution_version" : "1.9",
+    "name" : "container",
+    "type_drivers" : "vxlan",
+    "mechanism_drivers" : "Flannel", 
+    "environment" : ""
+},
+{
+    "environment" : "",
+    "focal_point_type" : "network",
+    "environment_type" : "Kubernetes",
+    "link_types" : [
+        "network-host_pnic", 
+        "host_pnic-otep", 
+        "otep-vedge",
+        "vedge-container",
+        "vedge-vconnector",
+        "vconnector-vnic", 
+        "vnic-container"
+    ],
+    "distribution" : "Kubernetes", 
+    "distribution_version" : "1.9", 
+    "mechanism_drivers" : "Flannel", 
+    "type_drivers" : "vxlan", 
+    "name" : "k8s-network",
+    "use_implicit_links" : false
+},
+{
+    "environment" : "",
+    "focal_point_type" : "vservice",
+    "environment_type" : "Kubernetes",
+    "link_types" : [
+        "vservice-pod",
+        "pod-container",
+        "container-network"
+    ],
+    "distribution" : "Kubernetes",
+    "distribution_version" : "1.9",
+    "mechanism_drivers" : "Flannel",
+    "type_drivers" : "vxlan",
+    "name" : "k8s-network",
+    "use_implicit_links" : true
+},
+{
+    "distribution" : "Kubernetes", 
+    "environment" : "", 
+    "focal_point_type" : "switch", 
+    "type_drivers" : "vxlan", 
+    "mechanism_drivers" : "Flannel", 
+    "link_types" : [
+        "switch-switch_pnic", 
+        "switch_pnic-switch_pnic",
+        "switch_pnic-switch", 
+        "switch-switch_pnic", 
+        "switch_pnic-host_pnic", 
+        "host_pnic-otep", 
+        "otep-vedge", 
+        "vedge-container", 
+        "vedge-vconnector", 
+        "vconnector-vnic", 
+        "vnic-container"
+    ], 
+    "distribution_version" : "1.9", 
+    "name" : "generic k8s clique for physical switch", 
+    "environment_type" : "Kubernetes", 
+    "use_implicit_links" : false
+}
+]

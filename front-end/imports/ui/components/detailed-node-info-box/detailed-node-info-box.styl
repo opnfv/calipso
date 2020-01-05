@@ -1,0 +1,41 @@
+.os-detailed-node-info-box
+  display: flex;
+  flex-flow: row nowrap;
+
+  .sm-icon-segment
+    flex: 0 1 70px;
+
+  .sm-info-segment
+    flex: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    overflow: auto;
+
+    .sm-info-title
+      color: #0a9ad7;
+      font-size: 2em;
+      border-bottom: 3px solid #0a9ad7;
+      line-height: 1.5em;
+
+    .sm-info-bits
+      padding: 5px 0px;
+
+      display: flex;
+      flex-flow: column nowrap;
+
+      .cl-info-bit
+        display: flex;
+        flex-flow: row nowrap;
+
+        .cl-label
+          flex: 0 0 110px;
+          color: black;
+          font-weight: bold;
+          
+    .sm-info-json
+      >.cl-label
+        color: black;
+        font-weight: bold;
+        
+      >.cl-data
+        white-space: pre;

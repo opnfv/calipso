@@ -1,0 +1,54 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="Dashboard">
+
+  <div class="os-dashboard">
+    
+    <div class="site-sidenav-collapse">
+      <img class="img-left-nav" src="/icons/icon-menu-long.svg">
+    </div>
+
+    <div class="sm-main-layout-no-nav">
+      
+      <!-- this flex box separate environment cards from alerts -->
+      <div class="sm-main-row">
+        
+        <!-- this flex box for environment cards -->
+        <div class="sm-environments">
+          {{#each envItem in envList}}
+            <div class="item">
+              {{> EnvironmentBox (envObjects envItem) }}
+            </div>
+          {{/each}} <!-- envItem in envList -->
+
+        </div> <!-- flex box for environment cards -->
+        
+        <!-- this flex box for alerts cards -->
+        <div class="sm-side-container" style="display: none;">
+
+          <div class="sm-messages-section">
+            {{#each messagesInfoBox in (getListMessagesInfoBox) }}
+            <div class="sm-message-box">
+                {{> MessagesInfoBox (argsMessagesInfoBox messagesInfoBox 
+                      (countOf (msgCounterName messagesInfoBox.level))) }}
+            </div>
+            {{/each }}
+          </div>
+
+        </div> <!-- flex box for alerts cards -->
+
+      </div>
+
+    </div> <!-- main-layout -->
+  </div>
+
+</template>

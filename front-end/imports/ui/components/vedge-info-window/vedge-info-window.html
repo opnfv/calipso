@@ -1,0 +1,115 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="VedgeInfoWindow">
+<div class="os-vedge-info-window {{#if isShow}}cl-visible{{/if}}" 
+     style="top: {{ top }}px; left: {{ left }}px;">   
+        
+    <div class="sm-header">
+      <button type="button" class="sm-close-button close" 
+        data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">x</span>
+      </button>
+      <h4 class="modal-title">Object Information: {{ name }}</h4>
+    </div>
+
+    <div class="sm-body">
+      {{#if showMessage }}
+      <div class="sm-message-panel alert alert-{{ messageType }}">
+         <div class="sm-message-text">{{ message }}</div>
+      </div>
+      {{/if }}
+
+      <form class="sm-form-graph-filters">
+        <div class="sm-form-group form-group">
+          <label for="">Flow types</label>
+          <select class="sm-flow-type-select cl-input">
+            <option value="">Choose a flow type</option>
+            {{#each flowType in flowTypes }}
+            <option value="{{ flowType.name }}">{{ flowType.name }}</option>
+            {{/each }}
+          </select>
+        </div>  
+
+        {{#if (is selectedFlowType 'L2') }}
+        <div class="sm-f2-input-group">
+          <div class="sm-form-group form-group">
+            <label for="">Source: Mac address</label>
+            <select class="sm-source-mac-address-select cl-input">
+              <option value="">Choose an address </option>
+              {{#each address in srcMacAddresses }}
+              <option value="{{ address }}">{{ address }}</option>
+              {{/each }}
+            </select>
+          </div>
+
+          <div class="sm-form-group form-group">
+            <label for="">Destination: Mac address</label>
+            <select class="sm-destination-mac-address-select cl-input">
+              <option value="">Choose an address </option>
+              {{#each address in dstMacAddresses }}
+              <option value="{{ address }}">{{ address }}</option>
+              {{/each }}
+            </select>
+          </div>
+        </div>
+        {{/if }}
+
+        {{#if (is selectedFlowType 'L3') }}
+        <div class="sm-f3-input-group">
+          <select class="sm-source-ip-address cl-input">
+            <option value="">Choose an address </option>
+            {{#each address in srcIPv4Addresses }}
+            <option value="{{ address }}">{{ address }}</option>
+            {{/each }}
+          </select>
+
+          <select class="sm-destination-ip-address cl-input">
+            {{#each address in dstIPv4Addresses }}
+            <option value="{{ address }}">{{ address }}</option>
+            {{/each }}
+          </select>
+        </div>
+        {{/if }}
+
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" class="sm-simulate-graph">Simulate graph 
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="">Y-Scale</label>
+          <input type="number" class="form-control sm-y-scale-input">
+        </div>
+
+        <div class="form-group">
+          <label for="">Start time</label>
+          <div class="sm-start-datetime-group input-group date">
+            <input class="sm-start-datetime form-control" type="text"/>
+            <span class="input-group-addon"
+              ><i class="glyphicon glyphicon-calendar"></i></span>
+          </div>
+        </div>
+      </form>
+    </div><!-- end: body -->
+
+    {{#if isShowGraph }}
+    <div class="sm-graph-container">
+      {{>FlowGraph argsFlowGraph }}
+    </div>
+    {{/if }}
+
+    <div class="sm-footer"> 
+    </div>
+
+</div>
+</template>

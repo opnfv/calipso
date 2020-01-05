@@ -1,0 +1,70 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="Environment">
+  
+  <div class="sm-environment-container flex-box justify-content-between">
+    <div class="sm-site-sidenav site-sidenav {{#if (getState 'collapsedSideMenu')}}collapsed{{/if}}">
+      {{#if isLoaded }}
+        {{> accordionNavMenu (argsNavMenu envName mainNode) }}
+      {{/if }}
+    </div>
+
+    <div class="flex-box-3 main-layout-no-nav env-main-content">
+        <div class="sm-breadcrumb-segment">
+          {{> breadcrumb (argsBreadCrumb rdxSelectedNodeId) }}
+        </div>
+
+        <div class="sm-main-content-segment">
+          {{#if isLoading }}
+
+            <div class="sm-loading-message"></div>
+
+          {{else }}
+
+            {{#if selectedNodeType }}
+              {{#if (getShow 'dashboard') }}
+                <div class="sm-dashboard">
+                  {{> UI.dynamic template=dashboardTemplate 
+                                 data=(argsDashboard rdxSelectedNodeId) }}
+                </div>
+              {{/if }}
+              {{#if (getShow 'graph') }}
+                {{#if isSelectedNodeAGraph }}
+
+                  <!--div class="sm-graph">
+                    > d3graph argsD3Graph
+                  </div-->
+
+                  <div class="sm-network-graph">
+                    {{> NetworkGraphManager argsNetworkGraphManager }}
+                  </div>
+
+                  {{> GraphTooltipWindow (argsGraphTooltipWindow graphTooltipWindow) }}
+
+                  {{#if showVedgeInfoWindow }}
+                    {{> VedgeInfoWindow (argsVedgeInfoWindow vedgeInfoWindow) }}
+                  {{/if }}
+                
+                {{else }}
+
+                <div class="sm-node-no-graph-data-msg">{{ rPath i18n 'components.environment.noGraphForLeafMsg' }}</div>
+
+                {{/if }}
+              {{/if }}
+            {{/if }}
+          {{/if }} <!-- if isLoading -->
+        </div>
+
+    </div>
+  </div>
+
+</template>

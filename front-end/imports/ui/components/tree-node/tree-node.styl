@@ -1,0 +1,108 @@
+.os-tree-node
+  display: flex;
+  flex-flow: column nowrap; 
+  background-color: #0b7ad1;
+
+  .sm-details-line-main
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+
+    padding: 16px 22px 10px 22px;
+    padding-left: 44px;
+    cursor: pointer;
+    border-bottom: 1px solid #BFBFBF;
+    text-transform: uppercase;
+
+    &:hover
+      color: #00AAF1;
+      background-color: white;
+      .sm-node-name
+        color: #00AAF1;
+ 
+    .sm-node-desc
+      display: flex;
+      flex-flow: row nowrap;
+
+      font-size: 14px; 
+      line-height: 18px;
+      color: #777777;
+      &:hover
+        color: #00AAF1;
+        background-color: transparent;
+
+      .sm-type-icon
+        i
+          font-size: 16px;
+
+      .sm-space-a
+        width: 10px;
+
+      //.sm-node-name
+
+    .sm-actions-segment
+      display: flex;
+      margin-top: -4px;
+
+      .fa
+        font-size: 20px;
+        width: 10px;
+        color: #8C8C8C;
+        margin: 0 3px;
+
+  .sm-details-line 
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+
+    padding: 7px 22px;
+    padding-left: 54px;
+    cursor: pointer;
+    border-bottom: 1px solid #BFBFBF;
+    height: 30px;
+
+    &:hover
+      color: #00AAF1;
+      background-color: white;
+      .sm-node-name
+        color: #00AAF1;
+ 
+    .sm-node-desc
+      display: flex;
+      flex-flow: row nowrap;
+
+      font-size: 12px; 
+      line-height: 18px;
+      color: #777777;
+      &:hover
+        color: #00AAF1;
+        background-color: transparent;
+
+      .sm-type-icon
+        i
+          font-size: 16px;
+
+      .sm-space-a
+        width: 10px;
+
+      //.sm-node-name
+
+    .sm-actions-segment
+      display: flex;
+
+      .fa
+        font-size: 20px;
+        width: 10px;
+        color: #8C8C8C;
+        margin: 0 3px;
+
+  .sm-children-list
+    display: none
+    //height: 0
+
+/*
+    &.cl-opened
+      display: block
+    &.cl-closed
+      display: none
+*/

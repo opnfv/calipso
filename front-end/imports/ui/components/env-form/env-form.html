@@ -1,0 +1,32 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+
+<template name="envForm">
+  <!-- li class dropdown -->
+  <div id="dLabel" class="env-title" style="height: 100%;" 
+      data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      <span>{{ selectedEnvName }}</span>
+      <span class="caret"></span>
+  </div>
+  <ul class="os-env-form-dropdown-menu dropdown-menu drop-down-menu-env">
+    <li class="env-existing-item" style="padding-left: 15px;">Existing Environments:</li>
+    {{#each envItem in envList}}
+    <li>
+      <a class="sm-env-item envList droplist" data-env-name="{{ envItem.name }}" data-env-id="{{ idToStr envItem._id }}">{{envItem.name}}</a>
+    </li>
+    {{/each}}
+    <li>
+      <a href="{{pathFor route='wizard'}}" class="droplist-new-env">
+        <img src="/icons/icon-addnew-white.svg" style="width:32px; height: 32px;">Add New</a>
+    </li>
+  </ul>
+</template>

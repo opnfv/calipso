@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42 42">
+  <defs>
+    <polygon id="a" points="0 .502 4.149 .502 4.149 4.651 0 4.651"/>
+    <polygon id="c" points="4.149 .455 4.149 12 0 12 0 .455"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <rect width="42" height="42" fill="none"/>
+    <g transform="translate(19 11)">
+      <g transform="translate(0 .498)">
+        <mask id="b" fill="white">
+          <use xlink:href="#a"/>
+        </mask>
+        <path fill="#57C7E5" d="M2.0744,4.6509 C3.2204,4.6509 4.1494,3.7219 4.1494,2.5759 C4.1494,1.4309 3.2204,0.5019 2.0744,0.5019 C0.9284,0.5019 0.0004,1.4309 0.0004,2.5759 C0.0004,3.7219 0.9284,4.6509 2.0744,4.6509" mask="url(#b)"/>
+      </g>
+      <g transform="translate(0 6.498)">
+        <mask id="d" fill="white">
+          <use xlink:href="#c"/>
+        </mask>
+        <path fill="#57C7E5" d="M2.0744,0.4546 C0.9334,0.4546 0.0004,1.3886 0.0004,2.5296 L0.0004,9.9256 C0.0004,11.0666 0.9334,11.9996 2.0744,11.9996 C3.2154,11.9996 4.1494,11.0666 4.1494,9.9256 L4.1494,2.5296 C4.1494,1.3886 3.2154,0.4546 2.0744,0.4546" mask="url(#d)"/>
+      </g>
+    </g>
+  </g>
+</svg>

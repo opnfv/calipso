@@ -1,0 +1,82 @@
+<!--
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="EnvironmentBox">
+  <div class="os-environment-box white">
+    <div class="flex-box-3">
+      <div class="env-name-container">
+        <div class="env-name">{{ env.name }}
+        </div>
+        <div class="env-more" style="display: none;">
+          <img src="/icons/icon-more.svg">
+        </div>
+      </div>
+      <div id="dist-section" class="single-env-section">
+        <span class="dist-title">Distribution</span>
+        <div class="dist-details">
+          <img src="/icons/icon-distribution.svg">
+          <span class="dist-name">{{ env.distribution }}</span>
+        </div>
+      </div>
+      <div style="display: flex">
+        {{#if equals 'OpenStack' env.environment_type}}
+            {{> EnvironmentBoxRegions (assoc 'regions' regions 'envId' env._id) }}
+            {{> EnvironmentBoxProjects (assoc 'projects' projects 'envId' env._id) }}
+        {{else if equals 'Kubernetes' env.environment_type 'envId' env._id}}
+            {{> EnvironmentBoxNetworks (assoc 'networks' networks 'envId' env._id) }}
+            {{> EnvironmentBoxHosts (assoc 'hosts' hosts 'envId' env._id) }}
+            {{> EnvironmentBoxNamespaces (assoc 'namespaces' namespaces 'envId' env._id) }}
+        {{/if}}
+      </div>
+      <div class="env-summary">
+        {{#if equals 'OpenStack' env.environment_type}}
+        <div class="env-summary-item-container">
+          <div class="env-summary-item">
+            <span class="env-summary-item-title">Instances</span>
+            <div class="env-summary-item-counter">{{ instancesCount }}</div>
+          </div>
+        </div>
+        <div class="env-summary-item-container">
+          <div class="env-summary-item">
+            <span class="env-summary-item-title">vServices</span>
+            <div class="env-summary-item-counter">{{ vservicesCount }}</div>
+          </div>
+        </div>
+        {{else if equals 'Kubernetes' env.environment_type}}
+        <div class="env-summary-item-container">
+            <div class="env-summary-item">
+                <span class="env-summary-item-title">Containers</span>
+                <div class="env-summary-item-counter">{{ containersCount }}</div>
+            </div>
+        </div>
+        <div class="env-summary-item-container">
+            <div class="env-summary-item">
+                <span class="env-summary-item-title">Pods</span>
+                <div class="env-summary-item-counter">{{ podsCount }}</div>
+            </div>
+        </div>
+        {{/if}}
+        <div class="env-summary-item-container">
+          <div class="env-summary-item">
+              <span class="env-summary-item-title">vConnectors</span>
+              <div class="env-summary-item-counter">{{ vconnectorsCount }}</div>
+          </div>
+        </div>
+        <div class="env-summary-item-container">
+          <div class="env-summary-item">
+            <span class="env-summary-item-title">Hosts</span>
+            <div class="env-summary-item-counter">{{ hostsCount }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,481 @@
+[
+{ 
+    "side" : "client", 
+    "order" : "1", 
+    "config" : {
+        "rabbitmq" : {
+            "port" : "{rabbitmq_port}", 
+            "vhost" : "/sensu", 
+            "password" : "{rabbitmq_pass}", 
+            "host" : "{server_ip}", 
+            "user" : "{rabbitmq_user}", 
+            "ssl" : {
+                "cert_chain_file" : "/etc/sensu/ssl/cert.pem", 
+                "private_key_file" : "/etc/sensu/ssl/key.pem"
+            }
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "rabbitmq.json"
+},
+{ 
+    "side" : "client", 
+    "order" : "1", 
+    "config" : {
+        "transport" : {
+            "name" : "rabbitmq", 
+            "reconnect_on_error" : true
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "transport.json"
+},
+{ 
+    "side" : "server", 
+    "order" : "1", 
+    "config" : {
+        "redis" : {
+            "port" : "6379", 
+            "host" : "127.0.0.1"
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "redis.json"
+},
+{ 
+    "side" : "client", 
+    "order" : "1", 
+    "config" : {
+        "api" : {
+            "port" : 4567, 
+            "host" : "{server_ip}"
+        }, 
+        "client" : {
+            "address" : "{client_name}", 
+            "subscriptions" : [
+
+            ], 
+            "name" : "{client_name}", 
+            "environment" : "{env_name}"
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "client.json"
+},
+{ 
+    "side" : "server", 
+    "order" : "1", 
+    "config" : {
+        "transport" : {
+            "name" : "rabbitmq", 
+            "reconnect_on_error" : true
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "transport.json"
+},
+{ 
+    "side" : "client", 
+    "order" : "1", 
+    "config" : {
+        "checks" : {
+            "{objtype}_{objid}_{portid}" : {
+                "interval" : 15, 
+                "command" : "check_ping.py -c 10 -i 0.5 -p 4f532d444e41 -w 10 -s 256 -f {otep_src_ip} -t {otep_dest_ip} -W 1%/301.11/600 -C 10%/1020.12/2000", 
+                "standalone" : true,
+                "type": "metric",
+                "subscribers" : [
+                    "base"
+                ], 
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ]
+            }
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "client_check_otep.json"
+},
+{ 
+    "side" : "server", 
+    "order" : "1", 
+    "config" : {
+        "rabbitmq" : {
+            "port" : "{rabbitmq_port}", 
+            "vhost" : "/sensu", 
+            "password" : "{rabbitmq_pass}", 
+            "host" : "{server_ip}", 
+            "user" : "{rabbitmq_user}", 
+            "ssl" : {
+                "cert_chain_file" : "/etc/sensu/ssl/cert.pem", 
+                "private_key_file" : "/etc/sensu/ssl/key.pem"
+            }
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "rabbitmq.json"
+},
+{ 
+    "side" : "server", 
+    "order" : "1", 
+    "config" : {
+        "api" : {
+            "port" : 4567, 
+            "host" : "{server_ip}", 
+            "bind" : "0.0.0.0"
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "api.json"
+},
+{ 
+    "side" : "server", 
+    "order" : "1", 
+    "config" : {
+        "client" : {
+            "address" : "sensu-server", 
+            "socket" : {
+                "port" : 3030, 
+                "bind" : "127.0.0.1"
+            }, 
+            "subscriptions" : [
+                "dev", 
+                "base", 
+                "test"
+            ], 
+            "name" : "{server_name}", 
+            "environment" : "{env_type}"
+        }, 
+        "keepalive" : {
+            "handlers" : [
+                "file"
+            ]
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "client.json"
+},
+{
+    "side" : "server",
+    "order" : "1",
+    "config" : {
+        "filters" : {
+            "state_change_only" : {
+                "negate" : true,
+                "attributes" : {
+                    "check" : {
+                        "history" : "eval: value.last == value[-2]"
+                    }
+                }
+
+            }
+        }
+    },
+    "monitoring_system" : "sensu",
+    "type" : "filters.json"
+},
+{ 
+    "side" : "server", 
+    "order" : "1", 
+    "config" : {
+        "handlers" : {
+            "osdna-monitor" : {
+                "timeout" : 20, 
+                "command" : "PYTHONPATH={app_path} {app_path}/monitoring/handlers/monitor.py -m /local_dir/calipso_mongo_access.conf", 
+                "type" : "pipe",
+                "filter" : "state_change_only"
+            }, 
+            "file" : {
+                "timeout" : 20, 
+                "command" : "/etc/sensu/plugins/event-file.rb", 
+                "type" : "pipe",
+                "filter" : "state_change_only"
+            }
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "handlers.json"
+},
+{ 
+    "type" : "client_check_vedge_vpp.json",
+    "side" : "client", 
+    "condition" : {
+        "mechanism_drivers" : [
+            "VPP"
+        ]
+    }, 
+    "config" : {
+        "checks" : {
+            "{objtype}_{objid}" : {
+                "interval" : 15, 
+                "command" : "check_vedge_vpp.py", 
+                "standalone" : true,
+                "type": "metric",
+                "subscribers" : [
+                    "base"
+                ], 
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ]
+            }
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "order" : "1"
+},
+{ 
+    "side" : "client", 
+    "order" : "1", 
+    "condition" : {
+        "mechanism_drivers" : [
+            "VPP"
+        ]
+    }, 
+    "config" : {
+        "checks" : {
+            "{objtype}_{vnictype}_{objid}" : {
+                "interval" : 15, 
+                "command" : "check_vnic_vpp.py", 
+                "standalone" : true,
+                "type": "metric",
+                "subscribers" : [
+                    "base"
+                ], 
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ]
+            }
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "client_check_vnic.json"
+},
+{ 
+    "side" : "client",
+    "config" : {
+        "checks" : {
+            "{objtype}_{objid}" : {
+                "interval" : 15, 
+                "command" : "check_vedge_ovs.py", 
+                "standalone" : true,
+                "type": "metric",
+                "subscribers" : [
+                    "base"
+                ], 
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ]
+            }
+        }
+    }, 
+    "type" : "client_check_vedge_ovs.json",
+    "condition" : {
+        "mechanism_drivers" : [
+            "OVS"
+        ]
+    }, 
+    "monitoring_system" : "sensu", 
+    "order" : "1"
+},
+{ 
+    "side" : "client", 
+    "order" : "1", 
+    "condition" : {
+        "mechanism_drivers" : [
+            "OVS", 
+            "LXB"
+        ]
+    }, 
+    "config" : {
+        "checks" : {
+            "link_{linktype}_{fromobjid}_{toobjid}" : {
+                "interval" : 15, 
+                "command" : "check_vnic_vconnector.py {bridge} {mac_address}", 
+                "standalone" : true,
+                "type": "metric",
+                "subscribers" : [
+                    "base"
+                ], 
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ]
+            }
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "client_check_link_vnic-vconnector.json"
+},
+{
+    "side" : "client",
+    "order" : "1",
+    "condition" : {
+        "mechanism_drivers" : [
+            "OVS",
+            "Flannel"
+        ]
+    },
+    "config" : {
+        "checks" : {
+            "{objtype}_{objid}" : {
+                "interval" : 15,
+                "command" : "check_vconnector.py {name}",
+                "standalone" : true,
+                "type": "metric",
+                "subscribers" : [
+                    "base"
+                ],
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ]
+            }
+        }
+    },
+    "monitoring_system" : "sensu",
+    "type" : "client_check_vconnector_ovs.json"
+},
+{
+    "side" : "client", 
+    "order" : "1", 
+    "condition" : {
+        "mechanism_drivers" : [
+            "OVS",
+            "Flannel"
+        ]
+    }, 
+    "config" : {
+        "checks" : {
+            "{objtype}_{objid}" : {
+                "interval" : 15, 
+                "command" : "check_pnic_ovs.py {local_name}",
+                "standalone" : true,
+                "type": "metric",
+                "subscribers" : [
+                    "base"
+                ], 
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ]
+            }
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "client_check_host_pnic_ovs.json"
+},
+{
+    "side" : "client",
+    "order" : "1",
+    "condition" : {
+        "mechanism_drivers" : [
+            "VPP"
+        ]
+    },
+    "config" : {
+        "checks" : {
+            "{objtype}_{objid}" : {
+                "interval" : 15,
+                "command" : "check_pnic_vpp.py",
+                "standalone" : true,
+                "type": "metric",
+                "subscribers" : [
+                    "base"
+                ],
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ]
+            }
+        }
+    },
+    "monitoring_system" : "sensu",
+    "type" : "client_check_host_pnic_vpp.json"
+},
+{ 
+    "side" : "client", 
+    "order" : "1", 
+    "condition" : {
+        "environment_type": "OpenStack",
+        "mechanism_drivers" : [
+            "OVS", 
+            "LXB"
+        ]
+    }, 
+    "config" : {
+        "checks" : {
+            "{objtype}_{objid}" : {
+                "interval" : 15, 
+                "command" : "PYTHONPATH=/etc/sensu/plugins check_vservice.py {service_type} {local_service_id}", 
+                "standalone" : true,
+                "type": "metric",
+                "subscribers" : [
+                    "base"
+                ], 
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ]
+            }
+        }
+    }, 
+    "monitoring_system" : "sensu", 
+    "type" : "client_check_vservice.json"
+},
+{
+    "side" : "client",
+    "order" : "1",
+    "config" : {
+        "checks" : {
+            "{objtype}_{objid}_vm" : {
+                "standalone" : true,
+                "interval" : 15,
+                "command" : "PYTHONPATH=/etc/sensu/plugins check_vm.py {instance_name}",
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ],
+                "type" : "metric",
+                "subscribers" : [
+                    "base"
+                ],
+                "subtype": "vm"
+            }
+        }
+    },
+    "monitoring_system" : "sensu",
+    "type" : "client_check_instance_vm.json"
+},
+{
+    "side" : "client",
+    "order" : "1",
+    "condition" : {
+        "environment_type": "OpenStack",
+        "mechanism_drivers" : ["OVS","LXB"]
+    },
+    "config" : {
+        "checks" : {
+            "{vnictype}_{objid}" : {
+                "interval" : 15,
+                "command" : "PYTHONPATH=/etc/sensu/plugins check_instance_vnic.py {service_id} {mac_address}",
+                "standalone" : true,
+                "type": "metric",
+                "subscribers" : [
+                    "base"
+                ],
+                "handlers" : [
+                    "file",
+                    "osdna-monitor"
+                ]
+            }
+        }
+    },
+    "monitoring_system" : "sensu",
+    "type" : "client_check_instance_vnic.json",
+    "subtype": "vnic"
+}
+]
