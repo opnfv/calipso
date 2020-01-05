@@ -1,0 +1,102 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+
+<template name="ScansList">
+  <div>
+    <div class="table-view-container">
+      <div class="table-view-title">SCANS</div>
+      <table class="table-view-results table">
+        <thead>
+          <tr>
+            <th>
+              <a class="sm-table-header" data-is-sortable="true" data-sort-field="status">Status
+                <span>
+                  <i class="{{ fieldSortClass 'status' }}"></i>
+                </span>
+              </a>
+            </th>
+            <th>Log Level</th>
+            <th>Clear</th>
+            <th>Scan Only Iventory</th>
+            <th>Scan Only Links</th>
+            <th>Scan Only Cliques</th>
+            <th>ElasticSearch Indexing</th>
+            <th>
+              <a class="sm-table-header" data-is-sortable="true" data-sort-field="submit_timestamp">Submit Timestamp
+                <span>
+                  <i class="{{ fieldSortClass 'submit_timestamp' }}"></i>
+                </span>
+              </a>
+            </th>
+            <th>
+              <a class="sm-table-header" data-is-sortable="true" data-sort-field="start_timestamp">Start Timestamp
+                <span>
+                  <i class="{{ fieldSortClass 'start_timestamp' }}"></i>
+                </span>
+              </a>
+            </th>
+            <th>
+              <a class="sm-table-header" data-is-sortable="true" data-sort-field="end_timestamp">End Timestamp
+                <span>
+                  <i class="{{ fieldSortClass 'end_timestamp' }}"></i>
+                </span>
+              </a>
+            </th>
+            <th>Environment</th>
+            <th>Inventory</th>
+            <th>Object ID</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each scan in scans }}
+          <tr>
+            <td>{{ scan.status }}</td>
+            <td>{{ scan.log_level }}</td>
+            <td>{{ scan.clear }}</td>
+            <td>{{ scan.scan_only_inventory }}</td>
+            <td>{{ scan.scan_only_links }}</td>
+            <td>{{ scan.scan_only_cliques }}</td>
+            <td>{{ scan.es_index }}</td>
+            <td>{{ scan.submit_timestamp }}</td>
+            <td>{{ scan.start_timestamp }}</td>
+            <td>{{ scan.end_timestamp }}</td>
+            <td>{{ scan.environment }}</td>
+            <td>{{ scan.inventory }}</td>
+            <td>{{ scan.object_id }}</td>
+            <td>
+              <div class="actions-list">
+                <div class="actions-icon">
+                  <div class="dropdopwn drop-down-overflow">
+                    <div class="dropdown-toggle actions-button" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="true">
+                      <img src="/icons/icon-export.svg">
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                      <li class="dropdown-action-header">
+                        <a href="{{pathFor route='scanning-request' query=(asHash env=scan.environment _id=(idToStr scan._id) action='view') }}">View</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          {{/each }}
+        </tbody>
+      </table>
+    </div>
+    <div class="sm-pager-section">
+      {{> Pager (argsPager currentPage amountPerPage totalItems) }}
+    </div>
+  </div>
+</template>

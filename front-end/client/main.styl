@@ -1,0 +1,115 @@
+/* CSS declarations go here */
+normalize-css()
+
+// Colors
+black = #222
+grey = #D8D8D8
+purp = #524763
+dark-purp = #373142
+red = #E54B4B
+teal = #82D8D8
+dark-teal = #66A6A6
+green = #CBE56C
+blue = #16528E
+bright-blue = #0082C8
+maroon = #6A2140
+light-red = #CA5765
+pink = #CF256D
+orange = #E8846B
+white-grey = #F5F5F5;
+
+// cisco brand Colors
+brand-blue = #2196F3
+spark-blue = #0A9AD7
+spark-green = #73BE46
+spark-grey = #D1D2D1
+dk-blue = #303f9f
+light-grey = #efefef
+dk-gray1 = #58585b
+// cisco brand status Colors
+status-blue = #64bbe3
+status-turq = #14a792
+status-green = #6cc04a
+status-yellow = #ffcc00
+status-orange = #ff7300
+status-red = #cf2030
+// cisco accepteble colors
+
+//borders
+border-white-grey = #E4E6EA;
+border-light-grey = #A3B8BF;
+border-medium-grey = #B5B5B5;
+border-dark-grey = #848484;
+border-light-blue = #C4DFEB;
+border-action-bottom=#00AEF5
+
+//links and labels
+text-medium-grey = #A8A8A8;
+text-light-grey = #909090
+text-grey = #606060;
+text-medium-grey = #868C8E;
+text-darker-grey = #6D6D6D;
+text-light-blue = #00AAF1
+text-blue = #00AEF5;
+text-new-grey = #848689;
+text-placeholder-grey = #D0D2D4;
+
+//backgrounds
+bg-grey = #F9F9F9
+bg-hover-light-grey = #F2F3F7;
+bg-disabled-grey = #D6D6D6;
+
+//alarm
+alarm-red = #E73843;
+alarm-orange = #F79A00;
+alarm-yellow-green = #ABC139;
+
+// Material Shadows
+shadow-level(l = 1)
+    if l == -1
+        box-shadow: inset -2px 7px 9px -7px rgba(0,0,0,0.7);
+    if l == 0
+        box-shadow: none;
+    if l == 1
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    if l == 2
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    if l == 3
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    if l == 4
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    if l == 5
+        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+
+// Common Transition
+trans($sec = 0.3s)
+    transition: all $sec ease
+
+// Grid
+$xsmall = 340px
+$small = 500px
+$med = 700px
+$large = 960px
+$wide = 1200px
+
+z = {
+    neg: -7,
+    lowest: 1,
+    low: 4,
+    mid: 5,
+    video: 6,
+    header: 7,
+    nav: 8,
+    mini: 9,
+    modal: 10,
+    highest: 11
+}
+
+$side-nav = 100px
+$side-nav-large = 200px
+
+body{
+    background: white;
+}
+
+@import 'css/*'

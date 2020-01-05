@@ -1,0 +1,52 @@
+<!--
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="settingsList">
+  <div class="settings-list">
+    <div class="settings-icon">
+      <div class="dropdown">
+        <div class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="true"><img class="sm-calipso-logo" src="/icons/icon-setting.svg"></div>
+        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+          <li class="dropdown-setting-header">
+            <a href="{{pathFor route='scheduled-scans-list' query=''}}">Scheduled Scans</a>
+          </li>
+          <li class="dropdown-setting-header">
+            <a href="{{pathFor route='scans-list' query=''}}">Scans</a>
+          </li>
+          <li class="dropdown-setting-header">
+            <a href="{{pathFor route='link-types-list' query=''}}">Link Types</a>
+          </li>
+          <li class="dropdown-setting-header">
+            <a href="{{pathFor route='clique-types-list' query=''}}">Clique Types</a>
+          </li>
+          <li class="dropdown-setting-header">
+            <a href="{{pathFor route='clique-constraints-list' query=''}}">Clique Constraints</a>
+          </li>
+
+          <li class="dropdown-setting-header">
+            <a href="{{pathFor route='messages-list' query=''}}">Messages</a>
+          </li>
+
+          {{#if isAdmin }}
+          <li class="dropdown-setting-header">
+            <a href="{{pathFor route='user-list' query=''}}">Users</a>
+          </li>
+          {{/if }}
+
+          <li class="dropdown-setting-header">
+            <a href="{{pathFor route='user-settings' query=''}}">User Settings</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>

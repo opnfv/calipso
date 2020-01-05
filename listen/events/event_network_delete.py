@@ -1,0 +1,17 @@
+###############################################################################
+# Copyright (c) 2017-2019 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+from listen.events.event_delete_base import EventDeleteBase
+
+
+class EventNetworkDelete(EventDeleteBase):
+
+    def handle(self, env, notification):
+        network_id = notification['payload']['network_id']
+        return self.delete_handler(env, network_id, "network")

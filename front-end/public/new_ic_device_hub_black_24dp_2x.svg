@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34.39 28.25" width="35" height="29">
+    <defs>
+        <style>
+            .cls-1{fill:#66BBE4;stroke-width:0.4px;}.cls-1,.cls-3{stroke:#fff;}.cls-2{fill:#fff;}.cls-3{fill:none;}
+        </style>
+    </defs>
+    <title>
+        Asset 1
+    </title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <polyline points="30.36 28.09 34.12 25.34 18.39 0.27 14.68 2.49" class="cls-1"/>
+            <polygon points="0.34 27.95 30.35 27.97 14.61 2.69 0.34 27.95 0.34 27.95" class="cls-1"/>
+            <path d="M14.63,20.19A2.17,2.17,0,1,0,12.45,18,2.17,2.17,0,0,0,14.63,20.19Z" class="cls-2"/>
+            <path d="M14.63,12.25a2.17,2.17,0,1,0-2.18-2.17A2.17,2.17,0,0,0,14.63,12.25Z" class="cls-2"/>
+            <path d="M20.48,26.05a2.18,2.18,0,1,0-2.17-2.18A2.18,2.18,0,0,0,20.48,26.05Z" class="cls-2"/>
+            <path d="M8.83,26a2.17,2.17,0,1,0-2.17-2.17A2.18,2.18,0,0,0,8.83,26Z" class="cls-2"/>
+            <polyline points="14.61 10.53 14.61 17.89 8.69 23.81" class="cls-3"/>
+            <line x1="14.61" x2="20.05" y1="18.21" y2="23.65" class="cls-3"/>
+        </g>
+    </g>
+</svg>

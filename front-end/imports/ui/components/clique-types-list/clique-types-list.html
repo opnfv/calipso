@@ -1,0 +1,83 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+
+<template name="CliqueTypesList">
+  <div class="table-view-container">
+    <div class="table-view-title">CLIQUE TYPES</div>
+    <a class="add-new-item-text" href="{{pathFor route='clique-type' query=(asHash action='insert') }}">
+      <i class="view-new-item-icon fa fa-plus" area-hidden="true"></i> Create new clique type
+    </a>
+    <table class="table-view-results table">
+      <thead>
+        <tr>
+          <th>name</th>
+          <th>Environment</th>
+          <th>Environment Type</th>
+          <th>Focal Point Type</th>
+          <th>Link Types</th>
+          <th>Distribution</th>
+          <th>Distribution version</th>
+          <th>Mechanism drivers</th>
+          <th>Type drivers</th>
+          <th>Use implicit links?</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each cliqueType in cliqueTypes }}
+        <tr>
+          <td>{{ cliqueType.name }}</td>
+          <td>{{ cliqueType.environment }}</td>
+          <td>{{ cliqueType.environment_type }}</td>
+          <td>{{ cliqueType.focal_point_type }}</td>
+          <td>{{ cliqueType.link_types }}</td>
+          <td>{{ cliqueType.distribution }}</td>
+          <td>{{ cliqueType.distribution_version }}</td>
+          <td>{{ cliqueType.mechanism_drivers }}</td>
+          <td>{{ cliqueType.type_drivers }}</td>
+          <td>{{ cliqueType.use_implicit_links }}</td>
+          <td>
+            <div class="actions-list">
+              <div class="actions-icon">
+                <div class="dropdopwn drop-down-overflow">
+                  <div class="dropdown-toggle actions-button" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="true">
+                    <img src="/icons/icon-export.svg">
+                  </div>
+                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                    <li class="dropdown-action-header">
+                      <a href="{{pathFor route='clique-type' query=(asHash id=(idToStr cliqueType._id) action='view') }}">View</a>
+                    </li>
+                    {{#if isManageable cliqueType }}
+                    <li class="dropdown-action-header">
+                      <a href="{{pathFor route='clique-type' query=(asHash id=(idToStr cliqueType._id) action='update') }}">Update</a>
+                    </li>
+                    <li class="dropdown-action-header">
+                      <a href="{{pathFor route='clique-type' query=(asHash id=(idToStr cliqueType._id) action='remove') }}">Remove</a>
+                    </li>
+                    {{/if }}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {{/each }}
+      </tbody>
+    </table>
+    <p>
+      <i>A clique type with reserved environment name "ANY" will be used if no clique type with specific environment name is
+        matched
+      </i>
+    </p>
+  </div>
+</template>

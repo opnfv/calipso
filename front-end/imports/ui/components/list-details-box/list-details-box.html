@@ -1,0 +1,37 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="ListDetailsBox">
+  <div class="os-list-details-box single-env-section">
+    <div class="cube-section">
+      <span class="cube-title">{{ header }}</span>
+      <div class="cube-details">
+        <img src='/icons/icon-{{baseType}}-C.svg'>
+        <div class="cube-list">
+          <span class="cube-count">{{ itemsCount }}</span>
+          <div class="dropdown">
+            <button style="text-transform: uppercase" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Select {{baseType}}
+              <span class="caret"></span>
+            </button>
+            <ul class="sm-items-dropdown-menu dropdown-menu" aria-labelledby="dropdownMenu1">
+              {{#each option in (options list listItemFormat) }}
+              <li>
+                <a data-value="{{ option.value }}" class="os-list-item">{{option.label}}</a>
+              </li>
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

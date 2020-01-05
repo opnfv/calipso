@@ -1,0 +1,58 @@
+.os-data-cube
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+
+  .sm-container 
+    display: flex;
+    flex-flow: row nowrap;
+
+    .sm-icon-part
+      flex: 1;
+
+      .icon-image
+        max-height: 42px; // TODO: hotfix
+        max-width: 42px; // TODO: hotfix
+
+    .sm-info-part
+      flex: 2    
+
+      display: flex;
+      flex-flow: column nowrap;
+      padding-left: 10px;  // TODO: hotfix
+      
+      .sm-data-info
+        font-size: 12px;
+
+.os-data-cube.cl-theme-dark
+  background-color: dk-gray1
+
+.os-data-cube.cl-theme-light
+  color: spark-blue 
+  background-color: #fff
+
+.single-env-summary
+  width: 488px;
+  height: 110px; 
+  background-color: #EAEDF2;
+  padding: 20px 0px;
+  display: flex;
+  .single-env-summary-item-container
+    width:130px;
+    border-right: 1px solid #DDDDDD;
+    
+    .single-env-summary-item
+      text-align: center;
+      margin:0 auto;
+      padding-top: 3px;
+
+      .single-env-summary-item-title
+        color:#556A80;
+        font-size: 14px;
+
+      .single-env-summary-item-counter
+        color:#6A84A0;
+        font-size: 36px;
+        width:50%; 
+        margin:0 auto;
+        line-height: 49px;

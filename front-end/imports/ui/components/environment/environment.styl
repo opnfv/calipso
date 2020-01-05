@@ -1,0 +1,89 @@
+.sm-environment-container 
+
+  .sm-site-sidenav
+    transition: 0.5s width;
+    min-width: initial;
+    max-width: initial;
+
+    &.collapsed
+      width: 48px;
+      overflow: hidden;
+
+  .sm-node-no-graph-data-msg
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    font-size: large;
+
+  .sm-env-header-line
+    display: flex
+    flex-flow: row nowrap 
+    justify-content: space-between
+    align-items: center
+
+  .sm-env-header-name-cmp
+    flex-grow: 2
+    display: flex
+    flex-flow: row nowrap
+    justify-content: center
+    align-items: center
+ 
+  .cl-action-button 
+    color: spark-blue;
+    width:112px;
+    height: 36px; 
+    border-radius: 20px;
+    color: text-blue;
+    background-color: white;
+    cursor:pointer;
+    border: 1px solid text-blue;
+    text-align: center;
+    padding-top: 7px;
+    margin-left: 11px;
+
+  .cl-action-button:hover
+    color: white;
+    background-color: text-blue;
+
+  .sm-delete-button.cl-action-button
+    //color: status-red;
+
+  .main-layout-no-nav
+    display: flex;
+    flex-flow: column nowrap;
+
+    margin: 0px; 
+    
+    .sm-breadcrumb-segment
+       //background-color brand-blue
+       height: 40px;
+
+    .sm-main-content-segment
+      display: flex;
+      flex-flow: column nowrap;
+
+      flex: 1 0;
+
+      .sm-dashboard
+        padding: 0px;
+
+      //.sm-graph
+      //  flex: 1 0;
+      .sm-network-graph
+        flex: 1 0;
+
+  .env-main-content
+    margin-left: 36px;
+    margin-right: 48px;
+
+  .sm-items-segment
+    display: flex
+    flex-flow: row wrap
+    justify-content: space-around
+
+  .sm-list-info-boxes
+    display: flex
+    flex-flow: row wrap
+    justify-content: flex-start
+
+

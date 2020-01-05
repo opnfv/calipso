@@ -1,0 +1,645 @@
+{
+  "scanners_package": "scan.fetchers",
+  "scanners": {
+    "ScanAggregate": [
+      {
+        "type": "host_ref",
+        "fetcher": "DbFetchAggregateHosts"
+      }
+    ],
+    "ScanAggregatesRoot": [
+      {
+        "type": "aggregate",
+        "fetcher": "DbFetchAggregates",
+        "children_scanner": "ScanAggregate"
+      }
+    ],
+    "ScanAvailabilityZone": [
+      {
+        "type": "host",
+        "fetcher": "DbFetchAZNetworkHosts",
+        "children_scanner": "ScanHost"
+      }
+    ],
+    "ScanAvailabilityZonesRoot": [
+      {
+        "type": "availability_zone",
+        "fetcher": "DbFetchAvailabilityZones",
+        "children_scanner": "ScanAvailabilityZone"
+      }
+    ],
+    "ScanEnvironment": [
+      {
+        "type": "regions_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "regions",
+          "parent_type": "environment"
+        },
+        "children_scanner": "ScanRegionsRoot",
+        "environment_condition": {"environment_type": "OpenStack"}
+      },
+      {
+        "type": "projects_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "projects",
+          "parent_type": "environment"
+        },
+        "children_scanner": "ScanProjectsRoot",
+        "environment_condition": {"environment_type": "OpenStack"}
+      },
+      {
+        "type": "hosts_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "hosts",
+          "parent_type": "environment"
+        },
+        "children_scanner": "ScanNodesRoot",
+        "environment_condition": {
+          "environment_type": "Kubernetes"
+        }
+      },
+      {
+        "type": "namespaces_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "namespaces",
+          "parent_type": "environment"
+        },
+        "children_scanner": "ScanNamespacesRoot",
+        "environment_condition": {
+          "environment_type": "Kubernetes"
+        }
+      }
+    ],
+    "ScanHostNetworkAgentsRoot": [
+      {
+        "type": "network_agent",
+        "fetcher": "DbFetchHostNetworkAgents"
+      }
+    ],
+    "ScanHost": [
+      {
+        "_comment": "creating only top folder for vServices",
+        "type": "vservices_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "vservices",
+          "parent_type": "host",
+          "text": "vServices"
+        },
+        "children_scanner": "ScanInstancesRoot"
+      },
+      {
+        "type": "vservice",
+        "fetcher": "CliFetchHostVservices"
+      },
+      {
+        "_comment": "fetch vService vNICs from host for efficiency",
+        "type": "vnic",
+        "fetcher": "CliFetchVserviceVnics",
+        "environment_restriction": {
+          "mechanism_drivers": ["VPP"]
+        }
+      },
+      {
+        "_comment": "fetch vService vNICs from host for efficiency (VPP)",
+        "type": "vnic",
+        "fetcher": "CliFetchVserviceVnicsVpp",
+        "environment_condition": {
+          "mechanism_drivers": ["VPP"]
+        }
+      },
+      {
+        "type": "instances_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "instances",
+          "parent_type": "host"
+        },
+        "children_scanner": "ScanInstancesRoot"
+      },
+      {
+        "type": "pnics_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "host_pnics",
+          "parent_type": "host",
+          "text": "pNICs"
+        },
+        "environment_condition": {
+          "mechanism_drivers": [
+            "OVS",
+            "LXB"
+          ]
+        },
+        "children_scanner": "ScanPnicsRoot"
+      },
+      {
+        "type": "vconnectors_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "vconnectors",
+          "parent_type": "host",
+          "text": "vConnectors"
+        },
+        "children_scanner": "ScanVconnectorsRoot"
+      },
+      {
+        "type": "network_agents_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "network_agents",
+          "parent_type": "host",
+          "text": "Network agents"
+        },
+        "children_scanner": "ScanHostNetworkAgentsRoot"
+      },
+      {
+        "type": "vedges_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "vedges",
+          "parent_type": "host",
+          "text": "vEdges"
+        },
+        "children_scanner": "ScanVedgesRoot"
+      }
+    ],
+    "ScanInstance": [
+      {
+        "type": "vnics_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "vnics",
+          "parent_type": "instance",
+          "text": "vNICs"
+        },
+        "children_scanner": "ScanVnicsRoot"
+      }
+    ],
+    "ScanInstancesRoot": [
+      {
+        "type": "instance",
+        "fetcher": "ApiFetchHostInstances",
+        "children_scanner": "ScanInstance"
+      }
+    ],
+    "ScanNetworkAgentsRoot": [
+      {
+        "type": "network_agent",
+        "fetcher": "DbFetchHostNetworkAgents"
+      }
+    ],
+    "ScanNetwork": [
+      {
+        "type": "ports_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "ports",
+          "parent_type": "network"
+        }
+      },
+      {
+        "type": "network_services_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "network_services",
+          "parent_type": "network",
+          "text": "Network vServices"
+        }
+      }
+    ],
+    "ScanNetworksRoot": [
+      {
+        "type": "network",
+        "fetcher": "ApiFetchNetworks",
+        "children_scanner": "ScanNetwork"
+      },
+      {
+        "type": "port",
+        "fetcher": "ApiFetchPorts"
+      }
+    ],
+    "ScanOteps": [
+      {
+        "type": "otep",
+        "environment_condition": {
+          "mechanism_drivers": "OVS"
+        },
+        "fetcher": "DbFetchOteps"
+      },
+      {
+        "type": "otep",
+        "environment_condition": {
+          "mechanism_drivers": "LXB"
+        },
+        "fetcher": "CliFetchOtepsLxb"
+      }
+    ],
+    "ScanPnicsRoot": [
+      {
+        "type": "host_pnic",
+        "environment_condition": {
+          "environment_type": ["OpenStack", "Kubernetes"],
+          "mechanism_drivers": [
+            "OVS",
+            "LXB",
+            "Flannel"
+          ]
+        },
+        "fetcher": "CliFetchHostPnics",
+        "children_scanner": "ScanHostPnic"
+      },
+      {
+        "type": "host_pnic",
+        "fetcher": "CliFetchBondHostPnics",
+        "environment_condition": {
+          "environment_type": ["OpenStack", "Kubernetes"]
+        },
+        "environment_restriction": {
+          "distribution": ["Mercury"],
+          "mechanism_drivers": ["OVS"]
+        },
+        "children_scanner": "ScanHostPnic"
+      },
+      {
+        "type": "host_pnic",
+        "fetcher": "CliFetchTeamHostPnics",
+        "environment_condition": {
+          "environment_type": ["OpenStack", "Kubernetes"],
+          "distribution": ["Mercury"],
+          "mechanism_drivers": ["OVS"]
+        },
+        "children_scanner": "ScanHostPnic"
+      }
+    ],
+    "ScanHostPnic": [
+      {
+        "type": "switch_pnic",
+        "fetcher": "AciFetchSwitchPnic",
+        "environment_condition": {
+          "environment_type": ["OpenStack", "Kubernetes"]
+        },
+        "children_scanner": "ScanSpines"
+      }
+    ],
+    "ScanSpines": [
+      {
+        "type": "switch_pnic",
+        "environment_condition": {
+          "environment_type": ["OpenStack", "Kubernetes"]
+        },
+        "fetcher": "AciFetchLeafToSpinePnics"
+      }
+    ],
+    "ScanProject": [
+      {
+        "type": "availability_zone",
+        "fetcher": "ApiFetchAvailabilityZones"
+      },
+      {
+        "type": "host",
+        "fetcher": "ApiFetchProjectHosts",
+        "children_scanner": "ScanHost"
+      }
+    ],
+    "ScanProjectsRoot": [
+      {
+        "type": "project",
+        "fetcher": "ApiFetchProjects",
+        "object_id_to_use_in_child": "name",
+        "children_scanner": "ScanProject"
+      }
+    ],
+    "ScanRegion": [
+      {
+        "type": "aggregates_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "aggregates",
+          "parent_type": "region"
+        },
+        "children_scanner": "ScanAggregatesRoot"
+      },
+      {
+        "type": "network",
+        "fetcher": "ApiFetchNetworks",
+        "children_scanner": "ScanNetwork"
+      },
+      {
+        "type": "port",
+        "fetcher": "ApiFetchPorts"
+      }
+    ],
+    "ScanRegionsRoot": [
+      {
+        "type": "region",
+        "fetcher": "ApiFetchRegions",
+        "children_scanner": "ScanRegion"
+      }
+    ],
+    "ScanVconnectorsRoot": [
+      {
+        "type": "vconnector",
+        "environment_condition": {
+          "environment_type": ["OpenStack", "Kubernetes"],
+          "mechanism_drivers": ["OVS", "Flannel"]
+        },
+        "fetcher": "CliFetchVconnectorsOvs"
+      },
+      {
+        "type": "vconnector",
+        "environment_condition": {
+          "mechanism_drivers": "LXB"
+        },
+        "fetcher": "CliFetchVconnectorsLxb",
+        "children_scanner": "ScanOteps"
+      },
+      {
+        "type": "vconnector",
+        "environment_condition": {
+          "environment_type": ["OpenStack", "Kubernetes"],
+          "mechanism_drivers": "VPP"
+        },
+        "fetcher": "CliFetchVconnectorsVpp"
+      }
+    ],
+    "ScanVedgePnicsRoot": [
+      {
+        "type": "pnics_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "host_pnics",
+          "parent_type": "vedge",
+          "text": "pNICs"
+        },
+        "environment_condition": {
+          "environment_type": ["OpenStack", "Kubernetes"],
+          "mechanism_drivers": "VPP"
+        },
+        "children_scanner": "ScanVppPnicsRoot"
+      }
+    ],
+    "ScanVedgesRoot": [
+      {
+        "type": "vedge",
+        "fetcher": "DbFetchVedgesOvs",
+        "environment_condition": {
+          "mechanism_drivers": "OVS"
+        },
+        "children_scanner": "ScanOteps"
+      },
+      {
+        "type": "vedge",
+        "fetcher": "CliFetchVedgesVpp",
+        "environment_condition": {
+          "mechanism_drivers": "VPP"
+        },
+        "children_scanner": "ScanVedgePnicsRoot"
+      },
+      {
+        "type": "vedge",
+        "fetcher": "CliFetchVedgesSriov",
+        "environment_condition": {
+          "mechanism_drivers": "SRIOV"
+        }
+      }
+    ],
+    "ScanVnicsRoot": [
+      {
+        "type": "vnic",
+        "environment_condition": {
+          "mechanism_drivers": [
+            "OVS",
+            "LXB"
+          ]
+        },
+        "fetcher": "CliFetchInstanceVnics"
+      },
+      {
+        "type": "vnic",
+        "environment_condition": {
+          "mechanism_drivers": "VPP"
+        },
+        "fetcher": "CliFetchInstanceVnicsVpp"
+      }
+    ],
+    "ScanVppPnicsRoot": [
+      {
+        "type": "host_pnic",
+        "fetcher": "CliFetchHostPnicsVpp",
+        "environment_condition": {
+          "environment_type": ["OpenStack", "Kubernetes"],
+          "mechanism_drivers": "VPP"
+        },
+        "children_scanner": "ScanVppPnic"
+      }
+    ],
+    "ScanVppPnic": [
+      {
+        "type": "otep",
+        "environment_condition": {
+          "mechanism_drivers": "VPP"
+        },
+        "fetcher": "DbFetchOteps"
+      },
+      {
+        "type": "switch_pnic",
+        "fetcher": "AciFetchSwitchPnic",
+        "environment_condition": {
+          "environment_type": ["OpenStack", "Kubernetes"]
+        },
+        "children_scanner": "ScanSpines"
+      }
+    ],
+    "ScanVservicesRoot": [
+      {
+        "type": "vservice",
+        "fetcher": "CliFetchHostVservices"
+      }
+    ],
+    "ScanNodesRoot": [
+      {
+        "type": "host",
+        "fetcher": "KubeFetchNodes",
+        "children_scanner": "ScanNode",
+        "environment_condition": {"environment_type": "Kubernetes"}
+      }
+    ],
+    "ScanNode": [
+      {
+        "type": "pod",
+        "fetcher": "KubeFetchPods",
+        "environment_condition": {"environment_type": "Kubernetes"},
+        "children_scanner": "ScanPod"
+      },
+      {
+        "type": "vedge",
+        "fetcher": "KubeFetchVedges",
+        "environment_condition": {
+          "environment_type": "Kubernetes",
+          "mechanism_drivers": "Flannel"
+        },
+        "children_scanner": "ScanVedge"
+      },
+      {
+        "type": "vedge",
+        "fetcher": "CliFetchVedgesVpp",
+        "environment_condition": {
+          "environment_type": "Kubernetes",
+          "mechanism_drivers": "VPP"
+        },
+        "children_scanner": "ScanVedge"
+      },
+      {
+        "type": "network",
+        "fetcher": "CliFetchKubeNetworks",
+        "environment_condition": {"environment_type": "Kubernetes"}
+      },
+      {
+        "type": "pnics_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "host_pnics",
+          "parent_type": "host",
+          "text": "pNICs"
+        },
+        "environment_condition": {
+          "environment_type": "Kubernetes",
+          "mechanism_drivers": [
+            "OVS",
+            "LXB",
+            "Flannel"
+          ]
+        },
+        "children_scanner": "ScanPnicsRoot"
+      },
+      {
+        "type": "vconnectors_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "vconnectors",
+          "parent_type": "host",
+          "text": "vConnectors"
+        },
+        "environment_condition": {"environment_type": "Kubernetes"},
+        "children_scanner": "ScanVconnectorsRoot"
+      },
+      {
+        "type": "vnic",
+        "fetcher": "KubeFetchVnicsFlannel",
+        "environment_condition": {
+          "environment_type": "Kubernetes",
+          "mechanism_drivers": "Flannel"
+        }
+      },
+      {
+        "type": "vnic",
+        "fetcher": "KubeFetchVnicsVpp",
+        "environment_condition": {
+          "environment_type": "Kubernetes",
+          "mechanism_drivers": "VPP"
+        }
+      }
+    ],
+    "ScanPod": [
+      {
+        "type": "containers_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "containers",
+          "parent_type": "pod"
+        },
+        "environment_condition": {"environment_type": "Kubernetes"},
+        "children_scanner": "ScanContainersRoot"
+      }
+    ],
+    "ScanContainersRoot": [
+      {
+        "type": "container",
+        "environment_condition": {"environment_type": "Kubernetes"},
+        "fetcher": "KubeFetchContainers"
+      }
+    ],
+    "ScanNamespacesRoot": [
+      {
+        "type": "namespace",
+        "fetcher": "KubeFetchNamespaces",
+        "environment_condition": {"environment_type": "Kubernetes"},
+        "children_scanner": "ScanNamespace"
+      }
+    ],
+    "ScanNamespace": [
+      {
+        "type": "pod",
+        "fetcher": "KubeFetchPods",
+        "environment_condition": {"environment_type": "Kubernetes"},
+        "children_scanner": "ScanPod"
+      },
+      {
+        "type": "vservices_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "vservices",
+          "parent_type": "namespace"
+        },
+        "children_scanner": "ScanServicesRoot",
+        "environment_condition": {"environment_type": "Kubernetes"}
+      },
+      {
+        "type": "aggregates_folder",
+        "fetcher": {
+          "folder": true,
+          "types_name": "aggregates",
+          "parent_type": "namespace"
+        },
+        "children_scanner": "ScanPodAggregatesRoot",
+        "environment_condition": {"environment_type": "Kubernetes"}
+      }
+    ],
+    "ScanPodAggregatesRoot": [
+      {
+        "type": "aggregate",
+        "fetcher": "KubeFetchPodAggregates",
+        "children_scanner": "ScanPodAggregate",
+        "environment_condition": {"environment_type": "Kubernetes"}
+      }
+    ],
+    "ScanPodAggregate": [
+      {
+        "type": "pod_ref",
+        "fetcher": "KubeFetchAggregatePods",
+        "environment_condition": {"environment_type": "Kubernetes"}
+      }
+    ],
+    "ScanServicesRoot": [
+      {
+        "type": "vservice",
+        "fetcher": "KubeFetchVservices",
+        "environment_condition": {"environment_type": "Kubernetes"}
+      }
+    ],
+    "ScanVedge": [
+      {
+        "type": "otep",
+        "fetcher": "KubeFetchOtepsFlannel",
+        "environment_condition": {
+          "environment_type": "Kubernetes",
+          "mechanism_drivers": "Flannel"
+        }
+      },
+      {
+        "type": "otep",
+        "fetcher": "KubeFetchOtepsVpp",
+        "environment_condition": {
+          "environment_type": "Kubernetes",
+          "mechanism_drivers": "VPP"
+        },
+        "children_scanner": "ScanVedgePnicsRoot"
+      }
+    ]
+  }
+}

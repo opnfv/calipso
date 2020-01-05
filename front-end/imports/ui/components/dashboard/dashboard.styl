@@ -1,0 +1,42 @@
+.os-dashboard
+  display: flex;
+  flex-flow: row nowrap;
+
+  .sm-main-layout-no-nav
+    flex: 1 0 0;
+
+    display: flex;
+    flex-flow: column nowrap;
+
+    .sm-main-row
+      background-color: white;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+
+      .sm-environments 
+        background-color: white;
+        flex: 3 0 0;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+
+        padding: 50px;
+        //margin: -20px;
+
+        >.item 
+          margin: 20px;
+          width: 582px;
+
+      .sm-side-container
+        flex: 0 0 0;
+        display: flex;
+        justify-content: center;
+
+        padding: 50px;
+        
+        .sm-messages-section
+          display: flex;
+          flex-flow: column nowrap;
+
+          min-width: 350px;
