@@ -1,0 +1,440 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="getstarted">
+
+  {{> accordionWikiMenu}}
+
+  <div class="main-layout">
+    
+    <div class="cards white">
+      <h3 id="wikiFirstStep">First Step</h3>
+      <p class="text">
+      Administrators of Calipso can add new Environments, one or many, as pre-requisite for scanning, monitoring and visualizing. 
+      “Environment” in Calipso means an OpenStack (or other cloud-based) infrastructure managed under a single administrative entity, controlling all endpoints and credentials on that infrastructure. For Calipso on OpenStack, multiple ‘regions’ means multiple environments, while regions are automatically discovered.
+      </p>
+      <p class="text">
+      Calipso scans the environment through API adapter, Database adapter and Command-Line adapter, so credentials are needed for each of those methods. Click on "My Environments" to get started.
+      </p>
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-environments-pick.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+      <p class="text margin-top-40">
+      Click on "My Environments" and "Add new environment" to provide the details for a new environment.
+      </p>
+      <p class="text">Rembemer:</p>
+      <p class="text">
+      Calipso environment setup is an automated extension to your hand accessing the endpoints like you would do manually through your administrative station, secure Calipso station like you would secure your administrative station, it makes sense to place it inside infrastructure management domain, treat it like any other OpenStack module.
+      </p>
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-new-environment-action.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+    </div>
+    
+    <div class="cards white">
+      <h3 id="wikiAddNewEnv">Add new environment</h3>
+      <p class="text">
+      In this wizard Calipso captures the Environment Name and distribution variance.
+      </p>
+
+      <p class="text">
+      Calipso provides, in its core, the capability to support discovery of many variances of cloud virtual networking. Each release of Calipso will include a set of pre-defined lists that the back-end scanning engine uses for detailed discovery. Currently the environment variance has those main parameters:
+      </p>
+
+      <ol>
+        <li>
+          Distribution: captures the specific vendor/distribution of the cloud infrastructure controllers.
+        </li>
+        <li>
+          Mechanism-Driver: captures the underlying vendor/plugin of the networking system in use.
+        </li>
+        <li>
+          Type-Driver: captures the underlying packet encapsulation used for layer-2 isolation.
+        </li>
+      </ol>
+
+      <p class="text">
+      “Event based scan” allows updating the Calipso inventory in real time, it creates per-environment listener connected to the OpenStack message BUS and a smart update mechanism to keep the data synchronized. This is important for future discovery, while initial discovery is triggered by the administrator. You can uncheck this method to use other means of updating the inventory data like scheduled scans.
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-env-editing.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+
+      <p class="text">
+      Calipso needs credentials for accessing OpenStack API, underlying Database and host Command Line Interface, as it is currently agentless and underlying infrastructure lacks operations API to provide the necessary data.
+      </p>
+
+      <p class="text">
+      “OS API Endpoint” captures Keystone’s admin endpoint for accessing the entire OpenStack API:
+      </p>
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-env-editing-os-end-point.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+
+      <p class="text">
+      Default settings gives you some examples of the formats, Calipso will validate your input and provide suggestions, TEST function will try to create a connection to that endpoint for validation. Calipso will first try to collect data through API, then any missing details through DB, then more missing details from CLI on the infrastructure hosts.
+      </p>
+
+      <p class="text">
+      DB credentials are needed to provide a much more granular insight into your OpenStack environment. Using the DB access Calipso collects more important data (read only) that is not available currently through API.
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-env-diting-os-db-credentails.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+
+      <p class="text">
+      Calipso is currently agentless, to minimize the impact of scanning. In order to access CLI on hosts, Calipso needs a “Master Host”, commonly referred to as a ‘jump-host’. This “jump-host” already have all the keys and routing access to all hosts running under the environment controllers. As administrator station, we recommend using PKI and password-less access to secure communications from the ‘jump-host’ itself to all other infrastructure hosts.  
+      </p>
+
+      <p class="text">
+      Calipso will first SSH to that “Mater Host” and using its knowledge of the infrastructure will then SSH to all other hosts, using the “Master Host” as the source/initiator of subsequent connections. If required, Calispo host itself can be used as a “Master Host”, keeping access credentials local.
+      </p>
+
+      <p class="text">
+      This method of data gathering is needed for details that are currently not exposed through API. When other methods will provide those details (like an “Operations API” in future releases of Calipso agent on the hosts), Calipso can revise its discovery logic accordingly.
+      </p>
+
+      <p class="text">
+      The “Master Host” credentials can be username/password or ssh keys (recommended).
+      </p>
+
+      <p class="text">
+      Calipso assumes all other OpenStack hosts are further accessible through this single entry point.
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-env-editing-master-host-credentials.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+
+      <p class="text">
+      If “Event based scan” was chosen for future data synchronization, AMQP credentials needs to be provided, this is used by the per-environment listener in Calipso:
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-env-editing-amqp-credentials.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+
+      <p class="text">
+      NFV Credentials are optional. Calipso can include an adapter to NFV application using the cloud infrastructure as its “VIM”, it then gives Calipso details about the underlying instances functions and capabilities, and this will be possible on some releases of Calipso.
+      </p>
+      
+      <p class="text">
+      The Monitoring module in Calipso uses “Sensu” as underlying agent and framework.
+      </p>
+
+      <p class="text">
+      See: <a href="https://sensuapp.org/docs/latest/overview/architecture.html">
+        https://sensuapp.org/docs/latest/overview/architecture.html</a>
+      </p>
+      
+      <p class="text">
+      Calipso requires a pre-installed Sensu server and a Sensu client installed on all monitored infrastructure hosts to allow Calipso to check the health of many inventory objects that are an essential infrastructure networking components.
+      </p>
+
+      <p class="text">
+      Calipso includes a special configuration helper to aid the deployment of the Sensu framework for virtual networking monitoring. It provides cloud administrators with the necessary configurations to install on the hosts and on the Sensu server.
+      </p>
+
+      <p class="text">
+      In the “Monitoring” tab you define your preferred monitoring setup to be used by Calipso:
+      </p>
+      
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-env-editing-monitoring.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+
+      <p class="text">
+      “Environment Type” adds tags to messages received from any specific Sensu check on the clients, you can use it to level and/or isolate messages and loggings.
+      Calipso uses RabbitMQ over SSL as the default transport mechanism from Sensu clients to Sensu server, it requires the following details for that transport mechanism: Port, User, Password, Sensu Server IP and Name. 
+      </p>
+
+      <p class="text">
+      Calipso assumes the SSL keys used for client-server communications are part of the Sensu pre-installed infrastructure and are placed at the default location on the Sensu server.
+      See: <a href="https://sensuapp.org/docs/latest/reference/ssl.html">https://sensuapp.org/docs/latest/reference/ssl.html</a>
+      </p>
+
+      <p class="text">
+      The “Type” attribute provides future ability to use different monitoring frameworks, currently only “Sensu” is supported.
+      </p>
+
+      <p class="text">
+      “Provision” attribute allows you to control the way Calispo configuration helper is used, here are the current options:
+      </p>
+
+      <ol>
+        <li>
+          “None”: Calipso configuration helper will not be used.
+        </li>
+        <li>
+          “Files”: Calipso configuration helper will create and place all configuration files and remote checks, for Sensu server and clients in the “Config folder” location on the Calipso host, to be used by the administrator for manual deployment onto the Sensu framework.
+        </li>
+        <li>
+          “DB”: Calipso configuration helper will create and place all configuration files and remote checks, as JSON documents, in the Calipso Mongo DB “monitoring_config” collection, to be used by the administrator for manual deployment onto the Sensu framework.
+        </li>
+        <li>
+          “Deploy”: Calipso configuration helper will create and automatically place all configuration files and remote checks onto the Sensu framework, in the Sensu server and all Sensu clients (hosts). Configurations will be placed on the hosts in the default location: /etc/sensu/conf.d 
+        </li>
+      </ol>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-env-editing-provision.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+    </div>
+
+    <div class="cards white">
+      <h3 id="wikiAccessSwitchEnv">Access and Switch environment</h3>
+      
+      <p class="text">
+      Calipso runs a scan of each environment, you can then access each environment through “My Environment”, and switch between environments as you like:
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-selecting-env.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="cards white">
+      <h3 id="wikiMainDashboard">Main Dashboard</h3>
+      
+      <p class="text">
+      Once one or more environments are defined, the main dashboard will provide a summary of environments inventory and provides access to underlying cloud hierarchy as needed:
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-selecting-dashboard.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="cards white">
+      <h3 id="wikiMainMessages">Main messages</h3>
+
+      <p class="text">
+      Messages aggregates environment notifications, warnings and errors, generated by Calipso or by the Cloud infrastructure itself. Calipso messaging details include the source system and the related inventory object referenced by that specific message.
+      </p>
+
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-dashboard-notifications.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+    </div>
+
+    <div class="cards white">
+      <h3 id="wikiWorkWithEnvs">Work with environments</h3>
+      <p class="text">
+      When you choose a specific environment through “My Environments” tab, you will be directed to the environment dashboard to start viewing and analyzing the underlying discovered objects and dependencies.
+      </p>
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-env-dashboard.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+    </div>
+
+    <div class="cards white">
+      <h3 id="wikiScanningEnv">Scanning an environment</h3>
+      <p class="text">
+      Calipso system needs at least an initial scan of a pre-defined environment in order to provide visualization, monitoring and analysis. Clicking on the scan button in a specific environment dashboard captures the needed details for scanning:
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-scan-action.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+      <br/><br/>
+      <p class="text">
+      For all scanning requests the following request form is used:
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-scan-request-screen.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+
+      <p class="text">
+      Calipso currently uses mongo DB to maintain its inventory data, by default the results of scanning are placed in the “inventory” collection. For debugging and testing you can provide a different inventory collection name for holding the results.
+      </p>
+
+      <p class="text">
+      “Object Id” can be used only in subsequent future scanning requests to validate and update new details for only a specific object from the inventory.
+      </p>
+
+      <p class="text">
+      “Clear” option will initially clean all environment specific data from the inventory, if this is not checked Calipso will override same objects and keep older objects as needed.
+      </p>
+
+      <p class="text">
+      Additional optional filters are provided to allow the analysis of links and cliques in the scanning process, read the Calipso operations guide for details on those options.
+      </p>
+
+      <p class="text">
+      Once scan request is submitted, the backend system will kick off the scanning process, you can later check the status of scan requests under “Settings”.
+      </p>
+
+    </div>
+
+    <div class="cards white">
+      <h3 id="wikiDeletingEnv">Deleting an environment</h3>
+
+      <p class="text">
+      Deleting an environment from Calipso system will remove all credentials and access details and will also clean up related inventory objects and messages.
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-env-delete-action.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+    </div>
+
+    <div class="cards white">
+      <h3 id="wikiEditingEnv">Editing an environment</h3>
+      <p class="text">
+      Editing an environment allows changing initial settings and credentials according to underlying infrastructure access changes.
+      </p>
+
+      
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-env-edit-action.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+
+      <p class="text">
+      Edit button redirects you to environment configurations dashboard to allow changing its parameters.
+      </p>
+
+    </div>
+
+    <div class="cards white">
+      <h3 id="wikiCalipsoSetting">Calipso setting</h3>
+      <p class="text">
+      Details settings and information of Calipso system is provided on all dashboards in the top right corner of the screen:
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-setting-action.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+
+      <p class="text">
+      Scans settings provides detailed information and status of scan requests:
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-setting-scans-action.png" alt="" class="img_responsive" width="800">
+        </div>
+      </div>
+
+      <p class="text">
+      “Link Types” and “Clique Types” provides controlled and modeled mechanism for generating the Calipso graph topologies, for more details on “Links” and “Cliques” checkout the Calipso operations guide.
+      </p>
+
+      <p class="text">
+      “Messages” provides granular details for per-environment error, notification and warning messages.
+      </p>
+    </div>
+
+    <div class="cards white">
+      <h3 id="wikiBrowsingEnv">Browsing your cloud environment</h3>
+      <p class="text">
+      Once a cloud environment was defined and scanned, its underlying virtual networking details can be accessed through the <u>navigation tree</u>, <u>breadcrumb bar</u> or the <u>search engine</u>.
+      </p>
+
+      <p class="text">
+      Use a specific environment dashboard to browse the environment, to maintain, debug and troubleshoot virtual networking issues.
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-main-screen-explained.png" alt="" class="img_responsive" 
+          width="800">
+        </div>
+      </div>
+
+      <p class="text">
+      Navigation through the cloud environment hierarchy allows granular locating of an interesting inventory object, once a location is pointed out the Calipso UI will provide topology graphs specific to that focal point (see the Calipso operations guide for more details):
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/step-navbar-explained.png" alt="" class="img_responsive" 
+          width="800">
+        </div>
+      </div>
+
+      <p class="text">
+      This short guide got you started with Calipso system, for more details on maintenance and troubleshooting your virtual networking components using Calipso - please follow the detailed operations guide: <a href="http://calipso.io/guide">http://calipso.io/guide</a>
+      </p>
+
+    </div>
+
+    <div class="cards white">
+      <h3 id="wikiOtherEnvTypes">OTHER ENVIRONMENT TYPES (VMware, Kubernetes, ACI)</h3>
+      <p class="text">
+        Calipso adds more value when working with multiple environment types and nested environments.If the environment includes physical fabric API like APIC-ACI, the graphs and data will illustrate virtual to physical to virtual connectivity details.
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/aci-env.png" alt="" class="img_responsive" 
+          width="800">
+        </div>
+      </div>
+
+      <br>
+      <br>
+
+      <p class="text">
+        If the environment is based on Kubernetes (either nested inside OpenStack or on bare-metal) calipso will scan, discover and visualize connectivity of pods, containers, services and many other details.Calipso intend to exptend those capabilities to VMware based environments in the next release.
+      </p>
+
+      <div class="flex-box justify-content-between wrap">
+        <div class="flex-box-1">
+          <img src="/get-started/k8s-env.png" alt="" class="img_responsive" 
+          width="800">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>

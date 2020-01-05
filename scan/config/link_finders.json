@@ -1,0 +1,15 @@
+{
+  "finders_package": "scan.link_finders",
+  "base_finder": "FindLinks",
+  "link_finders": [
+    "FindLinksForInstanceVnics",
+    "FindLinksForOteps",
+    "FindLinksForVconnectors",
+    "FindLinksForVedges",
+    "FindLinksForVserviceVnics",
+    "FindLinksForPnics",
+    "FindLinksForContainers",
+    "FindLinksForPods",
+    "FindImplicitLinks"
+  ]
+}

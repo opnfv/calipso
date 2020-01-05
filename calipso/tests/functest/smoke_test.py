@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 ###############################################################################
-# Copyright (c) 2017 Koren Lev (Cisco Systems), Yaron Yogev (Cisco Systems)   #
-# and others                                                                  #
+# Copyright (c) 2017-2019 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
 #                                                                             #
 # All rights reserved. This program and the accompanying materials            #
 # are made available under the terms of the Apache License, Version 2.0       #
@@ -83,7 +83,7 @@ class DockerImageCheck:
 if __name__ == '__main__':
     image_checker = DockerImageCheck()
     ret = True
-    for image in ["calipso-{}".format(i) for i in IMAGES_TO_SEARCH]:
+    for image in ["calipso-{}-v2".format(i) for i in IMAGES_TO_SEARCH]:
         if not image_checker.verify_image_is_up(image):
             ret = False
     if ret:

@@ -1,0 +1,58 @@
+///////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                         /
+// Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others       /
+//                                                                            /
+// All rights reserved. This program and the accompanying materials           /
+// are made available under the terms of the Apache License, Version 2.0      /
+// which accompanies this distribution, and is available at                   /
+// http://www.apache.org/licenses/LICENSE-2.0                                 /
+///////////////////////////////////////////////////////////////////////////////
+/*
+ * Template Component: DetailedNodeInfoBox 
+ */
+    
+//import { Meteor } from 'meteor/meteor'; 
+import { Template } from 'meteor/templating';
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import { ReactiveDict } from 'meteor/reactive-dict';
+        
+import './detailed-node-info-box.html';     
+    
+/*  
+ * Lifecycles
+ */   
+  
+Template.DetailedNodeInfoBox.onCreated(function() {
+  var instance = this;
+  instance.state = new ReactiveDict();
+  instance.state.setDefault({
+  });
+
+  instance.autorun(function () {
+    let data = Template.currentData();
+    new SimpleSchema({
+      node: { type: Object, blackbox: true },
+    }).validate(data);
+  });
+});  
+
+/*
+Template.DetailedNodeInfoBox.rendered = function() {
+};  
+*/
+
+/*
+ * Events
+ */
+
+Template.DetailedNodeInfoBox.events({
+});
+   
+/*  
+ * Helpers
+ */
+
+Template.DetailedNodeInfoBox.helpers({    
+});
+
+

@@ -712,6 +712,15 @@ A simple fetch type looks like this:
     | **"environment\_condition"**: {
     | **"mechanism\_drivers"**: **"VPP"
       ** },
+
+    **"environment\_restriction"**: [
+
+    | {
+    | **"distribution"**: **"Newton"**,
+    | **"distribution\_version"**: **"1.2.3"
+      ** },
+
+    | ],
     | **"children\_scanner"**: **"ScanProject"
       **}
 
@@ -726,7 +735,11 @@ Supported fields include:
 
 -  *“environment\_condition”* – (optional) specific constraints that
    should be checked against the environment in *environments\_config*
-   collection before execution;
+   collection before execution (more details `here <#Ec_er>`__);
+
+-  *“environment\_restriction”* – (optional) specific restrictions that
+   should be checked against the environment in *environments\_config*
+   collection before execution (more details `here <#Ec_er>`__);;
 
 -  *“object\_id\_to\_use\_in\_child*\ ” – (optional) which parent field
    should be passed as parent id to the fetcher (default: “id”).
@@ -762,6 +775,184 @@ the following fields:
 
 -  *“parent\_type”* – folder’s parent type (basically the parent type of
    folder’s objects).
+
+\ ***Environment\_condition and environment\_restriction details***
+
+Special restrictions for applicable environments are defined in
+**environment\_condition** and **environment\_restriction** sections of
+scanner definition.
+
+**Environment\_condition** specifies requirements that environment
+configuration should match for the scanner to be applicable for use;
+**environment\_restriction** lists configurations that exclude the
+environments matching one or more restrictions. This means that even if
+the environment matches both at least one condition and at least one
+restriction, restriction takes precedence, and the scanner is not
+applied to the environment in question.
+
+These fields share the same structure and can be defined in the
+following ways:
+
+1. *requirement: object*
+
+    | *requirement* is an object consisting of *field-value* pairs used
+      to match corresponding *field-value* pairs in environment
+      configuration. These pairs are matched using an **AND** operator,
+      meaning that all clauses of a requirement should match environment
+      config in order to apply.
+    | *Value* of a requirement pair can either be of a concrete type
+      (str, int, …) or a list of concrete types.
+    | There are two possible matching scenarios, best shown in examples:
+
+1. | If the requirement *value* is of a concrete type and environment
+     config *value* is also of a concrete type, they are compared
+     directly. Example:
+   | **condition:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": "OVS"
+   | }
+   | **env\_config\_match:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": "OVS"
+   | }
+   | This configuration matches the condition since both *distribution*
+     and *distribution\_version* values match the requirement.
+   | **env\_config\_no\_match:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": "VPP"
+   | }
+   | This configuration doesn’t match the condition since *distribution*
+     value matches the requirement, but *distribution\_version* does
+     not.
+
+2. | If the requirement *value* is of a concrete type and environment
+     config *value* is a list, at least one value in the list should
+     match the requirement. Example:
+   | **condition:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": "OVS"
+   | }
+   | **env\_config\_match:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": ["OVS", “VPP”]
+   | }
+   | This configuration matches the condition since *distribution* value
+     matches the requirement and required *mechanism\_drivers* value is
+     present in environment configuration.
+   | **env\_config\_no\_match:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": ["VPP", “SR-IOV”]
+   | }
+   | This configuration doesn’t match the condition since *distribution*
+     value matches the requirement, but no items in
+     *distribution\_version* list in environment configuration match the
+     required value.
+
+3. | If the requirement *value* is a list and environment config *value*
+     is a concrete value, environment configuration value should be
+     among the items of the requirement list. Example:
+   | **condition:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": ["OVS", “VPP]
+   | }
+   | **env\_config\_match:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": “OVS”
+   | }
+   | This configuration matches the condition since *distribution* value
+     matches the requirement and environment configuration
+     *mechanism\_drivers* value is present in required list.
+   | **env\_config\_no\_match:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": “SR-IOV”
+   | }
+   | This configuration doesn’t match the condition since *distribution*
+     value matches the requirement, but environment configuration
+     *mechanism\_drivers* value is not present in required list.
+
+4. | If both the requirement *value* and environment config *value* are
+     lists, all values in environment configuration should be among the
+     items of the requirement list. Example:
+   | **condition:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": ["OVS", “VPP”]
+   | }
+   | **env\_config\_match:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": [“VPP”, “OVS”]
+   | }
+   | This configuration matches the condition since *distribution* value
+     matches the requirement and all environment configuration
+     *mechanism\_drivers* values are present in required list.
+   | **env\_config\_no\_match:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": [“VPP”, “SR-IOV”]
+   | }
+   | This configuration doesn’t match the condition since *distribution*
+     value matches the requirement, but not all values in environment
+     configuration *mechanism\_drivers* value are present in required
+     list.
+
+5. | \* If multiple values in requirement list are lists, each of them
+     is validated against environment configuration values using the
+     rules above (any combination of allowed values). Examples:
+   | **condition:** {
+   | "distribution": ["Mercury", “Newton”],
+   | "mechanism\_drivers": ["OVS", “VPP”]
+   | }
+   | **env\_config\_match\_1:** {
+   | "distribution": "Mercury",
+   | "mechanism\_drivers": “VPP”
+   | }
+   | **env\_config\_match\_2:** {
+   | "distribution": "Newton",
+   | "mechanism\_drivers": “OVS”
+   | }
+   | Both configurations match the condition since both *distribution*
+     value are among the required values and all environment
+     configuration *mechanism\_drivers* values are present in required
+     list.
+   | **env\_config\_no\_match:** {
+   | "distribution": "Kilo",
+   | "mechanism\_drivers": “VPP”
+   | }
+   | This configuration doesn’t match the condition since *distribution*
+     value is not present in the required list.
+
+1. [*requirement1*: *object*, *requirement2: object*, …]\ *: list*
+
+    Requirement objects can be grouped in lists. In this case, if any
+    requirement is satisfied by environment configuration, result will
+    be treated as a match and no further conditions will be evaluated.
+
+    | **condition:** [{
+    | "distribution": “Mercury”,
+    | "mechanism\_drivers": “OVS”
+    | }, {
+
+    | "distribution": “Newton”,
+    | "mechanism\_drivers": “VPP”
+
+    }
+
+    | ]
+    | **env\_config\_match\_1:** {
+    | "distribution": "Mercury",
+    | "mechanism\_drivers": “OVS”
+    | }
+    | **env\_config\_match\_2:** {
+    | "distribution": "Newton",
+    | "mechanism\_drivers": “VPP”
+    | }
+    | Both configurations match the condition since first environment
+      configuration matches the first condition and the second
+      configuration matches the second condition.
+    | **env\_config\_no\_match:** {
+    | "distribution": "Mercury",
+    | "mechanism\_drivers": “VPP”
+    | }
+    | This configuration doesn’t match any of the conditions. Allowed
+      combinations would be Mercury+OVS and Newton+VPP.
 
 Updating scanners
 ~~~~~~~~~~~~~~~~~
@@ -868,7 +1059,7 @@ There are two ways to do that:
 ***Other cases***
 
 You may choose to combine approaches or use none of them and create an
-isolated scanner if needed.
+isolated scanner as needed.
 
 Updating constants collection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

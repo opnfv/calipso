@@ -1,0 +1,63 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+
+<template name="accordionNavMenu">
+
+  <nav class="os-accordion-nav-menu">
+    {{#if showCollapsed }}
+    <div class="sm-collapsed-menu">
+      <a class="sm-menu-toggle-btn">
+        <img class="img-left-nav" src="/icons/icon-menu-long.svg">
+      </a>
+    </div>
+    {{else }}
+    <div id="left-nav-menu" class="left-nav-menu" style="width:100%">
+      <div class="menu-header" style="display: flex;">
+        <div class="menu-header-env sm-btn-dashboard">
+          {{ envName }}
+        </div>
+        <div>
+          <a class="sm-menu-toggle-btn">
+            <img class="img-left-nav" src="/icons/icon-menu-long.svg">
+          </a>
+        </div>
+      </div>
+      <ul class="sm-menu-items-list">
+        <li>
+          <a class="sm-toggle-graph-button toggleGraph" href="#">
+            <span>
+              <i class="material-icons">share</i>Toggle Graph</span>
+          </a>
+        </li>
+        <!-- <li>
+          <a class="sm-btn-dashboard">
+            <span>
+              <i class="material-icons">home</i>Dashboard</span>
+          </a>
+        </li> -->
+
+        {{#if mainNode }}
+        <div class="sm-inventory-tree">
+          {{>TreeNode (argsTreeNode mainNode) }}
+        </div>
+        {{/if }}
+
+        <li>
+          <a href="#">
+            <i class="fa fa-envelope"> </i> Contact</a>
+        </li>
+      </ul>
+      <div class="menu-footer"> Cisco Systems inc. All rights reserved.</div>
+    </div>
+    {{/if }}
+  </nav>
+</template>

@@ -1,0 +1,46 @@
+<!--
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="UserSettings">
+  <div class="user-settings-box box-container">
+    <div class="box-header">User Settings</div>
+    
+    <div class="sm-form-container">
+      <form role="form" class="sm-item-form form-horizontal">
+        <div class="form-group">
+          <label class="col-sm-2 control-label box-label">Message view backward delta</label>
+          <div class="input-box">
+            <div class="col-sm-3">
+              <input name="msgsViewBackDelta" value="{{ getModelField 'messages_view_backward_delta' }}" class="sm-msgs-view-back-delta inputField form-control number-control"
+                type="number" placeholder="" />
+            </div>
+            <div class="input-hint">
+              {{ durationAsText (getModelField 'messages_view_backward_delta') }}
+            </div>
+          </div>
+          <div class="col-sm-3 form-label-description">Change the start duration of message display (miliseconds)</div>
+        </div>
+        <div class="submit-req-btn">
+          <button type="button" class="js-submit-button mdl-button mdl-js-button mdl-button--raised 
+                      mdl-js-ripple-effect mdl-button--colored">Save</button>
+        </div>
+      </form>
+
+      {{#if (getState 'message') }}
+      <div class="js-message-panel alert 
+              {{#if isActionError}}alert-danger{{/if}}
+              {{#if isActionSuccess}}alert-success{{/if}}" role="alert">
+        {{ getState 'message' }}
+      </div>
+      {{/if }}
+    </div>
+  </div>
+</template>

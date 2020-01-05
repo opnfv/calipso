@@ -1,0 +1,177 @@
+[
+{  
+    "features" : {
+        "scanning" : true, 
+        "monitoring" : true, 
+        "listening" : true
+    }, 
+    "environment" : {
+        "distribution" : "Apex", 
+        "distribution_version" : [
+            "Euphrates"
+        ], 
+        "mechanism_drivers" : [
+            "OVS"
+        ], 
+        "type_drivers" : [
+            "vxlan"
+        ]
+    }
+},
+{ 
+    "features" : {
+        "scanning" : true, 
+        "monitoring" : true, 
+        "listening" : true
+    }, 
+    "environment" : {
+        "distribution" : "Kubernetes", 
+        "distribution_version" : [
+            "1.9", 
+            "1.10"
+        ], 
+        "mechanism_drivers" : [
+            "Flannel", 
+            "VPP"
+        ], 
+        "type_drivers" : ["vxlan", "vlan"]  
+    }
+},
+{ 
+    "features" : {
+        "scanning" : true, 
+        "monitoring" : true, 
+        "listening" : true
+    }, 
+    "environment" : {
+        "distribution" : "Devstack", 
+        "distribution_version" : [
+            "Mitaka"
+        ], 
+        "mechanism_drivers" : [
+            "VPP"
+        ], 
+        "type_drivers" : [
+            "vlan", 
+            "vxlan"
+        ]
+    }
+},
+{
+    "features" : {
+        "scanning" : true, 
+        "monitoring" : true, 
+        "listening" : true
+    }, 
+    "environment" : {
+        "distribution" : "Mercury", 
+        "distribution_version" : [
+            "13840", 
+            "16074", 
+            "19312", 
+            "18079", 
+            "18606", 
+            "11190", 
+            "13840", 
+            "15310", 
+            "16074"
+        ], 
+        "mechanism_drivers" : [
+            "OVS", 
+            "VPP"
+        ], 
+        "type_drivers" : [
+            "vlan", 
+            "vxlan"
+        ]
+    }
+},
+    {
+    "features" : {
+        "scanning" : true,
+        "monitoring" : true,
+        "listening" : true
+    },
+    "environment" : {
+        "distribution" : "Kolla",
+        "distribution_version" : [
+            "train",
+            "stein",
+            "rocky",
+            "queens"
+        ],
+        "mechanism_drivers" : [
+            "OVS",
+            "VPP",
+            "LXB"
+        ],
+        "type_drivers" : [
+            "vlan",
+            "vxlan",
+            "gre"
+        ]
+    }
+},
+{  
+    "features" : {
+        "scanning" : true, 
+        "monitoring" : true, 
+        "listening" : true
+    }, 
+    "environment" : {
+        "distribution" : "Mirantis", 
+        "distribution_version" : [
+            "6.0", 
+            "7.0", 
+            "8.0", 
+            "9.0", 
+            "9.1", 
+            "10.0"
+        ], 
+        "mechanism_drivers" : [
+            "OVS"
+        ], 
+        "type_drivers" : [
+            "vlan", 
+            "vxlan"
+        ]
+    }
+},
+{  
+    "features" : {
+        "scanning" : true, 
+        "monitoring" : true, 
+        "listening" : true
+    }, 
+    "environment" : {
+        "distribution" : "RDO", 
+        "distribution_version" : [
+            "Liberty", 
+            "Mitaka"
+        ], 
+        "mechanism_drivers" : [
+            "OVS", 
+            "VPP"
+        ], 
+        "type_drivers" : [
+            "vlan", 
+            "vxlan"
+        ]
+    }
+},
+{ 
+    "features" : {
+        "scanning" : true, 
+        "monitoring" : true, 
+        "listening" : false
+    }, 
+    "environment" : {
+        "distribution" : "Stratoscale", 
+        "distribution_version" : [
+            "2.1.6"
+        ], 
+        "mechanism_drivers" : ["OVS"], 
+        "type_drivers" : ["vlan"] 
+    }
+}
+]

@@ -1,0 +1,54 @@
+{
+  "handlers_package": "listen.events",
+  "queues": [
+    {
+      "queue": "notifications.nova",
+      "exchange": "nova"
+    },
+    {
+      "queue": "notifications.neutron",
+      "exchange": "neutron"
+    },
+    {
+      "queue": "notifications.neutron",
+      "exchange": "dhcp_agent"
+    },
+    {
+      "queue": "notifications.info",
+      "exchange": "info"
+    }
+  ],
+  "event_handlers": {
+    "compute.instance.create.end": "EventInstanceAdd",
+    "compute.instance.rebuild.end": "EventInstanceAdd",
+    "compute.instance.update": "EventInstanceUpdate",
+    "compute.instance.delete.end": "EventInstanceDelete",
+    "network.create.end": "EventNetworkAdd",
+    "network.update": "EventNetworkUpdate",
+    "network.update.end": "EventNetworkUpdate",
+    "network.delete": "EventNetworkDelete",
+    "network.delete.end": "EventNetworkDelete",
+    "subnet.create": "EventSubnetAdd",
+    "subnet.create.end": "EventSubnetAdd",
+    "subnet.update": "EventSubnetUpdate",
+    "subnet.update.end": "EventSubnetUpdate",
+    "subnet.delete": "EventSubnetDelete",
+    "subnet.delete.end": "EventSubnetDelete",
+    "port.create": "EventPortAdd",
+    "port.create.end": "EventPortAdd",
+    "port.update": "EventPortUpdate",
+    "port.update.end": "EventPortUpdate",
+    "port.delete": "EventPortDelete",
+    "port.delete.end": "EventPortDelete",
+    "router.create": "EventRouterAdd",
+    "router.create.end": "EventRouterAdd",
+    "router.update": "EventRouterUpdate",
+    "router.update.end": "EventRouterUpdate",
+    "router.delete": "EventRouterDelete",
+    "router.delete.end": "EventRouterDelete",
+    "router.interface.create": "EventInterfaceAdd",
+    "router.interface.create.end": "EventInterfaceAdd",
+    "router.interface.delete": "EventInterfaceDelete",
+    "router.interface.delete.end": "EventInterfaceDelete"
+  }
+}

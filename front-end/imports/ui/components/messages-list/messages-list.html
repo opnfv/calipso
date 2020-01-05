@@ -1,0 +1,181 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="MessagesList">
+  <div class="table-view-container">
+    <div class="sm-table-section">
+      <div class="sm-pager-section">
+        <button type="button" class="js-clear-messages mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored toast">Clear Messages</button>
+      </div>
+      <div class="table-view-title">MESSAGES</div>
+      <div class="messages-summary">
+        <div class="all-main-container">
+          <div class="total-container">
+            <div class="icon-content">
+              <img src="/icons/icon-messages.svg">
+            </div>
+            <div class="messages-all-container">
+              <div class="messages-all-number">{{totalMessages}}</div>
+              <div class="all-messages-text">ALL MESSAGES</div>
+            </div>
+          </div>
+        </div>
+        <div class="messages-counters-section">
+          <div class="info-main-container">
+            <div class="info-content-box">
+              <img class="info-icon-img" src="/icons/icon-alert-info.svg">
+              <div class="info-messages-container">
+                <div class="info-messages-number">{{infoMessages}}</div>
+                <div class="info-messages-text">INFORMATION</div>
+              </div>
+            </div>
+          </div>
+          <div class="warning-main-container">
+            <div class="warning-content-box">
+              <img class="warning-icon-img" src="/icons/icon-alert-warning.svg">
+              <div class="warning-messages-container">
+                <div class="warning-messages-number">{{warningMessages}}</div>
+                <div class="warning-messages-text">WARNING</div>
+              </div>
+            </div>
+          </div>
+          <div class="error-main-container">
+            <div class="error-content-box">
+              <img class="error-icon-img" src="/icons/icon-alert-error.svg">
+              <div class="error-messages-container">
+                <div class="error-messages-number">{{errorMessages}}</div>
+                <div class="error-messages-text">ERROR</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table-view-results table">
+        <thead>
+          <tr>
+            <th>
+              <a class="sm-table-header" data-is-sortable="true" data-sort-field="environment">Environment
+                <span>
+                  <i class="{{ fieldSortClass 'environment' }}"></i>
+                </span>
+              </a>
+            </th>
+            <th>
+              <a class="sm-table-header" data-is-sortable="true" data-sort-field="viewed">Viewed
+                <span>
+                  <i class="{{ fieldSortClass 'viewed' }}"></i>
+                </span>
+              </a>
+            </th>
+            <th>
+              <a class="sm-table-header">Display Context</a>
+            </th>
+            <th>
+              <a class="sm-table-header">Message</a>
+            </th>
+            <th>
+              <a class="sm-table-header" data-is-sortable="true" data-sort-field="source_system">Source System
+                <span>
+                  <i class="{{ fieldSortClass 'source_system' }}"></i>
+                </span>
+              </a>
+            </th>
+            <th>
+              <a class="sm-table-header" data-is-sortable="true" data-sort-field="level">Level
+                <span>
+                  <i class="{{ fieldSortClass 'level' }}"></i>
+                </span>
+              </a>
+            </th>
+            <th>
+              <a class="sm-table-header" data-is-sortable="true" data-sort-field="timestamp">Timestamp
+                <span>
+                  <i class="{{ fieldSortClass 'timestamp' }}"></i>
+                </span>
+              </a>
+            </th>
+            <th>
+              <a class="sm-table-header" data-is-sortable="true" data-sort-field="related_object_type">Related Object Type
+                <span>
+                  <i class="{{ fieldSortClass 'related_object_type' }}"></i>
+                </span>
+              </a>
+            </th>
+            <th>
+              <a class="sm-table-header">Related Object</a>
+            </th>
+            <th>
+              <a class="sm-table-header" data-is-sortable="true" data-sort-field="origin_type">Origin type
+                <span>
+                  <i class="{{ fieldSortClass 'origin_type' }}"></i>
+                </span>
+              </a>
+            </th>
+            <th>
+              <a class="sm-table-header" data-is-sortable="true" data-sort-field="origin_id">Origin ID
+                <span>
+                  <i class="{{ fieldSortClass 'origin_id' }}"></i>
+                </span>
+              </a>
+            </th>
+            <th>
+              <a class="sm-table-header">Actions</a>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each message in messages }}
+          <tr>
+            <td>{{ message.environment }}</td>
+            <td>{{ message.viewed }}</td>
+            <td>
+              <a class="cl-link sm-display-context-link" data-env-name="{{ message.environment }}" data-item-id="{{ message.display_context }}">Link to node</a>
+            </td>
+            <td>{{ message.message }}</td>
+            <td>{{ message.source_system }}</td>
+            <td>{{ message.level }}</td>
+            <td>{{ message.timestamp }}</td>
+            <td>{{ message.related_object_type }}</td>
+            <td>
+              {{#if message.related_object }} {{> InventoryPropertiesDisplay (argsInvPropDisplay message.environment message.related_object)
+              }} {{/if }}
+            </td>
+            <td>{{ message.origin_type }}</td>
+            <td>{{ message.origin_id }}</td>
+            <td>
+              <div class="actions-list">
+                <div class="actions-icon">
+                  <div class="dropdopwn drop-down-overflow">
+                    <div class="dropdown-toggle actions-button" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="true">
+                      <img src="/icons/icon-export.svg">
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                      <li class="dropdown-action-header">
+                        <a href="{{pathFor route='message' query=(asHash id=(idToStr message._id) action='view') }}">View</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          {{/each }}
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="sm-pager-section">
+      {{> Pager (argsPager currentPage amountPerPage currentPagedMessages) }}
+    </div>
+    {{> MessagesDeleteModal argsMsgDeleteModal}}
+  </div>
+</template>

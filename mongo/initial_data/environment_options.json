@@ -1,0 +1,180 @@
+[
+{
+    "environment_type" : "OpenStack",
+    "distributions" : [
+        "RDO", 
+        "Devstack", 
+        "Canonical"
+    ], 
+    "mechanism_drivers" : [
+        "OVS", 
+        "VPP", 
+        "LXB", 
+        "Arista"
+    ], 
+    "distribution_versions" : [
+        "Mitaka", 
+        "Liberty", 
+        "Newton", 
+        "Ocata", 
+        "Juno", 
+        "Kilo", 
+        "Icehouse"
+    ], 
+    "type_drivers" : [
+        "local", 
+        "vlan", 
+        "vxlan", 
+        "gre", 
+        "flat"
+    ]
+},
+{
+    "environment_type" : "OpenStack",
+    "distributions" : [
+        "Mirantis"
+    ], 
+    "mechanism_drivers" : [
+        "OVS", 
+        "VPP", 
+        "LXB", 
+        "Arista"
+    ], 
+    "distribution_versions" : [
+        "6.0", 
+        "7.0", 
+        "8.0", 
+        "9.0", 
+        "9.1", 
+        "10.0"
+    ], 
+    "type_drivers" : [
+        "local", 
+        "vlan", 
+        "vxlan", 
+        "gre", 
+        "flat"
+    ]
+},
+{
+    "environment_type" : "OpenStack",
+    "distributions" : [
+        "Stratoscale"
+    ], 
+    "mechanism_drivers" : [
+        "OVS", 
+        "LXB"
+    ], 
+    "distribution_versions" : [
+        "2.1.6"
+    ], 
+    "type_drivers" : [
+        "vlan", 
+        "vxlan"
+    ]
+},
+{
+    "environment_type" : "OpenStack",
+    "distributions" : [
+        "Packstack"
+    ], 
+    "mechanism_drivers" : [
+        "OVS", 
+        "LXB"
+    ], 
+    "distribution_versions" : [
+        "7.0.0-0.10.dev1682"
+    ], 
+    "type_drivers" : [
+        "local", 
+        "vlan", 
+        "vxlan", 
+        "gre", 
+        "flat"
+    ]
+},
+    {
+    "environment_type" : "OpenStack",
+    "distributions" : [
+        "Kolla"
+    ],
+    "mechanism_drivers" : [
+        "OVS",
+        "LXB",
+        "VPP"
+    ],
+    "distribution_versions" : [
+        "train",
+        "stein",
+        "rocky",
+        "queens"
+    ],
+    "type_drivers" : [
+        "vlan",
+        "vxlan",
+        "gre"
+    ]
+},
+{
+    "environment_type" : "OpenStack",
+    "distributions" : [
+        "Apex"
+    ], 
+    "mechanism_drivers" : [
+        "OVS", 
+        "LXB", 
+        "VPP"
+    ], 
+    "distribution_versions" : [
+        "Euphrates"
+    ], 
+    "type_drivers" : [
+        "vlan", 
+        "vxlan", 
+        "gre"
+    ]
+},
+{
+    "environment_type" : "OpenStack",
+    "distributions" : [
+        "Mercury"
+    ], 
+    "mechanism_drivers" : [
+        "OVS", 
+        "LXB", 
+        "VPP"
+    ], 
+    "distribution_versions" : [
+        "18606",    
+        "18079",    
+        "19312",   
+        "11190",
+	"13840"
+    ], 
+    "type_drivers" : [
+        "vlan", 
+        "vxlan", 
+        "gre"
+    ]
+},
+{
+    "environment_type" : "Kubernetes",
+    "distributions" : [
+        "Kubernetes"
+    ], 
+    "mechanism_drivers" : [
+        "OVS", 
+        "LXB", 
+        "VPP", 
+        "Flannel"
+    ], 
+    "distribution_versions" : [
+        "1.9"
+    ], 
+    "type_drivers" : [
+        "vlan", 
+        "vxlan", 
+        "gre"
+    ]
+}
+]

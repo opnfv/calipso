@@ -1,0 +1,267 @@
+// for WIKI
+
+.os-accordion-nav-menu 
+  .sm-menu-items-list
+    >.os-accordion-tree-node
+      >a
+        display none
+  
+.left-nav-content-wiki {
+  width: 300px;
+  height: 100vh
+  background white-grey
+  top 90px
+  position fixed
+}
+
+
+.left-nav-menu
+  float: left;
+  min-width: 100px;
+  outline: 0;
+  position: relative;
+  //margin-top -40px
+  shadow-level(1)
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: 0;
+  .menu-footer, .menu-header
+    background: text-light-blue;
+    color: #f0f0f0;
+    float: left;
+    font-weight: normal;
+    line-height: 50px;
+    font-size: 0.8em;
+    width: 100%;
+  .menu-footer
+    text-align: center;
+  .menu-header
+    height: 65px;
+    justify-content: space-between;
+    div, p
+      font-size: 17px;
+      text-transform: uppercase;
+      margin: 0px;
+    .menu-header-env
+      padding-left: 16px
+      padding-top: 8px;
+      &:hover
+        text-decoration: underline;
+    .img-left-nav
+       width: 47px; 
+       height: 64px;
+       cursor: pointer;
+      
+    i
+      cursor pointer
+      position absolute
+      top -5px
+      right 0
+      display block
+      color white
+      padding-right 5px 
+      trans()
+      &:hover
+          color spark-blue 
+          opacity 0.8
+  
+  ul 
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li
+      display: block;
+      float: left;
+      position: relative;
+      width: 100%;
+      .menu-label
+        background: #f0f0f0;
+        border-radius: 100%;
+        color: #555555;
+        font-size: 11px;
+        font-weight: 800;
+        line-height: 18px;
+        min-width: 20px;
+        padding: 1px 2px 1px 1px;
+        position: absolute;
+        right: 18px;
+        text-align: center;
+        top: 14px;
+      a
+        background: brand-blue;
+        color: #f0f0f0;
+        float: left;
+        font-size: 13px;
+        overflow: hidden;
+        padding: 14px 22px;
+        position: relative;
+        text-decoration: none;
+        white-space: nowrap;
+        width: 100%;
+        trans()
+        &:hover
+          background: @background - 20%;
+        i 
+          float: left;
+          font-size: 16px;
+          line-height: 18px;
+          text-align: left;
+          width: 34px;
+
+.left-nav-menu ul li .menu-label {
+  background: #f0f0f0;
+  border-radius: 100%;
+  color: #555555;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 18px;
+  min-width: 20px;
+  padding: 1px 2px 1px 1px;
+  position: absolute;
+  right: 18px;
+  text-align: center;
+  top: 14px;
+}
+
+.left-nav-menu 
+  ul 
+    .submenu
+      display: none;
+      position: static;
+      width: 100%;
+      .submenu-indicator
+        line-height: 16px
+      li
+        clear: both;
+        width: 100%;
+        ul.submenu
+          display: none;
+          position: static;
+          width: 100%;
+          overflow: hidden;
+        a
+          background: brand-blue - 10%
+          border-left: solid 6px transparent;
+          border-top: none;
+          float: left;
+          font-size: 11px;
+          position: relative;
+          width: 100%;
+          &:hover
+            background @background - 20%
+
+
+.left-nav-menu ul .submenu li .menu-label {
+  background: #f0f0f0;
+  border-radius: 100%;
+  color: #555555;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 18px;
+  min-width: 20px;
+  padding: 1px 2px 1px 1px;
+  position: absolute;
+  right: 18px;
+  text-align: center;
+  top: 12px;
+  top: 14px;
+}
+
+.left-nav-menu ul .submenu li a 
+  padding-left 40px 
+  background brand-blue - 20%
+
+.left-nav-menu ul .submenu > li > ul.submenu > li > a 
+  padding-left: 40px
+  background brand-blue - 30%
+
+.left-nav-menu ul .submenu > li > ul.submenu > li > ul.submenu > li > a
+   padding-left: 40px;
+   background brand-blue - 40%
+.left-nav-menu ul .submenu > li > ul.submenu > li > ul.submenu > li > ul.submenu > li > a 
+  padding-left: 50px;
+  background brand-blue - 50%
+.left-nav-menu ul .submenu > li > ul.submenu > li > ul.submenu > li > ul.submenu > li > ul.submenu > li > a 
+  padding-left: 60px;
+  background brand-blue - 60%
+.left-nav-menu ul .submenu > li > ul.submenu > li > ul.submenu > li > ul.submenu > li > ul.submenu > li > ul.submenu > li > a 
+  padding-left: 70px; 
+  background brand-blue - 70%
+.left-nav-menu ul .submenu > li > ul.submenu > li > ul.submenu > li > ul.submenu > li > ul.submenu > li > ul.submenu > li > ul.submenu > li > ul.submenu > li > a 
+  padding-left: 80px;
+  background brand-blue - 80%
+
+.left-nav-menu .sm-open-close-indicator
+  float: right;
+   
+  i.fa
+    font-size: 10px;
+    width: 10px;
+
+.left-nav-menu .submenu-indicator {
+  -moz-transition: "transform .3s linear";
+  -o-transition: "transform .3s linear";
+  -webkit-transition: "transform .3s linear";
+  transition: "transform .3s linear";
+  float: right;
+  font-size: 20px;
+  line-height: 19px;
+  position: absolute;
+  right: 22px;
+}
+
+.left-nav-menu .submenu-indicator-minus > .submenu-indicator {
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.left-nav-menu > ul > li.active > a {
+  background: #3b424d;
+  color: #ffffff;
+}
+
+
+.left-nav-menu > ul > li > a { border-bottom: solid 1px #3b424d; }
+
+.ink {
+  -moz-transform: scale(0);
+  -ms-transform: scale(0);
+  -o-transform: scale(0);
+  -webkit-transform: scale(0);
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 100%;
+  display: block;
+  position: absolute;
+  transform: scale(0);
+}
+
+.animate-ink {
+  -moz-animation: ripple .3s linear;
+  -ms-animation: ripple .3s linear;
+  -o-animation: ripple .3s linear;
+  -webkit-animation: ripple .3s linear;
+  animation: ripple .3s linear;
+}
+
+// @-moz-keyframes 'ripple' {
+//  100% {
+//  opacity: 0;
+//  transform: scale(2.5);
+// }
+// }
+// @-webkit-keyframes 'ripple' {
+//  100% {
+//  opacity: 0;
+//  transform: scale(2.5);
+// }
+// }
+// @keyframes 'ripple' {
+//  100% {
+//  opacity: 0;
+//  transform: scale(2.5);
+// }
+// }

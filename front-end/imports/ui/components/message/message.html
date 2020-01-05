@@ -1,0 +1,149 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="Message">
+  <div class="single-message-box box-container">
+    {{#if notificationsExists}}
+    <div class="sm-notification-panel alert alert-danger">
+      {{#each note in notifications }}
+      <div>{{ note }}</div>
+      {{/each }}
+    </div>
+    {{/if}}
+
+    <div class="box-header">{{ getState 'pageHeader' }}</div>
+
+    <div class="sm-form-container">
+      <form role="form" class="sm-item-form form-horizontal">
+
+        <div class="sm-field-group-id cl-field-group">
+          <label class="col-sm-2 control-label box-label">Id</label>
+          <div class="col-sm-3">
+            <input name="id" disabled="disabled" value="{{ getModelField '_id' }}" class="sm-input-id inputField form-control input-control" type="text" placeholder="Id"
+            />
+          </div>
+          <div class="col-sm-3 form-label-description">Id</div>
+        </div>
+
+        <div class="sm-field-group-env cl-field-group">
+          <label class="col-sm-2 control-label box-label">Environment</label>
+          <div class="col-sm-3">
+            <select name="env" class="sm-input-env inputField form-control select-control" {{ getAttrDisabled }}>
+              <option value="" selected disabled hidden></option>
+              {{#each env in envsList }}
+              <option value="{{ env.name }}" {{ getAttrSelected env.name (getModelField 'environment') }}>{{ env.name }}</option>
+              {{/each }}
+            </select>
+          </div>
+          <div class="col-sm-3 form-label-description">Environment</div>
+        </div>
+
+        <div class="sm-field-group-viewed cl-field-group">
+          <label class="col-sm-2 control-label box-label">Viewed</label>
+          <div class="col-sm-3">
+            <input name="viewed" {{ getAttrDisabled }} value="{{ getModelField 'viewed' }}" class="sm-input-viewed inputField form-control input-control" type="text"
+              placeholder="" />
+          </div>
+          <div class="col-sm-3 form-label-description">Viewed</div>
+        </div>
+
+        <div class="sm-field-group-display-context cl-field-group">
+          <label class="col-sm-2 control-label box-label">Display Context</label>
+          <div class="col-sm-3">
+            <input name="display_context" {{ getAttrDisabled }} value="{{ getModelField 'display_context' }}" class="sm-input-viewed inputField form-control input-control"
+              type="text" placeholder="Display context" />
+          </div>
+          <div class="col-sm-3 form-label-description">Display context</div>
+        </div>
+
+        <div class="sm-field-group-message cl-field-group">
+          <label class="col-sm-2 control-label box-label">Message</label>
+          <div class="col-sm-3">
+            <textarea name="message" {{ getAttrDisabled }} class="sm-input-message inputField form-control textarea-control" rows="10">{{ jsonAsString (getModelField 'message') }}</textarea>
+          </div>
+          <div class="col-sm-3 form-label-description">Message</div>
+        </div>
+
+        <div class="sm-field-group-source-system cl-field-group">
+          <label class="col-sm-2 control-label box-label">Source System</label>
+          <div class="col-sm-3">
+            <select name="source-system" class="sm-input-source-system inputField form-control select-control" {{ getAttrDisabled }}>
+              <option value="" selected disabled hidden></option>
+              {{#each sourceSystem in sourceSystemsList }}
+              <option value="{{ sourceSystem.value }}" {{ getAttrSelected sourceSystem.label (getModelField 'source_system') }}>{{ sourceSystem.label }}</option>
+              {{/each }}
+            </select>
+          </div>
+          <div class="col-sm-3 form-label-description">Source system</div>
+        </div>
+
+        <div class="sm-field-group-level cl-field-group">
+          <label class="col-sm-2 control-label box-label">Level</label>
+          <div class="col-sm-3">
+            <input name="level" {{ getAttrDisabled }} value="{{ getModelField 'level' }}" class="sm-input-level inputField form-control input-control" type="text"
+              placeholder="Level" />
+          </div>
+          <div class="col-sm-3 form-label-description">Level</div>
+        </div>
+
+        <div class="sm-field-group-timestamp cl-field-group">
+          <label class="col-sm-2 control-label box-label">Timestamp</label>
+          <div class="col-sm-3">
+            <input name="timestamp" {{ getAttrDisabled }} value="{{ getModelField 'timestamp' }}" class="sm-input-level inputField form-control input-control" type="text"
+              placeholder="Timestamp" />
+          </div>
+          <div class="col-sm-3 form-label-description">Timestamp</div>
+        </div>
+
+        <div class="sm-field-group-related-object-type cl-field-group">
+          <label class="col-sm-2 control-label box-label">Related Object Type</label>
+          <div class="col-sm-3">
+            <input name="related_object_type" {{ getAttrDisabled }} value="{{ getModelField 'related_object_type' }}" class="sm-input-related-object-type inputField form-control input-control"
+              type="text" placeholder="Related object type" />
+          </div>
+          <div class="col-sm-3 form-label-description">Related object type</div>
+        </div>
+
+        <div class="sm-field-group-related-object cl-field-group">
+          <label class="col-sm-2 control-label box-label">Related Object</label>
+          <div class="col-sm-3">
+            <input name="related_object" {{ getAttrDisabled }} value="{{ getModelField 'related_object' }}" class="sm-input-related-object inputField form-control input-control"
+              type="text" placeholder="Related object" /> {{#if (getModelField 'related_object') }} {{> InventoryPropertiesDisplay (argsInvPropDisplay (getModelField
+            'environment') (getModelField 'related_object')) }}. {{/if }}
+          </div>
+          <div class="col-sm-3 form-label-description">Related object</div>
+        </div>
+        <div class="sm-field-group-origin-id cl-field-group">
+          <label class="col-sm-2 control-label box-label">Origin ID</label>
+          <div class="col-sm-3">
+            <input name="origin_id" {{ getAttrDisabled }} value="{{ getModelField 'origin_id' }}" class="sm-input-level inputField form-control input-control" type="text"
+              placeholder="Origin ID" />
+          </div>
+          <div class="col-sm-3 form-label-description">Origin ID</div>
+        </div>
+
+        {{#if isUpdateableAction }}
+        <button type="submit" class="js-submit-button mdl-button mdl-js-button mdl-button--raised 
+          mdl-js-ripple-effect mdl-button--colored">{{ actionLabel }}</button>
+        {{/if }}
+
+      </form>
+
+      {{#if (getState 'isMessage') }}
+      <div class="js-message-panel alert {{#if (getState 'isError')}}alert-danger{{/if}}
+        {{#if (getState 'isSuccess')}}alert-success{{/if}}" role="alert">
+        {{ getState 'message' }}
+      </div>
+      {{/if }}
+
+    </div>
+  </div>
+</template>

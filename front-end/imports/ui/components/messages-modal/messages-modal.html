@@ -1,0 +1,70 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="MessagesModal">
+  <div class="os-messages-modal modal fade" id="messagesModalGlobal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:800px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <img class="modal-corner-img" src="/icons/icon-alert-{{iconType}}.svg">
+        </div>
+
+        <div class="modal-body" style="width:800px;">
+          <div class="sm-general-table-section">
+            <h5 class="modal-title" id="myModalLabel">{{ listHeader }}</h5>
+            <table class="table table-striped sm-messages-table">
+              <thead class="sm-message-table-section">
+                <tr>
+                  <th>Environment</th>
+                  <th>Display Context</th>
+                  <th>Source System</th>
+                  <th>Timestamp</th>
+                  <th>Related Object</th>
+                  <th>Origin type</th>
+                  <th>Origin ID</th>
+                </tr>
+              </thead>
+              <tbody class="sm-message-table-section">
+                {{#each message in messages }}
+                <tr class="sm-message-row">
+                  <td>{{ message.environment }}</td>
+                  <td>
+                    <a class="cl-link sm-display-context-link" data-env-name="{{ message.environment }}" data-item-id="{{ message.display_context }}">Link</a>
+                  </td>
+                  <td>{{ message.source_system }}</td>
+                  <td>{{ message.timestamp }}</td>
+                  <td>
+                    {{#if message.related_object }} {{> InventoryPropertiesDisplay (argsInvPropDisplay message.environment message.related_object)
+                    }} {{/if }}
+                  </td>
+                  <td>{{ message.origin_type }}</td>
+                  <td>{{ message.origin_id }}</td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="sm-pager-section">
+            {{> Pager (argsPager currentPage amountPerPage totalMessages) }}
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="mdl-button mdl-js-button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

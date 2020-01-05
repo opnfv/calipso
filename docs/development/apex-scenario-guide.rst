@@ -74,6 +74,8 @@ Pre Requisites for Calipso “all in one” application
 
     **sudo pip3 install bcrypt (>3.1.1)**
 
+    **sudo pip3 install kubernetes (=3.0.0)**
+
     **sudo pip3 install bson**
 
     **sudo pip3 install websocket**

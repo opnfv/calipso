@@ -1,0 +1,154 @@
+<!-- 
+###############################################################################
+# Copyright (c) 2017-2018 Koren Lev (Cisco Systems),                          #
+# Yaron Yogev (Cisco Systems), Ilia Abashin (Cisco Systems) and others        #
+#                                                                             #
+# All rights reserved. This program and the accompanying materials            #
+# are made available under the terms of the Apache License, Version 2.0       #
+# which accompanies this distribution, and is available at                    #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+###############################################################################
+ -->
+<template name="EnvMainInfo">
+  <div class="single-tab-box box-container">
+    <div class="form-horizontal">
+
+      <div class="form-group">
+        <label for="inputEmail" class="col-sm-3 control-label box-label">Owner</label>
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs value=model.user key="user" type="email" disabled=true placeholder="Email") }}
+        </div>
+        <div class="col-sm-4 form-label-description">
+          Owner of environment
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="inputEnvName" class="col-sm-3 control-label box-label">Environment name</label>
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs value=model.name key='name' type="text" disabled=(isFieldDisabled 'name' disabled) placeholder="Name")}}
+        </div>
+        <div class="col-sm-4 form-label-description">
+          Enter name of your environment
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label box-label">Environment type</label>
+        <div class="col-sm-3">
+          {{> SelectModel(createSelectArgs values=model.environment_type key="environment_type" disabled=(isFieldDisabled 'environment_type'
+          disabled) options=environmentTypeOptions reset_fields=(getResetFields 'environment_type') showNullOption=false)
+          }}
+        </div>
+        <div class="col-sm-4 form-label-description">
+          Enter type of your environment
+        </div>
+      </div>
+      <br/>
+      <br/>
+
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label box-label">Distribution</label>
+        <div class="col-sm-3">
+          {{> SelectModel(createSelectArgs values=model.distribution key="distribution" disabled=(isFieldDisabled 'distribution' disabled)
+          options=(distributionOptions model.environment_type) showNullOption=true) }}
+        </div>
+        <div class="col-sm-4 form-label-description">
+          Enter type of the distribution
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label box-label">Distribution Version</label>
+        <div class="col-sm-3">
+          {{> SelectModel(createSelectArgs values=model.distribution_version key="distribution_version" disabled=(isFieldDisabled 'distribution_version'
+          disabled) options=(distributionVersionOptions model.distribution) multi=false showNullOption=true) }}
+        </div>
+        <div class="col-sm-4 form-label-description">
+          Enter distribution version
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label box-label">Type Drivers</label>
+        <div class="col-sm-3">
+          {{> SelectModel(createSelectArgs values=model.type_drivers key="type_drivers" options=(typeDriversOptions model.distribution)
+          disabled=disabled multi=false showNullOption=true) }}
+        </div>
+        <div class="col-sm-4 form-label-description">
+          Enter type driver
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label box-label">Mechanism Drivers</label>
+        <div class="col-sm-3">
+          {{> SelectModel(createSelectArgs values=model.mechanism_drivers key="mechanism_drivers" options=(mechanismDriversOptions
+          model.distribution) disabled=disabled multi=true showNullOption=false) }}
+        </div>
+        <div class="col-sm-4 form-label-description">
+          Enter mechanism drivers
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label box-label">Event based scan</label>
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs value=model.listen key='listen' type="checkbox" disabled=isListeningDisabled) }}
+        </div>
+        <div class="col-sm-4 form-label-description">
+          Track and Update the inventory in real-time, between scan times
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label box-label">Enable monitoring</label>
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs value=model.enable_monitoring key='enable_monitoring' type="checkbox" disabled=isMonitoringDisabled)
+          }}
+        </div>
+        <div class="col-sm-4 form-label-description">
+          Enable monitoring
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label box-label">Enable ACI</label>
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs value=model.aci_enabled key='aci_enabled' type="checkbox" disabled=disabled) }}
+        </div>
+        <div class="col-sm-4 form-label-description">
+          Enable ACI
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="inputEnvName" class="col-sm-3 control-label box-label">Operational</label>
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs value=model.operational key='operational' type="text" disabled=true placeholder="Operational")
+          }}
+        </div>
+        <div class="col-sm-4 form-label-description">
+          Operational state
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="apiHost" class="col-sm-3 control-label box-label">App Path</label>
+        <div class="col-sm-3">
+          {{> InputModel(createInputArgs value=model.app_path key="app_path" type="text" placeholder="App Path") }}
+        </div>
+        <div class="col-sm-4 form-label-description">
+          Enter PYTHON path on server running scan (defaults to /home/scan/calipso_prod/app)
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10 btn-mgt-5">
+          <button type="button" class="sm-next-button mdl-button mdl-js-button 
+              btnNext">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

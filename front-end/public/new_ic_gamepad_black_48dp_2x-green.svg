@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37.19 25.18" width="38" height="26">
+    <defs>
+        <style>
+            .cls-1{fill:#7EC35C;stroke:#fff;stroke-width:0.4px;}.cls-2{fill:#fff;}
+        </style>
+    </defs>
+    <title>
+        Asset 3
+    </title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <path d="M37,7.35c0,4-8.24,7.15-18.4,7.15S.2,11.3.2,7.35V17.83c0,4,8.23,7.15,18.39,7.15S37,21.78,37,17.83Z" class="cls-1"/>
+            <ellipse cx="18.59" cy="7.35" class="cls-1" rx="18.39" ry="7.15"/>
+            <polygon points="14.39 4.55 15.91 6.83 10.17 8.16 11.42 7.12 2.55 5.6 4.78 3.93 13.34 5.38 14.39 4.55" class="cls-2"/>
+            <polygon points="22.47 10.08 21.44 7.73 26.62 6.7 25.72 7.5 34.35 8.97 32.28 10.63 23.7 9.02 22.47 10.08" class="cls-2"/>
+            <polygon points="19.64 3.31 25.44 1.72 25.51 4.21 24.06 3.93 21.23 6.28 18.53 5.89 21.45 3.59 19.64 3.31" class="cls-2"/>
+            <polygon points="17.15 12.22 11.63 13.26 11.42 10.7 13.01 11.05 16.05 8.45 18.74 8.9 15.5 11.74 17.15 12.22" class="cls-2"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,21 @@
+current-context: test-context
+apiVersion: v1
+kind: Config
+preferences:
+  colors: true
+clusters:
+- cluster:
+    api-version: v1
+    server: https://10.56.20.78:6443
+    insecure-skip-tls-verify: true
+  name: cluster
+contexts:
+- context:
+    cluster: cluster
+    namespace: default
+    user: koren
+  name: test-context
+users:
+- name: koren
+  user:
+    token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrdWJlcm5ldGVzLWRhc2hib2FyZC10b2tlbi03NnRjZyIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImM2Zjg1NGQ5LWM0NmEtMTFlNy04Y2E5LTAwNTA1NmFjMTJhOCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTprdWJlcm5ldGVzLWRhc2hib2FyZCJ9.JlLLTU2cUbQbP8C3bXA5h2WS-pfGyiFxowJXU3ccLOlynW78s_dHSlEzcemh2E4BOBB36EdlJ144L_zLKlXzzCLasVHs1OIipzjej0wWdBR4kqrlyFFvnESqXw4mwr5iWNgDipV92M9nD9mySc23e0XmfRPlNGUl9iUSxG4d6mjt73wJqqwk9waLq1Jcl1AF3WXkpvoRqAmxW_cSlYoZz2e4kr8yZ4y--CytqR5roXhWKnpMjZnOiKhQFG9egW8geR_1YEECNprI7oupKhuG491Lmg1p261pwoa2aN7awG08oSpSgbbd68oaFKiq8w3jycKN910sOWYc3zfSTyL8kA
